@@ -1,0 +1,54 @@
+{
+  "id": "voidHorizon",
+  "title": "l'horizon est vide !",
+  "description": "A human-readable description of your system.",
+  "version": "2.0.0",
+  "compatibility": {
+    "minimum": "10",
+    "verified": "11",
+    "maximum": "11"
+  },
+  "authors": [
+    {
+      "name": "me",
+      "url": "YOUR WEBSITE ADDRESS HERE",
+	  "email": "YOUR EMAIL ADDRESS HERE",
+	  "discord": "YOUR DISCORD USERNAME HERE"
+    }
+  ],
+  "scripts": [
+  ],
+  "esmodules": [
+  ],
+  "styles": [
+  ],
+  "packs": [
+    {
+      "name": "monsters",
+      "label": "My Monsters",
+      "type": "Actor"
+    },
+    {
+      "name": "items",
+      "label": "My Items",
+      "type": "Item"
+    }
+  ],
+"languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "socket": false,
+  "initiative": "1d20",
+  "gridDistance": 10,
+  "gridUnits": "ft",
+  "primaryTokenAttribute": "resources.health",
+  "secondaryTokenAttribute": "resources.power",
+  "url": "https://github.com/lschoen-keeplanet/voidHorizon.git",
+  "background": "systems/mysystem/assets/splash.webp",
+  "manifest": "https://your/hosted/system/repo/system.json",
+  "download": "https://your/packaged/download/archive.zip"
+}
