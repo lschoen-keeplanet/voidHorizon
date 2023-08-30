@@ -25,23 +25,6 @@
       "value": 5,
       "max": 10
     }
-  },
-  "pawn": {
-    "templates": ["resources"]
-  },
-  "villain": {
-    "templates": ["background", "resources"],
-    "wickedness": {
-      "value": 5,
-      "max": 100
-    }
-  },
-  "Clapos": {
-    "templates": ["background", "resources"],
-    "wickedness": {
-      "value": 5,
-      "max": 100
-    }
   }
 },
 "Item": {
