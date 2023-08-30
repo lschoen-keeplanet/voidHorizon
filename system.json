@@ -2,7 +2,7 @@
   "id": "voidHorizon",
   "title": "l'horizon est vide !",
   "description": "A human-readable description of your system.",
-  "version": "2.0.0",
+  "version": "1.0.1",
   "compatibility": {
     "minimum": "10",
     "verified": "11",
