@@ -50,5 +50,5 @@
   "url": "https://github.com/lschoen-keeplanet/voidHorizon.git",
   "background": "systems/mysystem/assets/splash.webp",
   "manifest": "https://your/hosted/system/repo/system.json",
-  "download": "https://your/packaged/download/archive.zip"
+  "download": "https://github.com/lschoen-keeplanet/voidHorizon/archive/refs/heads/main.zip"
 }
