@@ -47,7 +47,7 @@
   "gridUnits": "ft",
   "primaryTokenAttribute": "resources.health",
   "secondaryTokenAttribute": "resources.power",
-  "url": "https://github.com/lschoen-keeplanet/voidHorizon.git",
+  "url": "https://github.com/lschoen-keeplanet/voidHorizon/",
   "background": "systems/mysystem/assets/splash.webp",
   "manifest": "https://github.com/lschoen-keeplanet/voidHorizon/blob/main/system.json",
   "download": "https://github.com/lschoen-keeplanet/voidHorizon/archive/refs/heads/main.zip"
