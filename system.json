@@ -19,6 +19,7 @@
   "scripts": [
   ],
   "esmodules": [
+        "voidHorizon.js"
   ],
   "styles": [
   ],
@@ -36,9 +37,6 @@
   ],
 "languages": [
     {
-      "lang": "en",
-      "name": "English",
-      "path": "lang/en.json"
     }
   ],
   "socket": false,

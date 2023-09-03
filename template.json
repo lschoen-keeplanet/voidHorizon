@@ -1,6 +1,6 @@
 {
 "Actor": {
-  "types": ["hero", "pawn", "villain"],
+  "types": ["hero","john","minab"],
   "templates": {
     "background": {
       "biography": "",
@@ -25,23 +25,36 @@
       "value": 5,
       "max": 10
     }
+  },
+  "minab": {
+    "templates": ["background", "resources"],
+    "goodness": {
+      "value": 5,
+      "max": 10
+    }
+  },
+  "john": {
+    "templates": ["background", "resources"],
+    "goodness": {
+      "value": 5,
+      "max": 10
+    }
   }
 },
 "Item": {
-  "types": ["weapon", "spell"],
-  "templates": {
-    "rarity": {
-      "rarity": "Common",
-      "price": 20
-    }
-  },
+  "types": ["Arme", "outil"],
+  "templates" : { "itemDescription" : "its an item or a weapon" },
+        
   "weapon": {
-    "templates": ["rarity"],
-    "damage": 5
+    "templates" : ["itemDescription"],
+    "damage": 0,
+    "portée": 0
+            
   },
-  "spell": {
-    "templates": ["rarity"],
-    "cost": 2
+  
+  "outil": {
+    "damage": 0,
+    "portée": 0
   }
 }
 }
