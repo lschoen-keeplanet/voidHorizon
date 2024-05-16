@@ -2,6 +2,7 @@
   "name": "foundryvtt",
   "productName": "Foundry Virtual Tabletop",
   "description": "Foundry Virtual Tabletop: A standalone application for online tabletop role-playing games.",
+  "lang" : "FR",
   "release": {
     "generation": 11,
     "channel": "stable",
