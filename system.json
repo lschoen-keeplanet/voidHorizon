@@ -37,7 +37,21 @@
   ],
 "languages": [
     {
+            "lang" : "fr",
+            "name" : "Français",
+            "path" :"./lang/fr.json"
+    },
+    {
+            "lang" : "en",
+            "name" : "English",
+            "path" :"./lang/en.json"
+    },
+    {
+            "lang" : "de",
+            "name" : "deutsche",
+            "path" :"./lang/de.json"
     }
+    
   ],
   "socket": false,
   "initiative": "1d20",

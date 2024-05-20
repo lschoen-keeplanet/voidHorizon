@@ -1,0 +1,17 @@
+{
+    "voidHorizon": {
+
+        "attack": {
+            "sword": "swordy swordy !",
+            "halberd": "halberd seulache"
+        },
+        
+        "moral":{
+            "state1" : "Démoralisé",
+            "state2" : "Apeuré",
+            "state3" : "Confiant",
+            "state4" : "Etat de grâce"
+        }
+                
+    }
+}

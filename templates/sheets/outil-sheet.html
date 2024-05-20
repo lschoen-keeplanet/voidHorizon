@@ -2,7 +2,31 @@
     <header class="sheet-header">
         <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="64" width="64"/>
         <h1><input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'Name' }}"/></h1>
+
     </header>
+
+    <p>COUCOU ICI</p>
+    <div>
+        <input name="data.damage" type="text" value="{{data.data.damage}}" data-dtype="Number" />
+    </div>
+<!--    <select name="data.moral">
+        {{#select "data.moral"}}
+        {{#each config.moral as |name type| }}
+        <option value="{{data.data.type}}">{{localize name}}</option>
+        {{/each}}
+        {{/select}}
+    </select>-->
+
+<ul class="moral_checkbox">
     
-    <p>coucou</p>
+        {{#each config.moral as |name type| }}
+        <li><input type="checkbox" name="data.moral" value="{{type}}" data-dtype="Number">{{localize name}}</li>
+        {{/each}}
+</ul>
+    
+    <div>
+        <textarea name="data.description">{{data.data.description}}</textarea>
+        
+        
+    </div>
 </form>

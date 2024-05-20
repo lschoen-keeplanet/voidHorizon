@@ -1,0 +1,17 @@
+{
+    "voidHorizon": {
+
+        "attack": {
+            "sword": "swordy swordy !",
+            "halberd": "halberd seulache"
+        },
+        
+        "moral":{
+            "state1" : "Demoralisiert",
+            "state2" : "Ängstlich",
+            "state3" : "Selbstbewusst",
+            "state4" : "Zustand der Gnade"
+        }
+                
+    }
+}
