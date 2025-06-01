@@ -36,11 +36,20 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             martialite: {
                 value: data.actor.system.martialite?.value || 0,
                 label: "Martialité"
+            },
+            arcane: {
+                value: data.actor.system.arcane?.value || 0,
+                label: "Arcane"
+            },
+            class: {
+                value: data.actor.system.class?.value || "",
+                label: "Classe"
             }
         };
 
-        // Ajouter la fonction eq pour la comparaison dans le template
+        // Ajouter les fonctions helpers pour le template
         data.eq = (a, b) => a === b;
+        data.selected = (value, current) => value === current ? "selected" : "";
         
         return data;
     }

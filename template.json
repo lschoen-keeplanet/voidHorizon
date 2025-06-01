@@ -42,6 +42,10 @@
                 "value": 0,
                 "label": "Martialité"
             },
+            "arcane": {
+                "value": 0,
+                "label": "Arcane"
+            },
             "goodness": {
                 "value": 5,
                 "max": 10

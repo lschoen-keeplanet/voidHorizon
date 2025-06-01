@@ -6,10 +6,10 @@
             <div class="class-line">
                 <label>Classe:</label>
                 <select name="system.class.value">
-                    <option value="panzer" {{#if (eq system.class.value "panzer")}}selected{{/if}}>Panzer</option>
-                    <option value="tirailleur" {{#if (eq system.class.value "tirailleur")}}selected{{/if}}>Tirailleur</option>
-                    <option value="soigneur" {{#if (eq system.class.value "soigneur")}}selected{{/if}}>Soigneur</option>
-                    <option value="mage" {{#if (eq system.class.value "mage")}}selected{{/if}}>Mage</option>
+                    <option value="panzer" {{selected "panzer" system.class.value}}>Panzer</option>
+                    <option value="tirailleur" {{selected "tirailleur" system.class.value}}>Tirailleur</option>
+                    <option value="soigneur" {{selected "soigneur" system.class.value}}>Soigneur</option>
+                    <option value="mage" {{selected "mage" system.class.value}}>Mage</option>
                 </select>
             </div>
             <div class="main-stats">
@@ -28,6 +28,10 @@
                 <div class="stat">
                     <label>Martialité</label>
                     <input type="number" name="system.martialite.value" value="{{system.martialite.value}}" min="0"/>
+                </div>
+                <div class="stat">
+                    <label>Arcane</label>
+                    <input type="number" name="system.arcane.value" value="{{system.arcane.value}}" min="0"/>
                 </div>
             </div>
         </div>
