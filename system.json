@@ -17,11 +17,13 @@
     }
   ],
   "scripts": [
+    "scripts/hero-sheet.js"
   ],
   "esmodules": [
         "voidHorizon.js"
   ],
   "styles": [
+    "styles/hero-sheet.css"
   ],
   "packs": [
     {
