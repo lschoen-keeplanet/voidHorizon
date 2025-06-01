@@ -104,7 +104,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         const itemData = {
             name: "Nouvel Item",
-            type: "item",
+            type: "equipment",
             system: {
                 description: ""
             }
