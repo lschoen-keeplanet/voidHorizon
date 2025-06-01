@@ -122,8 +122,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
 // Enregistrer la classe de la fiche
 Hooks.once("init", function() {
     console.log("Enregistrement de la fiche Héros");
-    Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
-    Actors.registerSheet("voidHorizon", HeroSheet, {
+    foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
+    foundry.documents.collections.Actors.registerSheet("voidHorizon", HeroSheet, {
         types: ["heros"],
         makeDefault: true
     });

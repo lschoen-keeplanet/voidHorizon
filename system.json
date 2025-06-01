@@ -17,7 +17,8 @@
     }
   ],
   "scripts": [
-    "scripts/heros-sheet.js"
+    "scripts/heros-sheet.js",
+    "scripts/VHItemSheet.js"
   ],
   "esmodules": [
     "voidHorizon.js"
