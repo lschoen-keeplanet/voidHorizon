@@ -3,7 +3,7 @@ class VHItemSheet extends foundry.appv1.sheets.ItemSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             classes: ["voidHorizon", "sheet", "item"],
-            template: "templates/sheets/item-sheet.html",
+            template: "systems/voidHorizon/templates/sheets/item-sheet.html",
             width: 520,
             height: 480,
             tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description"}]

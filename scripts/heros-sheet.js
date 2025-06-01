@@ -3,7 +3,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             classes: ["voidHorizon", "sheet", "actor", "heros"],
-            template: "templates/sheets/heros-sheet.html",
+            template: "systems/voidHorizon/templates/sheets/heros-sheet.html",
             width: 600,
             height: 600,
             tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "stats"}]
