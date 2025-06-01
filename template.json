@@ -1,9 +1,7 @@
 {
     "Actor": {
         "types": [
-            "hero",
-            "john",
-            "minab"
+            "heros"
         ],
         "templates": {
             "background": {
@@ -23,7 +21,7 @@
                 }
             }
         },
-        "hero": {
+        "heros": {
             "templates": [
                 "background",
                 "resources"
@@ -48,26 +46,6 @@
                 "value": 10,
                 "max": 10,
                 "label": "Moral"
-            }
-        },
-        "minab": {
-            "templates": [
-                "background",
-                "resources"
-            ],
-            "goodness": {
-                "value": 5,
-                "max": 10
-            }
-        },
-        "john": {
-            "templates": [
-                "background",
-                "resources"
-            ],
-            "goodness": {
-                "value": 5,
-                "max": 10
             }
         }
     },

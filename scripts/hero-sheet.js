@@ -2,7 +2,7 @@ class HeroSheet extends ActorSheet {
     /** @override */
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
-            classes: ["voidHorizon", "sheet", "actor", "hero"],
+            classes: ["voidHorizon", "sheet", "actor", "heros"],
             template: "templates/sheets/hero-sheet.html",
             width: 600,
             height: 600,
@@ -121,10 +121,10 @@ class HeroSheet extends ActorSheet {
 
 // Enregistrer la classe de la fiche
 Hooks.once("init", function() {
-    console.log("Enregistrement de la fiche Hero");
+    console.log("Enregistrement de la fiche Héros");
     Actors.unregisterSheet("core", ActorSheet);
     Actors.registerSheet("voidHorizon", HeroSheet, {
-        types: ["hero"],
+        types: ["heros"],
         makeDefault: true
     });
 }); 
