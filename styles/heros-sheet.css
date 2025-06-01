@@ -53,6 +53,27 @@
     font-weight: bold;
 }
 
+.class-line select {
+    flex: 1;
+    height: 30px;
+    background: white;
+    border: 1px solid #7a7971;
+    border-radius: 3px;
+    padding: 3px 8px;
+    font-size: 1em;
+    color: #333;
+}
+
+.class-line select:focus {
+    box-shadow: 0 0 5px #800000;
+    outline: none;
+    border-color: #800000;
+}
+
+.class-line select option {
+    padding: 5px;
+}
+
 /* Main Stats */
 .main-stats {
     display: grid;

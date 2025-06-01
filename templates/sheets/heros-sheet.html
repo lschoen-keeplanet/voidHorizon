@@ -5,7 +5,12 @@
             <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Nom"/></h1>
             <div class="class-line">
                 <label>Classe:</label>
-                <input name="system.class.value" type="text" value="{{system.class.value}}" placeholder="Classe"/>
+                <select name="system.class.value">
+                    <option value="panzer" {{#if (eq system.class.value "panzer")}}selected{{/if}}>Panzer</option>
+                    <option value="tirailleur" {{#if (eq system.class.value "tirailleur")}}selected{{/if}}>Tirailleur</option>
+                    <option value="soigneur" {{#if (eq system.class.value "soigneur")}}selected{{/if}}>Soigneur</option>
+                    <option value="mage" {{#if (eq system.class.value "mage")}}selected{{/if}}>Mage</option>
+                </select>
             </div>
             <div class="main-stats">
                 <div class="stat">

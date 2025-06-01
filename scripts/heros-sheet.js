@@ -38,6 +38,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 label: "Martialité"
             }
         };
+
+        // Ajouter la fonction eq pour la comparaison dans le template
+        data.eq = (a, b) => a === b;
         
         return data;
     }
@@ -53,6 +56,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Gestion des changements de valeurs
         html.find('input[type="number"]').change(this._onResourceChange.bind(this));
         html.find('input[type="text"]').change(this._onTextChange.bind(this));
+        html.find('select').change(this._onSelectChange.bind(this));
     }
 
     /**
@@ -160,6 +164,30 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             console.error("Erreur lors de la mise à jour:", error);
             // Restaurer la valeur précédente en cas d'erreur
             input.value = this.actor.system[field.split('.')[2]].value;
+        }
+    }
+
+    /**
+     * Gère les changements de sélection (classe)
+     * @param {Event} event - L'événement de changement
+     * @private
+     */
+    async _onSelectChange(event) {
+        event.preventDefault();
+        const select = event.target;
+        const field = select.name;
+        const updateData = {};
+        updateData[field] = select.value;
+        
+        try {
+            await this.actor.update(updateData);
+            console.log(`Mise à jour réussie pour ${field}: ${select.value}`);
+            // Forcer la mise à jour de l'affichage
+            this.render(true);
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour:", error);
+            // Restaurer la valeur précédente en cas d'erreur
+            select.value = this.actor.system[field.split('.')[2]].value;
         }
     }
 }
