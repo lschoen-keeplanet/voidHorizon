@@ -18,6 +18,27 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Préparation des données pour le template
         this._prepareItems(data);
         
+        // Préparation des statistiques principales
+        data.system = {
+            ...data.system,
+            agilite: {
+                value: data.actor.system.agilite?.value || 0,
+                label: "Agilité"
+            },
+            pimpance: {
+                value: data.actor.system.pimpance?.value || 0,
+                label: "Pimpance"
+            },
+            moral: {
+                value: data.actor.system.moral?.value || 0,
+                label: "Moral"
+            },
+            martialite: {
+                value: data.actor.system.martialite?.value || 0,
+                label: "Martialité"
+            }
+        };
+        
         return data;
     }
 
@@ -109,6 +130,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         try {
             await this.actor.update(updateData);
             console.log(`Mise à jour réussie pour ${field}: ${input.value}`);
+            // Forcer la mise à jour de l'affichage
+            this.render(true);
         } catch (error) {
             console.error("Erreur lors de la mise à jour:", error);
             // Restaurer la valeur précédente en cas d'erreur
@@ -131,6 +154,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         try {
             await this.actor.update(updateData);
             console.log(`Mise à jour réussie pour ${field}: ${input.value}`);
+            // Forcer la mise à jour de l'affichage
+            this.render(true);
         } catch (error) {
             console.error("Erreur lors de la mise à jour:", error);
             // Restaurer la valeur précédente en cas d'erreur
