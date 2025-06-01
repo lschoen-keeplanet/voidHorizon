@@ -61,6 +61,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Gestion des événements pour les items
         html.find('.item-edit').click(this._onItemEdit.bind(this));
         html.find('.item-delete').click(this._onItemDelete.bind(this));
+        html.find('.create-item').click(this._onCreateItem.bind(this));
 
         // Gestion des changements de valeurs
         html.find('select').change(this._onSelectChange.bind(this));
@@ -94,6 +95,29 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     /**
+     * Gère la création d'un nouvel item
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onCreateItem(event) {
+        event.preventDefault();
+        
+        const itemData = {
+            name: "Nouvel Item",
+            type: "item",
+            system: {
+                description: ""
+            }
+        };
+
+        try {
+            await Item.create(itemData, { parent: this.actor });
+        } catch (error) {
+            console.error("Erreur lors de la création de l'item:", error);
+        }
+    }
+
+    /**
      * Gère l'édition d'un item
      * @param {Event} event - L'événement de clic
      * @private
@@ -102,8 +126,44 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const item = this.actor.items.get(itemId);
+        
         if (item) {
-            item.sheet.render(true);
+            const template = `
+                <form>
+                    <div class="form-group">
+                        <label>Nom</label>
+                        <input type="text" name="name" value="${item.name}"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea name="system.description">${item.system.description || ""}</textarea>
+                    </div>
+                </form>
+            `;
+
+            new Dialog({
+                title: "Modifier l'item",
+                content: template,
+                buttons: {
+                    save: {
+                        icon: '<i class="fas fa-save"></i>',
+                        label: "Sauvegarder",
+                        callback: async (html) => {
+                            const formData = new FormData(html.find('form')[0]);
+                            const updateData = {
+                                name: formData.get('name'),
+                                'system.description': formData.get('system.description')
+                            };
+                            await item.update(updateData);
+                        }
+                    },
+                    cancel: {
+                        icon: '<i class="fas fa-times"></i>',
+                        label: "Annuler"
+                    }
+                },
+                default: "save"
+            }).render(true);
         }
     }
 
@@ -116,8 +176,26 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const item = this.actor.items.get(itemId);
+        
         if (item) {
-            await item.delete();
+            new Dialog({
+                title: "Supprimer l'item",
+                content: `<p>Êtes-vous sûr de vouloir supprimer "${item.name}" ?</p>`,
+                buttons: {
+                    delete: {
+                        icon: '<i class="fas fa-trash"></i>',
+                        label: "Supprimer",
+                        callback: async () => {
+                            await item.delete();
+                        }
+                    },
+                    cancel: {
+                        icon: '<i class="fas fa-times"></i>',
+                        label: "Annuler"
+                    }
+                },
+                default: "cancel"
+            }).render(true);
         }
     }
 
