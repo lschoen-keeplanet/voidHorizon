@@ -121,6 +121,8 @@ class HeroSheet extends ActorSheet {
 
 // Enregistrer la classe de la fiche
 Hooks.once("init", function() {
+    console.log("Enregistrement de la fiche Hero");
+    Actors.unregisterSheet("core", ActorSheet);
     Actors.registerSheet("voidHorizon", HeroSheet, {
         types: ["hero"],
         makeDefault: true

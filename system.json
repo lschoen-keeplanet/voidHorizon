@@ -2,7 +2,7 @@
   "id": "voidHorizon",
   "title": "voidHorizon - version dev",
   "description": "DESC.",
-  "version": "0.0.21",
+  "version": "0.0.20",
   "compatibility": {
     "minimum": "10",
     "verified": "13",
@@ -12,15 +12,15 @@
     {
       "name": "me",
       "url": "YOUR WEBSITE ADDRESS HERE",
-	  "email": "YOUR EMAIL ADDRESS HERE",
-	  "discord": "YOUR DISCORD USERNAME HERE"
+      "email": "YOUR EMAIL ADDRESS HERE",
+      "discord": "YOUR DISCORD USERNAME HERE"
     }
   ],
   "scripts": [
     "scripts/hero-sheet.js"
   ],
   "esmodules": [
-        "voidHorizon.js"
+    "voidHorizon.js"
   ],
   "styles": [
     "styles/hero-sheet.css"
@@ -37,23 +37,22 @@
       "type": "Item"
     }
   ],
-"languages": [
+  "languages": [
     {
-            "lang" : "fr",
-            "name" : "Français",
-            "path" :"./lang/fr.json"
+      "lang": "fr",
+      "name": "Français",
+      "path": "./lang/fr.json"
     },
     {
-            "lang" : "en",
-            "name" : "English",
-            "path" :"./lang/en.json"
+      "lang": "en",
+      "name": "English",
+      "path": "./lang/en.json"
     },
     {
-            "lang" : "de",
-            "name" : "deutsche",
-            "path" :"./lang/de.json"
+      "lang": "de",
+      "name": "deutsche",
+      "path": "./lang/de.json"
     }
-    
   ],
   "socket": false,
   "initiative": "1d20",
@@ -62,7 +61,7 @@
   "primaryTokenAttribute": "resources.health",
   "secondaryTokenAttribute": "resources.power",
   "url": "https://github.com/lschoen-keeplanet/voidHorizon/",
-  "background": "systems/mysystem/assets/splash.webp",
+  "background": "systems/voidHorizon/assets/splash.webp",
   "manifest": "https://raw.githubusercontent.com/lschoen-keeplanet/voidHorizon/foundry/system.json",
   "download": "https://github.com/lschoen-keeplanet/voidHorizon/archive/refs/heads/main.zip"
 }
