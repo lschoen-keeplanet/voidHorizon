@@ -22,23 +22,23 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         data.system = {
             ...data.system,
             agilite: {
-                value: data.actor.system.agilite?.value || 0,
+                value: data.actor.system.agilite?.value || "1d4",
                 label: "Agilité"
             },
             pimpance: {
-                value: data.actor.system.pimpance?.value || 0,
+                value: data.actor.system.pimpance?.value || "1d4",
                 label: "Pimpance"
             },
             moral: {
-                value: data.actor.system.moral?.value || 0,
+                value: data.actor.system.moral?.value || "1d4",
                 label: "Moral"
             },
             martialite: {
-                value: data.actor.system.martialite?.value || 0,
+                value: data.actor.system.martialite?.value || "1d4",
                 label: "Martialité"
             },
             arcane: {
-                value: data.actor.system.arcane?.value || 0,
+                value: data.actor.system.arcane?.value || "1d4",
                 label: "Arcane"
             },
             class: {
@@ -63,9 +63,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         html.find('.item-delete').click(this._onItemDelete.bind(this));
 
         // Gestion des changements de valeurs
-        html.find('input[type="number"]').change(this._onResourceChange.bind(this));
-        html.find('input[type="text"]').change(this._onTextChange.bind(this));
         html.find('select').change(this._onSelectChange.bind(this));
+        html.find('input[type="text"]').change(this._onTextChange.bind(this));
+
+        // Gestion des lancers de dés
+        html.find('.roll-stat').click(this._onRollStat.bind(this));
     }
 
     /**
@@ -198,6 +200,34 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Restaurer la valeur précédente en cas d'erreur
             select.value = this.actor.system[field.split('.')[2]].value;
         }
+    }
+
+    /**
+     * Lance un dé pour une statistique
+     * @param {string} stat - Le nom de la statistique
+     * @private
+     */
+    async _rollStat(stat) {
+        const value = this.actor.system[stat].value;
+        if (!value) return;
+        
+        const roll = new Roll(value);
+        await roll.evaluate({async: true});
+        roll.toMessage({
+            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+            flavor: `${stat.charAt(0).toUpperCase() + stat.slice(1)} Check`
+        });
+    }
+
+    /**
+     * Gère le clic sur un bouton de lancer de dé
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onRollStat(event) {
+        event.preventDefault();
+        const stat = event.currentTarget.dataset.stat;
+        await this._rollStat(stat);
     }
 }
 

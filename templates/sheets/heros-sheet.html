@@ -15,23 +15,73 @@
             <div class="main-stats">
                 <div class="stat">
                     <label>Agilité</label>
-                    <input type="number" name="system.agilite.value" value="{{system.agilite.value}}" min="0"/>
+                    <div class="stat-controls">
+                        <select name="system.agilite.value">
+                            <option value="1d4" {{selected "1d4" system.agilite.value}}>1d4</option>
+                            <option value="1d6" {{selected "1d6" system.agilite.value}}>1d6</option>
+                            <option value="1d8" {{selected "1d8" system.agilite.value}}>1d8</option>
+                            <option value="1d10" {{selected "1d10" system.agilite.value}}>1d10</option>
+                            <option value="1d12" {{selected "1d12" system.agilite.value}}>1d12</option>
+                            <option value="1d20" {{selected "1d20" system.agilite.value}}>1d20</option>
+                        </select>
+                        <button type="button" class="roll-stat" data-stat="agilite"><i class="fas fa-dice-d20"></i></button>
+                    </div>
                 </div>
                 <div class="stat">
                     <label>Pimpance</label>
-                    <input type="number" name="system.pimpance.value" value="{{system.pimpance.value}}" min="0"/>
+                    <div class="stat-controls">
+                        <select name="system.pimpance.value">
+                            <option value="1d4" {{selected "1d4" system.pimpance.value}}>Tâche</option>
+                            <option value="1d6" {{selected "1d6" system.pimpance.value}}>Pas top</option>
+                            <option value="1d8" {{selected "1d8" system.pimpance.value}}>Honnête</option>
+                            <option value="1d10" {{selected "1d10" system.pimpance.value}}>Clinquant</option>
+                            <option value="1d12" {{selected "1d12" system.pimpance.value}}>Flamboyant</option>
+                            <option value="1d20" {{selected "1d20" system.pimpance.value}}>Ramirez</option>
+                        </select>
+                        <button type="button" class="roll-stat" data-stat="pimpance"><i class="fas fa-dice-d20"></i></button>
+                    </div>
                 </div>
                 <div class="stat">
                     <label>Moral</label>
-                    <input type="number" name="system.moral.value" value="{{system.moral.value}}" min="0"/>
+                    <div class="stat-controls">
+                        <select name="system.moral.value">
+                            <option value="1d4" {{selected "1d4" system.moral.value}}>1d4</option>
+                            <option value="1d6" {{selected "1d6" system.moral.value}}>1d6</option>
+                            <option value="1d8" {{selected "1d8" system.moral.value}}>1d8</option>
+                            <option value="1d10" {{selected "1d10" system.moral.value}}>1d10</option>
+                            <option value="1d12" {{selected "1d12" system.moral.value}}>1d12</option>
+                            <option value="1d20" {{selected "1d20" system.moral.value}}>1d20</option>
+                        </select>
+                        <button type="button" class="roll-stat" data-stat="moral"><i class="fas fa-dice-d20"></i></button>
+                    </div>
                 </div>
                 <div class="stat">
                     <label>Martialité</label>
-                    <input type="number" name="system.martialite.value" value="{{system.martialite.value}}" min="0"/>
+                    <div class="stat-controls">
+                        <select name="system.martialite.value">
+                            <option value="1d4" {{selected "1d4" system.martialite.value}}>1d4</option>
+                            <option value="1d6" {{selected "1d6" system.martialite.value}}>1d6</option>
+                            <option value="1d8" {{selected "1d8" system.martialite.value}}>1d8</option>
+                            <option value="1d10" {{selected "1d10" system.martialite.value}}>1d10</option>
+                            <option value="1d12" {{selected "1d12" system.martialite.value}}>1d12</option>
+                            <option value="1d20" {{selected "1d20" system.martialite.value}}>1d20</option>
+                        </select>
+                        <button type="button" class="roll-stat" data-stat="martialite"><i class="fas fa-dice-d20"></i></button>
+                    </div>
                 </div>
                 <div class="stat">
                     <label>Arcane</label>
-                    <input type="number" name="system.arcane.value" value="{{system.arcane.value}}" min="0"/>
+                    <div class="stat-controls">
+                        <select name="system.arcane.value">
+                            <option value="1d4" {{selected "1d4" system.arcane.value}}>1d4</option>
+                            <option value="1d6" {{selected "1d6" system.arcane.value}}>1d6</option>
+                            <option value="1d8" {{selected "1d8" system.arcane.value}}>1d8</option>
+                            <option value="1d10" {{selected "1d10" system.arcane.value}}>1d10</option>
+                            <option value="1d12" {{selected "1d12" system.arcane.value}}>1d12</option>
+                            <option value="1d20" {{selected "1d20" system.arcane.value}}>1d20</option>
+                        </select>
+                        <button type="button" class="roll-stat" data-stat="arcane"><i class="fas fa-dice-d20"></i></button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -208,4 +208,43 @@ input[type="number"]:focus,
 textarea:focus {
     box-shadow: 0 0 5px #800000;
     outline: none;
+}
+
+.stat-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stat-controls select {
+    flex: 1;
+    min-width: 80px;
+    padding: 0.25rem;
+    border: 1px solid #7a7971;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.05);
+    color: #191813;
+}
+
+.stat-controls select:focus {
+    box-shadow: 0 0 5px red;
+    outline: none;
+    border-color: #7a7971;
+}
+
+.roll-stat {
+    background: none;
+    border: none;
+    color: #7a7971;
+    cursor: pointer;
+    padding: 0.25rem;
+    transition: color 0.2s ease;
+}
+
+.roll-stat:hover {
+    color: #ff0000;
+}
+
+.roll-stat i {
+    font-size: 1.2em;
 } 
