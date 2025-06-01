@@ -1,4 +1,4 @@
-class HeroSheet extends ActorSheet {
+class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     /** @override */
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
@@ -122,7 +122,7 @@ class HeroSheet extends ActorSheet {
 // Enregistrer la classe de la fiche
 Hooks.once("init", function() {
     console.log("Enregistrement de la fiche Héros");
-    Actors.unregisterSheet("core", ActorSheet);
+    Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
     Actors.registerSheet("voidHorizon", HeroSheet, {
         types: ["heros"],
         makeDefault: true
