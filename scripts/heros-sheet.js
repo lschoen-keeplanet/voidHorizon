@@ -103,7 +103,17 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
 
         // Mettre à jour l'acteur
         const field = input.name;
-        await this.actor.update({[field]: input.value});
+        const updateData = {};
+        updateData[field] = input.value;
+        
+        try {
+            await this.actor.update(updateData);
+            console.log(`Mise à jour réussie pour ${field}: ${input.value}`);
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour:", error);
+            // Restaurer la valeur précédente en cas d'erreur
+            input.value = this.actor.system[field.split('.')[2]].value;
+        }
     }
 
     /**
@@ -115,7 +125,17 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         event.preventDefault();
         const input = event.target;
         const field = input.name;
-        await this.actor.update({[field]: input.value});
+        const updateData = {};
+        updateData[field] = input.value;
+        
+        try {
+            await this.actor.update(updateData);
+            console.log(`Mise à jour réussie pour ${field}: ${input.value}`);
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour:", error);
+            // Restaurer la valeur précédente en cas d'erreur
+            input.value = this.actor.system[field.split('.')[2]].value;
+        }
     }
 }
 
