@@ -3,7 +3,7 @@ class HeroSheet extends ActorSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             classes: ["voidHorizon", "sheet", "actor", "heros"],
-            template: "templates/sheets/hero-sheet.html",
+            template: "templates/sheets/heros-sheet.html",
             width: 600,
             height: 600,
             tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "stats"}]

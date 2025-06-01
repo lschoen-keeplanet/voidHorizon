@@ -72,6 +72,6 @@
         }
     },
     "styles": [
-        "styles/hero-sheet.css"
+        "styles/heros-sheet.css"
     ]
 }
