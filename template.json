@@ -31,6 +31,23 @@
             "goodness": {
                 "value": 5,
                 "max": 10
+            },
+            "class": {
+                "value": "",
+                "label": "Classe"
+            },
+            "defense": {
+                "value": 10,
+                "label": "Défense"
+            },
+            "movement": {
+                "value": 6,
+                "label": "Mouvement"
+            },
+            "morale": {
+                "value": 10,
+                "max": 10,
+                "label": "Moral"
             }
         },
         "minab": {
@@ -75,5 +92,8 @@
         "A" : {
             "damage": 0
         }
-    }
+    },
+    "styles": [
+        "styles/hero-sheet.css"
+    ]
 }
