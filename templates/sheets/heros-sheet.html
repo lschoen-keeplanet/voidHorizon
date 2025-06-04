@@ -93,8 +93,8 @@
                     <label>Cœurs de Constitution</label>
                     <div class="hearts-container">
                         {{#times system.constitution.value}}
-                        <button type="button" class="heart-button" data-heart-index="{{@index}}">
-                            <i class="fas fa-heart"></i>
+                        <button type="button" class="heart-button" data-heart-index="{{@index}}" data-blessed="false">
+                            Cœur {{add @index 1}}
                         </button>
                         {{/times}}
                     </div>

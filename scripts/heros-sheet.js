@@ -55,6 +55,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         data.eq = (a, b) => a === b;
         data.selected = (value, current) => value === current ? "selected" : "";
         data.times = (n) => Array.from({length: n}, (_, i) => i);
+        data.add = (a, b) => a + b;
         
         return data;
     }
@@ -324,9 +325,28 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      */
     async _onHeartClick(event) {
         event.preventDefault();
-        const heartIndex = event.currentTarget.dataset.heartIndex;
-        // Ici, vous pourrez ajouter la logique pour gérer l'état des cœurs
-        console.log(`Cœur cliqué: ${heartIndex}`);
+        const button = event.currentTarget;
+        const heartIndex = button.dataset.heartIndex;
+        const isBlessed = button.dataset.blessed === "true";
+        
+        // Mettre à jour l'état du bouton
+        button.dataset.blessed = !isBlessed;
+        button.textContent = !isBlessed ? `Cœur ${parseInt(heartIndex) + 1} blessé` : `Cœur ${parseInt(heartIndex) + 1}`;
+
+        // Mettre à jour la valeur de blessure
+        const currentBlessure = this.actor.system.resources.blessure?.value || 0;
+        const newBlessure = isBlessed ? currentBlessure - 1 : currentBlessure + 1;
+        
+        try {
+            await this.actor.update({
+                'system.resources.blessure.value': newBlessure
+            });
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour de la blessure:", error);
+            // Restaurer l'état du bouton en cas d'erreur
+            button.dataset.blessed = isBlessed;
+            button.textContent = isBlessed ? `Cœur ${parseInt(heartIndex) + 1} blessé` : `Cœur ${parseInt(heartIndex) + 1}`;
+        }
     }
 }
 
