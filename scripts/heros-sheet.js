@@ -418,41 +418,38 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const constitution = this.actor.system.constitution?.value || 0;
         const blessure = this.actor.system.resources.blessure?.value || 0;
         const remainingHearts = constitution - blessure;
-        const statusElement = this.element.find('[data-health-status]');
         
         console.log("=== Debug Health Status ===");
         console.log("Constitution:", constitution);
         console.log("Blessure:", blessure);
         console.log("Cœurs restants:", remainingHearts);
-        console.log("Status Element trouvé:", statusElement.length > 0);
         
         let status = "Incapacité";
+        let statusClass = "status-critical";
+        
         if (remainingHearts >= 3) {
             status = "Bonne santé";
+            statusClass = "status-good";
         } else if (remainingHearts === 2) {
             status = "Légèrement blessé";
+            statusClass = "status-warning";
         } else if (remainingHearts === 1) {
             status = "Grièvement blessé";
+            statusClass = "status-danger";
         }
         
         console.log("État calculé:", status);
         
-        statusElement.text(status);
-        console.log("Texte mis à jour:", statusElement.text());
+        // Mettre à jour le contenu HTML directement
+        const statusHtml = `
+            <span class="status-label">État :</span>
+            <span class="status-value ${statusClass}" data-health-status>${status}</span>
+        `;
         
-        // Mettre à jour la classe de couleur
-        statusElement.removeClass('status-good status-warning status-danger status-critical');
-        if (remainingHearts >= 3) {
-            statusElement.addClass('status-good');
-        } else if (remainingHearts === 2) {
-            statusElement.addClass('status-warning');
-        } else if (remainingHearts === 1) {
-            statusElement.addClass('status-danger');
-        } else {
-            statusElement.addClass('status-critical');
-        }
+        const healthStatusContainer = this.element.find('.health-status');
+        healthStatusContainer.html(statusHtml);
         
-        console.log("Classes CSS appliquées:", statusElement.attr('class'));
+        console.log("HTML mis à jour:", healthStatusContainer.html());
         console.log("=== Fin Debug Health Status ===");
     }
 }
