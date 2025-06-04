@@ -83,6 +83,22 @@
                         <button type="button" class="roll-stat" data-stat="arcane"><i class="fas fa-dice-d20"></i></button>
                     </div>
                 </div>
+                <div class="stat">
+                    <label>Constitution</label>
+                    <div class="stat-controls">
+                        <input type="number" name="system.constitution.value" value="{{system.constitution.value}}" min="1" max="10"/>
+                    </div>
+                </div>
+                <div class="stat constitution-hearts">
+                    <label>Cœurs de Constitution</label>
+                    <div class="hearts-container">
+                        {{#times system.constitution.value}}
+                        <button type="button" class="heart-button" data-heart-index="{{@index}}">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        {{/times}}
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -98,6 +114,20 @@
         <div class="tab stats" data-group="primary" data-tab="stats">
             <div class="stats-grid">
                 <!-- Ressources -->
+                <div class="resource">
+                    <label>Blessures</label>
+                    <div class="resource-value">
+                        <input type="number" name="system.resources.blessure.value" value="{{system.resources.blessure.value}}" min="0"/>
+                    </div>
+                </div>
+
+                <div class="resource">
+                    <label>Armure</label>
+                    <div class="resource-value">
+                        <input type="number" name="system.armor.value" value="{{system.armor.value}}" min="0"/>
+                    </div>
+                </div>
+
                 <div class="resource">
                     <label>Santé</label>
                     <div class="resource-value">

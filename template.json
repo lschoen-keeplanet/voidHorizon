@@ -9,6 +9,13 @@
                 "hairColor": "blue"
             },
             "resources": {
+                "blessure": {
+                    "min": 0,
+                    "value": 20
+                },
+                "armor": {
+                    "value": 0
+                },
                 "health": {
                     "min": 0,
                     "value": 10,
@@ -44,6 +51,10 @@
                         "value": "1d4",
                         "label": "Arcane"
                     },
+                    "constitution": {
+                        "value": 4,
+                        "label": "Constitution"
+                    },
                     "class": {
                         "value": "",
                         "label": "Classe"
@@ -75,6 +86,10 @@
             "arcane": {
                 "value": 0,
                 "label": "Arcane"
+            },
+            "constitution": {
+                "value": 0,
+                "label": "Constitution"
             },
             "goodness": {
                 "value": 5,
