@@ -399,18 +399,18 @@ textarea:focus {
 }
 
 /* Couleurs des états */
-.status-value:contains("Bonne santé") {
+.status-good {
     color: #008000;
 }
 
-.status-value:contains("Légèrement blessé") {
+.status-warning {
     color: #ffa500;
 }
 
-.status-value:contains("Grièvement blessé") {
+.status-danger {
     color: #ff4500;
 }
 
-.status-value:contains("Incapacité") {
+.status-critical {
     color: #ff0000;
 } 

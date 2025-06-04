@@ -262,6 +262,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         try {
             await this.actor.update(updateData);
             console.log(`Mise à jour réussie pour ${field}: ${input.value}`);
+            
+            // Si c'est une mise à jour de blessure, mettre à jour l'état de santé
+            if (field === 'system.resources.blessure.value') {
+                this._updateHealthStatus();
+            }
+            
             // Forcer la mise à jour de l'affichage
             this.render(true);
         } catch (error) {
@@ -424,6 +430,18 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         }
         
         statusElement.text(status);
+        
+        // Mettre à jour la classe de couleur
+        statusElement.removeClass('status-good status-warning status-danger status-critical');
+        if (remainingHearts >= 3) {
+            statusElement.addClass('status-good');
+        } else if (remainingHearts === 2) {
+            statusElement.addClass('status-warning');
+        } else if (remainingHearts === 1) {
+            statusElement.addClass('status-danger');
+        } else {
+            statusElement.addClass('status-critical');
+        }
     }
 }
 
