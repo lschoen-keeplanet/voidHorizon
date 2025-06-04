@@ -333,7 +333,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         // Mettre à jour la valeur de blessure
         const currentBlessure = this.actor.system.resources.blessure?.value || 0;
-        const newBlessure = isAlive ? currentBlessure - 1 : currentBlessure + 1;
+        const newBlessure = isAlive ? currentBlessure + 1 : currentBlessure - 1;
         
         try {
             // Mettre à jour l'acteur avec la nouvelle valeur de blessure
@@ -346,7 +346,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             
             // Mettre à jour l'état du bouton immédiatement
             button.dataset.alive = !isAlive;
-            button.innerHTML = !isAlive ? '<i class="fas fa-heart-broken"></i>' : '<i class="fas fa-heart"></i>';
+            button.innerHTML = !isAlive ? '<i class="fas fa-heart"></i>' : '<i class="fas fa-heart-broken"></i>';
             
             // Forcer la mise à jour de l'affichage
             this.render(true);
@@ -354,7 +354,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             console.error("Erreur lors de la mise à jour des points de vie:", error);
             // Restaurer l'état du bouton en cas d'erreur
             button.dataset.alive = isAlive;
-            button.innerHTML = isAlive ? '<i class="fas fa-heart-broken"></i>' : '<i class="fas fa-heart"></i>';
+            button.innerHTML = isAlive ? '<i class="fas fa-heart"></i>' : '<i class="fas fa-heart-broken"></i>';
         }
     }
 }

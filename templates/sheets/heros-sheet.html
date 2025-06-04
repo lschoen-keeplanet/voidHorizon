@@ -93,11 +93,11 @@
                     <label>Points de Vie</label>
                     <div class="hearts-container">
                         {{#each (times system.constitution.value)}}
-                        <button type="button" class="heart-button" data-heart-index="{{this}}" data-alive="{{lt this ../system.resources.blessure.value}}">
-                            {{#if (lt this ../system.resources.blessure.value)}}
-                            <i class="fas fa-heart-broken"></i>
-                            {{else}}
+                        <button type="button" class="heart-button" data-heart-index="{{this}}" data-alive="{{gt this ../system.resources.blessure.value}}">
+                            {{#if (gt this ../system.resources.blessure.value)}}
                             <i class="fas fa-heart"></i>
+                            {{else}}
+                            <i class="fas fa-heart-broken"></i>
                             {{/if}}
                         </button>
                         {{/each}}
