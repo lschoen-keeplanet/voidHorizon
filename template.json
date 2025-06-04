@@ -16,6 +16,9 @@
                 "armor": {
                     "value": 0
                 },
+                "blessedHearts": {
+                    "value": []
+                },
                 "health": {
                     "min": 0,
                     "value": 10,

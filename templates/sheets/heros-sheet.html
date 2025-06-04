@@ -93,8 +93,12 @@
                     <label>Cœurs de Constitution</label>
                     <div class="hearts-container">
                         {{#each (times system.constitution.value)}}
-                        <button type="button" class="heart-button" data-heart-index="{{this}}" data-blessed="false">
+                        <button type="button" class="heart-button" data-heart-index="{{this}}" data-blessed="{{lt this ../system.resources.blessure.value}}">
+                            {{#if (lt this ../system.resources.blessure.value)}}
+                            Cœur {{add this 1}} blessé
+                            {{else}}
                             Cœur {{add this 1}}
+                            {{/if}}
                         </button>
                         {{/each}}
                     </div>

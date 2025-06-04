@@ -320,26 +320,23 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     async _onHeartClick(event) {
         event.preventDefault();
         const button = event.currentTarget;
-        const heartIndex = button.dataset.heartIndex;
+        const heartIndex = parseInt(button.dataset.heartIndex);
         const isBlessed = button.dataset.blessed === "true";
         
-        // Mettre à jour l'état du bouton
-        button.dataset.blessed = !isBlessed;
-        button.textContent = !isBlessed ? `Cœur ${parseInt(heartIndex) + 1} blessé` : `Cœur ${parseInt(heartIndex) + 1}`;
-
         // Mettre à jour la valeur de blessure
         const currentBlessure = this.actor.system.resources.blessure?.value || 0;
         const newBlessure = isBlessed ? currentBlessure - 1 : currentBlessure + 1;
         
         try {
+            // Mettre à jour l'acteur avec la nouvelle valeur de blessure
             await this.actor.update({
                 'system.resources.blessure.value': newBlessure
             });
+            
+            // Forcer la mise à jour de l'affichage
+            this.render(true);
         } catch (error) {
             console.error("Erreur lors de la mise à jour de la blessure:", error);
-            // Restaurer l'état du bouton en cas d'erreur
-            button.dataset.blessed = isBlessed;
-            button.textContent = isBlessed ? `Cœur ${parseInt(heartIndex) + 1} blessé` : `Cœur ${parseInt(heartIndex) + 1}`;
         }
     }
 }
@@ -363,6 +360,14 @@ Hooks.once("init", function() {
     
     Handlebars.registerHelper('eq', function(a, b) {
         return a === b;
+    });
+
+    Handlebars.registerHelper('lt', function(a, b) {
+        return parseInt(a) < parseInt(b);
+    });
+
+    Handlebars.registerHelper('contains', function(array, value) {
+        return array && array.includes(parseInt(value));
     });
 
     foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
