@@ -18,6 +18,14 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Préparation des données pour le template
         this._prepareItems(data);
         
+        // S'assurer que la structure des ressources existe
+        if (!data.actor.system.resources) {
+            data.actor.system.resources = {};
+        }
+        if (!data.actor.system.resources.blessure) {
+            data.actor.system.resources.blessure = { value: 0 };
+        }
+        
         // Préparation des statistiques principales
         data.system = {
             ...data.system,
@@ -50,14 +58,6 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 label: "Classe"
             }
         };
-
-        // S'assurer que la valeur de blessure existe
-        if (!data.actor.system.resources) {
-            data.actor.system.resources = {};
-        }
-        if (!data.actor.system.resources.blessure) {
-            data.actor.system.resources.blessure = { value: 0 };
-        }
         
         return data;
     }
@@ -337,9 +337,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         try {
             // Mettre à jour l'acteur avec la nouvelle valeur de blessure
-            await this.actor.update({
+            const updateData = {
                 'system.resources.blessure.value': newBlessure
-            });
+            };
+            
+            console.log("Mise à jour de la blessure:", updateData);
+            await this.actor.update(updateData);
             
             // Mettre à jour l'état du bouton immédiatement
             button.dataset.blessed = !isBlessed;
