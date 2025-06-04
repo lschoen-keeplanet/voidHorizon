@@ -50,6 +50,14 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 label: "Classe"
             }
         };
+
+        // S'assurer que la valeur de blessure existe
+        if (!data.actor.system.resources) {
+            data.actor.system.resources = {};
+        }
+        if (!data.actor.system.resources.blessure) {
+            data.actor.system.resources.blessure = { value: 0 };
+        }
         
         return data;
     }
@@ -333,10 +341,17 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 'system.resources.blessure.value': newBlessure
             });
             
+            // Mettre à jour l'état du bouton immédiatement
+            button.dataset.blessed = !isBlessed;
+            button.textContent = !isBlessed ? `Cœur ${heartIndex + 1} blessé` : `Cœur ${heartIndex + 1}`;
+            
             // Forcer la mise à jour de l'affichage
             this.render(true);
         } catch (error) {
             console.error("Erreur lors de la mise à jour de la blessure:", error);
+            // Restaurer l'état du bouton en cas d'erreur
+            button.dataset.blessed = isBlessed;
+            button.textContent = isBlessed ? `Cœur ${heartIndex + 1} blessé` : `Cœur ${heartIndex + 1}`;
         }
     }
 }
