@@ -50,12 +50,6 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 label: "Classe"
             }
         };
-
-        // Ajouter les fonctions helpers pour le template
-        data.eq = (a, b) => a === b;
-        data.selected = (value, current) => value === current ? "selected" : "";
-        data.times = (n) => Array.from({length: n}, (_, i) => i);
-        data.add = (a, b) => parseInt(a) + parseInt(b);
         
         return data;
     }
@@ -353,6 +347,24 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
 // Enregistrer la classe de la fiche
 Hooks.once("init", function() {
     console.log("Enregistrement de la fiche Héros");
+    
+    // Enregistrer les helpers Handlebars
+    Handlebars.registerHelper('times', function(n) {
+        return Array.from({length: n}, (_, i) => i);
+    });
+    
+    Handlebars.registerHelper('add', function(a, b) {
+        return parseInt(a) + parseInt(b);
+    });
+    
+    Handlebars.registerHelper('selected', function(value, current) {
+        return value === current ? "selected" : "";
+    });
+    
+    Handlebars.registerHelper('eq', function(a, b) {
+        return a === b;
+    });
+
     foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
     foundry.documents.collections.Actors.registerSheet("voidHorizon", HeroSheet, {
         types: ["heros"],
