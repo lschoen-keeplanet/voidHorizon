@@ -350,11 +350,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             const deadButton = heartWrapper.querySelector('.dead');
             
             if (isAlive) {
-                aliveButton.style.display = 'none';
-                deadButton.style.display = 'block';
+                aliveButton.classList.add('hidden');
+                deadButton.classList.remove('hidden');
             } else {
-                aliveButton.style.display = 'block';
-                deadButton.style.display = 'none';
+                aliveButton.classList.remove('hidden');
+                deadButton.classList.add('hidden');
             }
             
             // Forcer la mise à jour de l'affichage

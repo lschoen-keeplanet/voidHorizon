@@ -328,4 +328,38 @@ textarea:focus {
     padding: 0.5rem;
     background: rgba(0, 0, 0, 0.05);
     border-radius: 3px;
+}
+
+.heart-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.heart-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 1.2em;
+}
+
+.heart-button.hidden {
+    display: none;
+}
+
+.heart-button.alive {
+    color: #ff0000;
+}
+
+.heart-button.dead {
+    color: #666666;
+}
+
+.hearts-container {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
 } 

@@ -94,10 +94,10 @@
                     <div class="hearts-container">
                         {{#each (times system.constitution.value)}}
                         <div class="heart-wrapper">
-                            <button type="button" class="heart-button alive" data-heart-index="{{this}}" data-alive="true" style="display: {{#if (gt this ../system.resources.blessure.value)}}block{{else}}none{{/if}};">
+                            <button type="button" class="heart-button alive {{#if (lte this ../system.resources.blessure.value)}}hidden{{/if}}" data-heart-index="{{this}}" data-alive="true">
                                 <i class="fas fa-heart"></i>
                             </button>
-                            <button type="button" class="heart-button dead" data-heart-index="{{this}}" data-alive="false" style="display: {{#if (gt this ../system.resources.blessure.value)}}none{{else}}block{{/if}};">
+                            <button type="button" class="heart-button dead {{#if (gt this ../system.resources.blessure.value)}}hidden{{/if}}" data-heart-index="{{this}}" data-alive="false">
                                 <i class="fas fa-heart-broken"></i>
                             </button>
                         </div>
