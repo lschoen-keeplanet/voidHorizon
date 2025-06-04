@@ -372,4 +372,45 @@ textarea:focus {
     flex-direction: column;
     gap: 5px;
     width: 100%;
+}
+
+.health-status {
+    margin-top: 10px;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-label {
+    font-weight: bold;
+    color: #800000;
+}
+
+.status-value {
+    flex: 1;
+    text-align: center;
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: white;
+    border: 1px solid #ccc;
+}
+
+/* Couleurs des états */
+.status-value:contains("Bonne santé") {
+    color: #008000;
+}
+
+.status-value:contains("Légèrement blessé") {
+    color: #ffa500;
+}
+
+.status-value:contains("Grièvement blessé") {
+    color: #ff4500;
+}
+
+.status-value:contains("Incapacité") {
+    color: #ff0000;
 } 

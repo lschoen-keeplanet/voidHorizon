@@ -399,6 +399,31 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             aliveButton.classList.remove('hidden');
             deadButton.classList.add('hidden');
         }
+
+        // Mettre à jour l'état de santé
+        this._updateHealthStatus();
+    }
+
+    /**
+     * Met à jour l'affichage de l'état de santé
+     * @private
+     */
+    _updateHealthStatus() {
+        const constitution = this.actor.system.constitution?.value || 0;
+        const blessure = this.actor.system.resources.blessure?.value || 0;
+        const remainingHearts = constitution - blessure;
+        const statusElement = this.element.find('[data-health-status]');
+        
+        let status = "Incapacité";
+        if (remainingHearts >= 3) {
+            status = "Bonne santé";
+        } else if (remainingHearts === 2) {
+            status = "Légèrement blessé";
+        } else if (remainingHearts === 1) {
+            status = "Grièvement blessé";
+        }
+        
+        statusElement.text(status);
     }
 }
 
@@ -415,6 +440,10 @@ Hooks.once("init", function() {
         return parseInt(a) + parseInt(b);
     });
     
+    Handlebars.registerHelper('sub', function(a, b) {
+        return parseInt(a) - parseInt(b);
+    });
+    
     Handlebars.registerHelper('selected', function(value, current) {
         return value === current ? "selected" : "";
     });
@@ -423,8 +452,8 @@ Hooks.once("init", function() {
         return a === b;
     });
 
-    Handlebars.registerHelper('lt', function(a, b) {
-        return parseInt(a) < parseInt(b);
+    Handlebars.registerHelper('gte', function(a, b) {
+        return parseInt(a) >= parseInt(b);
     });
 
     Handlebars.registerHelper('contains', function(array, value) {

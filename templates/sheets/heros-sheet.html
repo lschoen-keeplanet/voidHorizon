@@ -103,6 +103,20 @@
                         </div>
                         {{/each}}
                     </div>
+                    <div class="health-status">
+                        <span class="status-label">État :</span>
+                        <span class="status-value" data-health-status>
+                            {{#if (gte (sub system.constitution.value system.resources.blessure.value) 3)}}
+                            Bonne santé
+                            {{else if (eq (sub system.constitution.value system.resources.blessure.value) 2)}}
+                            Légèrement blessé
+                            {{else if (eq (sub system.constitution.value system.resources.blessure.value) 1)}}
+                            Grièvement blessé
+                            {{else}}
+                            Incapacité
+                            {{/if}}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
