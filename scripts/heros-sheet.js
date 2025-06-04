@@ -81,9 +81,13 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
 
         // Gestion des cœurs de constitution
         html.find('.heart-button').click(this._onHeartClick.bind(this));
+        
+        // Gestion des boucliers d'armure
+        html.find('.shield-button').click(this._onShieldClick.bind(this));
 
         // Initialiser l'état des cœurs et de la santé
         this._initializeHearts(html);
+        this._initializeShields(html);
         this._updateHealthStatus();
     }
 
@@ -107,6 +111,30 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             } else {
                 aliveButton.classList.remove('hidden');
                 deadButton.classList.add('hidden');
+            }
+        });
+    }
+
+    /**
+     * Initialise l'état des boucliers d'armure
+     * @param {jQuery} html - Le contenu HTML de la fiche
+     * @private
+     */
+    _initializeShields(html) {
+        const armorDamage = this.actor.system.resources.armorDamage?.value || 0;
+        const shields = html.find('.shield-wrapper');
+        
+        shields.each((index, wrapper) => {
+            const shieldIndex = index;
+            const activeButton = wrapper.querySelector('.active');
+            const brokenButton = wrapper.querySelector('.broken');
+            
+            if (shieldIndex < armorDamage) {
+                activeButton.classList.add('hidden');
+                brokenButton.classList.remove('hidden');
+            } else {
+                activeButton.classList.remove('hidden');
+                brokenButton.classList.add('hidden');
             }
         });
     }
@@ -459,6 +487,60 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         }
         
         console.log("=== Fin Debug Health Status ===");
+    }
+
+    /**
+     * Gère le clic sur un bouclier d'armure
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onShieldClick(event) {
+        event.preventDefault();
+        const button = event.currentTarget;
+        const shieldIndex = parseInt(button.dataset.shieldIndex);
+        const isActive = button.dataset.active === "true";
+        const shieldWrapper = button.closest('.shield-wrapper');
+        
+        // Mettre à jour la valeur de dégâts d'armure
+        const currentArmorDamage = this.actor.system.resources.armorDamage?.value || 0;
+        const newArmorDamage = isActive ? currentArmorDamage + 1 : currentArmorDamage - 1;
+        
+        try {
+            // Mettre à jour l'acteur avec la nouvelle valeur de dégâts d'armure
+            const updateData = {
+                'system.resources.armorDamage.value': newArmorDamage
+            };
+            
+            console.log("Mise à jour des points d'armure:", updateData);
+            await this.actor.update(updateData);
+            
+            // Mettre à jour l'affichage des boutons
+            this._updateShieldDisplay(shieldWrapper, isActive);
+            
+            // Forcer la mise à jour de l'affichage
+            this.render(true);
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour des points d'armure:", error);
+        }
+    }
+
+    /**
+     * Met à jour l'affichage des boutons d'un bouclier
+     * @param {HTMLElement} shieldWrapper - Le wrapper du bouclier
+     * @param {boolean} isActive - Si le bouclier est actif
+     * @private
+     */
+    _updateShieldDisplay(shieldWrapper, isActive) {
+        const activeButton = shieldWrapper.querySelector('.active');
+        const brokenButton = shieldWrapper.querySelector('.broken');
+        
+        if (isActive) {
+            activeButton.classList.add('hidden');
+            brokenButton.classList.remove('hidden');
+        } else {
+            activeButton.classList.remove('hidden');
+            brokenButton.classList.add('hidden');
+        }
     }
 }
 

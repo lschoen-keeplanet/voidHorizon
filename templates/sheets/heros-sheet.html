@@ -91,6 +91,18 @@
                 </div>
                 <div class="stat constitution-hearts">
                     <label>Points de Vie</label>
+                    <div class="armor-container">
+                        {{#each (times system.armor.value)}}
+                        <div class="shield-wrapper">
+                            <button type="button" class="shield-button active" data-shield-index="{{this}}" data-active="true">
+                                <i class="fas fa-shield-alt"></i>
+                            </button>
+                            <button type="button" class="shield-button broken" data-shield-index="{{this}}" data-active="false">
+                                <i class="fas fa-shield-alt"></i>
+                            </button>
+                        </div>
+                        {{/each}}
+                    </div>
                     <div class="hearts-container">
                         {{#each (times system.constitution.value)}}
                         <div class="heart-wrapper">
