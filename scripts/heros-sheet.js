@@ -82,8 +82,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Gestion des cœurs de constitution
         html.find('.heart-button').click(this._onHeartClick.bind(this));
 
-        // Initialiser l'état des cœurs
+        // Initialiser l'état des cœurs et de la santé
         this._initializeHearts(html);
+        this._updateHealthStatus();
     }
 
     /**
@@ -381,6 +382,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Mettre à jour l'affichage des boutons
             this._updateHeartDisplay(heartWrapper, isAlive);
             
+            // Mettre à jour l'état de santé
+            this._updateHealthStatus();
+            
             // Forcer la mise à jour de l'affichage
             this.render(true);
         } catch (error) {
@@ -447,9 +451,13 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         `;
         
         const healthStatusContainer = this.element.find('.health-status');
-        healthStatusContainer.html(statusHtml);
+        if (healthStatusContainer.length) {
+            healthStatusContainer.html(statusHtml);
+            console.log("HTML mis à jour:", healthStatusContainer.html());
+        } else {
+            console.error("Container .health-status non trouvé");
+        }
         
-        console.log("HTML mis à jour:", healthStatusContainer.html());
         console.log("=== Fin Debug Health Status ===");
     }
 }
