@@ -329,11 +329,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         event.preventDefault();
         const button = event.currentTarget;
         const heartIndex = parseInt(button.dataset.heartIndex);
-        const isBlessed = button.dataset.blessed === "true";
+        const isAlive = button.dataset.alive === "true";
         
         // Mettre à jour la valeur de blessure
         const currentBlessure = this.actor.system.resources.blessure?.value || 0;
-        const newBlessure = isBlessed ? currentBlessure - 1 : currentBlessure + 1;
+        const newBlessure = isAlive ? currentBlessure - 1 : currentBlessure + 1;
         
         try {
             // Mettre à jour l'acteur avec la nouvelle valeur de blessure
@@ -341,20 +341,20 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 'system.resources.blessure.value': newBlessure
             };
             
-            console.log("Mise à jour de la blessure:", updateData);
+            console.log("Mise à jour des points de vie:", updateData);
             await this.actor.update(updateData);
             
             // Mettre à jour l'état du bouton immédiatement
-            button.dataset.blessed = !isBlessed;
-            button.textContent = !isBlessed ? `Cœur ${heartIndex + 1} blessé` : `Cœur ${heartIndex + 1}`;
+            button.dataset.alive = !isAlive;
+            button.innerHTML = !isAlive ? '<i class="fas fa-heart-broken"></i>' : '<i class="fas fa-heart"></i>';
             
             // Forcer la mise à jour de l'affichage
             this.render(true);
         } catch (error) {
-            console.error("Erreur lors de la mise à jour de la blessure:", error);
+            console.error("Erreur lors de la mise à jour des points de vie:", error);
             // Restaurer l'état du bouton en cas d'erreur
-            button.dataset.blessed = isBlessed;
-            button.textContent = isBlessed ? `Cœur ${heartIndex + 1} blessé` : `Cœur ${heartIndex + 1}`;
+            button.dataset.alive = isAlive;
+            button.innerHTML = isAlive ? '<i class="fas fa-heart-broken"></i>' : '<i class="fas fa-heart"></i>';
         }
     }
 }

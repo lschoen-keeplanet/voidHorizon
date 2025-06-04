@@ -90,14 +90,14 @@
                     </div>
                 </div>
                 <div class="stat constitution-hearts">
-                    <label>Cœurs de Constitution</label>
+                    <label>Points de Vie</label>
                     <div class="hearts-container">
                         {{#each (times system.constitution.value)}}
-                        <button type="button" class="heart-button" data-heart-index="{{this}}" data-blessed="{{lt this ../system.resources.blessure.value}}">
+                        <button type="button" class="heart-button" data-heart-index="{{this}}" data-alive="{{lt this ../system.resources.blessure.value}}">
                             {{#if (lt this ../system.resources.blessure.value)}}
-                            Cœur {{add this 1}} blessé
+                            <i class="fas fa-heart-broken"></i>
                             {{else}}
-                            Cœur {{add this 1}}
+                            <i class="fas fa-heart"></i>
                             {{/if}}
                         </button>
                         {{/each}}
@@ -118,13 +118,6 @@
         <div class="tab stats" data-group="primary" data-tab="stats">
             <div class="stats-grid">
                 <!-- Ressources -->
-                <div class="resource">
-                    <label>Blessures</label>
-                    <div class="resource-value">
-                        <input type="number" name="system.resources.blessure.value" value="{{system.resources.blessure.value}}" min="0" readonly/>
-                    </div>
-                </div>
-
                 <div class="resource">
                     <label>Armure</label>
                     <div class="resource-value">
