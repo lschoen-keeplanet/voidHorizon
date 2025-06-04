@@ -41,6 +41,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 value: data.actor.system.arcane?.value || "1d4",
                 label: "Arcane"
             },
+            constitution: {
+                value: data.actor.system.constitution?.value || 4,
+                label: "Constitution"
+            },
             class: {
                 value: data.actor.system.class?.value || "",
                 label: "Classe"
@@ -50,6 +54,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Ajouter les fonctions helpers pour le template
         data.eq = (a, b) => a === b;
         data.selected = (value, current) => value === current ? "selected" : "";
+        data.times = (n) => Array.from({length: n}, (_, i) => i);
         
         return data;
     }
@@ -66,9 +71,13 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Gestion des changements de valeurs
         html.find('select').change(this._onSelectChange.bind(this));
         html.find('input[type="text"]').change(this._onTextChange.bind(this));
+        html.find('input[type="number"]').change(this._onResourceChange.bind(this));
 
         // Gestion des lancers de dés
         html.find('.roll-stat').click(this._onRollStat.bind(this));
+
+        // Gestion des cœurs de constitution
+        html.find('.heart-button').click(this._onHeartClick.bind(this));
     }
 
     /**
@@ -306,6 +315,18 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         event.preventDefault();
         const stat = event.currentTarget.dataset.stat;
         await this._rollStat(stat);
+    }
+
+    /**
+     * Gère le clic sur un cœur de constitution
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onHeartClick(event) {
+        event.preventDefault();
+        const heartIndex = event.currentTarget.dataset.heartIndex;
+        // Ici, vous pourrez ajouter la logique pour gérer l'état des cœurs
+        console.log(`Cœur cliqué: ${heartIndex}`);
     }
 }
 
