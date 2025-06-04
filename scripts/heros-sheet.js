@@ -55,7 +55,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         data.eq = (a, b) => a === b;
         data.selected = (value, current) => value === current ? "selected" : "";
         data.times = (n) => Array.from({length: n}, (_, i) => i);
-        data.add = (a, b) => a + b;
+        data.add = (a, b) => parseInt(a) + parseInt(b);
         
         return data;
     }
