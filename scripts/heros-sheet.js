@@ -81,6 +81,33 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
 
         // Gestion des cœurs de constitution
         html.find('.heart-button').click(this._onHeartClick.bind(this));
+
+        // Initialiser l'état des cœurs
+        this._initializeHearts(html);
+    }
+
+    /**
+     * Initialise l'état des cœurs en fonction de la valeur de blessure
+     * @param {jQuery} html - Le contenu HTML de la fiche
+     * @private
+     */
+    _initializeHearts(html) {
+        const blessure = this.actor.system.resources.blessure?.value || 0;
+        const hearts = html.find('.heart-wrapper');
+        
+        hearts.each((index, wrapper) => {
+            const heartIndex = index;
+            const aliveButton = wrapper.querySelector('.alive');
+            const deadButton = wrapper.querySelector('.dead');
+            
+            if (heartIndex < blessure) {
+                aliveButton.classList.add('hidden');
+                deadButton.classList.remove('hidden');
+            } else {
+                aliveButton.classList.remove('hidden');
+                deadButton.classList.add('hidden');
+            }
+        });
     }
 
     /**
@@ -346,21 +373,31 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             await this.actor.update(updateData);
             
             // Mettre à jour l'affichage des boutons
-            const aliveButton = heartWrapper.querySelector('.alive');
-            const deadButton = heartWrapper.querySelector('.dead');
-            
-            if (isAlive) {
-                aliveButton.classList.add('hidden');
-                deadButton.classList.remove('hidden');
-            } else {
-                aliveButton.classList.remove('hidden');
-                deadButton.classList.add('hidden');
-            }
+            this._updateHeartDisplay(heartWrapper, isAlive);
             
             // Forcer la mise à jour de l'affichage
             this.render(true);
         } catch (error) {
             console.error("Erreur lors de la mise à jour des points de vie:", error);
+        }
+    }
+
+    /**
+     * Met à jour l'affichage des boutons d'un cœur
+     * @param {HTMLElement} heartWrapper - Le wrapper du cœur
+     * @param {boolean} isAlive - Si le cœur est vivant
+     * @private
+     */
+    _updateHeartDisplay(heartWrapper, isAlive) {
+        const aliveButton = heartWrapper.querySelector('.alive');
+        const deadButton = heartWrapper.querySelector('.dead');
+        
+        if (isAlive) {
+            aliveButton.classList.add('hidden');
+            deadButton.classList.remove('hidden');
+        } else {
+            aliveButton.classList.remove('hidden');
+            deadButton.classList.add('hidden');
         }
     }
 }
