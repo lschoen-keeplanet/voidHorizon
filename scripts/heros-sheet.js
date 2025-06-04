@@ -330,6 +330,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const button = event.currentTarget;
         const heartIndex = parseInt(button.dataset.heartIndex);
         const isAlive = button.dataset.alive === "true";
+        const heartWrapper = button.closest('.heart-wrapper');
         
         // Mettre à jour la valeur de blessure
         const currentBlessure = this.actor.system.resources.blessure?.value || 0;
@@ -344,17 +345,22 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             console.log("Mise à jour des points de vie:", updateData);
             await this.actor.update(updateData);
             
-            // Mettre à jour l'état du bouton immédiatement
-            button.dataset.alive = !isAlive;
-            button.innerHTML = !isAlive ? '<i class="fas fa-heart"></i>' : '<i class="fas fa-heart-broken"></i>';
+            // Mettre à jour l'affichage des boutons
+            const aliveButton = heartWrapper.querySelector('.alive');
+            const deadButton = heartWrapper.querySelector('.dead');
+            
+            if (isAlive) {
+                aliveButton.style.display = 'none';
+                deadButton.style.display = 'block';
+            } else {
+                aliveButton.style.display = 'block';
+                deadButton.style.display = 'none';
+            }
             
             // Forcer la mise à jour de l'affichage
             this.render(true);
         } catch (error) {
             console.error("Erreur lors de la mise à jour des points de vie:", error);
-            // Restaurer l'état du bouton en cas d'erreur
-            button.dataset.alive = isAlive;
-            button.innerHTML = isAlive ? '<i class="fas fa-heart"></i>' : '<i class="fas fa-heart-broken"></i>';
         }
     }
 }
