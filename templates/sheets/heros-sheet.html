@@ -92,11 +92,11 @@
                 <div class="stat constitution-hearts">
                     <label>Cœurs de Constitution</label>
                     <div class="hearts-container">
-                        {{#times system.constitution.value}}
-                        <button type="button" class="heart-button" data-heart-index="{{@index}}" data-blessed="false">
-                            Cœur {{add @index 1}}
+                        {{#each (times system.constitution.value)}}
+                        <button type="button" class="heart-button" data-heart-index="{{this}}" data-blessed="false">
+                            Cœur {{add this 1}}
                         </button>
-                        {{/times}}
+                        {{/each}}
                     </div>
                 </div>
             </div>

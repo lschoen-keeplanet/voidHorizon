@@ -1,7 +1,7 @@
 class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     /** @override */
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["voidHorizon", "sheet", "actor", "heros"],
             template: "systems/voidHorizon/templates/sheets/heros-sheet.html",
             width: 600,
