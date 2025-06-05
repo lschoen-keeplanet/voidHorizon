@@ -124,19 +124,19 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      */
     _initializeShields(html) {
         const armorDamage = this.actor.system.resources.armorDamage?.value || 0;
-        const shields = html.find('.armor-container .heart-wrapper');
+        const shields = html.find('.armor-container .shield-wrapper');
         
         shields.each((index, wrapper) => {
             const shieldIndex = index;
-            const aliveButton = wrapper.querySelector('.alive');
-            const deadButton = wrapper.querySelector('.dead');
+            const activeButton = wrapper.querySelector('.active');
+            const brokenButton = wrapper.querySelector('.broken');
             
             if (shieldIndex < armorDamage) {
-                aliveButton.classList.add('hidden');
-                deadButton.classList.remove('hidden');
+                activeButton.classList.add('hidden');
+                brokenButton.classList.remove('hidden');
             } else {
-                aliveButton.classList.remove('hidden');
-                deadButton.classList.add('hidden');
+                activeButton.classList.remove('hidden');
+                brokenButton.classList.add('hidden');
             }
         });
     }
@@ -347,7 +347,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                         <i class="fas fa-shield-alt"></i>
                     </button>
                     <button type="button" class="shield-button broken" data-shield-index="${i}" data-active="false">
-                        <i class="fas fa-shield-alt"></i>
+                        <i class="fas fa-shield-alt" style="opacity: 0.3;"></i>
                     </button>
                 </div>
             `);
@@ -592,15 +592,15 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      * @private
      */
     _updateShieldDisplay(shieldWrapper, isActive) {
-        const aliveButton = shieldWrapper.querySelector('.alive');
-        const deadButton = shieldWrapper.querySelector('.dead');
+        const activeButton = shieldWrapper.querySelector('.active');
+        const brokenButton = shieldWrapper.querySelector('.broken');
         
         if (isActive) {
-            aliveButton.classList.add('hidden');
-            deadButton.classList.remove('hidden');
+            activeButton.classList.add('hidden');
+            brokenButton.classList.remove('hidden');
         } else {
-            aliveButton.classList.remove('hidden');
-            deadButton.classList.add('hidden');
+            activeButton.classList.remove('hidden');
+            brokenButton.classList.add('hidden');
         }
     }
 }

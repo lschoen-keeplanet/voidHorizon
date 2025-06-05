@@ -452,19 +452,15 @@ textarea:focus {
     transform: scale(1.1);
 }
 
-.armor-container .shield-button.dead {
-    color: #666;
-}
-
 .armor-container .shield-button.hidden {
     display: none;
 }
 
-.shield-button.active {
+.armor-container .shield-button.active {
     color: #4169e1;
 }
 
-.shield-button.broken {
+.armor-container .shield-button.broken {
     color: #666666;
     opacity: 0.5;
 }
