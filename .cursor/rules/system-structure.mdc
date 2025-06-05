@@ -1,0 +1,42 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Structure du Système Void Horizon
+
+## Fichiers Principaux
+- [system.json](mdc:system.json) : Configuration principale du système
+- [template.json](mdc:template.json) : Définition des templates pour les acteurs et items
+- [scripts/heros-sheet.js](mdc:scripts/heros-sheet.js) : Gestion de la feuille de personnage
+
+## Structure des Données
+### Acteurs (Héros)
+Les héros sont définis avec les caractéristiques suivantes :
+- Martialité (1d4 à 1d20)
+- Pimpance (1d4 à 1d20)
+- Acuité (1d4 à 1d20)
+- Arcane (1d4 à 1d20)
+- Constitution (valeur numérique)
+- Classe (texte)
+- Faction (texte)
+- Rang (texte)
+- Affinité (texte)
+
+### Ressources
+- Points de vie
+- Points de mana
+- Défense
+- Initiative
+- Vitesse
+
+### Items
+Types d'items disponibles :
+- Outil
+- Équipement
+- Type A
+
+## Modes d'Affichage
+La feuille de personnage peut être en deux modes :
+1. Mode Lecture (par défaut)
+2. Mode Édition (activé via le bouton d'édition)

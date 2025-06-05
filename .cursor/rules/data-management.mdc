@@ -1,0 +1,42 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Gestion des Données
+
+## Structure des Données
+Les données sont stockées dans la structure suivante :
+```javascript
+{
+    system: {
+        martialite: { value: "1d4", label: "Martialité" },
+        pimpance: { value: "1d4", label: "Pimpance" },
+        acuite: { value: "1d4", label: "Acuité" },
+        arcane: { value: "1d4", label: "Arcane" },
+        // ... autres statistiques
+    }
+}
+```
+
+## Mise à Jour des Données
+### Statistiques
+- Les statistiques sont mises à jour via la méthode `_updateObject`
+- Les valeurs sont converties en chaînes de caractères
+- Les mises à jour sont validées avant d'être appliquées
+
+### Ressources
+- Les ressources (PV, mana, etc.) sont mises à jour via `_onResourceChange`
+- Les valeurs sont converties en nombres
+- Les mises à jour déclenchent une mise à jour de l'affichage
+
+### Items
+- Les items sont gérés via les méthodes :
+  - `_onCreateItem` : Création
+  - `_onItemEdit` : Édition
+  - `_onItemDelete` : Suppression
+
+## Validation
+- Les données sont validées avant la mise à jour
+- Les erreurs sont capturées et affichées à l'utilisateur
+- Les valeurs invalides sont restaurées à leur état précédent

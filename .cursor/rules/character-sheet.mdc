@@ -1,0 +1,35 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Feuille de Personnage
+
+## Structure
+La feuille de personnage est définie dans [templates/sheets/heros-sheet.html](mdc:templates/sheets/heros-sheet.html) et gérée par [scripts/heros-sheet.js](mdc:scripts/heros-sheet.js).
+
+## Fonctionnalités
+### Statistiques
+- Chaque statistique (Martialité, Pimpance, Acuité, Arcane) est représentée par :
+  - Une icône
+  - Un label cliquable pour lancer les dés
+  - Un sélecteur de valeur (1d4 à 1d20)
+  - Un affichage de la valeur en mode lecture
+
+### Mode Édition
+- Le bouton d'édition permet de basculer entre :
+  - Mode Lecture : affiche les valeurs
+  - Mode Édition : affiche les sélecteurs
+
+### Lancer de Dés
+- Cliquer sur le label d'une statistique lance les dés correspondants
+- Le résultat est affiché dans le chat avec :
+  - Le nom du personnage
+  - La statistique utilisée
+  - La formule de dé
+  - Le résultat total
+
+### Gestion des Items
+- Ajout d'items via le bouton "+"
+- Édition d'items via le bouton de crayon
+- Suppression d'items via le bouton de corbeille

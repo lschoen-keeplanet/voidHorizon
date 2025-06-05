@@ -1,0 +1,36 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Directives de Développement
+
+## Structure du Code
+- Utiliser des classes ES6 pour les composants principaux
+- Suivre le pattern MVC (Modèle-Vue-Contrôleur)
+- Documenter les méthodes et les classes
+
+## Gestion des Erreurs
+- Utiliser try/catch pour gérer les erreurs
+- Logger les erreurs dans la console
+- Afficher des messages d'erreur utilisateur appropriés
+
+## Performance
+- Minimiser les mises à jour du DOM
+- Utiliser des événements délégués
+- Éviter les boucles inutiles
+
+## Sécurité
+- Valider toutes les entrées utilisateur
+- Sanitizer les données avant l'affichage
+- Utiliser des permissions appropriées
+
+## Tests
+- Tester les fonctionnalités principales
+- Vérifier la gestion des erreurs
+- Tester les cas limites
+
+## Documentation
+- Documenter les changements majeurs
+- Maintenir les règles à jour
+- Commenter le code complexe
