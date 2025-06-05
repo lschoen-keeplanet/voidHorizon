@@ -40,8 +40,28 @@
     "readme": "README.md",
     "bugs": "https://github.com/votre-nom/voidHorizon/issues",
     "changelog": "CHANGELOG.md",
-    "system": {
-        "actors": {
+    "Actor": {
+        "types": [
+            "heros"
+        ],
+        "templates": {
+            "background": {
+                "biography": ""
+            },
+            "resources": {
+                "blessure": {
+                    "value": 0
+                },
+                "armor": {
+                    "value": 0
+                },
+                "blessedHearts": {
+                    "value": []
+                },
+                "armorDamage": {
+                    "value": 0
+                }
+            },
             "heros": {
                 "name": "Héros",
                 "img": "systems/voidHorizon/assets/icons/hero.svg",
