@@ -73,6 +73,24 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             }
         };
         
+        // Ajouter les helpers pour le template
+        data.helpers = {
+            getSelectedText: (value, type) => {
+                const options = {
+                    pimpance: {
+                        "1d4": "Tâche",
+                        "1d6": "Pas top",
+                        "1d8": "Honnête",
+                        "1d10": "Clinquant",
+                        "1d12": "Majestueux",
+                        "1d20": "Ramirez"
+                    }
+                };
+                
+                return options[type]?.[value] || value;
+            }
+        };
+        
         return data;
     }
 
