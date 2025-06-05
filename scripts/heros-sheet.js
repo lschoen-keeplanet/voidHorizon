@@ -37,9 +37,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Préparation des statistiques principales
         data.system = {
             ...data.system,
-            agilite: {
-                value: data.actor.system.agilite?.value || "1d4",
-                label: "Agilité"
+            acuite: {
+                value: data.actor.system.acuite?.value || "1d4",
+                label: "acuité"
             },
             pimpance: {
                 value: data.actor.system.pimpance?.value || "1d4",
