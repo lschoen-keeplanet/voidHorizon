@@ -65,6 +65,10 @@
                         "value": "caradoc",
                         "label": "Faction"
                     },
+                    "rank": {
+                        "value": "",
+                        "label": "Rang"
+                    },
                     "images": {
                         "type": "Object",
                         "default": {}
