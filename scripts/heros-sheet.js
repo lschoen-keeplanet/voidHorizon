@@ -490,7 +490,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         event.preventDefault();
         const stat = event.currentTarget.dataset.stat;
         const actor = this.actor;
-        const statValue = actor.system.stats[stat].value;
+        const statValue = actor.system[stat].value;
         
         // Créer le lancer de dés
         const roll = new Roll(`1d20+${statValue}`);
