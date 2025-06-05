@@ -64,6 +64,10 @@
                     "faction": {
                         "value": "caradoc",
                         "label": "Faction"
+                    },
+                    "images": {
+                        "type": "Object",
+                        "default": {}
                     }
                 }
             }
