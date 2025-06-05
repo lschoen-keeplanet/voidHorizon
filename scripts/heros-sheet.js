@@ -507,27 +507,35 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      * @param {string} stat - Le nom de la statistique
      * @private
      */
-    async _rollStat(stat) {
-        const value = this.actor.system[stat].value;
-        if (!value) return;
-        
-        const roll = new Roll(value);
-        await roll.evaluate({async: true});
-        roll.toMessage({
-            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-            flavor: `${stat.charAt(0).toUpperCase() + stat.slice(1)} Check`
-        });
-    }
-
-    /**
-     * Gère le clic sur un label de statistique
-     * @param {Event} event - L'événement de clic
-     * @private
-     */
     async _onRollStat(event) {
         event.preventDefault();
         const stat = event.currentTarget.dataset.stat;
-        await this._rollStat(stat);
+        const formula = this.actor.system[stat].value;
+        
+        if (!formula) {
+            ui.notifications.warn(`Aucune formule de dé définie pour ${stat}`);
+            return;
+        }
+
+        const roll = new Roll(formula);
+        await roll.evaluate({async: true});
+        
+        const templateData = {
+            title: `${this.actor.name} - ${stat.charAt(0).toUpperCase() + stat.slice(1)}`,
+            subtitle: `Lance ${formula}`,
+            formula: formula,
+            total: roll.total,
+            dice: roll.dice
+        };
+
+        const html = await renderTemplate("systems/voidHorizon/templates/chat/roll.html", templateData);
+        
+        await ChatMessage.create({
+            user: game.user.id,
+            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+            content: html,
+            sound: CONFIG.sounds.dice
+        });
     }
 
     /**
@@ -754,6 +762,25 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             event.currentTarget.querySelector('i').classList.remove('fa-edit');
             event.currentTarget.querySelector('i').classList.add('fa-save');
         }
+    }
+
+    async _updateObject(event, formData) {
+        // Mise à jour des données du formulaire
+        const updateData = {};
+        
+        // Parcourir les données du formulaire
+        for (let [key, value] of formData.entries()) {
+            // Vérifier si c'est une statistique
+            if (key.startsWith('system.') && key.endsWith('.value')) {
+                const stat = key.split('.')[1];
+                if (['martialite', 'pimpance', 'acuite', 'arcane'].includes(stat)) {
+                    updateData[key] = value;
+                }
+            }
+        }
+
+        // Mettre à jour l'acteur
+        await this.actor.update(updateData);
     }
 }
 
