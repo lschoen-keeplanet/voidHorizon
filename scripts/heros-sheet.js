@@ -13,6 +13,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     /** @override */
     async getData() {
         const data = await super.getData();
+        console.log('Actor data:', this.actor);
+        console.log('System data:', this.actor.system);
         data.dtypes = ["String", "Number", "Boolean"];
 
         // Préparation des données pour le template
@@ -770,17 +772,28 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         // Parcourir les données du formulaire
         for (let [key, value] of formData.entries()) {
+            console.log(`Form data - Key: ${key}, Value: ${value}`);
             // Vérifier si c'est une statistique
             if (key.startsWith('system.') && key.endsWith('.value')) {
                 const stat = key.split('.')[1];
+                console.log(`Stat found: ${stat}`);
                 if (['martialite', 'pimpance', 'acuite', 'arcane'].includes(stat)) {
-                    updateData[key] = value;
+                    // S'assurer que la valeur est une chaîne de caractères
+                    updateData[key] = String(value);
+                    console.log(`Adding to updateData: ${key} = ${updateData[key]}`);
                 }
             }
         }
 
+        console.log('Final updateData:', updateData);
         // Mettre à jour l'acteur
-        await this.actor.update(updateData);
+        try {
+            await this.actor.update(updateData);
+            console.log('Update successful');
+        } catch (error) {
+            console.error('Error updating actor:', error);
+            ui.notifications.error('Erreur lors de la mise à jour des données');
+        }
     }
 }
 
