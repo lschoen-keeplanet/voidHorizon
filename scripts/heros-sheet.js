@@ -25,6 +25,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         if (!data.actor.system.resources.blessure) {
             data.actor.system.resources.blessure = { value: 0 };
         }
+        if (!data.actor.system.resources.armor) {
+            data.actor.system.resources.armor = { value: 0 };
+        }
+        if (!data.actor.system.resources.armorDamage) {
+            data.actor.system.resources.armorDamage = { value: 0 };
+        }
         
         // Préparation des statistiques principales
         data.system = {
@@ -36,10 +42,6 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             pimpance: {
                 value: data.actor.system.pimpance?.value || "1d4",
                 label: "Pimpance"
-            },
-            moral: {
-                value: data.actor.system.moral?.value || "1d4",
-                label: "Moral"
             },
             martialite: {
                 value: data.actor.system.martialite?.value || "1d4",
@@ -285,9 +287,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
 
         // Mise à jour de la valeur
         try {
-            await this.actor.update({
-                [name]: value
-            });
+            const updateData = {};
+            updateData[name] = value;
+            
+            console.log("Update data:", updateData);
+            await this.actor.update(updateData);
             console.log("Mise à jour réussie");
 
             // Si c'est un changement d'armure, mettre à jour l'affichage des boucliers
@@ -295,8 +299,13 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 console.log("Mise à jour des boucliers");
                 this._updateShieldsDisplay();
             }
+
+            // Forcer la mise à jour de l'affichage
+            this.render(true);
         } catch (error) {
             console.error("Erreur lors de la mise à jour:", error);
+            // Restaurer la valeur précédente en cas d'erreur
+            target.value = this.actor.system.resources.armor.value;
         }
         console.log("=== Fin Debug Armor Change ===");
     }
