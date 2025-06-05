@@ -60,6 +60,10 @@
                     "class": {
                         "value": "",
                         "label": "Classe"
+                    },
+                    "faction": {
+                        "value": "caradoc",
+                        "label": "Faction"
                     }
                 }
             }
