@@ -80,6 +80,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
+        // Gestion du mode édition/lecture
+        html.find('.toggle-edit-mode').click(this._onToggleEditMode.bind(this));
+
         // Gestion des événements pour les items
         html.find('.item-edit').click(this._onItemEdit.bind(this));
         html.find('.item-delete').click(this._onItemDelete.bind(this));
@@ -710,6 +713,29 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         this._initializeHearts(this.element);
         this._initializeShields(this.element);
         this._updateHealthStatus();
+    }
+
+    /**
+     * Gère le basculement entre les modes édition et lecture
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    _onToggleEditMode(event) {
+        event.preventDefault();
+        const form = event.currentTarget.closest('form');
+        const isEditing = form.classList.contains('editing');
+        
+        if (isEditing) {
+            form.classList.remove('editing');
+            form.classList.add('read-only');
+            event.currentTarget.querySelector('i').classList.remove('fa-save');
+            event.currentTarget.querySelector('i').classList.add('fa-edit');
+        } else {
+            form.classList.remove('read-only');
+            form.classList.add('editing');
+            event.currentTarget.querySelector('i').classList.remove('fa-edit');
+            event.currentTarget.querySelector('i').classList.add('fa-save');
+        }
     }
 }
 

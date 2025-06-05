@@ -67,7 +67,7 @@
                                 <label class="rollable" data-stat="martialite">Martialité</label>
                             </div>
                             <div class="stat-controls">
-                                <select name="system.martialite.value">
+                                <select name="system.martialite.value" class="edit-mode">
                                     {{#select system.martialite.value}}
                                     <option value="1d4">1d4</option>
                                     <option value="1d6">1d6</option>
@@ -77,6 +77,7 @@
                                     <option value="1d20">1d20</option>
                                     {{/select}}
                                 </select>
+                                <div class="read-mode">{{system.martialite.value}}</div>
                             </div>
                         </div>
                         
@@ -86,7 +87,7 @@
                                 <label class="rollable" data-stat="pimpance">Pimpance</label>
                             </div>
                             <div class="stat-controls">
-                                <select name="system.pimpance.value">
+                                <select name="system.pimpance.value" class="edit-mode">
                                     {{#select system.pimpance.value}}
                                     <option value="1d4">Tâche</option>
                                     <option value="1d6">Pas top</option>
@@ -96,6 +97,7 @@
                                     <option value="1d20">Ramirez</option>
                                     {{/select}}
                                 </select>
+                                <div class="read-mode">{{system.pimpance.value}}</div>
                             </div>
                         </div>
                         
@@ -105,7 +107,7 @@
                                 <label class="rollable" data-stat="acuite">Acuité</label>
                             </div>
                             <div class="stat-controls">
-                                <select name="system.acuite.value">
+                                <select name="system.acuite.value" class="edit-mode">
                                     {{#select system.acuite.value}}
                                     <option value="1d4">1d4</option>
                                     <option value="1d6">1d6</option>
@@ -115,6 +117,7 @@
                                     <option value="1d20">1d20</option>
                                     {{/select}}
                                 </select>
+                                <div class="read-mode">{{system.acuite.value}}</div>
                             </div>
                         </div>
                         
@@ -124,7 +127,7 @@
                                 <label class="rollable" data-stat="arcane">Arcane</label>
                             </div>
                             <div class="stat-controls">
-                                <select name="system.arcane.value">
+                                <select name="system.arcane.value" class="edit-mode">
                                     {{#select system.arcane.value}}
                                     <option value="1d4">1d4</option>
                                     <option value="1d6">1d6</option>
@@ -134,9 +137,13 @@
                                     <option value="1d20">1d20</option>
                                     {{/select}}
                                 </select>
+                                <div class="read-mode">{{system.arcane.value}}</div>
                             </div>
                         </div>
                     </div>
+                    <button type="button" class="toggle-edit-mode" title="Mode édition">
+                        <i class="fas fa-edit"></i>
+                    </button>
                 </div>
 
                 <div class="health-column">

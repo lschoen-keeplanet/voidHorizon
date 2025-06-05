@@ -219,6 +219,8 @@ img{
 
 .stat-controls {
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 0.5rem;
 }
 
@@ -682,4 +684,87 @@ textarea:focus {
     padding: 2px;
     border: 1px solid #800000;
     border-radius: 3px;
+}
+
+.main {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.toggle-edit-mode {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    color: #800000;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.2s ease;
+}
+
+.toggle-edit-mode:hover {
+    color: #ff0000;
+}
+
+/* Mode édition */
+.editing .edit-mode {
+    display: block;
+}
+
+.editing .read-mode {
+    display: none;
+}
+
+/* Mode lecture */
+.read-only .edit-mode {
+    display: none;
+}
+
+.read-only .read-mode {
+    display: block;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #800000;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    min-width: 60px;
+    text-align: center;
+}
+
+/* Mode lecture */
+.read-only .stat-controls select {
+    pointer-events: none;
+    background-color: #f0f0f0;
+    border-color: #ccc;
+    color: #666;
+}
+
+.read-only .rollable {
+    pointer-events: none;
+    color: #666;
+}
+
+/* Mode édition */
+.editing .stat-controls select {
+    pointer-events: auto;
+    background-color: white;
+    border-color: #800000;
+    color: #000;
+}
+
+.editing .rollable {
+    pointer-events: auto;
+    color: #800000;
+    cursor: pointer;
+}
+
+.editing .rollable:hover {
+    color: #ff0000;
+    text-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
 } 
