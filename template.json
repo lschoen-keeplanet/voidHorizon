@@ -35,6 +35,10 @@
             "heros": {
                 "name": "Héros",
                 "img": "systems/voidHorizon/assets/icons/hero.svg",
+                "templates": [
+                    "background",
+                    "resources"
+                ],
                 "system": {
                     "agilite": {
                         "value": "1d4",
@@ -63,54 +67,20 @@
                     "class": {
                         "value": "",
                         "label": "Classe"
+                    },
+                    "goodness": {
+                        "value": 5,
+                        "max": 10
+                    },
+                    "defense": {
+                        "value": 10,
+                        "label": "Défense"
+                    },
+                    "movement": {
+                        "value": 6,
+                        "label": "Mouvement"
                     }
                 }
-            }
-        },
-        "heros": {
-            "templates": [
-                "background",
-                "resources"
-            ],
-            "agilite": {
-                "value": 0,
-                "label": "Agilité"
-            },
-            "pimpance": {
-                "value": 0,
-                "label": "Pimpance"
-            },
-            "moral": {
-                "value": 0,
-                "label": "Moral"
-            },
-            "martialite": {
-                "value": 0,
-                "label": "Martialité"
-            },
-            "arcane": {
-                "value": 0,
-                "label": "Arcane"
-            },
-            "constitution": {
-                "value": 0,
-                "label": "Constitution"
-            },
-            "goodness": {
-                "value": 5,
-                "max": 10
-            },
-            "class": {
-                "value": "",
-                "label": "Classe"
-            },
-            "defense": {
-                "value": 10,
-                "label": "Défense"
-            },
-            "movement": {
-                "value": 6,
-                "label": "Mouvement"
             }
         }
     },
@@ -120,7 +90,6 @@
             "A",
             "equipment"
         ],
-        
         "templates": {
             "itemDescription": "its an item or a weapon",
             "equipment": {
@@ -131,16 +100,14 @@
                 }
             }
         },
-
         "outil": {
             "damage": 0,
             "portée": 0,
             "moral": 0,
             "price": 100,
-            "sword" : 0
+            "sword": 0
         },
-        
-        "A" : {
+        "A": {
             "damage": 0
         }
     },
