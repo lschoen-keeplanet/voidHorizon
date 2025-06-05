@@ -150,6 +150,7 @@ img{
     display: flex;
     gap: 2rem;
     align-items: flex-start;
+    justify-content: space-between;
 }
 
 .main-stats {
