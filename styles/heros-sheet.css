@@ -14,6 +14,7 @@
     margin-bottom: 10px;
     border-bottom: 2px solid #800000;
     padding: 5px;
+    gap: 20px;
 }
 
 .sheet-header .profile-img {
@@ -27,6 +28,7 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    min-width: 0;
 }
 
 .sheet-header h1.charname {
@@ -373,6 +375,7 @@ textarea:focus {
     gap: 5px;
     width: 100%;
     margin-top: 10px;
+    align-items: center;
 }
 
 .health-status {
@@ -418,9 +421,13 @@ textarea:focus {
 
 .armor-container {
     display: flex;
+    flex-wrap: wrap;
     gap: 4px;
     margin-bottom: 8px;
     justify-content: center;
+    max-width: 84px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .armor-container .heart-wrapper {
@@ -455,9 +462,6 @@ textarea:focus {
     display: none;
 }
 
-.hearts-container {
-    display: flex;
-    gap: 4px;
 .shield-button.active {
     color: #4169e1;
 }
@@ -465,4 +469,26 @@ textarea:focus {
 .shield-button.broken {
     color: #666666;
     opacity: 0.5;
+}
+
+.health-column {
+    flex: 0 0 200px;
+    background: white;
+    border: 1px solid #800000;
+    border-radius: 5px;
+    padding: 10px;
+    margin-left: auto;
+}
+
+.health-column .stat {
+    border: none;
+    padding: 0;
+    background: none;
+}
+
+.health-column .stat label {
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #800000;
 } 

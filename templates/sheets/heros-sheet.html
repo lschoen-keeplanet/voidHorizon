@@ -89,46 +89,48 @@
                         <input type="number" name="system.constitution.value" value="{{system.constitution.value}}" min="1" max="10"/>
                     </div>
                 </div>
-                <div class="stat constitution-hearts">
-                    <label>Points de Vie</label>
-                    <div class="armor-container">
-                        {{#each (times actor.system.resources.armor.value)}}
-                        <div class="heart-wrapper">
-                            <button type="button" class="heart-button alive" data-heart-index="{{this}}" data-alive="true">
-                                <i class="fas fa-shield-alt"></i>
-                            </button>
-                            <button type="button" class="heart-button dead" data-heart-index="{{this}}" data-alive="false">
-                                <i class="fas fa-shield-alt" style="opacity: 0.3;"></i>
-                            </button>
-                        </div>
-                        {{/each}}
+            </div>
+        </div>
+        <div class="health-column">
+            <div class="stat constitution-hearts">
+                <label>Points de Vie</label>
+                <div class="armor-container">
+                    {{#each (times actor.system.resources.armor.value)}}
+                    <div class="heart-wrapper">
+                        <button type="button" class="heart-button alive" data-heart-index="{{this}}" data-alive="true">
+                            <i class="fas fa-shield-alt"></i>
+                        </button>
+                        <button type="button" class="heart-button dead" data-heart-index="{{this}}" data-alive="false">
+                            <i class="fas fa-shield-alt" style="opacity: 0.3;"></i>
+                        </button>
                     </div>
-                    <div class="hearts-container">
-                        {{#each (times system.constitution.value)}}
-                        <div class="heart-wrapper">
-                            <button type="button" class="heart-button alive" data-heart-index="{{this}}" data-alive="true">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                            <button type="button" class="heart-button dead" data-heart-index="{{this}}" data-alive="false">
-                                <i class="fas fa-heart-broken"></i>
-                            </button>
-                        </div>
-                        {{/each}}
+                    {{/each}}
+                </div>
+                <div class="hearts-container">
+                    {{#each (times system.constitution.value)}}
+                    <div class="heart-wrapper">
+                        <button type="button" class="heart-button alive" data-heart-index="{{this}}" data-alive="true">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <button type="button" class="heart-button dead" data-heart-index="{{this}}" data-alive="false">
+                            <i class="fas fa-heart-broken"></i>
+                        </button>
                     </div>
-                    <div class="health-status">
-                        <span class="status-label">État :</span>
-                        <span class="status-value" data-health-status>
-                            {{#if (gte (sub system.constitution.value system.resources.blessure.value) 3)}}
-                            Bonne santé
-                            {{else if (eq (sub system.constitution.value system.resources.blessure.value) 2)}}
-                            Légèrement blessé
-                            {{else if (eq (sub system.constitution.value system.resources.blessure.value) 1)}}
-                            Grièvement blessé
-                            {{else}}
-                            Incapacité
-                            {{/if}}
-                        </span>
-                    </div>
+                    {{/each}}
+                </div>
+                <div class="health-status">
+                    <span class="status-label">État :</span>
+                    <span class="status-value" data-health-status>
+                        {{#if (gte (sub system.constitution.value system.resources.blessure.value) 3)}}
+                        Bonne santé
+                        {{else if (eq (sub system.constitution.value system.resources.blessure.value) 2)}}
+                        Légèrement blessé
+                        {{else if (eq (sub system.constitution.value system.resources.blessure.value) 1)}}
+                        Grièvement blessé
+                        {{else}}
+                        Incapacité
+                        {{/if}}
+                    </span>
                 </div>
             </div>
         </div>
