@@ -37,17 +37,17 @@
                             "value": 0
                         }
                     },
-                    "agilite": {
+                    "martialite": {
                         "value": "1d4",
-                        "label": "Agilité"
+                        "label": "Martialité"
                     },
                     "pimpance": {
                         "value": "1d4",
                         "label": "Pimpance"
                     },
-                    "martialite": {
+                    "acuite": {
                         "value": "1d4",
-                        "label": "Martialité"
+                        "label": "Acuité"
                     },
                     "arcane": {
                         "value": "1d4",
