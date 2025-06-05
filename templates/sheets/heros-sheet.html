@@ -62,89 +62,106 @@
                 <div class="main">
                     <div class="stats-grid">
                         <div class="stat-block">
-                            <div class="stat-header">
-                                <img src="systems/voidHorizon/assets/icons/martialite.png" class="stat-icon" alt="Martialité">
-                                <label class="rollable" data-stat="martialite">Martialité</label>
+                            <div class="stat">
+                                <img src="systems/voidHorizon/assets/icons/martialite.svg" alt="Martialité" class="stat-icon">
+                                <label class="stat-header rollable" data-stat="martialite">Martialité</label>
+                                <div class="stat-controls">
+                                    <div class="stat-value">
+                                        <input type="number" name="system.martialite.value" value="{{system.martialite.value}}" min="0" max="6" class="edit-mode" data-dtype="Number"/>
+                                        <span class="read-mode">{{system.martialite.value}}</span>
+                                    </div>
+                                    <select name="system.martialite.dice" class="edit-mode" data-dtype="String">
+                                        <option value="1d4" {{#if (eq system.martialite.dice "1d4")}}selected{{/if}}>Innofensif</option>
+                                        <option value="1d6" {{#if (eq system.martialite.dice "1d6")}}selected{{/if}}>Novice</option>
+                                        <option value="1d8" {{#if (eq system.martialite.dice "1d8")}}selected{{/if}}>Formé</option>
+                                        <option value="1d10" {{#if (eq system.martialite.dice "1d10")}}selected{{/if}}>Habile</option>
+                                        <option value="1d12" {{#if (eq system.martialite.dice "1d12")}}selected{{/if}}>Elite</option>
+                                        <option value="1d20" {{#if (eq system.martialite.dice "1d20")}}selected{{/if}}>Héroïque</option>
+                                    </select>
+                                    <div class="read-mode">{{system.martialite.dice}}</div>
+                                </div>
                             </div>
-                            <div class="stat-controls">
-                                <select name="system.martialite.value" class="edit-mode">
-                                    {{#select system.martialite.value}}
-                                    <option value="1d4">1d4</option>
-                                    <option value="1d6">1d6</option>
-                                    <option value="1d8">1d8</option>
-                                    <option value="1d10">1d10</option>
-                                    <option value="1d12">1d12</option>
-                                    <option value="1d20">1d20</option>
-                                    {{/select}}
-                                </select>
-                                <div class="read-mode">{{system.martialite.value}}</div>
+                            <div class="stat">
+                                <img src="systems/voidHorizon/assets/icons/pimpance.svg" alt="Pimpance" class="stat-icon">
+                                <label class="stat-header rollable" data-stat="pimpance">Pimpance</label>
+                                <div class="stat-controls">
+                                    <div class="stat-value">
+                                        <input type="number" name="system.pimpance.value" value="{{system.pimpance.value}}" min="0" max="6" class="edit-mode" data-dtype="Number"/>
+                                        <span class="read-mode">{{system.pimpance.value}}</span>
+                                    </div>
+                                    <select name="system.pimpance.dice" class="edit-mode" data-dtype="String">
+                                        <option value="1d4" {{#if (eq system.pimpance.dice "1d4")}}selected{{/if}}>Immonde</option>
+                                        <option value="1d6" {{#if (eq system.pimpance.dice "1d6")}}selected{{/if}}>Tâcheron</option>
+                                        <option value="1d8" {{#if (eq system.pimpance.dice "1d8")}}selected{{/if}}>Honnête</option>
+                                        <option value="1d10" {{#if (eq system.pimpance.dice "1d10")}}selected{{/if}}>Clinquant</option>
+                                        <option value="1d12" {{#if (eq system.pimpance.dice "1d12")}}selected{{/if}}>Majestueux</option>
+                                        <option value="1d20" {{#if (eq system.pimpance.dice "1d20")}}selected{{/if}}>Ramirez</option>
+                                    </select>
+                                    <div class="read-mode">{{system.pimpance.dice}}</div>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="stat-block">
-                            <div class="stat-header">
-                                <img src="systems/voidHorizon/assets/icons/pimpance.png" class="stat-icon" alt="Pimpance">
-                                <label class="rollable" data-stat="pimpance">Pimpance</label>
+                            <div class="stat">
+                                <img src="systems/voidHorizon/assets/icons/acuite.svg" alt="Acuité" class="stat-icon">
+                                <label class="stat-header rollable" data-stat="acuite">Acuité</label>
+                                <div class="stat-controls">
+                                    <div class="stat-value">
+                                        <input type="number" name="system.acuite.value" value="{{system.acuite.value}}" min="0" max="6" class="edit-mode" data-dtype="Number"/>
+                                        <span class="read-mode">{{system.acuite.value}}</span>
+                                    </div>
+                                    <select name="system.acuite.dice" class="edit-mode" data-dtype="String">
+                                        <option value="1d4" {{#if (eq system.acuite.dice "1d4")}}selected{{/if}}>Stupide</option>
+                                        <option value="1d6" {{#if (eq system.acuite.dice "1d6")}}selected{{/if}}>Pas brillant</option>
+                                        <option value="1d8" {{#if (eq system.acuite.dice "1d8")}}selected{{/if}}>1d8</option>
+                                        <option value="1d10" {{#if (eq system.acuite.dice "1d10")}}selected{{/if}}>1d10</option>
+                                        <option value="1d12" {{#if (eq system.acuite.dice "1d12")}}selected{{/if}}>Erudit</option>
+                                        <option value="1d20" {{#if (eq system.acuite.dice "1d20")}}selected{{/if}}>Eclairé</option>
+                                    </select>
+                                    <div class="read-mode">{{system.acuite.dice}}</div>
+                                </div>
                             </div>
-                            <div class="stat-controls">
-                                <select name="system.pimpance.value" class="edit-mode">
-                                    {{#select system.pimpance.value}}
-                                    <option value="1d4">Tâche</option>
-                                    <option value="1d6">Pas top</option>
-                                    <option value="1d8">Honnête</option>
-                                    <option value="1d10">Clinquant</option>
-                                    <option value="1d12">Majestueux</option>
-                                    <option value="1d20">Ramirez</option>
-                                    {{/select}}
-                                </select>
-                                <div class="read-mode">{{helpers.getSelectedText system.pimpance.value "pimpance"}}</div>
+                            <div class="stat">
+                                <img src="systems/voidHorizon/assets/icons/arcane.svg" alt="Arcane" class="stat-icon">
+                                <label class="stat-header rollable" data-stat="arcane">Arcane</label>
+                                <div class="stat-controls">
+                                    <div class="stat-value">
+                                        <input type="number" name="system.arcane.value" value="{{system.arcane.value}}" min="0" max="6" class="edit-mode" data-dtype="Number"/>
+                                        <span class="read-mode">{{system.arcane.value}}</span>
+                                    </div>
+                                    <select name="system.arcane.dice" class="edit-mode" data-dtype="String">
+                                        <option value="1d4" {{#if (eq system.arcane.dice "1d4")}}selected{{/if}}>1d4</option>
+                                        <option value="1d6" {{#if (eq system.arcane.dice "1d6")}}selected{{/if}}>1d6</option>
+                                        <option value="1d8" {{#if (eq system.arcane.dice "1d8")}}selected{{/if}}>1d8</option>
+                                        <option value="1d10" {{#if (eq system.arcane.dice "1d10")}}selected{{/if}}>1d10</option>
+                                        <option value="1d12" {{#if (eq system.arcane.dice "1d12")}}selected{{/if}}>1d12</option>
+                                        <option value="1d20" {{#if (eq system.arcane.dice "1d20")}}selected{{/if}}>Archimage</option>
+                                    </select>
+                                    <div class="read-mode">{{system.arcane.dice}}</div>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="stat-block">
-                            <div class="stat-header">
-                                <img src="systems/voidHorizon/assets/icons/acuite.png" class="stat-icon" alt="Acuité">
-                                <label class="rollable" data-stat="acuite">Acuité</label>
-                            </div>
-                            <div class="stat-controls">
-                                <select name="system.acuite.value" class="edit-mode" data-dtype="String">
-                                    {{#select system.acuite.value}}
-                                    <option value="1d4">1d4</option>
-                                    <option value="1d6">1d6</option>
-                                    <option value="1d8">1d8</option>
-                                    <option value="1d10">1d10</option>
-                                    <option value="1d12">1d12</option>
-                                    <option value="1d20">1d20</option>
-                                    {{/select}}
-                                </select>
-                                <div class="read-mode">{{system.acuite.value}}</div>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-block">
-                            <div class="stat-header">
-                                <img src="systems/voidHorizon/assets/icons/arcane.png" class="stat-icon" alt="Arcane">
-                                <label class="rollable" data-stat="arcane">Arcane</label>
-                            </div>
-                            <div class="stat-controls">
-                                <select name="system.arcane.value" class="edit-mode">
-                                    {{#select system.arcane.value}}
-                                    <option value="1d4">1d4</option>
-                                    <option value="1d6">1d6</option>
-                                    <option value="1d8">1d8</option>
-                                    <option value="1d10">1d10</option>
-                                    <option value="1d12">1d12</option>
-                                    <option value="1d20">1d20</option>
-                                    {{/select}}
-                                </select>
-                                <div class="read-mode">{{system.arcane.value}}</div>
+                            <div class="stat">
+                                <img src="systems/voidHorizon/assets/icons/rapidite.svg" alt="Rapidité" class="stat-icon">
+                                <label class="stat-header rollable" data-stat="rapidite">Rapidité</label>
+                                <div class="stat-controls">
+                                    <div class="stat-value">
+                                        <input type="number" name="system.rapidite.value" value="{{system.rapidite.value}}" min="0" max="6" class="edit-mode" data-dtype="Number"/>
+                                        <span class="read-mode">{{system.rapidite.value}}</span>
+                                    </div>
+                                    <select name="system.rapidite.dice" class="edit-mode" data-dtype="String">
+                                        <option value="1d4" {{#if (eq system.rapidite.dice "1d4")}}selected{{/if}}>Molasse</option>
+                                        <option value="1d6" {{#if (eq system.rapidite.dice "1d6")}}selected{{/if}}>Lourd</option>
+                                        <option value="1d8" {{#if (eq system.rapidite.dice "1d8")}}selected{{/if}}>Décidé</option>
+                                        <option value="1d10" {{#if (eq system.rapidite.dice "1d10")}}selected{{/if}}>Vif</option>
+                                        <option value="1d12" {{#if (eq system.rapidite.dice "1d12")}}selected{{/if}}>Fulgurant</option>
+                                        <option value="1d20" {{#if (eq system.rapidite.dice "1d20")}}selected{{/if}}>Incarnation du vent</option>
+                                    </select>
+                                    <div class="read-mode">{{system.rapidite.dice}}</div>
+                                </div>
                             </div>
                         </div>
                         <div class="edit-mode-button">
                             <button type="button" class="toggle-edit-mode" title="Mode édition">
                                 <i class="fas fa-edit"></i>
                             </button>
-        
                         </div>
                     </div>
                 </div>
