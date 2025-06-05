@@ -69,6 +69,10 @@
                         "value": "",
                         "label": "Rang"
                     },
+                    "affinity": {
+                        "value": "aucune",
+                        "label": "Affinité"
+                    },
                     "images": {
                         "type": "Object",
                         "default": {}

@@ -59,7 +59,8 @@
 
 .class-line,
 .faction-line,
-.rank-line {
+.rank-line,
+.affinity-line {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -70,13 +71,15 @@
 }
 
 .faction-line,
-.rank-line {
+.rank-line,
+.affinity-line {
     flex: 1;
 }
 
 .class-line label,
 .faction-line label,
-.rank-line label {
+.rank-line label,
+.affinity-line label {
     min-width: 60px;
     color: #800000;
     font-weight: bold;
@@ -84,7 +87,8 @@
 
 .class-line select,
 .faction-line select,
-.rank-line input {
+.rank-line input,
+.affinity-line select {
     flex: 1;
     padding: 0.25rem;
     border: 1px solid #ccc;
@@ -94,7 +98,8 @@
 
 .class-line select:focus,
 .faction-line select:focus,
-.rank-line input:focus {
+.rank-line input:focus,
+.affinity-line select:focus {
     border-color: #800000;
     outline: none;
     box-shadow: 0 0 3px rgba(128, 0, 0, 0.3);
@@ -154,6 +159,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    max-width: 200px;
 }
 
 .additional-stats {
