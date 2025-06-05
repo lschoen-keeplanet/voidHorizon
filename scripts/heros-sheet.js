@@ -287,8 +287,16 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
 
         // Mise à jour de la valeur
         try {
-            const updateData = {};
-            updateData[name] = value;
+            // Créer l'objet de mise à jour avec le chemin complet
+            const updateData = {
+                system: {
+                    resources: {
+                        armor: {
+                            value: value
+                        }
+                    }
+                }
+            };
             
             console.log("Update data:", updateData);
             await this.actor.update(updateData);
