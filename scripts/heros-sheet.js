@@ -91,6 +91,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Gestion des boucliers d'armure
         html.find('.armor-container .shield-button').click(this._onShieldClick.bind(this));
 
+        // Gestion des images
+        html.find('.add-image').click(this._onAddImage.bind(this));
+        html.find('.image-edit').click(this._onEditImage.bind(this));
+        html.find('.image-delete').click(this._onDeleteImage.bind(this));
+
         // Initialiser l'état des cœurs et de la santé
         this._initializeHearts(html);
         this._initializeShields(html);
@@ -660,6 +665,80 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             activeButton.classList.remove('hidden');
             brokenButton.classList.add('hidden');
         }
+    }
+
+    async _onAddImage(event) {
+        event.preventDefault();
+        
+        // Ouvrir le sélecteur de fichiers de Foundry
+        const file = await new Promise(resolve => {
+            new FilePicker({
+                type: "image",
+                callback: path => resolve(path)
+            }).render(true);
+        });
+
+        if (!file) return;
+
+        // Ajouter l'image aux données de l'acteur
+        const images = this.actor.system.images || {};
+        const id = foundry.utils.randomID();
+        images[id] = {
+            path: file,
+            name: file.split('/').pop()
+        };
+
+        // Mettre à jour l'acteur
+        await this.actor.update({
+            "system.images": images
+        });
+    }
+
+    async _onEditImage(event) {
+        event.preventDefault();
+        const id = event.currentTarget.closest('.image-item').dataset.imageId;
+        
+        // Ouvrir le sélecteur de fichiers de Foundry
+        const file = await new Promise(resolve => {
+            new FilePicker({
+                type: "image",
+                callback: path => resolve(path)
+            }).render(true);
+        });
+
+        if (!file) return;
+
+        // Mettre à jour l'image
+        const images = this.actor.system.images;
+        images[id].path = file;
+        images[id].name = file.split('/').pop();
+
+        // Mettre à jour l'acteur
+        await this.actor.update({
+            "system.images": images
+        });
+    }
+
+    async _onDeleteImage(event) {
+        event.preventDefault();
+        const id = event.currentTarget.closest('.image-item').dataset.imageId;
+        
+        // Demander confirmation
+        const confirmed = await Dialog.confirm({
+            title: "Supprimer l'image",
+            content: "Êtes-vous sûr de vouloir supprimer cette image ?"
+        });
+
+        if (!confirmed) return;
+
+        // Supprimer l'image
+        const images = this.actor.system.images;
+        delete images[id];
+
+        // Mettre à jour l'acteur
+        await this.actor.update({
+            "system.images": images
+        });
     }
 }
 

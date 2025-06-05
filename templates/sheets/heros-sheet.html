@@ -19,16 +19,24 @@
                         <select name="system.faction.value">
                             <option value="caradoc" {{selected "caradoc" system.faction.value}}>Compagnie Caradoc</option>
                             <option value="sauvignon" {{selected "sauvignon" system.faction.value}}>Sauvignon</option>
+                            <option value="banniere-rouge" {{selected "banniere-rouge" system.faction.value}}>Bannière rouge</option>
+                            <option value="banniere-verte" {{selected "banniere-verte" system.faction.value}}>Bannière verte</option>
                         </select>
                     </div>
                 </div>
+            </div>
+            <div class="faction-crest">
+                <img src="systems/voidHorizon/assets/crests/{{system.faction.value}}.png" alt="Blason {{system.faction.value}}" />
             </div>
         </div>
         <div class="main-content">
             <div class="stats-health-row">
                 <div class="main-stats">
                     <div class="stat">
-                        <label>Agilité</label>
+                        <div class="stat-header">
+                            <img src="systems/voidHorizon/assets/icons/agilite.png" alt="Agilité" class="stat-icon" />
+                            <label>Agilité</label>
+                        </div>
                         <div class="stat-controls">
                             <select name="system.agilite.value">
                                 <option value="1d4" {{selected "1d4" system.agilite.value}}>1d4</option>
@@ -42,7 +50,10 @@
                         </div>
                     </div>
                     <div class="stat">
-                        <label>Pimpance</label>
+                        <div class="stat-header">
+                            <img src="systems/voidHorizon/assets/icons/pimpance.png" alt="Pimpance" class="stat-icon" />
+                            <label>Pimpance</label>
+                        </div>
                         <div class="stat-controls">
                             <select name="system.pimpance.value">
                                 <option value="1d4" {{selected "1d4" system.pimpance.value}}>Tâche</option>
@@ -56,7 +67,10 @@
                         </div>
                     </div>
                     <div class="stat">
-                        <label>Moral</label>
+                        <div class="stat-header">
+                            <img src="systems/voidHorizon/assets/icons/moral.png" alt="Moral" class="stat-icon" />
+                            <label>Moral</label>
+                        </div>
                         <div class="stat-controls">
                             <select name="system.moral.value">
                                 <option value="1d4" {{selected "1d4" system.moral.value}}>1d4</option>
@@ -70,7 +84,10 @@
                         </div>
                     </div>
                     <div class="stat">
-                        <label>Martialité</label>
+                        <div class="stat-header">
+                            <img src="systems/voidHorizon/assets/icons/martialite.png" alt="Martialité" class="stat-icon" />
+                            <label>Martialité</label>
+                        </div>
                         <div class="stat-controls">
                             <select name="system.martialite.value">
                                 <option value="1d4" {{selected "1d4" system.martialite.value}}>1d4</option>
@@ -84,7 +101,10 @@
                         </div>
                     </div>
                     <div class="stat">
-                        <label>Arcane</label>
+                        <div class="stat-header">
+                            <img src="systems/voidHorizon/assets/icons/arcane.png" alt="Arcane" class="stat-icon" />
+                            <label>Arcane</label>
+                        </div>
                         <div class="stat-controls">
                             <select name="system.arcane.value">
                                 <option value="1d4" {{selected "1d4" system.arcane.value}}>1d4</option>
@@ -162,7 +182,21 @@
                 </div>
             </div>
             <div class="additional-stats">
-                <!-- Espace pour les futurs éléments -->
+                <div class="images-section">
+                    <h3>Images</h3>
+                    <div class="images-grid">
+                        {{#each actor.system.images as |image id|}}
+                        <div class="image-item" data-image-id="{{id}}">
+                            <img src="{{image.path}}" alt="{{image.name}}" />
+                            <div class="image-controls">
+                                <button type="button" class="image-edit" title="Modifier"><i class="fas fa-edit"></i></button>
+                                <button type="button" class="image-delete" title="Supprimer"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        {{/each}}
+                        <button type="button" class="add-image"><i class="fas fa-plus"></i> Ajouter une image</button>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
