@@ -58,6 +58,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             class: {
                 value: data.actor.system.class?.value || "",
                 label: "Classe"
+            },
+            faction: {
+                value: data.actor.system.faction?.value || "caradoc",
+                label: "Faction"
             }
         };
         
