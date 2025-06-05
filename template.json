@@ -1,51 +1,28 @@
 {
-    "id": "voidHorizon",
-    "title": "Void Horizon",
-    "description": "Le système de jeu Void Horizon",
-    "version": "0.0.101",
-    "compatibility": {
-        "minimum": "11",
-        "verified": "11",
-        "maximum": "11"
-    },
-    "authors": [
-        {
-            "name": "Votre Nom",
-            "url": "https://github.com/votre-nom"
-        }
-    ],
-    "esmodules": [
-        "scripts/voidHorizon.js"
-    ],
-    "styles": [
-        "styles/voidHorizon.css",
-        "styles/heros-sheet.css"
-    ],
-    "languages": [
-        {
-            "lang": "fr",
-            "name": "Français",
-            "path": "lang/fr.json"
-        }
-    ],
-    "socket": false,
-    "initiative": "1d20",
-    "gridDistance": 1,
-    "gridUnits": "m",
-    "primaryTokenAttribute": "resources.hp",
-    "secondaryTokenAttribute": null,
-    "url": "https://github.com/votre-nom/voidHorizon",
-    "manifest": "https://raw.githubusercontent.com/votre-nom/voidHorizon/main/system.json",
-    "download": "https://github.com/votre-nom/voidHorizon/archive/refs/heads/main.zip",
-    "license": "LICENSE.txt",
-    "readme": "README.md",
-    "bugs": "https://github.com/votre-nom/voidHorizon/issues",
-    "changelog": "CHANGELOG.md",
-    "template": {
-        "Actor": {
-            "types": ["heros"],
+    "Actor": {
+        "types": [
+            "heros"
+        ],
+        "templates": {
+            "background": {
+                "biography": ""
+            },
+            "resources": {
+                "blessure": {
+                    "value": 0
+                },
+                "armor": {
+                    "value": 0
+                },
+                "blessedHearts": {
+                    "value": []
+                },
+                "armorDamage": {
+                    "value": 0
+                }
+            },
             "heros": {
-                "name": "heros",
+                "name": "Héros",
                 "img": "systems/voidHorizon/assets/icons/hero.svg",
                 "templates": [
                     "background",
@@ -62,7 +39,7 @@
                     },
                     "martialite": {
                         "value": "1d4",
-                        "label": "Martialite"
+                        "label": "Martialité"
                     },
                     "pimpance": {
                         "value": "1d4",
@@ -70,7 +47,7 @@
                     },
                     "acuite": {
                         "value": "1d4",
-                        "label": "Acuite"
+                        "label": "Acuité"
                     },
                     "arcane": {
                         "value": "1d4",
@@ -125,5 +102,35 @@
                 }
             }
         }
-    }
+    },
+    "Item": {
+        "types": [
+            "outil",
+            "A",
+            "equipment"
+        ],
+        "templates": {
+            "itemDescription": "its an item or a weapon",
+            "equipment": {
+                "name": "Équipement",
+                "img": "systems/voidHorizon/assets/icons/equipment.svg",
+                "system": {
+                    "description": ""
+                }
+            }
+        },
+        "outil": {
+            "damage": 0,
+            "portée": 0,
+            "moral": 0,
+            "price": 100,
+            "sword": 0
+        },
+        "A": {
+            "damage": 0
+        }
+    },
+    "styles": [
+        "styles/heros-sheet.css"
+    ]
 }
