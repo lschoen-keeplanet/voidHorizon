@@ -513,7 +513,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         };
         
         // Rendre le template
-        const html = await renderTemplate("./templates/chat/roll.html", templateData);
+        const html = await renderTemplate("modules/voidHorizon/templates/chat/roll.html", templateData);
         
         // Envoyer le message dans le chat
         ChatMessage.create({
