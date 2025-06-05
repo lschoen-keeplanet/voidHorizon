@@ -114,7 +114,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         html.find('input[type="number"]').change(this._onResourceChange.bind(this));
 
         // Gestion des lancers de dés
-        html.find('.roll-stat').click(this._onRollStat.bind(this));
+        html.find('.rollable').click(this._onRollStat.bind(this));
 
         // Gestion des cœurs de vie
         html.find('.heart-button').click(this._onHeartClick.bind(this));
@@ -131,9 +131,6 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Gestion des changements d'affinité
         html.find('select[name="system.affinity.value"]').change(this._onSelectChange.bind(this));
         
-        // Gestion des lancers de dés sur les labels
-        html.find('.stat-header label.rollable').click(this._onRollStat.bind(this));
-
         // Initialiser l'état des cœurs et de la santé
         this._initializeHealthState();
     }
