@@ -62,6 +62,14 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             faction: {
                 value: data.actor.system.faction?.value || "caradoc",
                 label: "Faction"
+            },
+            rank: {
+                value: data.actor.system.rank?.value || "",
+                label: "Rang"
+            },
+            affinity: {
+                value: data.actor.system.affinity?.value || "aucune",
+                label: "Affinité"
             }
         };
         
@@ -90,6 +98,15 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
 
         // Gestion des boucliers d'armure
         html.find('.armor-container .shield-button').click(this._onShieldClick.bind(this));
+
+        // Gestion des changements de sélection
+        html.find('select[name^="system."]').change(this._onSelectChange.bind(this));
+        
+        // Gestion des changements de rang
+        html.find('input[name="system.rank.value"]').change(this._onRankChange.bind(this));
+        
+        // Gestion des changements d'affinité
+        html.find('select[name="system.affinity.value"]').change(this._onSelectChange.bind(this));
 
         // Initialiser l'état des cœurs et de la santé
         this._initializeHealthState();
@@ -657,6 +674,28 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         } else {
             activeButton.classList.remove('hidden');
             brokenButton.classList.add('hidden');
+        }
+    }
+
+    /**
+     * Gère les changements de rang
+     * @param {Event} event - L'événement de changement
+     * @private
+     */
+    async _onRankChange(event) {
+        event.preventDefault();
+        const input = event.target;
+        const value = input.value;
+        
+        try {
+            await this.actor.update({
+                "system.rank.value": value
+            });
+            console.log(`Mise à jour réussie du rang: ${value}`);
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour du rang:", error);
+            // Restaurer la valeur précédente en cas d'erreur
+            input.value = this.actor.system.rank.value;
         }
     }
 
