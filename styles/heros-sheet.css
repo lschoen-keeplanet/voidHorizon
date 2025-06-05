@@ -546,4 +546,40 @@ textarea:focus {
     padding: 5px;
     background: rgba(0, 0, 0, 0.05);
     border-radius: 3px;
+}
+
+.health-column .stats-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.health-column .stats-row .resource,
+.health-column .stats-row .stat {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.health-column .stats-row label {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #800000;
+}
+
+.health-column .stats-row .resource-value,
+.health-column .stats-row .stat-controls {
+    display: flex;
+    justify-content: center;
+}
+
+.health-column .stats-row input {
+    width: 60px;
+    text-align: center;
+    padding: 2px;
+    border: 1px solid #800000;
+    border-radius: 3px;
 } 
