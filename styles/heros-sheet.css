@@ -693,6 +693,14 @@ textarea:focus {
     gap: 1rem;
 }
 
+.edit-mode-button{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    width: 100%;
+    height: 100%;
+}
+
 .toggle-edit-mode {
     background: none;
     border: none;
