@@ -125,11 +125,11 @@
             <div class="armor-section">
                 <div class="armor-container">
                     {{#each (times actor.system.resources.armor.value)}}
-                    <div class="heart-wrapper">
-                        <button type="button" class="heart-button alive" data-heart-index="{{this}}" data-alive="true">
+                    <div class="shield-wrapper">
+                        <button type="button" class="shield-button alive" data-shield-index="{{this}}" data-active="true">
                             <i class="fas fa-shield-alt"></i>
                         </button>
-                        <button type="button" class="heart-button dead" data-heart-index="{{this}}" data-alive="false">
+                        <button type="button" class="shield-button dead" data-shield-index="{{this}}" data-active="false">
                             <i class="fas fa-shield-alt" style="opacity: 0.3;"></i>
                         </button>
                     </div>

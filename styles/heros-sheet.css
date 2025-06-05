@@ -428,13 +428,13 @@ textarea:focus {
     margin-right: auto;
 }
 
-.armor-container .heart-wrapper {
+.armor-container .shield-wrapper {
     position: relative;
     width: 24px;
     height: 24px;
 }
 
-.armor-container .heart-button {
+.armor-container .shield-button {
     position: absolute;
     top: 0;
     left: 0;
@@ -448,15 +448,15 @@ textarea:focus {
     transition: all 0.2s ease;
 }
 
-.armor-container .heart-button:hover {
+.armor-container .shield-button:hover {
     transform: scale(1.1);
 }
 
-.armor-container .heart-button.dead {
+.armor-container .shield-button.dead {
     color: #666;
 }
 
-.armor-container .heart-button.hidden {
+.armor-container .shield-button.hidden {
     display: none;
 }
 

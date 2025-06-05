@@ -85,7 +85,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         html.find('.hearts-container .heart-button').click(this._onHeartClick.bind(this));
         
         // Gestion des boucliers d'armure
-        html.find('.armor-container .heart-button').click(this._onShieldClick.bind(this));
+        html.find('.armor-container .shield-button').click(this._onShieldClick.bind(this));
 
         // Initialiser l'état des cœurs et de la santé
         this._initializeHearts(html);
@@ -558,13 +558,13 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     async _onShieldClick(event) {
         event.preventDefault();
         const button = event.currentTarget;
-        const shieldIndex = parseInt(button.dataset.heartIndex);
-        const isAlive = button.dataset.alive === "true";
-        const shieldWrapper = button.closest('.heart-wrapper');
+        const shieldIndex = parseInt(button.dataset.shieldIndex);
+        const isActive = button.dataset.active === "true";
+        const shieldWrapper = button.closest('.shield-wrapper');
         
         // Mettre à jour la valeur de dégâts d'armure
         const currentDamage = this.actor.system.resources.armorDamage?.value || 0;
-        const newDamage = isAlive ? currentDamage + 1 : currentDamage - 1;
+        const newDamage = isActive ? currentDamage + 1 : currentDamage - 1;
         
         try {
             // Mettre à jour l'acteur avec la nouvelle valeur de dégâts d'armure
@@ -576,7 +576,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             await this.actor.update(updateData);
             
             // Mettre à jour l'affichage des boutons
-            this._updateShieldDisplay(shieldWrapper, isAlive);
+            this._updateShieldDisplay(shieldWrapper, isActive);
             
             // Forcer la mise à jour de l'affichage
             this.render(true);
@@ -588,14 +588,14 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     /**
      * Met à jour l'affichage des boutons d'un bouclier
      * @param {HTMLElement} shieldWrapper - Le wrapper du bouclier
-     * @param {boolean} isAlive - Si le bouclier est intact
+     * @param {boolean} isActive - Si le bouclier est actif
      * @private
      */
-    _updateShieldDisplay(shieldWrapper, isAlive) {
+    _updateShieldDisplay(shieldWrapper, isActive) {
         const aliveButton = shieldWrapper.querySelector('.alive');
         const deadButton = shieldWrapper.querySelector('.dead');
         
-        if (isAlive) {
+        if (isActive) {
             aliveButton.classList.add('hidden');
             deadButton.classList.remove('hidden');
         } else {
