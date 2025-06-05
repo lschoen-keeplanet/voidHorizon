@@ -1,0 +1,101 @@
+.voidHorizon-chat {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid #800000;
+    border-radius: 4px;
+    margin: 5px 0;
+    padding: 8px;
+}
+
+.voidHorizon-chat .chat-header {
+    border-bottom: 1px solid #800000;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+}
+
+.voidHorizon-chat .chat-title {
+    color: #800000;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.voidHorizon-chat .chat-subtitle {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.voidHorizon-chat .dice-roll {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.voidHorizon-chat .dice-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.voidHorizon-chat .dice-formula {
+    font-family: monospace;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.voidHorizon-chat .dice-total {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #800000;
+    padding: 4px 12px;
+    border-radius: 4px;
+    background: white;
+    border: 1px solid #800000;
+}
+
+.voidHorizon-chat .dice-total.success {
+    color: #008000;
+    border-color: #008000;
+}
+
+.voidHorizon-chat .dice-total.failure {
+    color: #ff0000;
+    border-color: #ff0000;
+}
+
+.voidHorizon-chat .dice-tooltip {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+.voidHorizon-chat .dice-rolls {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+}
+
+.voidHorizon-chat .dice-rolls .roll {
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.voidHorizon-chat .dice-rolls .roll.critical {
+    background: #e6ffe6;
+    border-color: #008000;
+    color: #008000;
+}
+
+.voidHorizon-chat .dice-rolls .roll.fumble {
+    background: #ffe6e6;
+    border-color: #ff0000;
+    color: #ff0000;
+} 
