@@ -140,9 +140,10 @@ img{
 /* Main Stats */
 .main-content {
     display: flex;
+    width: 100%;
     flex-direction: column;
     gap: 1rem;
-    padding: 1rem;
+    padding: 1rem 0;
 }
 
 .stats-health-row {

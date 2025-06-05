@@ -76,6 +76,28 @@
                     "images": {
                         "type": "Object",
                         "default": {}
+                    },
+                    "hp": {
+                        "value": 10,
+                        "max": 10,
+                        "label": "Points de vie"
+                    },
+                    "mana": {
+                        "value": 10,
+                        "max": 10,
+                        "label": "Points de mana"
+                    },
+                    "defense": {
+                        "value": 10,
+                        "label": "Défense"
+                    },
+                    "initiative": {
+                        "value": 0,
+                        "label": "Initiative"
+                    },
+                    "speed": {
+                        "value": 6,
+                        "label": "Vitesse"
                     }
                 }
             }
