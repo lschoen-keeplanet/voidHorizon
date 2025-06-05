@@ -65,7 +65,7 @@
                     }
                 },
                 "heros": {
-                    "name": "Héros",
+                    "name": "heros",
                     "img": "systems/voidHorizon/assets/icons/hero.svg",
                     "templates": [
                         "background",
@@ -82,7 +82,7 @@
                         },
                         "martialite": {
                             "value": "1d4",
-                            "label": "Martialité"
+                            "label": "Martialite"
                         },
                         "pimpance": {
                             "value": "1d4",
@@ -90,7 +90,7 @@
                         },
                         "acuite": {
                             "value": "1d4",
-                            "label": "Acuité"
+                            "label": "Acuite"
                         },
                         "arcane": {
                             "value": "1d4",
