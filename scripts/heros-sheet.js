@@ -286,42 +286,78 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const value = parseInt(target.value);
         const name = target.name;
 
-        console.log("=== Debug Armor Change ===");
+        console.log("=== Debug Resource Change ===");
         console.log("Name:", name);
         console.log("Value:", value);
         console.log("Current actor data:", this.actor.system);
 
-        // Mise à jour de la valeur
         try {
-            // Créer l'objet de mise à jour avec le chemin complet
-            const updateData = {
-                system: {
-                    resources: {
-                        armor: {
+            let updateData = {};
+            
+            // Déterminer quel champ mettre à jour en fonction du nom
+            if (name === "system.resources.armor.value") {
+                updateData = {
+                    system: {
+                        resources: {
+                            armor: {
+                                value: value
+                            }
+                        }
+                    }
+                };
+                await this.actor.update(updateData);
+                this._updateShieldsDisplay();
+            } else if (name === "system.constitution.value") {
+                updateData = {
+                    system: {
+                        constitution: {
                             value: value
                         }
                     }
-                }
-            };
-            
-            console.log("Update data:", updateData);
-            await this.actor.update(updateData);
-            console.log("Mise à jour réussie");
-
-            // Si c'est un changement d'armure, mettre à jour l'affichage des boucliers
-            if (name === "system.resources.armor.value") {
-                console.log("Mise à jour des boucliers");
-                this._updateShieldsDisplay();
+                };
+                await this.actor.update(updateData);
+                this._updateHeartsDisplay();
             }
 
-            // Forcer la mise à jour de l'affichage
-            this.render(true);
+            // Mettre à jour l'état de santé
+            this._updateHealthStatus();
+            
+            // Mettre à jour uniquement les sections nécessaires
+            if (name === "system.resources.armor.value") {
+                this._updateShieldsDisplay();
+            } else if (name === "system.constitution.value") {
+                this._updateHeartsDisplay();
+            }
         } catch (error) {
             console.error("Erreur lors de la mise à jour:", error);
             // Restaurer la valeur précédente en cas d'erreur
-            target.value = this.actor.system.resources.armor.value;
+            if (name === "system.resources.armor.value") {
+                target.value = this.actor.system.resources.armor.value;
+            } else if (name === "system.constitution.value") {
+                target.value = this.actor.system.constitution.value;
+            }
         }
-        console.log("=== Fin Debug Armor Change ===");
+        console.log("=== Fin Debug Resource Change ===");
+    }
+
+    _updateHeartsDisplay() {
+        const constitution = this.actor.system.constitution?.value || 0;
+        const blessure = this.actor.system.resources.blessure?.value || 0;
+        const hearts = this.element.find('.heart-wrapper');
+        
+        hearts.each((index, wrapper) => {
+            const heartIndex = index;
+            const aliveButton = wrapper.querySelector('.alive');
+            const deadButton = wrapper.querySelector('.dead');
+            
+            if (heartIndex < blessure) {
+                aliveButton.classList.add('hidden');
+                deadButton.classList.remove('hidden');
+            } else {
+                aliveButton.classList.remove('hidden');
+                deadButton.classList.add('hidden');
+            }
+        });
     }
 
     /**
