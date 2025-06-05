@@ -446,7 +446,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     /**
-     * Gère le clic sur un cœur de constitution ou un bouclier d'armure
+     * Gère le clic sur un cœur de constitution
      * @param {Event} event - L'événement de clic
      * @private
      */
@@ -456,34 +456,30 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const heartIndex = parseInt(button.dataset.heartIndex);
         const isAlive = button.dataset.alive === "true";
         const heartWrapper = button.closest('.heart-wrapper');
-        const isArmor = heartWrapper.closest('.armor-container') !== null;
         
-        // Déterminer quelle ressource mettre à jour
-        const resourceType = isArmor ? 'armorDamage' : 'blessure';
-        const currentValue = this.actor.system.resources[resourceType]?.value || 0;
+        // Mettre à jour la valeur de blessure
+        const currentValue = this.actor.system.resources.blessure?.value || 0;
         const newValue = isAlive ? currentValue + 1 : currentValue - 1;
         
         try {
             // Mettre à jour l'acteur avec la nouvelle valeur
             const updateData = {
-                [`system.resources.${resourceType}.value`]: newValue
+                'system.resources.blessure.value': newValue
             };
             
-            console.log(`Mise à jour des ${isArmor ? 'boucliers' : 'points de vie'}:`, updateData);
+            console.log("Mise à jour des points de vie:", updateData);
             await this.actor.update(updateData);
             
             // Mettre à jour l'affichage des boutons
             this._updateHeartDisplay(heartWrapper, isAlive);
             
-            // Si c'est un point de vie, mettre à jour l'état de santé
-            if (!isArmor) {
-                this._updateHealthStatus();
-            }
+            // Mettre à jour l'état de santé
+            this._updateHealthStatus();
             
             // Forcer la mise à jour de l'affichage
             this.render(true);
         } catch (error) {
-            console.error(`Erreur lors de la mise à jour des ${isArmor ? 'boucliers' : 'points de vie'}:`, error);
+            console.error("Erreur lors de la mise à jour des points de vie:", error);
         }
     }
 
@@ -511,9 +507,19 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      * @private
      */
     _updateHealthStatus() {
+        console.log("=== Debug Health Status ===");
+        
         const constitution = this.actor.system.constitution?.value || 0;
         const blessure = this.actor.system.resources.blessure?.value || 0;
+        const armor = this.actor.system.resources.armor?.value || 0;
+        const armorDamage = this.actor.system.resources.armorDamage?.value || 0;
         const remainingHearts = constitution - blessure;
+        
+        console.log("Constitution:", constitution);
+        console.log("Blessures:", blessure);
+        console.log("Armure:", armor);
+        console.log("Dégâts d'armure:", armorDamage);
+        console.log("Points de vie restants:", remainingHearts);
         
         let status = "Incapacité";
         let statusClass = "status-critical";
@@ -528,6 +534,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             status = "Grièvement blessé";
             statusClass = "status-danger";
         }
+        
+        console.log("État calculé:", status);
+        console.log("=== Fin Debug Health Status ===");
         
         // Mettre à jour le contenu HTML directement
         const statusHtml = `
