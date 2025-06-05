@@ -274,35 +274,59 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      */
     async _onResourceChange(event) {
         event.preventDefault();
-        const input = event.target;
-        const value = parseInt(input.value);
-        const max = parseInt(input.max);
-        const min = parseInt(input.min);
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
 
-        // Vérifier les limites
-        if (value > max) input.value = max;
-        if (value < min) input.value = min;
+        // Mise à jour de la valeur
+        await this.actor.update({
+            [name]: value
+        });
 
-        // Mettre à jour l'acteur
-        const field = input.name;
-        const updateData = {};
-        updateData[field] = input.value;
+        // Si c'est un changement d'armure, mettre à jour l'affichage des boucliers
+        if (name === "system.resources.armor.value") {
+            this._updateShieldsDisplay();
+        }
+    }
+
+    /**
+     * Met à jour l'affichage des boucliers en fonction de la valeur d'armure
+     * @private
+     */
+    _updateShieldsDisplay() {
+        const armorValue = this.actor.system.resources.armor?.value || 0;
+        const armorDamage = this.actor.system.resources.armorDamage?.value || 0;
+        const shields = this.element.find('.shield-wrapper');
         
-        try {
-            await this.actor.update(updateData);
-            console.log(`Mise à jour réussie pour ${field}: ${input.value}`);
+        // Supprimer les boucliers existants
+        shields.remove();
+        
+        // Créer les nouveaux boucliers
+        const armorContainer = this.element.find('.armor-container');
+        for (let i = 0; i < armorValue; i++) {
+            const shieldWrapper = $(`
+                <div class="shield-wrapper">
+                    <button type="button" class="shield-button active" data-shield-index="${i}" data-active="true">
+                        <i class="fas fa-shield-alt"></i>
+                    </button>
+                    <button type="button" class="shield-button broken" data-shield-index="${i}" data-active="false">
+                        <i class="fas fa-shield-alt"></i>
+                    </button>
+                </div>
+            `);
+            armorContainer.append(shieldWrapper);
             
-            // Si c'est une mise à jour de blessure, mettre à jour l'état de santé
-            if (field === 'system.resources.blessure.value') {
-                this._updateHealthStatus();
+            // Mettre à jour l'état du bouclier
+            const activeButton = shieldWrapper.find('.active');
+            const brokenButton = shieldWrapper.find('.broken');
+            
+            if (i < armorDamage) {
+                activeButton.addClass('hidden');
+                brokenButton.removeClass('hidden');
+            } else {
+                activeButton.removeClass('hidden');
+                brokenButton.addClass('hidden');
             }
-            
-            // Forcer la mise à jour de l'affichage
-            this.render(true);
-        } catch (error) {
-            console.error("Erreur lors de la mise à jour:", error);
-            // Restaurer la valeur précédente en cas d'erreur
-            input.value = this.actor.system[field.split('.')[2]].value;
         }
     }
 
@@ -490,7 +514,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     /**
-     * Gère le clic sur un bouclier d'armure
+     * Gère le clic sur un bouclier
      * @param {Event} event - L'événement de clic
      * @private
      */
@@ -499,48 +523,19 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const button = event.currentTarget;
         const shieldIndex = parseInt(button.dataset.shieldIndex);
         const isActive = button.dataset.active === "true";
-        const shieldWrapper = button.closest('.shield-wrapper');
+        const wrapper = button.closest('.shield-wrapper');
         
-        // Mettre à jour la valeur de dégâts d'armure
-        const currentArmorDamage = this.actor.system.resources.armorDamage?.value || 0;
-        const newArmorDamage = isActive ? currentArmorDamage + 1 : currentArmorDamage - 1;
+        // Calculer le nouveau nombre de boucliers cassés
+        const currentDamage = this.actor.system.resources.armorDamage?.value || 0;
+        const newDamage = isActive ? currentDamage + 1 : currentDamage - 1;
         
-        try {
-            // Mettre à jour l'acteur avec la nouvelle valeur de dégâts d'armure
-            const updateData = {
-                'system.resources.armorDamage.value': newArmorDamage
-            };
-            
-            console.log("Mise à jour des points d'armure:", updateData);
-            await this.actor.update(updateData);
-            
-            // Mettre à jour l'affichage des boutons
-            this._updateShieldDisplay(shieldWrapper, isActive);
-            
-            // Forcer la mise à jour de l'affichage
-            this.render(true);
-        } catch (error) {
-            console.error("Erreur lors de la mise à jour des points d'armure:", error);
-        }
-    }
-
-    /**
-     * Met à jour l'affichage des boutons d'un bouclier
-     * @param {HTMLElement} shieldWrapper - Le wrapper du bouclier
-     * @param {boolean} isActive - Si le bouclier est actif
-     * @private
-     */
-    _updateShieldDisplay(shieldWrapper, isActive) {
-        const activeButton = shieldWrapper.querySelector('.active');
-        const brokenButton = shieldWrapper.querySelector('.broken');
+        // Mettre à jour la valeur
+        await this.actor.update({
+            'system.resources.armorDamage.value': newDamage
+        });
         
-        if (isActive) {
-            activeButton.classList.add('hidden');
-            brokenButton.classList.remove('hidden');
-        } else {
-            activeButton.classList.remove('hidden');
-            brokenButton.classList.add('hidden');
-        }
+        // Mettre à jour l'affichage
+        this._updateShieldsDisplay();
     }
 }
 
