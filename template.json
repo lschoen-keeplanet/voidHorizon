@@ -145,33 +145,6 @@
                     }
                 }
             }
-        },
-        "Item": {
-            "types": [
-                "outil",
-                "A",
-                "equipment"
-            ],
-            "templates": {
-                "itemDescription": "its an item or a weapon",
-                "equipment": {
-                    "name": "Équipement",
-                    "img": "systems/voidHorizon/assets/icons/equipment.svg",
-                    "system": {
-                        "description": ""
-                    }
-                }
-            },
-            "outil": {
-                "damage": 0,
-                "portée": 0,
-                "moral": 0,
-                "price": 100,
-                "sword": 0
-            },
-            "A": {
-                "damage": 0
-            }
         }
     }
 }
