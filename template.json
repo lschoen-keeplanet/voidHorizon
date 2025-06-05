@@ -38,29 +38,20 @@
                         }
                     },
                     "martialite": {
-                        "value": 0,
-                        "dice": "1d4",
+                        "value": "1d4",
                         "label": "Martialité"
                     },
                     "pimpance": {
-                        "value": 0,
-                        "dice": "1d4",
+                        "value": "1d4",
                         "label": "Pimpance"
                     },
                     "acuite": {
-                        "value": 0,
-                        "dice": "1d4",
+                        "value": "1d4",
                         "label": "Acuité"
                     },
                     "arcane": {
-                        "value": 0,
-                        "dice": "1d4",
+                        "value": "1d4",
                         "label": "Arcane"
-                    },
-                    "rapidite": {
-                        "value": 0,
-                        "dice": "1d4",
-                        "label": "Rapidité"
                     },
                     "constitution": {
                         "value": 4,

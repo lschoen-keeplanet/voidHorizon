@@ -38,29 +38,20 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         data.system = {
             ...data.system,
             acuite: {
-                value: data.actor.system.acuite?.value || 0,
-                dice: data.actor.system.acuite?.dice || "1d4",
+                value: data.actor.system.acuite?.value || "1d4",
                 label: "acuité"
             },
             pimpance: {
-                value: data.actor.system.pimpance?.value || 0,
-                dice: data.actor.system.pimpance?.dice || "1d4",
+                value: data.actor.system.pimpance?.value || "1d4",
                 label: "Pimpance"
             },
             martialite: {
-                value: data.actor.system.martialite?.value || 0,
-                dice: data.actor.system.martialite?.dice || "1d4",
+                value: data.actor.system.martialite?.value || "1d4",
                 label: "Martialité"
             },
             arcane: {
-                value: data.actor.system.arcane?.value || 0,
-                dice: data.actor.system.arcane?.dice || "1d4",
+                value: data.actor.system.arcane?.value || "1d4",
                 label: "Arcane"
-            },
-            rapidite: {
-                value: data.actor.system.rapidite?.value || 0,
-                dice: data.actor.system.rapidite?.dice || "1d4",
-                label: "Rapidité"
             },
             constitution: {
                 value: data.actor.system.constitution?.value || 4,
@@ -521,20 +512,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     async _onRollStat(event) {
         event.preventDefault();
         const stat = event.currentTarget.dataset.stat;
-        const dice = this.actor.system[stat].dice;
-        const value = this.actor.system[stat].value;
+        const formula = this.actor.system[stat].value;
         
-        if (!dice) {
+        if (!formula) {
             ui.notifications.warn(`Aucune formule de dé définie pour ${stat}`);
             return;
-        }
-
-        // Créer la formule en ajoutant le bonus/malus
-        let formula = dice;
-        if (value > 0) {
-            formula += `+${value}`;
-        } else if (value < 0) {
-            formula += value; // La valeur est déjà négative
         }
 
         const roll = new Roll(formula);
@@ -785,27 +767,26 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     async _updateObject(event, formData) {
+        // Mise à jour des données du formulaire
         const updateData = {};
         
+        // Parcourir les données du formulaire
         for (let [key, value] of formData.entries()) {
             console.log(`Form data - Key: ${key}, Value: ${value}`);
-            
+            // Vérifier si c'est une statistique
             if (key.startsWith('system.') && key.endsWith('.value')) {
                 const stat = key.split('.')[1];
-                if (['martialite', 'pimpance', 'acuite', 'arcane', 'rapidite'].includes(stat)) {
-                    // Convertir en nombre pour la valeur
-                    updateData[key] = parseInt(value);
-                }
-            } else if (key.startsWith('system.') && key.endsWith('.dice')) {
-                const stat = key.split('.')[1];
-                if (['martialite', 'pimpance', 'acuite', 'arcane', 'rapidite'].includes(stat)) {
-                    // Garder en chaîne pour la formule de dé
+                console.log(`Stat found: ${stat}`);
+                if (['martialite', 'pimpance', 'acuite', 'arcane'].includes(stat)) {
+                    // S'assurer que la valeur est une chaîne de caractères
                     updateData[key] = String(value);
+                    console.log(`Adding to updateData: ${key} = ${updateData[key]}`);
                 }
             }
         }
 
         console.log('Final updateData:', updateData);
+        // Mettre à jour l'acteur
         try {
             await this.actor.update(updateData);
             console.log('Update successful');
