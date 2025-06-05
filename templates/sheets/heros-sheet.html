@@ -1,8 +1,8 @@
 <form class="voidHorizon-sheet heros-sheet" autocomplete="off">
     <header class="sheet-header">
-        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
         <div class="header-fields">
-            <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Nom"/></h1>
+            <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Nom" /></h1>
             <div class="class-line">
                 <label>Classe:</label>
                 <select name="system.class.value">
@@ -24,7 +24,8 @@
                             <option value="1d12" {{selected "1d12" system.agilite.value}}>1d12</option>
                             <option value="1d20" {{selected "1d20" system.agilite.value}}>1d20</option>
                         </select>
-                        <button type="button" class="roll-stat" data-stat="agilite"><i class="fas fa-dice-d20"></i></button>
+                        <button type="button" class="roll-stat" data-stat="agilite"><i
+                                class="fas fa-dice-d20"></i></button>
                     </div>
                 </div>
                 <div class="stat">
@@ -38,7 +39,8 @@
                             <option value="1d12" {{selected "1d12" system.pimpance.value}}>Majestueux</option>
                             <option value="1d20" {{selected "1d20" system.pimpance.value}}>Ramirez</option>
                         </select>
-                        <button type="button" class="roll-stat" data-stat="pimpance"><i class="fas fa-dice-d20"></i></button>
+                        <button type="button" class="roll-stat" data-stat="pimpance"><i
+                                class="fas fa-dice-d20"></i></button>
                     </div>
                 </div>
                 <div class="stat">
@@ -52,7 +54,8 @@
                             <option value="1d12" {{selected "1d12" system.moral.value}}>1d12</option>
                             <option value="1d20" {{selected "1d20" system.moral.value}}>1d20</option>
                         </select>
-                        <button type="button" class="roll-stat" data-stat="moral"><i class="fas fa-dice-d20"></i></button>
+                        <button type="button" class="roll-stat" data-stat="moral"><i
+                                class="fas fa-dice-d20"></i></button>
                     </div>
                 </div>
                 <div class="stat">
@@ -66,7 +69,8 @@
                             <option value="1d12" {{selected "1d12" system.martialite.value}}>1d12</option>
                             <option value="1d20" {{selected "1d20" system.martialite.value}}>1d20</option>
                         </select>
-                        <button type="button" class="roll-stat" data-stat="martialite"><i class="fas fa-dice-d20"></i></button>
+                        <button type="button" class="roll-stat" data-stat="martialite"><i
+                                class="fas fa-dice-d20"></i></button>
                     </div>
                 </div>
                 <div class="stat">
@@ -80,13 +84,8 @@
                             <option value="1d12" {{selected "1d12" system.arcane.value}}>1d12</option>
                             <option value="1d20" {{selected "1d20" system.arcane.value}}>1d20</option>
                         </select>
-                        <button type="button" class="roll-stat" data-stat="arcane"><i class="fas fa-dice-d20"></i></button>
-                    </div>
-                </div>
-                <div class="stat">
-                    <label>Constitution</label>
-                    <div class="stat-controls">
-                        <input type="number" name="system.constitution.value" value="{{system.constitution.value}}" min="1" max="10"/>
+                        <button type="button" class="roll-stat" data-stat="arcane"><i
+                                class="fas fa-dice-d20"></i></button>
                     </div>
                 </div>
             </div>
@@ -94,6 +93,23 @@
         <div class="health-column">
             <div class="stat constitution-hearts">
                 <div class="health-status">
+                    <div style="display: flex;">
+                        <div class="resource">
+                            <label>Armure</label>
+                            <div class="resource-value">
+                                <input type="number" name="system.resources.armor.value"
+                                    value="{{actor.system.resources.armor.value}}" min="0" />
+                            </div>
+                        </div>
+                        <div class="stat">
+                            <label>Constitution</label>
+                            <div class="stat-controls">
+                                <input type="number" name="system.constitution.value"
+                                    value="{{system.constitution.value}}" min="1" max="10" />
+                            </div>
+                        </div>
+                    </div>
+
                     <span class="status-label"><label>Santé :</label></span>
                     <span class="status-value" data-health-status>
                         {{#if (gte (sub system.constitution.value system.resources.blessure.value) 3)}}
@@ -147,12 +163,6 @@
         <div class="tab stats" data-group="primary" data-tab="stats">
             <div class="stats-grid">
                 <!-- Ressources -->
-                <div class="resource">
-                    <label>Armure</label>
-                    <div class="resource-value">
-                        <input type="number" name="system.resources.armor.value" value="{{actor.system.resources.armor.value}}" min="0"/>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -162,7 +172,7 @@
                 <h2>Inventaire</h2>
                 <button type="button" class="create-item"><i class="fas fa-plus"></i> Ajouter un item</button>
             </div>
-            
+
             <div class="inventory-list">
                 {{#each actor.items as |item id|}}
                 <div class="item" data-item-id="{{item._id}}">
@@ -190,4 +200,4 @@
             </div>
         </div>
     </section>
-</form> 
+</form>
