@@ -9,15 +9,20 @@
                         <div class="faction-line">
                             <label>Faction:</label>
                             <select name="system.faction.value">
-                                <option value="caradoc" {{selected "caradoc" system.faction.value}}>Compagnie Caradoc</option>
-                                <option value="sauvignon" {{selected "sauvignon" system.faction.value}}>Sauvignon</option>
-                                <option value="banniere-rouge" {{selected "banniere-rouge" system.faction.value}}>Bannière rouge</option>
-                                <option value="banniere-verte" {{selected "banniere-verte" system.faction.value}}>Bannière verte</option>
+                                <option value="caradoc" {{selected "caradoc" system.faction.value}}>Compagnie Caradoc
+                                </option>
+                                <option value="sauvignon" {{selected "sauvignon" system.faction.value}}>Sauvignon
+                                </option>
+                                <option value="banniere-rouge" {{selected "banniere-rouge" system.faction.value}}>
+                                    Bannière rouge</option>
+                                <option value="banniere-verte" {{selected "banniere-verte" system.faction.value}}>
+                                    Bannière verte</option>
                             </select>
                         </div>
                         <div class="rank-line">
-                            <label>Rang:</label>
-                            <input type="text" name="system.rank.value" value="{{system.rank.value}}" placeholder="Rang dans la compagnie"/>
+                            <label>Rang & titre:</label>
+                            <input type="text" name="system.rank.value" value="{{system.rank.value}}"
+                                placeholder="Rang dans la compagnie" />
                         </div>
                     </div>
                     <div class="header-row">
@@ -25,7 +30,8 @@
                             <label>Classe:</label>
                             <select name="system.class.value">
                                 <option value="panzer" {{selected "panzer" system.class.value}}>Panzer</option>
-                                <option value="tirailleur" {{selected "tirailleur" system.class.value}}>Tirailleur</option>
+                                <option value="tirailleur" {{selected "tirailleur" system.class.value}}>Tirailleur
+                                </option>
                                 <option value="soigneur" {{selected "soigneur" system.class.value}}>Soigneur</option>
                                 <option value="mage" {{selected "mage" system.class.value}}>Mage</option>
                             </select>
@@ -39,106 +45,110 @@
                                 <option value="magicka" {{selected "magicka" system.affinity.value}}>Magicka</option>
                                 <option value="ignis" {{selected "ignis" system.affinity.value}}>Ignis</option>
                                 <option value="terra" {{selected "terra" system.affinity.value}}>Terra</option>
-                                <option value="exterieur" {{selected "exterieur" system.affinity.value}}>Extérieur</option>
+                                <option value="exterieur" {{selected "exterieur" system.affinity.value}}>Extérieur
+                                </option>
                             </select>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="faction-crest">
-                <img src="systems/voidHorizon/assets/crests/{{system.faction.value}}.png" alt="Blason {{system.faction.value}}" />
+                <img src="systems/voidHorizon/assets/crests/{{system.faction.value}}.png"
+                    alt="Blason {{system.faction.value}}" />
             </div>
         </div>
         <div class="main-content">
             <div class="stats-health-row">
-                <div class="main-stats">
-                    <div class="stat">
-                        <div class="stat-header">
-                            <img src="systems/voidHorizon/assets/icons/agilite.png" alt="Agilité" class="stat-icon" />
-                            <label>Agilité</label>
+                <div class="main">
+                    <div class="main-stat">
+                        <div class="stat">
+                            <div class="stat-header">
+                                <img src="systems/voidHorizon/assets/icons/agilite.png" alt="Agilité"
+                                    class="stat-icon" />
+                                <label class="rollable" data-stat="agilite">Agilité</label>
+                            </div>
+                            <div class="stat-controls">
+                                <select name="system.agilite.value">
+                                    <option value="1d4" {{selected "1d4" system.agilite.value}}>1d4</option>
+                                    <option value="1d6" {{selected "1d6" system.agilite.value}}>1d6</option>
+                                    <option value="1d8" {{selected "1d8" system.agilite.value}}>1d8</option>
+                                    <option value="1d10" {{selected "1d10" system.agilite.value}}>1d10</option>
+                                    <option value="1d12" {{selected "1d12" system.agilite.value}}>1d12</option>
+                                    <option value="1d20" {{selected "1d20" system.agilite.value}}>1d20</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="stat-controls">
-                            <select name="system.agilite.value">
-                                <option value="1d4" {{selected "1d4" system.agilite.value}}>1d4</option>
-                                <option value="1d6" {{selected "1d6" system.agilite.value}}>1d6</option>
-                                <option value="1d8" {{selected "1d8" system.agilite.value}}>1d8</option>
-                                <option value="1d10" {{selected "1d10" system.agilite.value}}>1d10</option>
-                                <option value="1d12" {{selected "1d12" system.agilite.value}}>1d12</option>
-                                <option value="1d20" {{selected "1d20" system.agilite.value}}>1d20</option>
-                            </select>
-                            <button type="button" class="roll-stat" data-stat="agilite"><i class="fas fa-dice-d20"></i></button>
+                        <div class="stat">
+                            <div class="stat-header">
+                                <img src="systems/voidHorizon/assets/icons/pimpance.png" alt="Pimpance"
+                                    class="stat-icon" />
+                                <label class="rollable" data-stat="pimpance">Pimpance</label>
+                            </div>
+                            <div class="stat-controls">
+                                <select name="system.pimpance.value">
+                                    <option value="1d4" {{selected "1d4" system.pimpance.value}}>Tâche</option>
+                                    <option value="1d6" {{selected "1d6" system.pimpance.value}}>Pas top</option>
+                                    <option value="1d8" {{selected "1d8" system.pimpance.value}}>Honnête</option>
+                                    <option value="1d10" {{selected "1d10" system.pimpance.value}}>Clinquant</option>
+                                    <option value="1d12" {{selected "1d12" system.pimpance.value}}>Majestueux</option>
+                                    <option value="1d20" {{selected "1d20" system.pimpance.value}}>Ramirez</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-header">
-                            <img src="systems/voidHorizon/assets/icons/pimpance.png" alt="Pimpance" class="stat-icon" />
-                            <label>Pimpance</label>
+                        <div class="stat">
+                            <div class="stat-header">
+                                <img src="systems/voidHorizon/assets/icons/moral.png" alt="Moral" class="stat-icon" />
+                                <label>Moral</label>
+                            </div>
+                            <div class="stat-controls">
+                                <select name="system.moral.value">
+                                    <option value="1d4" {{selected "1d4" system.moral.value}}>1d4</option>
+                                    <option value="1d6" {{selected "1d6" system.moral.value}}>1d6</option>
+                                    <option value="1d8" {{selected "1d8" system.moral.value}}>1d8</option>
+                                    <option value="1d10" {{selected "1d10" system.moral.value}}>1d10</option>
+                                    <option value="1d12" {{selected "1d12" system.moral.value}}>1d12</option>
+                                    <option value="1d20" {{selected "1d20" system.moral.value}}>1d20</option>
+                                </select>
+                                <button type="button" class="roll-stat" data-stat="moral"><i
+                                        class="fas fa-dice-d20"></i></button>
+                            </div>
                         </div>
-                        <div class="stat-controls">
-                            <select name="system.pimpance.value">
-                                <option value="1d4" {{selected "1d4" system.pimpance.value}}>Tâche</option>
-                                <option value="1d6" {{selected "1d6" system.pimpance.value}}>Pas top</option>
-                                <option value="1d8" {{selected "1d8" system.pimpance.value}}>Honnête</option>
-                                <option value="1d10" {{selected "1d10" system.pimpance.value}}>Clinquant</option>
-                                <option value="1d12" {{selected "1d12" system.pimpance.value}}>Majestueux</option>
-                                <option value="1d20" {{selected "1d20" system.pimpance.value}}>Ramirez</option>
-                            </select>
-                            <button type="button" class="roll-stat" data-stat="pimpance"><i class="fas fa-dice-d20"></i></button>
+                        <div class="stat">
+                            <div class="stat-header">
+                                <img src="systems/voidHorizon/assets/icons/martialite.png" alt="Martialité"
+                                    class="stat-icon" />
+                                <label class="rollable" data-stat="martialite">Martialité</label>
+                            </div>
+                            <div class="stat-controls">
+                                <select name="system.martialite.value">
+                                    <option value="1d4" {{selected "1d4" system.martialite.value}}>1d4</option>
+                                    <option value="1d6" {{selected "1d6" system.martialite.value}}>1d6</option>
+                                    <option value="1d8" {{selected "1d8" system.martialite.value}}>1d8</option>
+                                    <option value="1d10" {{selected "1d10" system.martialite.value}}>1d10</option>
+                                    <option value="1d12" {{selected "1d12" system.martialite.value}}>1d12</option>
+                                    <option value="1d20" {{selected "1d20" system.martialite.value}}>1d20</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-header">
-                            <img src="systems/voidHorizon/assets/icons/moral.png" alt="Moral" class="stat-icon" />
-                            <label>Moral</label>
-                        </div>
-                        <div class="stat-controls">
-                            <select name="system.moral.value">
-                                <option value="1d4" {{selected "1d4" system.moral.value}}>1d4</option>
-                                <option value="1d6" {{selected "1d6" system.moral.value}}>1d6</option>
-                                <option value="1d8" {{selected "1d8" system.moral.value}}>1d8</option>
-                                <option value="1d10" {{selected "1d10" system.moral.value}}>1d10</option>
-                                <option value="1d12" {{selected "1d12" system.moral.value}}>1d12</option>
-                                <option value="1d20" {{selected "1d20" system.moral.value}}>1d20</option>
-                            </select>
-                            <button type="button" class="roll-stat" data-stat="moral"><i class="fas fa-dice-d20"></i></button>
-                        </div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-header">
-                            <img src="systems/voidHorizon/assets/icons/martialite.png" alt="Martialité" class="stat-icon" />
-                            <label>Martialité</label>
-                        </div>
-                        <div class="stat-controls">
-                            <select name="system.martialite.value">
-                                <option value="1d4" {{selected "1d4" system.martialite.value}}>1d4</option>
-                                <option value="1d6" {{selected "1d6" system.martialite.value}}>1d6</option>
-                                <option value="1d8" {{selected "1d8" system.martialite.value}}>1d8</option>
-                                <option value="1d10" {{selected "1d10" system.martialite.value}}>1d10</option>
-                                <option value="1d12" {{selected "1d12" system.martialite.value}}>1d12</option>
-                                <option value="1d20" {{selected "1d20" system.martialite.value}}>1d20</option>
-                            </select>
-                            <button type="button" class="roll-stat" data-stat="martialite"><i class="fas fa-dice-d20"></i></button>
-                        </div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-header">
-                            <img src="systems/voidHorizon/assets/icons/arcane.png" alt="Arcane" class="stat-icon" />
-                            <label>Arcane</label>
-                        </div>
-                        <div class="stat-controls">
-                            <select name="system.arcane.value">
-                                <option value="1d4" {{selected "1d4" system.arcane.value}}>1d4</option>
-                                <option value="1d6" {{selected "1d6" system.arcane.value}}>1d6</option>
-                                <option value="1d8" {{selected "1d8" system.arcane.value}}>1d8</option>
-                                <option value="1d10" {{selected "1d10" system.arcane.value}}>1d10</option>
-                                <option value="1d12" {{selected "1d12" system.arcane.value}}>1d12</option>
-                                <option value="1d20" {{selected "1d20" system.arcane.value}}>1d20</option>
-                            </select>
-                            <button type="button" class="roll-stat" data-stat="arcane"><i class="fas fa-dice-d20"></i></button>
+                        <div class="stat">
+                            <div class="stat-header">
+                                <img src="systems/voidHorizon/assets/icons/arcane.png" alt="Arcane" class="stat-icon" />
+                                <label class="rollable" data-stat="arcane">Arcane</label>
+                            </div>
+                            <div class="stat-controls">
+                                <select name="system.arcane.value">
+                                    <option value="1d4" {{selected "1d4" system.arcane.value}}>1d4</option>
+                                    <option value="1d6" {{selected "1d6" system.arcane.value}}>1d6</option>
+                                    <option value="1d8" {{selected "1d8" system.arcane.value}}>1d8</option>
+                                    <option value="1d10" {{selected "1d10" system.arcane.value}}>1d10</option>
+                                    <option value="1d12" {{selected "1d12" system.arcane.value}}>1d12</option>
+                                    <option value="1d20" {{selected "1d20" system.arcane.value}}>1d20</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="health-column">
                     <div class="health-status">
                         <span class="status-label">État :</span>
@@ -159,13 +169,15 @@
                         <div class="resource">
                             <label>Armure</label>
                             <div class="resource-value">
-                                <input type="number" name="system.resources.armor.value" value="{{actor.system.resources.armor.value}}" min="0"/>
+                                <input type="number" name="system.resources.armor.value"
+                                    value="{{actor.system.resources.armor.value}}" min="0" />
                             </div>
                         </div>
                         <div class="stat">
                             <label>Constitution</label>
                             <div class="stat-controls">
-                                <input type="number" name="system.constitution.value" value="{{system.constitution.value}}" min="1" max="10"/>
+                                <input type="number" name="system.constitution.value"
+                                    value="{{system.constitution.value}}" min="1" max="10" />
                             </div>
                         </div>
                     </div>
@@ -174,10 +186,12 @@
                         <div class="armor-container">
                             {{#each (times actor.system.resources.armor.value)}}
                             <div class="shield-wrapper">
-                                <button type="button" class="shield-button active" data-shield-index="{{this}}" data-active="true">
+                                <button type="button" class="shield-button active" data-shield-index="{{this}}"
+                                    data-active="true">
                                     <i class="fas fa-shield-alt"></i>
                                 </button>
-                                <button type="button" class="shield-button broken" data-shield-index="{{this}}" data-active="false">
+                                <button type="button" class="shield-button broken" data-shield-index="{{this}}"
+                                    data-active="false">
                                     <i class="fas fa-shield-alt" style="opacity: 0.3;"></i>
                                 </button>
                             </div>
@@ -189,10 +203,12 @@
                         <div class="hearts-container">
                             {{#each (times system.constitution.value)}}
                             <div class="heart-wrapper">
-                                <button type="button" class="heart-button alive" data-heart-index="{{this}}" data-alive="true">
+                                <button type="button" class="heart-button alive" data-heart-index="{{this}}"
+                                    data-alive="true">
                                     <i class="fas fa-heart"></i>
                                 </button>
-                                <button type="button" class="heart-button dead" data-heart-index="{{this}}" data-alive="false">
+                                <button type="button" class="heart-button dead" data-heart-index="{{this}}"
+                                    data-alive="false">
                                     <i class="fas fa-heart-broken"></i>
                                 </button>
                             </div>

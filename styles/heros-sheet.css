@@ -1,3 +1,7 @@
+img{
+    border:0px solid red;
+}
+
 .voidHorizon-sheet.heros-sheet {
     min-width: 600px;
     min-height: 600px;
@@ -30,7 +34,7 @@
     align-items: center;
     justify-content: center;
     background: rgba(0, 0, 0, 0.05);
-    border: 2px solid #800000;
+    /* border: 2px solid #800000; */
     border-radius: 4px;
     padding: 0.5rem;
 }
@@ -129,7 +133,7 @@
     height: 122px;
     margin-right: 10px;
     object-fit: cover;
-    border: 2px solid #800000;
+    /* border: 2px solid #800000; */
     border-radius: 4px;
 }
 
@@ -185,52 +189,49 @@
 
 .stat-header {
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(128, 0, 0, 0.3);
+    margin-bottom: 0.5rem;
 }
 
-.stat-icon {
-    width: 24px;
-    height: 24px;
+.stat-header .stat-icon {
+    width: 32px;
+    height: 32px;
     object-fit: contain;
 }
 
-.stat-header label {
-    font-weight: bold;
+.stat-header label.rollable {
+    cursor: pointer;
     color: #800000;
+    font-weight: bold;
+    transition: color 0.2s ease;
+    text-align: center;
     margin: 0;
+}
+
+.stat-header label.rollable:hover {
+    color: #ff0000;
+    text-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
 }
 
 .stat-controls {
     display: flex;
     gap: 0.5rem;
-    align-items: center;
 }
 
 .stat-controls select {
     flex: 1;
-    min-width: 80px;
     padding: 0.25rem;
     border: 1px solid #ccc;
     border-radius: 4px;
     background: white;
 }
 
-.stat-controls button {
-    padding: 0.25rem 0.5rem;
-    border: 1px solid #800000;
-    border-radius: 4px;
-    background: white;
-    color: #800000;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.stat-controls button:hover {
-    background: #800000;
-    color: white;
+.stat-controls select:focus {
+    border-color: #800000;
+    outline: none;
+    box-shadow: 0 0 3px rgba(128, 0, 0, 0.3);
 }
 
 .health-status {
