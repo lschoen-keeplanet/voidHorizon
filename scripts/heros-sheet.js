@@ -11,8 +11,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     /** @override */
-    getData() {
-        const data = super.getData();
+    async getData() {
+        const data = await super.getData();
         data.dtypes = ["String", "Number", "Boolean"];
 
         // Préparation des données pour le template
@@ -76,7 +76,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Ajouter les helpers pour le template
         data.helpers = {
             getSelectedText: (value, type) => {
-                const options = {
+                const mappings = {
                     pimpance: {
                         "1d4": "Tâche",
                         "1d6": "Pas top",
@@ -86,11 +86,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                         "1d20": "Ramirez"
                     }
                 };
-                
-                return options[type]?.[value] || value;
+                return mappings[type]?.[value] || value;
             }
         };
         
+        data.isReadOnly = true; // Ajout d'un flag pour indiquer que nous sommes en mode lecture
         return data;
     }
 
