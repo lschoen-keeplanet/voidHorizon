@@ -92,22 +92,13 @@
         </div>
         
         <div class="health-column">
-            <div class="stat constitution-hearts">
-                <div class="stats-row">
-                    <div class="resource">
-                        <label>Armure</label>
-                        <div class="resource-value">
-                            <input type="number" name="system.resources.armor.value" value="{{actor.system.resources.armor.value}}" min="0"/>
-                        </div>
-                    </div>
-                    <div class="stat">
-                        <label>Constitution</label>
-                        <div class="stat-controls">
-                            <input type="number" name="system.constitution.value" value="{{system.constitution.value}}" min="1" max="10"/>
-                        </div>
+            <div class="armor-section">
+                <div class="resource">
+                    <label>Armure</label>
+                    <div class="resource-value">
+                        <input type="number" name="system.resources.armor.value" value="{{actor.system.resources.armor.value}}" min="0"/>
                     </div>
                 </div>
-
                 <div class="armor-container">
                     {{#each (times actor.system.resources.armor.value)}}
                     <div class="heart-wrapper">
@@ -120,7 +111,15 @@
                     </div>
                     {{/each}}
                 </div>
+            </div>
 
+            <div class="health-section">
+                <div class="stat">
+                    <label>Constitution</label>
+                    <div class="stat-controls">
+                        <input type="number" name="system.constitution.value" value="{{system.constitution.value}}" min="1" max="10"/>
+                    </div>
+                </div>
                 <div class="hearts-container">
                     {{#each (times system.constitution.value)}}
                     <div class="heart-wrapper">
@@ -133,7 +132,6 @@
                     </div>
                     {{/each}}
                 </div>
-
                 <div class="health-status">
                     <span class="status-label">État :</span>
                     <span class="status-value" data-health-status>

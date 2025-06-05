@@ -374,7 +374,6 @@ textarea:focus {
     flex-direction: column;
     gap: 5px;
     width: 100%;
-    margin-top: 10px;
     align-items: center;
 }
 
@@ -423,7 +422,6 @@ textarea:focus {
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
-    margin-bottom: 8px;
     justify-content: center;
     max-width: 84px;
     margin-left: auto;
@@ -478,40 +476,27 @@ textarea:focus {
     border-radius: 5px;
     padding: 10px;
     margin-left: auto;
-}
-
-.health-column .stat {
-    border: none;
-    padding: 0;
-    background: none;
-}
-
-.health-column .stat label {
-    text-align: center;
-    font-size: 1.2em;
-    margin-bottom: 10px;
-    color: #800000;
-}
-
-.health-column .health-status {
-    margin-bottom: 15px;
-}
-
-.health-column .health-status > div {
     display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.health-column .health-status .resource,
-.health-column .health-status .stat {
-    flex: 1;
+.armor-section,
+.health-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.armor-section .resource,
+.health-section .stat {
     background: none;
     border: none;
     padding: 0;
 }
 
-.health-column .health-status label {
+.armor-section label,
+.health-section label {
     display: block;
     text-align: center;
     font-weight: bold;
@@ -519,64 +504,14 @@ textarea:focus {
     color: #800000;
 }
 
-.health-column .health-status .resource-value,
-.health-column .health-status .stat-controls {
+.armor-section .resource-value,
+.health-section .stat-controls {
     display: flex;
     justify-content: center;
 }
 
-.health-column .health-status input {
-    width: 60px;
-    text-align: center;
-    padding: 2px;
-    border: 1px solid #800000;
-    border-radius: 3px;
-}
-
-.health-column .health-status .status-label {
-    display: block;
-    text-align: center;
-    margin-top: 10px;
-}
-
-.health-column .health-status .status-value {
-    display: block;
-    text-align: center;
-    margin-top: 5px;
-    padding: 5px;
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 3px;
-}
-
-.health-column .stats-row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.health-column .stats-row .resource,
-.health-column .stats-row .stat {
-    flex: 1;
-    background: none;
-    border: none;
-    padding: 0;
-}
-
-.health-column .stats-row label {
-    display: block;
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #800000;
-}
-
-.health-column .stats-row .resource-value,
-.health-column .stats-row .stat-controls {
-    display: flex;
-    justify-content: center;
-}
-
-.health-column .stats-row input {
+.armor-section input,
+.health-section input {
     width: 60px;
     text-align: center;
     padding: 2px;
