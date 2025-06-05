@@ -43,6 +43,7 @@
     "changelog": "CHANGELOG.md",
     "template": {
         "Actor": {
+            "types": ["heros"],
             "heros": {
                 "name": "heros",
                 "img": "systems/voidHorizon/assets/icons/hero.svg",
