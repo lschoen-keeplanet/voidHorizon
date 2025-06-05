@@ -2,7 +2,7 @@
     "id": "voidHorizon",
     "title": "Void Horizon",
     "description": "Le système de jeu Void Horizon",
-    "version": "1.0.0",
+    "version": "0.0.101",
     "compatibility": {
         "minimum": "11",
         "verified": "11",
