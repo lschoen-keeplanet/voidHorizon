@@ -486,42 +486,27 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      * @param {string} stat - Le nom de la statistique
      * @private
      */
+    async _rollStat(stat) {
+        const value = this.actor.system[stat].value;
+        if (!value) return;
+        
+        const roll = new Roll(value);
+        await roll.evaluate({async: true});
+        roll.toMessage({
+            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+            flavor: `${stat.charAt(0).toUpperCase() + stat.slice(1)} Check`
+        });
+    }
+
+    /**
+     * Gère le clic sur un label de statistique
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
     async _onRollStat(event) {
         event.preventDefault();
         const stat = event.currentTarget.dataset.stat;
-        const actor = this.actor;
-        const statValue = actor.system.stats[stat].value;
-        
-        // Créer le lancer de dés
-        const roll = new Roll(`1d20+${statValue}`);
-        await roll.evaluate({async: true});
-        
-        // Préparer les données pour le template
-        const templateData = {
-            title: `${actor.name} - ${stat.charAt(0).toUpperCase() + stat.slice(1)}`,
-            subtitle: `Test de ${stat.charAt(0).toUpperCase() + stat.slice(1)}`,
-            roll: roll,
-            formula: roll.formula,
-            total: roll.total,
-            success: roll.total >= 15,
-            failure: roll.total <= 5,
-            rolls: roll.dice[0].results.map(r => ({
-                value: r.result,
-                critical: r.result === 20,
-                fumble: r.result === 1
-            }))
-        };
-        
-        // Rendre le template
-        const html = await renderTemplate("templates/chat/roll.html", templateData);
-        
-        // Envoyer le message dans le chat
-        ChatMessage.create({
-            user: game.user.id,
-            speaker: ChatMessage.getSpeaker({ actor: actor }),
-            content: html,
-            sound: CONFIG.sounds.dice
-        });
+        await this._rollStat(stat);
     }
 
     /**
