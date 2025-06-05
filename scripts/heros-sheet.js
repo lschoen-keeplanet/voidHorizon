@@ -131,6 +131,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             const activeButton = wrapper.querySelector('.active');
             const brokenButton = wrapper.querySelector('.broken');
             
+            // Vérification de sécurité
+            if (!activeButton || !brokenButton) {
+                console.error("Boutons d'armure non trouvés lors de l'initialisation:", { activeButton, brokenButton });
+                return;
+            }
+            
             if (shieldIndex < armorDamage) {
                 activeButton.classList.add('hidden');
                 brokenButton.classList.remove('hidden');
@@ -562,6 +568,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const isActive = button.dataset.active === "true";
         const shieldWrapper = button.closest('.shield-wrapper');
         
+        // Vérification de sécurité
+        if (!shieldWrapper) {
+            console.error("Wrapper d'armure non trouvé");
+            return;
+        }
+        
         // Mettre à jour la valeur de dégâts d'armure
         const currentDamage = this.actor.system.resources.armorDamage?.value || 0;
         const newDamage = isActive ? currentDamage + 1 : currentDamage - 1;
@@ -594,6 +606,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     _updateShieldDisplay(shieldWrapper, isActive) {
         const activeButton = shieldWrapper.querySelector('.active');
         const brokenButton = shieldWrapper.querySelector('.broken');
+        
+        // Vérification de sécurité
+        if (!activeButton || !brokenButton) {
+            console.error("Boutons d'armure non trouvés:", { activeButton, brokenButton });
+            return;
+        }
         
         if (isActive) {
             activeButton.classList.add('hidden');
