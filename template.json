@@ -43,27 +43,6 @@
     "changelog": "CHANGELOG.md",
     "template": {
         "Actor": {
-            "types": [
-                "heros"
-            ],
-            "templates": {
-                "background": {
-                    "biography": ""
-                },
-                "resources": {
-                    "blessure": {
-                        "value": 0
-                    },
-                    "armor": {
-                        "value": 0
-                    },
-                    "blessedHearts": {
-                        "value": []
-                    },
-                    "armorDamage": {
-                        "value": 0
-                    }
-                },
                 "heros": {
                     "name": "heros",
                     "img": "systems/voidHorizon/assets/icons/hero.svg",
