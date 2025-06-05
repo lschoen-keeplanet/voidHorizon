@@ -1,136 +1,68 @@
 {
-    "Actor": {
-        "types": [
-            "heros"
-        ],
-        "templates": {
-            "background": {
-                "biography": ""
-            },
-            "resources": {
-                "blessure": {
-                    "value": 0
-                },
-                "armor": {
-                    "value": 0
-                },
-                "blessedHearts": {
-                    "value": []
-                },
-                "armorDamage": {
-                    "value": 0
-                }
-            },
+    "id": "voidHorizon",
+    "title": "Void Horizon",
+    "description": "Le système de jeu Void Horizon",
+    "version": "1.0.0",
+    "compatibility": {
+        "minimum": "11",
+        "verified": "11",
+        "maximum": "11"
+    },
+    "authors": [
+        {
+            "name": "Votre Nom",
+            "url": "https://github.com/votre-nom"
+        }
+    ],
+    "esmodules": [
+        "scripts/voidHorizon.js"
+    ],
+    "styles": [
+        "styles/voidHorizon.css"
+    ],
+    "languages": [
+        {
+            "lang": "fr",
+            "name": "Français",
+            "path": "lang/fr.json"
+        }
+    ],
+    "socket": false,
+    "initiative": "1d20",
+    "gridDistance": 1,
+    "gridUnits": "m",
+    "primaryTokenAttribute": "resources.hp",
+    "secondaryTokenAttribute": null,
+    "url": "https://github.com/votre-nom/voidHorizon",
+    "manifest": "https://raw.githubusercontent.com/votre-nom/voidHorizon/main/system.json",
+    "download": "https://github.com/votre-nom/voidHorizon/archive/refs/heads/main.zip",
+    "license": "LICENSE.txt",
+    "readme": "README.md",
+    "bugs": "https://github.com/votre-nom/voidHorizon/issues",
+    "changelog": "CHANGELOG.md",
+    "system": {
+        "actors": {
             "heros": {
-                "name": "Héros",
-                "img": "systems/voidHorizon/assets/icons/hero.svg",
-                "templates": [
-                    "background",
-                    "resources"
-                ],
-                "system": {
-                    "resources": {
-                        "armor": {
-                            "value": 0
-                        },
-                        "armorDamage": {
-                            "value": 0
-                        }
-                    },
+                "types": ["heros"],
+                "characteristics": {
                     "martialite": {
-                        "value": "1d4",
-                        "label": "Martialité"
+                        "value": "1d8",
+                        "max": "1d20"
                     },
                     "pimpance": {
-                        "value": "1d4",
-                        "label": "Pimpance"
+                        "value": "1d8",
+                        "max": "1d20"
                     },
                     "acuite": {
-                        "value": "1d4",
-                        "label": "Acuité"
+                        "value": "1d8",
+                        "max": "1d20"
                     },
                     "arcane": {
-                        "value": "1d4",
-                        "label": "Arcane"
-                    },
-                    "constitution": {
-                        "value": 4,
-                        "label": "Constitution"
-                    },
-                    "class": {
-                        "value": "",
-                        "label": "Classe"
-                    },
-                    "faction": {
-                        "value": "caradoc",
-                        "label": "Faction"
-                    },
-                    "rank": {
-                        "value": "",
-                        "label": "Rang"
-                    },
-                    "affinity": {
-                        "value": "aucune",
-                        "label": "Affinité"
-                    },
-                    "images": {
-                        "type": "Object",
-                        "default": {}
-                    },
-                    "hp": {
-                        "value": 10,
-                        "max": 10,
-                        "label": "Points de vie"
-                    },
-                    "mana": {
-                        "value": 10,
-                        "max": 10,
-                        "label": "Points de mana"
-                    },
-                    "defense": {
-                        "value": 10,
-                        "label": "Défense"
-                    },
-                    "initiative": {
-                        "value": 0,
-                        "label": "Initiative"
-                    },
-                    "speed": {
-                        "value": 6,
-                        "label": "Vitesse"
+                        "value": "1d8",
+                        "max": "1d20"
                     }
                 }
             }
         }
-    },
-    "Item": {
-        "types": [
-            "outil",
-            "A",
-            "equipment"
-        ],
-        "templates": {
-            "itemDescription": "its an item or a weapon",
-            "equipment": {
-                "name": "Équipement",
-                "img": "systems/voidHorizon/assets/icons/equipment.svg",
-                "system": {
-                    "description": ""
-                }
-            }
-        },
-        "outil": {
-            "damage": 0,
-            "portée": 0,
-            "moral": 0,
-            "price": 100,
-            "sword": 0
-        },
-        "A": {
-            "damage": 0
-        }
-    },
-    "styles": [
-        "styles/heros-sheet.css"
-    ]
+    }
 }
