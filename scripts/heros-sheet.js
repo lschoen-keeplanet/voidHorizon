@@ -82,10 +82,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         html.find('.roll-stat').click(this._onRollStat.bind(this));
 
         // Gestion des cœurs de constitution
-        html.find('.heart-button').click(this._onHeartClick.bind(this));
+        html.find('.hearts-container .heart-button').click(this._onHeartClick.bind(this));
         
         // Gestion des boucliers d'armure
-        html.find('.shield-button').click(this._onShieldClick.bind(this));
+        html.find('.armor-container .heart-button').click(this._onShieldClick.bind(this));
 
         // Initialiser l'état des cœurs et de la santé
         this._initializeHearts(html);
@@ -124,19 +124,19 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      */
     _initializeShields(html) {
         const armorDamage = this.actor.system.resources.armorDamage?.value || 0;
-        const shields = html.find('.shield-wrapper');
+        const shields = html.find('.armor-container .heart-wrapper');
         
         shields.each((index, wrapper) => {
             const shieldIndex = index;
-            const activeButton = wrapper.querySelector('.active');
-            const brokenButton = wrapper.querySelector('.broken');
+            const aliveButton = wrapper.querySelector('.alive');
+            const deadButton = wrapper.querySelector('.dead');
             
             if (shieldIndex < armorDamage) {
-                activeButton.classList.add('hidden');
-                brokenButton.classList.remove('hidden');
+                aliveButton.classList.add('hidden');
+                deadButton.classList.remove('hidden');
             } else {
-                activeButton.classList.remove('hidden');
-                brokenButton.classList.add('hidden');
+                aliveButton.classList.remove('hidden');
+                deadButton.classList.add('hidden');
             }
         });
     }
@@ -542,28 +542,57 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     /**
-     * Gère le clic sur un bouclier
+     * Gère le clic sur un bouclier d'armure
      * @param {Event} event - L'événement de clic
      * @private
      */
     async _onShieldClick(event) {
         event.preventDefault();
         const button = event.currentTarget;
-        const shieldIndex = parseInt(button.dataset.shieldIndex);
-        const isActive = button.dataset.active === "true";
-        const wrapper = button.closest('.shield-wrapper');
+        const shieldIndex = parseInt(button.dataset.heartIndex);
+        const isAlive = button.dataset.alive === "true";
+        const shieldWrapper = button.closest('.heart-wrapper');
         
-        // Calculer le nouveau nombre de boucliers cassés
+        // Mettre à jour la valeur de dégâts d'armure
         const currentDamage = this.actor.system.resources.armorDamage?.value || 0;
-        const newDamage = isActive ? currentDamage + 1 : currentDamage - 1;
+        const newDamage = isAlive ? currentDamage + 1 : currentDamage - 1;
         
-        // Mettre à jour la valeur
-        await this.actor.update({
-            'system.resources.armorDamage.value': newDamage
-        });
+        try {
+            // Mettre à jour l'acteur avec la nouvelle valeur de dégâts d'armure
+            const updateData = {
+                'system.resources.armorDamage.value': newDamage
+            };
+            
+            console.log("Mise à jour des boucliers:", updateData);
+            await this.actor.update(updateData);
+            
+            // Mettre à jour l'affichage des boutons
+            this._updateShieldDisplay(shieldWrapper, isAlive);
+            
+            // Forcer la mise à jour de l'affichage
+            this.render(true);
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour des boucliers:", error);
+        }
+    }
+
+    /**
+     * Met à jour l'affichage des boutons d'un bouclier
+     * @param {HTMLElement} shieldWrapper - Le wrapper du bouclier
+     * @param {boolean} isAlive - Si le bouclier est intact
+     * @private
+     */
+    _updateShieldDisplay(shieldWrapper, isAlive) {
+        const aliveButton = shieldWrapper.querySelector('.alive');
+        const deadButton = shieldWrapper.querySelector('.dead');
         
-        // Mettre à jour l'affichage
-        this._updateShieldsDisplay();
+        if (isAlive) {
+            aliveButton.classList.add('hidden');
+            deadButton.classList.remove('hidden');
+        } else {
+            aliveButton.classList.remove('hidden');
+            deadButton.classList.add('hidden');
+        }
     }
 }
 
