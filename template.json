@@ -40,6 +40,14 @@
                     "resources"
                 ],
                 "system": {
+                    "resources": {
+                        "armor": {
+                            "value": 0
+                        },
+                        "armorDamage": {
+                            "value": 0
+                        }
+                    },
                     "agilite": {
                         "value": "1d4",
                         "label": "Agilité"

@@ -275,18 +275,30 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     async _onResourceChange(event) {
         event.preventDefault();
         const target = event.target;
-        const value = target.value;
+        const value = parseInt(target.value);
         const name = target.name;
 
-        // Mise à jour de la valeur
-        await this.actor.update({
-            [name]: value
-        });
+        console.log("=== Debug Armor Change ===");
+        console.log("Name:", name);
+        console.log("Value:", value);
+        console.log("Current actor data:", this.actor.system);
 
-        // Si c'est un changement d'armure, mettre à jour l'affichage des boucliers
-        if (name === "system.resources.armor.value") {
-            this._updateShieldsDisplay();
+        // Mise à jour de la valeur
+        try {
+            await this.actor.update({
+                [name]: value
+            });
+            console.log("Mise à jour réussie");
+
+            // Si c'est un changement d'armure, mettre à jour l'affichage des boucliers
+            if (name === "system.resources.armor.value") {
+                console.log("Mise à jour des boucliers");
+                this._updateShieldsDisplay();
+            }
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour:", error);
         }
+        console.log("=== Fin Debug Armor Change ===");
     }
 
     /**
@@ -294,15 +306,23 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      * @private
      */
     _updateShieldsDisplay() {
-        const armorValue = this.actor.system.resources.armor?.value || 0;
-        const armorDamage = this.actor.system.resources.armorDamage?.value || 0;
+        console.log("=== Debug Shields Display ===");
+        const armorValue = parseInt(this.actor.system.resources.armor?.value) || 0;
+        const armorDamage = parseInt(this.actor.system.resources.armorDamage?.value) || 0;
+        
+        console.log("Valeur d'armure:", armorValue);
+        console.log("Dégâts d'armure:", armorDamage);
+        
         const shields = this.element.find('.shield-wrapper');
+        console.log("Boucliers existants:", shields.length);
         
         // Supprimer les boucliers existants
         shields.remove();
         
         // Créer les nouveaux boucliers
         const armorContainer = this.element.find('.armor-container');
+        console.log("Container d'armure trouvé:", armorContainer.length > 0);
+        
         for (let i = 0; i < armorValue; i++) {
             const shieldWrapper = $(`
                 <div class="shield-wrapper">
@@ -328,6 +348,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 brokenButton.addClass('hidden');
             }
         }
+        console.log("Nouveaux boucliers créés:", armorValue);
+        console.log("=== Fin Debug Shields Display ===");
     }
 
     /**
@@ -475,11 +497,6 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const blessure = this.actor.system.resources.blessure?.value || 0;
         const remainingHearts = constitution - blessure;
         
-        console.log("=== Debug Health Status ===");
-        console.log("Constitution:", constitution);
-        console.log("Blessure:", blessure);
-        console.log("Cœurs restants:", remainingHearts);
-        
         let status = "Incapacité";
         let statusClass = "status-critical";
         
@@ -494,8 +511,6 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             statusClass = "status-danger";
         }
         
-        console.log("État calculé:", status);
-        
         // Mettre à jour le contenu HTML directement
         const statusHtml = `
             <span class="status-label">État :</span>
@@ -505,12 +520,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const healthStatusContainer = this.element.find('.health-status');
         if (healthStatusContainer.length) {
             healthStatusContainer.html(statusHtml);
-            console.log("HTML mis à jour:", healthStatusContainer.html());
-        } else {
-            console.error("Container .health-status non trouvé");
         }
-        
-        console.log("=== Fin Debug Health Status ===");
     }
 
     /**
