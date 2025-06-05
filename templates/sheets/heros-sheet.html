@@ -93,12 +93,12 @@
                     <label>Points de Vie</label>
                     <div class="armor-container">
                         {{#each (times system.resources.armor.value)}}
-                        <div class="shield-wrapper">
-                            <button type="button" class="shield-button active" data-shield-index="{{this}}" data-active="true">
-                                <i class="fas fa-shield-alt"></i>
+                        <div class="heart-wrapper">
+                            <button type="button" class="heart-button alive" data-heart-index="{{this}}" data-alive="true">
+                                <i class="fas fa-heart" style="color: #333;"></i>
                             </button>
-                            <button type="button" class="shield-button broken" data-shield-index="{{this}}" data-active="false">
-                                <i class="fas fa-shield-alt"></i>
+                            <button type="button" class="heart-button dead" data-heart-index="{{this}}" data-alive="false">
+                                <i class="fas fa-heart-broken" style="color: #333;"></i>
                             </button>
                         </div>
                         {{/each}}
