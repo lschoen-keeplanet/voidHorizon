@@ -981,27 +981,27 @@ textarea:focus {
 }
 
 /* Mode édition/lecture des armes */
-.weapon-slot.editing .edit-mode {
+.weapons-section.editing .edit-mode {
     display: block;
 }
 
-.weapon-slot.editing .read-mode {
+.weapons-section.editing .read-mode {
     display: none;
 }
 
-.weapon-slot.read-only .edit-mode {
+.weapons-section.read-only .edit-mode {
     display: none;
 }
 
-.weapon-slot.read-only .read-mode {
+.weapons-section.read-only .read-mode {
     display: block;
 }
 
-.weapon-slot.read-only .roll-weapon-btn {
+.weapons-section.read-only .roll-weapon-btn {
     display: block;
 }
 
-.weapon-slot.editing .roll-weapon-btn {
+.weapons-section.editing .roll-weapon-btn {
     display: none;
 }
 
