@@ -108,8 +108,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         html.find('.item-delete').click(this._onItemDelete.bind(this));
         html.find('.create-item').click(this._onCreateItem.bind(this));
 
-        // Gestion des changements de valeurs
-        html.find('select').change(this._onSelectChange.bind(this));
+        // Gestion des changements de valeurs (sans sauvegarde automatique)
+        html.find('select[name^="system."]').change(this._onSelectChange.bind(this));
         html.find('input[type="text"]').change(this._onTextChange.bind(this));
         html.find('input[type="number"]').change(this._onResourceChange.bind(this));
 
@@ -125,9 +125,6 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Gestion des boucliers d'armure
         html.find('.armor-container .shield-button').click(this._onShieldClick.bind(this));
 
-        // Gestion des changements de sélection
-        html.find('select[name^="system."]').change(this._onSelectChange.bind(this));
-        
         // Gestion des changements de rang
         html.find('input[name="system.rank.value"]').change(this._onRankChange.bind(this));
         
@@ -481,27 +478,108 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     /**
-     * Gère les changements de sélection (classe)
+     * Gère les changements de sélection (classe, affinité, caractéristiques)
      * @param {Event} event - L'événement de changement
      * @private
      */
-    async _onSelectChange(event) {
+    _onSelectChange(event) {
         event.preventDefault();
         const select = event.target;
         const field = select.name;
-        const updateData = {};
-        updateData[field] = select.value;
         
-        try {
-            await this.actor.update(updateData);
-            console.log(`Mise à jour réussie pour ${field}: ${select.value}`);
-            // Forcer la mise à jour de l'affichage
-            this.render(true);
-        } catch (error) {
-            console.error("Erreur lors de la mise à jour:", error);
-            // Restaurer la valeur précédente en cas d'erreur
-            select.value = this.actor.system[field.split('.')[2]].value;
+        // Stocker le changement en mémoire sans sauvegarder
+        if (!this._pendingChanges) {
+            this._pendingChanges = {};
         }
+        this._pendingChanges[field] = select.value;
+        
+        console.log(`Changement en attente pour ${field}: ${select.value}`);
+        
+        // Mettre à jour l'affichage local sans sauvegarder
+        this._updateLocalDisplay(field, select.value);
+    }
+
+    /**
+     * Met à jour l'affichage local sans sauvegarder
+     * @param {string} field - Le nom du champ
+     * @param {string} value - La nouvelle valeur
+     * @private
+     */
+    _updateLocalDisplay(field, value) {
+        // Mettre à jour l'affichage en mode lecture si c'est une caractéristique
+        if (field.includes('system.') && field.endsWith('.value')) {
+            const statName = field.split('.')[1];
+            const readModeElement = this.element.find(`select[name="${field}"]`).closest('.stat-block').find('.read-mode');
+            
+            if (readModeElement.length > 0) {
+                if (statName === 'pimpance') {
+                    // Utiliser le helper pour Pimpance
+                    const mappings = {
+                        "1d4": "Tâche",
+                        "1d6": "Pas top",
+                        "1d8": "Honnête",
+                        "1d10": "Clinquant",
+                        "1d12": "Majestueux",
+                        "1d20": "Ramirez"
+                    };
+                    readModeElement.text(mappings[value] || value);
+                } else {
+                    readModeElement.text(value);
+                }
+            }
+        }
+    }
+
+    /**
+     * Sauvegarde tous les changements en attente
+     * @private
+     */
+    async _saveAllChanges() {
+        if (!this._pendingChanges || Object.keys(this._pendingChanges).length === 0) {
+            console.log("Aucun changement à sauvegarder");
+            return;
+        }
+
+        try {
+            console.log("Sauvegarde des changements:", this._pendingChanges);
+            
+            // Sauvegarder tous les changements en une seule fois
+            await this.actor.update(this._pendingChanges);
+            
+            console.log("Tous les changements ont été sauvegardés avec succès");
+            
+            // Vider les changements en attente
+            this._pendingChanges = {};
+            
+            // Notification de succès
+            ui.notifications.info("Caractéristiques sauvegardées avec succès");
+            
+        } catch (error) {
+            console.error("Erreur lors de la sauvegarde des changements:", error);
+            ui.notifications.error("Erreur lors de la sauvegarde des caractéristiques");
+            
+            // Restaurer les valeurs précédentes en cas d'erreur
+            this._restorePreviousValues();
+        }
+    }
+
+    /**
+     * Restaure les valeurs précédentes en cas d'erreur
+     * @private
+     */
+    _restorePreviousValues() {
+        if (!this._pendingChanges) return;
+        
+        Object.keys(this._pendingChanges).forEach(field => {
+            const select = this.element.find(`select[name="${field}"]`);
+            if (select.length > 0) {
+                const originalValue = this.actor.system[field.split('.')[2]]?.value;
+                select.val(originalValue);
+                this._updateLocalDisplay(field, originalValue);
+            }
+        });
+        
+        this._pendingChanges = {};
     }
 
     /**
@@ -815,15 +893,24 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const isEditing = form.classList.contains('editing');
         
         if (isEditing) {
+            // Mode sauvegarde - sauvegarder tous les changements
+            if (this._pendingChanges && Object.keys(this._pendingChanges).length > 0) {
+                this._saveAllChanges();
+            }
+            
             form.classList.remove('editing');
             form.classList.add('read-only');
             event.currentTarget.querySelector('i').classList.remove('fa-save');
             event.currentTarget.querySelector('i').classList.add('fa-edit');
+            event.currentTarget.querySelector('.button-text').textContent = 'Éditer';
         } else {
+            // Mode édition - initialiser les changements en attente
+            this._pendingChanges = {};
             form.classList.remove('read-only');
             form.classList.add('editing');
             event.currentTarget.querySelector('i').classList.remove('fa-edit');
             event.currentTarget.querySelector('i').classList.add('fa-save');
+            event.currentTarget.querySelector('.button-text').textContent = 'Sauvegarder';
         }
     }
 

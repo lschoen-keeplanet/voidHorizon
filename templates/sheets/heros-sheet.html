@@ -69,12 +69,12 @@
                             <div class="stat-controls">
                                 <select name="system.martialite.value" class="edit-mode">
                                     {{#select system.martialite.value}}
-                                    <option value="1d4">1d4</option>
-                                    <option value="1d6">1d6</option>
-                                    <option value="1d8">1d8</option>
-                                    <option value="1d10">1d10</option>
-                                    <option value="1d12">1d12</option>
-                                    <option value="1d20">1d20</option>
+                                    <option value="1d4">Deux mains gauches</option>
+                                    <option value="1d6">Combatif</option>
+                                    <option value="1d8">Soldat</option>
+                                    <option value="1d10">Expérimenté</option>
+                                    <option value="1d12">Vétéran</option>
+                                    <option value="1d20">Légende</option>
                                     {{/select}}
                                 </select>
                                 <div class="read-mode">{{system.martialite.value}}</div>
@@ -95,8 +95,8 @@
                                     <option value="1d4">Tâche</option>
                                     <option value="1d6">Pas top</option>
                                     <option value="1d8">Honnête</option>
-                                    <option value="1d10">Clinquant</option>
-                                    <option value="1d12">Majestueux</option>
+                                    <option value="1d10">Beau</option>
+                                    <option value="1d12">Splendide</option>
                                     <option value="1d20">Ramirez</option>
                                     {{/select}}
                                 </select>
@@ -115,12 +115,12 @@
                             <div class="stat-controls">
                                 <select name="system.acuite.value" class="edit-mode" data-dtype="String">
                                     {{#select system.acuite.value}}
-                                    <option value="1d4">1d4</option>
-                                    <option value="1d6">1d6</option>
-                                    <option value="1d8">1d8</option>
-                                    <option value="1d10">1d10</option>
-                                    <option value="1d12">1d12</option>
-                                    <option value="1d20">1d20</option>
+                                    <option value="1d4">Aveugle</option>
+                                    <option value="1d6">Distrait</option>
+                                    <option value="1d8">Alerte</option>
+                                    <option value="1d10">Vif</option>
+                                    <option value="1d12">Clairvoyant</option>
+                                    <option value="1d20">Fulgurant</option>
                                     {{/select}}
                                 </select>
                                 <div class="read-mode">{{system.acuite.value}}</div>
@@ -138,12 +138,12 @@
                             <div class="stat-controls">
                                 <select name="system.arcane.value" class="edit-mode">
                                     {{#select system.arcane.value}}
-                                    <option value="1d4">1d4</option>
-                                    <option value="1d6">1d6</option>
-                                    <option value="1d8">1d8</option>
-                                    <option value="1d10">1d10</option>
-                                    <option value="1d12">1d12</option>
-                                    <option value="1d20">1d20</option>
+                                    <option value="1d4">Insensible</option>
+                                    <option value="1d6">Eveillé</option>
+                                    <option value="1d8">Novice</option>
+                                    <option value="1d10">Initié</option>
+                                    <option value="1d12">Maître</option>
+                                    <option value="1d20">Archimage</option>
                                     {{/select}}
                                 </select>
                                 <div class="read-mode">{{system.arcane.value}}</div>
@@ -153,10 +153,10 @@
                             </button>
                         </div>
                         <div class="edit-mode-button">
-                            <button type="button" class="toggle-edit-mode" title="Mode édition">
+                            <button type="button" class="toggle-edit-mode" title="Cliquer pour éditer, cliquer à nouveau pour sauvegarder">
                                 <i class="fas fa-edit"></i>
+                                <span class="button-text">Éditer</span>
                             </button>
-        
                         </div>
                     </div>
                 </div>

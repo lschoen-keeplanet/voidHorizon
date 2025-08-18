@@ -20,7 +20,13 @@
 - Affiche le résultat dans le chat avec un template personnalisé
 - Gestion des erreurs et notifications
 
-### 4. Template de Chat
+### 4. Système de Sauvegarde
+- **Mode édition** : Les changements de caractéristiques sont stockés en mémoire
+- **Bouton "Sauvegarder"** : Sauvegarde toutes les caractéristiques modifiées en une fois
+- **Pas de sauvegarde automatique** : Les changements ne sont sauvegardés que lors du clic sur "Sauvegarder"
+- **Gestion des erreurs** : Restauration automatique des valeurs en cas d'échec de sauvegarde
+
+### 5. Template de Chat
 - Template `templates/chat/roll.html` créé
 - Affichage élégant des résultats de dés
 - Détails de la formule et des valeurs individuelles
@@ -28,10 +34,17 @@
 
 ## Comment Tester
 
+### Test des Dés
 1. **Ouvrir une fiche de personnage** dans Foundry VTT
 2. **Cliquer sur un bouton de dés** (icône de dé à côté d'une caractéristique)
 3. **Vérifier que les dés se lancent** et que le résultat s'affiche dans le chat
-4. **Changer la valeur d'une caractéristique** et relancer les dés pour vérifier la mise à jour
+
+### Test du Système de Sauvegarde
+1. **Cliquer sur "Éditer"** pour passer en mode édition
+2. **Modifier plusieurs caractéristiques** via les menus déroulants
+3. **Vérifier que les changements s'affichent** mais ne sont pas sauvegardés
+4. **Cliquer sur "Sauvegarder"** pour sauvegarder tous les changements
+5. **Vérifier que les changements sont persistants** après rechargement
 
 ## Structure des Fichiers Modifiés
 
