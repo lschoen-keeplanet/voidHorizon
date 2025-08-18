@@ -63,6 +63,15 @@
 - **Boutons de lancement** : Chaque équipement d'attaque a son bouton de lancement de dés
 - **Template de chat** : `templates/chat/weapon-roll.html` pour afficher les résultats
 
+### 8. Mode d'Édition des Armes
+- **Mode lecture par défaut** : Affichage des valeurs sans possibilité de modification
+- **Basculement en mode édition** : Bouton "Éditer" pour passer en mode modification
+- **Modification des champs** : Tous les champs sont modifiables (nom, type, qualité, bonus, description)
+- **Affichage local** : Les changements s'affichent immédiatement sans sauvegarde
+- **Sauvegarde manuelle** : Bouton "Sauvegarder" pour appliquer tous les changements
+- **Gestion des erreurs** : Restauration automatique des valeurs en cas d'échec
+- **Bonus de bouclier** : Application immédiate des bonus défensifs à l'affichage
+
 ## Comment Tester
 
 ### Test des Dés
@@ -108,6 +117,26 @@
 6. **Vérifier l'affichage dans le chat** avec le template d'équipement
 7. **Tester les différents rangs** : Changer le rang d'un équipement et vérifier l'affichage
 8. **Tester les bonus négatifs** : Mettre un bonus négatif et vérifier l'affichage
+
+### Test du Mode d'Édition des Armes
+9. **Tester le mode lecture par défaut** :
+    - Vérifier que la section des armes est en mode lecture
+    - Vérifier que tous les champs d'édition sont masqués
+    - Vérifier que le bouton "Lancer les dés" est visible
+10. **Tester le passage en mode édition** :
+    - Cliquer sur "Éditer"
+    - Vérifier que les champs d'édition deviennent visibles
+    - Vérifier que le bouton devient "Sauvegarder"
+    - Vérifier que le bouton "Lancer les dés" est masqué
+11. **Tester la modification des champs** :
+    - Modifier le nom, type, qualité, bonus et description
+    - Vérifier que les changements s'affichent immédiatement
+    - Vérifier qu'il n'y a pas de sauvegarde automatique
+12. **Tester la sauvegarde** :
+    - Cliquer sur "Sauvegarder"
+    - Vérifier la notification de succès
+    - Vérifier le retour en mode lecture
+    - Recharger la fiche et vérifier la persistance
 
 ## Structure des Fichiers Modifiés
 

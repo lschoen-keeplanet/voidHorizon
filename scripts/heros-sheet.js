@@ -186,11 +186,14 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Gestion des changements d'affinité
         html.find('select[name="system.affinity.value"]').change(this._onSelectChange.bind(this));
         
-        // Gestion des changements de type d'équipement (pour les boucliers)
-        html.find('select[name^="system.weapons."][name$=".type"]').change(this._onWeaponTypeChange.bind(this));
-        
-        // Gestion du mode édition/lecture des armes
-        html.find('.toggle-weapons-edit-mode').click(this._onToggleWeaponsEditMode.bind(this));
+                 // Gestion des changements de type d'équipement (pour les boucliers)
+         html.find('select[name^="system.weapons."][name$=".type"]').change(this._onWeaponTypeChange.bind(this));
+         
+         // Gestion des changements d'armes (sans sauvegarde automatique)
+         html.find('input[name^="system.weapons."], select[name^="system.weapons."], textarea[name^="system.weapons."]').change(this._onWeaponFieldChange.bind(this));
+         
+         // Gestion du mode édition/lecture des armes
+         html.find('.toggle-weapons-edit-mode').click(this._onToggleWeaponsEditMode.bind(this));
         
         // Initialiser l'état des cœurs et de la santé
         this._initializeHealthState();
@@ -1145,6 +1148,34 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      }
      
      /**
+      * Gère les changements des champs d'armes
+      * @param {Event} event - L'événement de changement
+      * @private
+      */
+     _onWeaponFieldChange(event) {
+         event.preventDefault();
+         const input = event.target;
+         const field = input.name;
+         const value = input.value;
+         
+         // Stocker le changement en mémoire sans sauvegarder
+         if (!this._pendingWeaponChanges) {
+             this._pendingWeaponChanges = {};
+         }
+         this._pendingWeaponChanges[field] = value;
+         
+         console.log(`Changement d'arme en attente pour ${field}: ${value}`);
+         
+         // Mettre à jour l'affichage local sans sauvegarder
+         this._updateLocalWeaponDisplay(field, value);
+         
+         // Si c'est un changement de type, appliquer immédiatement les bonus des boucliers
+         if (field.endsWith('.type')) {
+             this._applyShieldBonuses();
+         }
+     }
+
+     /**
       * Gère les changements de type d'équipement (pour les boucliers)
       * @param {Event} event - L'événement de changement
       * @private
@@ -1155,22 +1186,19 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
          const value = select.value;
          const field = select.name;
          
-         try {
-             // Mettre à jour l'acteur
-             await this.actor.update({
-                 [field]: value
-             });
-             
-             // Appliquer les bonus des boucliers
-             this._applyShieldBonuses();
-             
-             console.log(`Type d'équipement mis à jour: ${field} = ${value}`);
-         } catch (error) {
-             console.error("Erreur lors de la mise à jour du type d'équipement:", error);
-             // Restaurer la valeur précédente en cas d'erreur
-             const weaponType = field.includes('primary') ? 'primary' : 'secondary';
-             select.value = this.actor.system.weapons[weaponType]?.type || 'strength';
+         // Stocker le changement en mémoire sans sauvegarder
+         if (!this._pendingWeaponChanges) {
+             this._pendingWeaponChanges = {};
          }
+         this._pendingWeaponChanges[field] = value;
+         
+         // Mettre à jour l'affichage local sans sauvegarder
+         this._updateLocalWeaponDisplay(field, value);
+         
+         // Appliquer les bonus des boucliers immédiatement pour l'affichage
+         this._applyShieldBonuses();
+         
+         console.log(`Type d'équipement en attente: ${field} = ${value}`);
      }
 
     /**
@@ -1247,6 +1275,111 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
              event.currentTarget.querySelector('i').classList.remove('fa-edit');
              event.currentTarget.querySelector('i').classList.add('fa-save');
              event.currentTarget.querySelector('.button-text').textContent = 'Sauvegarder';
+         }
+     }
+
+     /**
+      * Sauvegarde tous les changements d'armes en attente
+      * @private
+      */
+     async _saveAllWeaponChanges() {
+         if (!this._pendingWeaponChanges || Object.keys(this._pendingWeaponChanges).length === 0) {
+             console.log("Aucun changement d'arme à sauvegarder");
+             return;
+         }
+
+         try {
+             console.log("Sauvegarde des changements d'armes:", this._pendingWeaponChanges);
+             
+             // Sauvegarder tous les changements en une seule fois
+             await this.actor.update(this._pendingWeaponChanges);
+             
+             console.log("Tous les changements d'armes ont été sauvegardés avec succès");
+             
+             // Vider les changements en attente
+             this._pendingWeaponChanges = {};
+             
+             // Notification de succès
+             ui.notifications.info("Équipement sauvegardé avec succès");
+             
+         } catch (error) {
+             console.error("Erreur lors de la sauvegarde des changements d'armes:", error);
+             ui.notifications.error("Erreur lors de la sauvegarde de l'équipement");
+             
+             // Restaurer les valeurs précédentes en cas d'erreur
+             this._restorePreviousWeaponValues();
+         }
+     }
+
+     /**
+      * Restaure les valeurs précédentes des armes en cas d'erreur
+      * @private
+      */
+     _restorePreviousWeaponValues() {
+         if (!this._pendingWeaponChanges) return;
+         
+         Object.keys(this._pendingWeaponChanges).forEach(field => {
+             const input = this.element.find(`[name="${field}"]`);
+             if (input.length > 0) {
+                 // Extraire le nom du champ et la main (primary/secondary)
+                 const fieldParts = field.split('.');
+                 const weaponType = fieldParts[2]; // primary ou secondary
+                 const fieldName = fieldParts[3]; // name, type, rank, bonus, description
+                 
+                 // Restaurer la valeur depuis l'acteur
+                 const originalValue = this.actor.system.weapons[weaponType]?.[fieldName];
+                 if (originalValue !== undefined) {
+                     input.val(originalValue);
+                 }
+             }
+         });
+         
+         this._pendingWeaponChanges = {};
+     }
+
+     /**
+      * Met à jour l'affichage local des armes sans sauvegarder
+      * @param {string} field - Le nom du champ
+      * @param {string} value - La nouvelle valeur
+      * @private
+      */
+     _updateLocalWeaponDisplay(field, value) {
+         // Mettre à jour l'affichage en mode lecture si c'est un champ d'arme
+         if (field.includes('system.weapons.')) {
+             const fieldParts = field.split('.');
+             const weaponType = fieldParts[2]; // primary ou secondary
+             const fieldName = fieldParts[3]; // name, type, rank, bonus, description
+             
+             const readModeElement = this.element.find(`[name="${field}"]`).closest('.weapon-field').find('.read-mode');
+             
+             if (readModeElement.length > 0) {
+                 if (fieldName === 'type') {
+                     // Gérer l'affichage du type
+                     let displayValue = 'Non défini';
+                     if (value === 'strength') displayValue = 'Force (Martialité)';
+                     else if (value === 'agility') displayValue = 'Agilité (Acuité)';
+                     else if (value === 'shield') displayValue = 'Bouclier';
+                     readModeElement.text(displayValue);
+                 } else if (fieldName === 'rank') {
+                     // Gérer l'affichage de la qualité
+                     if (value === '0') {
+                         readModeElement.text('Équipement brisé');
+                     } else {
+                         readModeElement.text(value);
+                     }
+                 } else if (fieldName === 'bonus') {
+                     // Gérer l'affichage du bonus
+                     const bonusValue = parseInt(value) || 0;
+                     if (bonusValue > 0) {
+                         readModeElement.text(`+${bonusValue}`);
+                     } else {
+                         readModeElement.text(bonusValue.toString());
+                     }
+                 } else {
+                     // Pour les autres champs (name, description)
+                     readModeElement.text(value || '');
+                 }
+             }
          }
      }
 
