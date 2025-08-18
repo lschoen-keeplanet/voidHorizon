@@ -75,9 +75,21 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             }
         };
         
+        // S'assurer que les données sont aussi disponibles directement dans data.actor.system
+        if (!data.actor.system.acuite) data.actor.system.acuite = { value: "1d4" };
+        if (!data.actor.system.pimpance) data.actor.system.pimpance = { value: "1d4" };
+        if (!data.actor.system.martialite) data.actor.system.martialite = { value: "1d4" };
+        if (!data.actor.system.arcane) data.actor.system.arcane = { value: "1d4" };
+        if (!data.actor.system.constitution) data.actor.system.constitution = { value: 4 };
+        if (!data.actor.system.class) data.actor.system.class = { value: "" };
+        if (!data.actor.system.faction) data.actor.system.faction = { value: "caradoc" };
+        if (!data.actor.system.rank) data.actor.system.rank = { value: "" };
+        if (!data.actor.system.affinity) data.actor.system.affinity = { value: "aucune" };
+        
         // Ajouter les helpers pour le template
         data.helpers = {
             getSelectedText: (value, type) => {
+                console.log(`Helper getSelectedText appelé avec value: ${value}, type: ${type}`);
                 const mappings = {
                     martialite: {
                         "1d4": "Deux mains gauches",
@@ -112,7 +124,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                         "1d20": "Archimage"
                     }
                 };
-                return mappings[type]?.[value] || value;
+                const result = mappings[type]?.[value] || value;
+                console.log(`Helper getSelectedText retourne: ${result}`);
+                return result;
             }
         };
         
