@@ -77,7 +77,7 @@
                                     <option value="1d20">Légende</option>
                                     {{/select}}
                                 </select>
-                                <div class="read-mode">{{system.martialite.value}}</div>
+                                <div class="read-mode">{{helpers.getSelectedText system.martialite.value "martialite"}}</div>
                             </div>
                             <button type="button" class="roll-dice-btn" data-stat="martialite" title="Lancer les dés de Martialité">
                                 <i class="fas fa-dice-d20"></i>
@@ -123,7 +123,7 @@
                                     <option value="1d20">Fulgurant</option>
                                     {{/select}}
                                 </select>
-                                <div class="read-mode">{{system.acuite.value}}</div>
+                                <div class="read-mode">{{helpers.getSelectedText system.acuite.value "acuite"}}</div>
                             </div>
                             <button type="button" class="roll-dice-btn" data-stat="acuite" title="Lancer les dés d'Acuité">
                                 <i class="fas fa-dice-d20"></i>
@@ -146,7 +146,7 @@
                                     <option value="1d20">Archimage</option>
                                     {{/select}}
                                 </select>
-                                <div class="read-mode">{{system.arcane.value}}</div>
+                                <div class="read-mode">{{helpers.getSelectedText system.arcane.value "arcane"}}</div>
                             </div>
                             <button type="button" class="roll-dice-btn" data-stat="arcane" title="Lancer les dés d'Arcane">
                                 <i class="fas fa-dice-d20"></i>
