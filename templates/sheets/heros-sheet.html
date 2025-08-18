@@ -69,7 +69,7 @@
                             <div class="stat-controls">
                                 <select name="system.martialite.value" class="edit-mode">
                                     {{#select system.martialite.value}}
-                                    <option value="1d4">Deux mains gauches</option>
+                                                                         <option value="1d4">Incompétent</option>
                                     <option value="1d6">Combatif</option>
                                     <option value="1d8">Soldat</option>
                                     <option value="1d10">Expérimenté</option>
@@ -241,35 +241,102 @@
     </nav>
 
     <section class="sheet-body">
-        <!-- Équipement & Actions Tab -->
-        <div class="tab equipment" data-group="secondary" data-tab="equipment">
-            <div class="equipment-section">
-                <div class="equipment-header">
-                    <h2>Équipement</h2>
-                    <button type="button" class="create-item"><i class="fas fa-plus"></i> Ajouter un item</button>
-                </div>
-                <div class="equipment-list">
-                    {{#each actor.items as |item id|}}
-                    {{#if (eq item.type "equipment")}}
-                    <div class="item" data-item-id="{{item._id}}">
-                        <div class="item-header">
-                            <div class="item-name">
-                                <h3>{{item.name}}</h3>
-                            </div>
-                            <div class="item-controls">
-                                <a class="item-control item-edit" title="Modifier"><i class="fas fa-edit"></i></a>
-                                <a class="item-control item-delete" title="Supprimer"><i class="fas fa-trash"></i></a>
-                            </div>
-                        </div>
-                        <div class="item-description">
-                            {{item.system.description}}
-                        </div>
-                    </div>
-                    {{/if}}
-                    {{/each}}
-                </div>
-            </div>
-        </div>
+                 <!-- Équipement & Actions Tab -->
+         <div class="tab equipment" data-group="secondary" data-tab="equipment">
+             <!-- Section des Armes -->
+             <div class="weapons-section">
+                 <div class="weapons-header">
+                     <h2>Armes</h2>
+                 </div>
+                 <div class="weapons-grid">
+                     <!-- Arme Principale -->
+                     <div class="weapon-slot primary-weapon">
+                         <h3>Arme Principale</h3>
+                         <div class="weapon-form">
+                             <div class="weapon-field">
+                                 <label>Nom de l'arme:</label>
+                                 <input type="text" name="system.weapons.primary.name" value="{{actor.system.weapons.primary.name}}" placeholder="Nom de l'arme">
+                             </div>
+                             <div class="weapon-field">
+                                 <label>Type:</label>
+                                 <select name="system.weapons.primary.type">
+                                     <option value="strength" {{selected "strength" actor.system.weapons.primary.type}}>Force (Martialité)</option>
+                                     <option value="agility" {{selected "agility" actor.system.weapons.primary.type}}>Agilité (Acuité)</option>
+                                 </select>
+                             </div>
+                             <div class="weapon-field">
+                                 <label>Score:</label>
+                                 <input type="number" name="system.weapons.primary.score" value="{{actor.system.weapons.primary.score}}" min="0" max="10">
+                             </div>
+                             <div class="weapon-field">
+                                 <label>Description:</label>
+                                 <textarea name="system.weapons.primary.description" placeholder="Description de l'arme">{{actor.system.weapons.primary.description}}</textarea>
+                             </div>
+                             <button type="button" class="roll-weapon-btn" data-weapon="primary" title="Lancer les dés pour l'arme principale">
+                                 <i class="fas fa-sword"></i> Lancer les dés
+                             </button>
+                         </div>
+                     </div>
+                     
+                     <!-- Arme Secondaire -->
+                     <div class="weapon-slot secondary-weapon">
+                         <h3>Arme Secondaire</h3>
+                         <div class="weapon-form">
+                             <div class="weapon-field">
+                                 <label>Nom de l'arme:</label>
+                                 <input type="text" name="system.weapons.secondary.name" value="{{actor.system.weapons.secondary.name}}" placeholder="Nom de l'arme">
+                             </div>
+                             <div class="weapon-field">
+                                 <label>Type:</label>
+                                 <select name="system.weapons.secondary.type">
+                                     <option value="strength" {{selected "strength" actor.system.weapons.secondary.type}}>Force (Martialité)</option>
+                                     <option value="agility" {{selected "agility" actor.system.weapons.secondary.type}}>Agilité (Acuité)</option>
+                                 </select>
+                             </div>
+                             <div class="weapon-field">
+                                 <label>Score:</label>
+                                 <input type="number" name="system.weapons.secondary.score" value="{{actor.system.weapons.secondary.score}}" min="0" max="10">
+                             </div>
+                             <div class="weapon-field">
+                                 <label>Description:</label>
+                                 <textarea name="system.weapons.secondary.description" placeholder="Description de l'arme">{{actor.system.weapons.secondary.description}}</textarea>
+                             </div>
+                             <button type="button" class="roll-weapon-btn" data-weapon="secondary" title="Lancer les dés pour l'arme secondaire">
+                                 <i class="fas fa-sword"></i> Lancer les dés
+                             </button>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             
+             <!-- Section Équipement Général -->
+             <div class="equipment-section">
+                 <div class="equipment-header">
+                     <h2>Équipement Général</h2>
+                     <button type="button" class="create-item"><i class="fas fa-plus"></i> Ajouter un item</button>
+                 </div>
+                 <div class="equipment-list">
+                     {{#each actor.items as |item id|}}
+                     {{#if (eq item.type "equipment")}}
+                     <div class="item" data-item-id="{{item._id}}">
+                         <div class="item-header">
+                             <div class="item-name">
+                                 <h3>{{item.name}}</h3>
+                             </div>
+                             <div class="item-controls">
+                                 <a class="item-control item-edit" title="Modifier"><i class="fas fa-edit"></i></a>
+                                 <a class="item-control item-delete" title="Supprimer"><i class="fas fa-trash"></i></a>
+                             </div>
+                         </div>
+                         <div class="item-description">
+                             {{item.system.description}}
+                         </div>
+                     </div>
+                     {{/if}}
+                     {{/each}}
+                 </div>
+             </div>
+         </div>
 
         <!-- Traits Tab -->
         <div class="tab traits" data-group="secondary" data-tab="traits">

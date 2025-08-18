@@ -39,6 +39,16 @@
 - Détails de la formule et des valeurs individuelles
 - Style cohérent avec l'interface
 
+### 7. Système d'Armes
+- **Arme principale** : Configuration complète (nom, type, score, description)
+- **Arme secondaire** : Configuration complète (nom, type, score, description)
+- **Types d'armes** : Force (Martialité) et Agilité (Acuité)
+- **Formules de dés** :
+  - Arme de force : `Martialité + score de l'arme`
+  - Arme d'agilité : `Acuité + score de l'arme`
+- **Boutons de lancement** : Chaque arme a son bouton de lancement de dés
+- **Template de chat** : `templates/chat/weapon-roll.html` pour afficher les résultats
+
 ## Comment Tester
 
 ### Test des Dés
@@ -52,6 +62,25 @@
 3. **Vérifier que les changements s'affichent** mais ne sont pas sauvegardés
 4. **Cliquer sur "Sauvegarder"** pour sauvegarder tous les changements
 5. **Vérifier que les changements sont persistants** après rechargement
+
+### Test du Système d'Armes
+1. **Aller dans l'onglet "Équipement & Actions"**
+2. **Configurer une arme principale** :
+   - Nom : "Épée longue"
+   - Type : "Force (Martialité)"
+   - Score : 3
+   - Description : "Une épée de qualité"
+3. **Configurer une arme secondaire** :
+   - Nom : "Dague"
+   - Type : "Agilité (Acuité)"
+   - Score : 2
+   - Description : "Une dague rapide"
+4. **Tester les lancers de dés** :
+   - Cliquer sur "Lancer les dés" pour l'arme principale
+   - Vérifier que la formule est "1d4+3" (Martialité + score)
+   - Cliquer sur "Lancer les dés" pour l'arme secondaire
+   - Vérifier que la formule est "1d4+2" (Acuité + score)
+5. **Vérifier l'affichage dans le chat** avec le template d'arme
 
 ## Structure des Fichiers Modifiés
 

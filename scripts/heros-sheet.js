@@ -86,13 +86,27 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         if (!data.actor.system.rank) data.actor.system.rank = { value: "" };
         if (!data.actor.system.affinity) data.actor.system.affinity = { value: "aucune" };
         
+        // Initialiser les données d'armes si elles n'existent pas
+        if (!data.actor.system.weapons) {
+            data.actor.system.weapons = {
+                primary: { name: "", type: "strength", score: 0, description: "" },
+                secondary: { name: "", type: "strength", score: 0, description: "" }
+            };
+        }
+        if (!data.actor.system.weapons.primary) {
+            data.actor.system.weapons.primary = { name: "", type: "strength", score: 0, description: "" };
+        }
+        if (!data.actor.system.weapons.secondary) {
+            data.actor.system.weapons.secondary = { name: "", type: "strength", score: 0, description: "" };
+        }
+        
         // Ajouter les helpers pour le template
         data.helpers = {
             getSelectedText: (value, type) => {
                 console.log(`Helper getSelectedText appelé avec value: ${value}, type: ${type}`);
                 const mappings = {
                     martialite: {
-                        "1d4": "Deux mains gauches",
+                        "1d4": "Incompétent",
                         "1d6": "Combatif",
                         "1d8": "Soldat",
                         "1d10": "Expérimenté",
@@ -156,6 +170,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         // Gestion des boutons de lancement de dés
         html.find('.roll-dice-btn').click(this._onRollDice.bind(this));
+        
+        // Gestion des boutons de lancement d'armes
+        html.find('.roll-weapon-btn').click(this._onRollWeapon.bind(this));
 
         // Gestion des cœurs de vie
         html.find('.heart-button').click(this._onHeartClick.bind(this));
@@ -566,7 +583,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     _getStatLabel(statName, value) {
         const mappings = {
             'martialite': {
-                "1d4": "Deux mains gauches",
+                "1d4": "Incompétent",
                 "1d6": "Combatif",
                 "1d8": "Soldat",
                 "1d10": "Expérimenté",
@@ -750,6 +767,79 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             'arcane': 'Arcane'
         };
         return statNames[stat] || stat.charAt(0).toUpperCase() + stat.slice(1);
+    }
+    
+    /**
+     * Gère le clic sur un bouton de lancement d'arme
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onRollWeapon(event) {
+        event.preventDefault();
+        const button = event.currentTarget;
+        const weaponType = button.dataset.weapon; // 'primary' ou 'secondary'
+        
+        const weapon = this.actor.system.weapons[weaponType];
+        
+        if (!weapon || !weapon.name || weapon.score === 0) {
+            ui.notifications.warn(`Veuillez configurer l'arme ${weaponType === 'primary' ? 'principale' : 'secondaire'} avant de lancer les dés`);
+            return;
+        }
+        
+        try {
+            // Déterminer la caractéristique à utiliser
+            let characteristic, characteristicName;
+            if (weapon.type === 'strength') {
+                characteristic = this.actor.system.martialite.value;
+                characteristicName = 'Martialité';
+            } else if (weapon.type === 'agility') {
+                characteristic = this.actor.system.acuite.value;
+                characteristicName = 'Acuité';
+            } else {
+                ui.notifications.error(`Type d'arme invalide: ${weapon.type}`);
+                return;
+            }
+            
+            // Créer la formule de dé
+            const weaponScore = parseInt(weapon.score) || 0;
+            const formula = `${characteristic}+${weaponScore}`;
+            
+            // Lancer les dés
+            const roll = new Roll(formula);
+            await roll.evaluate({async: true});
+            
+            // Préparer les données pour le template
+            const templateData = {
+                title: `${this.actor.name} - ${weapon.name}`,
+                subtitle: `Attaque avec ${weapon.name} (${characteristicName} + ${weaponScore})`,
+                formula: formula,
+                total: roll.total,
+                dice: roll.dice,
+                weapon: {
+                    name: weapon.name,
+                    type: weapon.type === 'strength' ? 'Force' : 'Agilité',
+                    score: weaponScore
+                },
+                characteristic: {
+                    name: characteristicName,
+                    value: characteristic
+                }
+            };
+            
+            const html = await renderTemplate("systems/voidHorizon/templates/chat/weapon-roll.html", templateData);
+            
+            await ChatMessage.create({
+                user: game.user.id,
+                speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                content: html,
+                sound: CONFIG.sounds.dice
+            });
+            
+            console.log(`Lancement d'arme ${weapon.name}: ${formula} = ${roll.total}`);
+        } catch (error) {
+            console.error(`Erreur lors du lancement d'arme ${weaponType}:`, error);
+            ui.notifications.error(`Erreur lors du lancement d'arme ${weaponType}`);
+        }
     }
 
     /**
