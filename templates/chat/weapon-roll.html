@@ -17,9 +17,9 @@
                 <div class="weapon-type">
                     <strong>Type:</strong> {{weapon.type}}
                 </div>
-                                 <div class="weapon-rank">
-                     <strong>Rang:</strong> {{weapon.rank}}
-                 </div>
+                                                        <div class="weapon-rank">
+                           <strong>Qualité:</strong> {{#if (eq weapon.rank "0")}}Équipement brisé{{else if (eq weapon.rank "1d4")}}Équipement commun{{else if (eq weapon.rank "1d6")}}Équipement de qualité{{else if (eq weapon.rank "1d8")}}Équipement rare{{else if (eq weapon.rank "1d10")}}Équipement exceptionnel{{else if (eq weapon.rank "1d12")}}Équipement légendaire{{else if (eq weapon.rank "1d20")}}Équipement mythique{{else}}{{weapon.rank}}{{/if}}
+                       </div>
                  <div class="weapon-bonus">
                      <strong>Bonus:</strong> {{#if (gt weapon.bonus 0)}}+{{/if}}{{weapon.bonus}}
                  </div>

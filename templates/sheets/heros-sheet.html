@@ -243,93 +243,111 @@
     <section class="sheet-body">
                  <!-- Équipement & Actions Tab -->
          <div class="tab equipment" data-group="secondary" data-tab="equipment">
-             <!-- Section des Armes -->
-             <div class="weapons-section">
-                 <div class="weapons-header">
-                     <h2>Armes</h2>
-                 </div>
+                           <!-- Section des Armes -->
+              <div class="weapons-section">
+                  <div class="weapons-header">
+                      <h2>Armes</h2>
+                      <div class="weapons-edit-mode-button">
+                          <button type="button" class="toggle-weapons-edit-mode" title="Cliquer pour éditer, cliquer à nouveau pour sauvegarder">
+                              <i class="fas fa-edit"></i>
+                              <span class="button-text">Éditer</span>
+                          </button>
+                      </div>
+                  </div>
                  <div class="weapons-grid">
-                                           <!-- Main Principale -->
+                                                                 <!-- Main Principale -->
                       <div class="weapon-slot primary-weapon">
                           <h3>Main Principale</h3>
-                         <div class="weapon-form">
-                             <div class="weapon-field">
-                                 <label>Nom de l'arme:</label>
-                                 <input type="text" name="system.weapons.primary.name" value="{{actor.system.weapons.primary.name}}" placeholder="Nom de l'arme">
-                             </div>
-                                                           <div class="weapon-field">
+                          <div class="weapon-form">
+                              <div class="weapon-field">
+                                  <label>Nom de l'arme:</label>
+                                  <input type="text" name="system.weapons.primary.name" value="{{actor.system.weapons.primary.name}}" placeholder="Nom de l'arme" class="edit-mode">
+                                  <div class="read-mode">{{actor.system.weapons.primary.name}}</div>
+                              </div>
+                              <div class="weapon-field">
                                   <label>Type:</label>
-                                  <select name="system.weapons.primary.type">
+                                  <select name="system.weapons.primary.type" class="edit-mode">
                                       <option value="strength" {{selected "strength" actor.system.weapons.primary.type}}>Force (Martialité)</option>
                                       <option value="agility" {{selected "agility" actor.system.weapons.primary.type}}>Agilité (Acuité)</option>
                                       <option value="shield" {{selected "shield" actor.system.weapons.primary.type}}>Bouclier</option>
                                   </select>
+                                  <div class="read-mode">{{#if (eq actor.system.weapons.primary.type "strength")}}Force (Martialité){{else if (eq actor.system.weapons.primary.type "agility")}}Agilité (Acuité){{else if (eq actor.system.weapons.primary.type "shield")}}Bouclier{{else}}Non défini{{/if}}</div>
                               </div>
-                             <div class="weapon-field">
-                                 <label>Rang:</label>
-                                 <select name="system.weapons.primary.rank">
-                                     <option value="1d4" {{selected "1d4" actor.system.weapons.primary.rank}}>Arme de base (1d4)</option>
-                                     <option value="1d6" {{selected "1d6" actor.system.weapons.primary.rank}}>Arme commune (1d6)</option>
-                                     <option value="1d8" {{selected "1d8" actor.system.weapons.primary.rank}}>Arme de qualité (1d8)</option>
-                                     <option value="1d10" {{selected "1d10" actor.system.weapons.primary.rank}}>Arme supérieure (1d10)</option>
-                                     <option value="1d12" {{selected "1d12" actor.system.weapons.primary.rank}}>Arme exceptionnelle (1d12)</option>
-                                     <option value="1d20" {{selected "1d20" actor.system.weapons.primary.rank}}>Arme légendaire (1d20)</option>
-                                 </select>
-                             </div>
-                             <div class="weapon-field">
-                                 <label>Bonus:</label>
-                                 <input type="number" name="system.weapons.primary.bonus" value="{{actor.system.weapons.primary.bonus}}" min="-5" max="10" placeholder="0">
-                             </div>
-                             <div class="weapon-field">
-                                 <label>Description:</label>
-                                 <textarea name="system.weapons.primary.description" placeholder="Description de l'arme">{{actor.system.weapons.primary.description}}</textarea>
-                             </div>
-                             <button type="button" class="roll-weapon-btn" data-weapon="primary" title="Lancer les dés pour l'arme principale">
-                                 <i class="fas fa-sword"></i> Lancer les dés
-                             </button>
-                         </div>
-                     </div>
+                                                             <div class="weapon-field">
+                                   <label>Qualité:</label>
+                                   <select name="system.weapons.primary.rank" class="edit-mode">
+                                       <option value="0" {{selected "0" actor.system.weapons.primary.rank}}>Équipement brisé (0)</option>
+                                       <option value="1d4" {{selected "1d4" actor.system.weapons.primary.rank}}>Équipement commun (1d4)</option>
+                                       <option value="1d6" {{selected "1d6" actor.system.weapons.primary.rank}}>Équipement de qualité (1d6)</option>
+                                       <option value="1d8" {{selected "1d8" actor.system.weapons.primary.rank}}>Équipement rare (1d8)</option>
+                                       <option value="1d10" {{selected "1d10" actor.system.weapons.primary.rank}}>Équipement exceptionnel (1d10)</option>
+                                       <option value="1d12" {{selected "1d12" actor.system.weapons.primary.rank}}>Équipement légendaire (1d12)</option>
+                                       <option value="1d20" {{selected "1d20" actor.system.weapons.primary.rank}}>Équipement mythique (1d20)</option>
+                                   </select>
+                                   <div class="read-mode">{{#if (eq actor.system.weapons.primary.rank "0")}}Équipement brisé{{else}}{{actor.system.weapons.primary.rank}}{{/if}}</div>
+                              </div>
+                              <div class="weapon-field">
+                                  <label>Bonus:</label>
+                                  <input type="number" name="system.weapons.primary.bonus" value="{{actor.system.weapons.primary.bonus}}" min="-5" max="10" placeholder="0" class="edit-mode">
+                                  <div class="read-mode">{{#if (gt actor.system.weapons.primary.bonus 0)}}+{{/if}}{{actor.system.weapons.primary.bonus}}</div>
+                              </div>
+                              <div class="weapon-field">
+                                  <label>Description:</label>
+                                  <textarea name="system.weapons.primary.description" placeholder="Description de l'arme" class="edit-mode">{{actor.system.weapons.primary.description}}</textarea>
+                                  <div class="read-mode">{{actor.system.weapons.primary.description}}</div>
+                              </div>
+                              <button type="button" class="roll-weapon-btn read-mode" data-weapon="primary" title="Lancer les dés pour l'arme principale">
+                                  <i class="fas fa-sword"></i> Lancer les dés
+                              </button>
+                          </div>
+                      </div>
                      
-                                           <!-- Main Secondaire -->
+                                                                 <!-- Main Secondaire -->
                       <div class="weapon-slot secondary-weapon">
                           <h3>Main Secondaire</h3>
-                         <div class="weapon-form">
-                             <div class="weapon-field">
-                                 <label>Nom de l'arme:</label>
-                                 <input type="text" name="system.weapons.secondary.name" value="{{actor.system.weapons.secondary.name}}" placeholder="Nom de l'arme">
-                             </div>
-                                                           <div class="weapon-field">
+                          <div class="weapon-form">
+                              <div class="weapon-field">
+                                  <label>Nom de l'arme:</label>
+                                  <input type="text" name="system.weapons.secondary.name" value="{{actor.system.weapons.secondary.name}}" placeholder="Nom de l'arme" class="edit-mode">
+                                  <div class="read-mode">{{actor.system.weapons.secondary.name}}</div>
+                              </div>
+                              <div class="weapon-field">
                                   <label>Type:</label>
-                                  <select name="system.weapons.secondary.type">
+                                  <select name="system.weapons.secondary.type" class="edit-mode">
                                       <option value="strength" {{selected "strength" actor.system.weapons.secondary.type}}>Force (Martialité)</option>
                                       <option value="agility" {{selected "agility" actor.system.weapons.secondary.type}}>Agilité (Acuité)</option>
                                       <option value="shield" {{selected "shield" actor.system.weapons.secondary.type}}>Bouclier</option>
                                   </select>
+                                  <div class="read-mode">{{#if (eq actor.system.weapons.secondary.type "strength")}}Force (Martialité){{else if (eq actor.system.weapons.secondary.type "agility")}}Agilité (Acuité){{else if (eq actor.system.weapons.secondary.type "shield")}}Bouclier{{else}}Non défini{{/if}}</div>
                               </div>
-                             <div class="weapon-field">
-                                 <label>Rang:</label>
-                                 <select name="system.weapons.secondary.rank">
-                                     <option value="1d4" {{selected "1d4" actor.system.weapons.secondary.rank}}>Arme de base (1d4)</option>
-                                     <option value="1d6" {{selected "1d6" actor.system.weapons.secondary.rank}}>Arme commune (1d6)</option>
-                                     <option value="1d8" {{selected "1d8" actor.system.weapons.secondary.rank}}>Arme de qualité (1d8)</option>
-                                     <option value="1d10" {{selected "1d10" actor.system.weapons.secondary.rank}}>Arme supérieure (1d10)</option>
-                                     <option value="1d12" {{selected "1d12" actor.system.weapons.secondary.rank}}>Arme exceptionnelle (1d12)</option>
-                                     <option value="1d20" {{selected "1d20" actor.system.weapons.secondary.rank}}>Arme légendaire (1d20)</option>
-                                 </select>
-                             </div>
-                             <div class="weapon-field">
-                                 <label>Bonus:</label>
-                                 <input type="number" name="system.weapons.secondary.bonus" value="{{actor.system.weapons.secondary.bonus}}" min="-5" max="10" placeholder="0">
-                             </div>
-                             <div class="weapon-field">
-                                 <label>Description:</label>
-                                 <textarea name="system.weapons.secondary.description" placeholder="Description de l'arme">{{actor.system.weapons.secondary.description}}</textarea>
-                             </div>
-                             <button type="button" class="roll-weapon-btn" data-weapon="secondary" title="Lancer les dés pour l'arme secondaire">
-                                 <i class="fas fa-sword"></i> Lancer les dés
-                             </button>
-                         </div>
-                     </div>
+                                                             <div class="weapon-field">
+                                   <label>Qualité:</label>
+                                   <select name="system.weapons.secondary.rank" class="edit-mode">
+                                       <option value="0" {{selected "0" actor.system.weapons.secondary.rank}}>Équipement brisé (0)</option>
+                                       <option value="1d4" {{selected "1d4" actor.system.weapons.secondary.rank}}>Équipement commun (1d4)</option>
+                                       <option value="1d6" {{selected "1d6" actor.system.weapons.secondary.rank}}>Équipement de qualité (1d6)</option>
+                                       <option value="1d8" {{selected "1d8" actor.system.weapons.secondary.rank}}>Équipement rare (1d8)</option>
+                                       <option value="1d10" {{selected "1d10" actor.system.weapons.secondary.rank}}>Équipement exceptionnel (1d10)</option>
+                                       <option value="1d12" {{selected "1d12" actor.system.weapons.secondary.rank}}>Équipement légendaire (1d12)</option>
+                                       <option value="1d20" {{selected "1d20" actor.system.weapons.secondary.rank}}>Équipement mythique (1d20)</option>
+                                   </select>
+                                   <div class="read-mode">{{#if (eq actor.system.weapons.secondary.rank "0")}}Équipement brisé{{else}}{{actor.system.weapons.secondary.rank}}{{/if}}</div>
+                              </div>
+                              <div class="weapon-field">
+                                  <label>Bonus:</label>
+                                  <input type="number" name="system.weapons.secondary.bonus" value="{{actor.system.weapons.secondary.bonus}}" min="-5" max="10" placeholder="0" class="edit-mode">
+                                  <div class="read-mode">{{#if (gt actor.system.weapons.secondary.bonus 0)}}+{{/if}}{{actor.system.weapons.secondary.bonus}}</div>
+                              </div>
+                              <div class="weapon-field">
+                                  <label>Description:</label>
+                                  <textarea name="system.weapons.secondary.description" placeholder="Description de l'arme" class="edit-mode">{{actor.system.weapons.secondary.description}}</textarea>
+                                  <div class="read-mode">{{actor.system.weapons.secondary.description}}</div>
+                              </div>
+                              <button type="button" class="roll-weapon-btn read-mode" data-weapon="secondary" title="Lancer les dés pour l'arme secondaire">
+                                  <i class="fas fa-sword"></i> Lancer les dés
+                              </button>
+                          </div>
+                      </div>
                  </div>
              </div>
              

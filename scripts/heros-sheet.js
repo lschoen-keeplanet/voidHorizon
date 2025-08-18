@@ -89,15 +89,15 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Initialiser les données d'armes si elles n'existent pas
         if (!data.actor.system.weapons) {
             data.actor.system.weapons = {
-                primary: { name: "", type: "strength", rank: "1d4", bonus: 0, description: "" },
-                secondary: { name: "", type: "strength", rank: "1d4", bonus: 0, description: "" }
+                primary: { name: "", type: "strength", rank: "0", bonus: 0, description: "" },
+                secondary: { name: "", type: "strength", rank: "0", bonus: 0, description: "" }
             };
         }
         if (!data.actor.system.weapons.primary) {
-            data.actor.system.weapons.primary = { name: "", type: "strength", rank: "1d4", bonus: 0, description: "" };
+            data.actor.system.weapons.primary = { name: "", type: "strength", rank: "0", bonus: 0, description: "" };
         }
         if (!data.actor.system.weapons.secondary) {
-            data.actor.system.weapons.secondary = { name: "", type: "strength", rank: "1d4", bonus: 0, description: "" };
+            data.actor.system.weapons.secondary = { name: "", type: "strength", rank: "0", bonus: 0, description: "" };
         }
         
         // Ajouter les helpers pour le template
@@ -188,6 +188,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         // Gestion des changements de type d'équipement (pour les boucliers)
         html.find('select[name^="system.weapons."][name$=".type"]').change(this._onWeaponTypeChange.bind(this));
+        
+        // Gestion du mode édition/lecture des armes
+        html.find('.toggle-weapons-edit-mode').click(this._onToggleWeaponsEditMode.bind(this));
         
         // Initialiser l'état des cœurs et de la santé
         this._initializeHealthState();
@@ -784,8 +787,14 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         const weapon = this.actor.system.weapons[weaponType];
         
-        if (!weapon || !weapon.name || !weapon.rank) {
+        if (!weapon || !weapon.name) {
             ui.notifications.warn(`Veuillez configurer l'équipement de la ${weaponType === 'primary' ? 'main principale' : 'main secondaire'} avant de lancer les dés`);
+            return;
+        }
+        
+        // Si la qualité est 0, pas de lancement de dés
+        if (weapon.rank === "0") {
+            ui.notifications.info(`${weapon.name} n'a aucune qualité et ne peut pas être utilisée pour attaquer`);
             return;
         }
         
@@ -810,10 +819,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             }
             
             // Créer la formule de dé
-            const weaponRank = weapon.rank || "1d4";
+            const weaponRank = weapon.rank || "0";
             const weaponBonus = parseInt(weapon.bonus) || 0;
             
-            // Construire la formule : caractéristique + rang de l'arme + bonus
+            // Construire la formule : caractéristique + bonus (le rang 0 n'ajoute rien)
             let formula = `${characteristic}`;
             if (weaponBonus !== 0) {
                 formula += `+${weaponBonus}`;
@@ -1177,37 +1186,69 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
          this._applyShieldBonuses();
      }
 
-    /**
-     * Gère le basculement entre les modes édition et lecture
-     * @param {Event} event - L'événement de clic
-     * @private
-     */
-    _onToggleEditMode(event) {
-        event.preventDefault();
-        const form = event.currentTarget.closest('form');
-        const isEditing = form.classList.contains('editing');
-        
-        if (isEditing) {
-            // Mode sauvegarde - sauvegarder tous les changements
-            if (this._pendingChanges && Object.keys(this._pendingChanges).length > 0) {
-                this._saveAllChanges();
-            }
-            
-            form.classList.remove('editing');
-            form.classList.add('read-only');
-            event.currentTarget.querySelector('i').classList.remove('fa-save');
-            event.currentTarget.querySelector('i').classList.add('fa-edit');
-            event.currentTarget.querySelector('.button-text').textContent = 'Éditer';
-        } else {
-            // Mode édition - initialiser les changements en attente
-            this._pendingChanges = {};
-            form.classList.remove('read-only');
-            form.classList.add('editing');
-            event.currentTarget.querySelector('i').classList.remove('fa-edit');
-            event.currentTarget.querySelector('i').classList.add('fa-save');
-            event.currentTarget.querySelector('.button-text').textContent = 'Sauvegarder';
-        }
-    }
+         /**
+      * Gère le basculement entre les modes édition et lecture
+      * @param {Event} event - L'événement de clic
+      * @private
+      */
+     _onToggleEditMode(event) {
+         event.preventDefault();
+         const form = event.currentTarget.closest('form');
+         const isEditing = form.classList.contains('editing');
+         
+         if (isEditing) {
+             // Mode sauvegarde - sauvegarder tous les changements
+             if (this._pendingChanges && Object.keys(this._pendingChanges).length > 0) {
+                 this._saveAllChanges();
+             }
+             
+             form.classList.remove('editing');
+             form.classList.add('read-only');
+             event.currentTarget.querySelector('i').classList.remove('fa-save');
+             event.currentTarget.querySelector('i').classList.add('fa-edit');
+             event.currentTarget.querySelector('.button-text').textContent = 'Éditer';
+         } else {
+             // Mode édition - initialiser les changements en attente
+             this._pendingChanges = {};
+             form.classList.remove('read-only');
+             form.classList.add('editing');
+             event.currentTarget.querySelector('i').classList.remove('fa-edit');
+             event.currentTarget.querySelector('i').classList.add('fa-save');
+             event.currentTarget.querySelector('.button-text').textContent = 'Sauvegarder';
+         }
+     }
+     
+     /**
+      * Gère le basculement entre les modes édition et lecture des armes
+      * @param {Event} event - L'événement de clic
+      * @private
+      */
+     _onToggleWeaponsEditMode(event) {
+         event.preventDefault();
+         const weaponsSection = event.currentTarget.closest('.weapons-section');
+         const isEditing = weaponsSection.classList.contains('editing');
+         
+         if (isEditing) {
+             // Mode sauvegarde - sauvegarder tous les changements d'armes
+             if (this._pendingWeaponChanges && Object.keys(this._pendingWeaponChanges).length > 0) {
+                 this._saveAllWeaponChanges();
+             }
+             
+             weaponsSection.classList.remove('editing');
+             weaponsSection.classList.add('read-only');
+             event.currentTarget.querySelector('i').classList.remove('fa-save');
+             event.currentTarget.querySelector('i').classList.add('fa-edit');
+             event.currentTarget.querySelector('.button-text').textContent = 'Éditer';
+         } else {
+             // Mode édition - initialiser les changements en attente
+             this._pendingWeaponChanges = {};
+             weaponsSection.classList.remove('read-only');
+             weaponsSection.classList.add('editing');
+             event.currentTarget.querySelector('i').classList.remove('fa-edit');
+             event.currentTarget.querySelector('i').classList.add('fa-save');
+             event.currentTarget.querySelector('.button-text').textContent = 'Sauvegarder';
+         }
+     }
 
     async _updateObject(event, formData) {
         // Mise à jour des données du formulaire

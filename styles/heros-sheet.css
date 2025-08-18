@@ -939,4 +939,85 @@ textarea:focus {
 
 .shield-bonus-indicator:empty {
     display: none;
+}
+
+/* Styles pour le mode édition/lecture des armes */
+.weapons-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.weapons-edit-mode-button {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-weapons-edit-mode {
+    background: linear-gradient(135deg, #800000, #600000);
+    color: white;
+    border: 2px solid #800000;
+    border-radius: 6px;
+    padding: 8px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-weapons-edit-mode:hover {
+    background: linear-gradient(135deg, #900000, #700000);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.toggle-weapons-edit-mode .button-text {
+    font-weight: bold;
+}
+
+/* Mode édition/lecture des armes */
+.weapon-slot.editing .edit-mode {
+    display: block;
+}
+
+.weapon-slot.editing .read-mode {
+    display: none;
+}
+
+.weapon-slot.read-only .edit-mode {
+    display: none;
+}
+
+.weapon-slot.read-only .read-mode {
+    display: block;
+}
+
+.weapon-slot.read-only .roll-weapon-btn {
+    display: block;
+}
+
+.weapon-slot.editing .roll-weapon-btn {
+    display: none;
+}
+
+/* Styles pour les champs en mode lecture */
+.weapon-field .read-mode {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 12px;
+    min-height: 20px;
+    font-weight: 500;
+    color: #333;
+}
+
+.weapon-field .read-mode:empty::before {
+    content: "Non défini";
+    color: #999;
+    font-style: italic;
 } 

@@ -40,19 +40,20 @@
 - Style cohérent avec l'interface
 
 ### 7. Système d'Équipement
-- **Main principale** : Configuration complète (nom, type, rang, bonus, description)
-- **Main secondaire** : Configuration complète (nom, type, rang, bonus, description)
+- **Main principale** : Configuration complète (nom, type, qualité, bonus, description)
+- **Main secondaire** : Configuration complète (nom, type, qualité, bonus, description)
 - **Types d'équipement** : 
   - Force (Martialité) : Pour les armes de mêlée
   - Agilité (Acuité) : Pour les armes à distance
   - Bouclier : Ajoute des bonus à l'armure et la constitution
-- **Rangs d'équipement** : Basés sur les dés (1d4 à 1d20)
-  - 1d4 : Équipement de base
-  - 1d6 : Équipement commun
-  - 1d8 : Équipement de qualité
-  - 1d10 : Équipement supérieur
-  - 1d12 : Équipement exceptionnel
-  - 1d20 : Équipement légendaire
+- **Qualités d'équipement** : Basées sur les dés (0 à 1d20)
+  - 0 : Équipement brisé (pas de bonus au jet)
+  - 1d4 : Équipement commun
+  - 1d6 : Équipement de qualité
+  - 1d8 : Équipement rare
+  - 1d10 : Équipement exceptionnel
+  - 1d12 : Équipement légendaire
+  - 1d20 : Équipement mythique
 - **Champ bonus** : Entier (-5 à +10) additionné au résultat des dés ou aux défenses
 - **Formules de dés** :
   - Équipement de force : `Martialité + bonus de l'équipement`
@@ -81,13 +82,13 @@
 2. **Configurer la main principale** :
    - Nom : "Épée longue"
    - Type : "Force (Martialité)"
-   - Rang : "Équipement de qualité (1d8)"
+   - Qualité : "Équipement rare (1d8)"
    - Bonus : 2
    - Description : "Une épée de qualité"
 3. **Configurer la main secondaire** :
    - Nom : "Dague"
    - Type : "Agilité (Acuité)"
-   - Rang : "Équipement commun (1d6)"
+   - Qualité : "Équipement commun (1d6)"
    - Bonus : 1
    - Description : "Une dague rapide"
 4. **Tester les lancers de dés** :
@@ -95,7 +96,11 @@
    - Vérifier que la formule est "1d4+2" (Martialité + bonus)
    - Cliquer sur "Lancer les dés" pour la main secondaire
    - Vérifier que la formule est "1d4+1" (Acuité + bonus)
-5. **Tester un bouclier** :
+5. **Tester la qualité 0** :
+   - Changer la qualité de la main secondaire en "Équipement brisé (0)"
+   - Vérifier que le bouton "Lancer les dés" ne fonctionne plus (message d'info)
+   - Vérifier que l'équipement ne peut pas être utilisé pour attaquer
+6. **Tester un bouclier** :
    - Changer le type de la main secondaire en "Bouclier"
    - Mettre un bonus de 3
    - Vérifier que +3 s'affiche sous l'armure et la constitution
