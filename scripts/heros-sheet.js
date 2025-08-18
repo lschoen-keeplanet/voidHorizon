@@ -115,6 +115,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
 
         // Gestion des lancers de dés
         html.find('.rollable').click(this._onRollStat.bind(this));
+        
+        // Gestion des boutons de lancement de dés
+        html.find('.roll-dice-btn').click(this._onRollDice.bind(this));
 
         // Gestion des cœurs de vie
         html.find('.heart-button').click(this._onHeartClick.bind(this));
@@ -535,6 +538,67 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             content: html,
             sound: CONFIG.sounds.dice
         });
+    }
+
+    /**
+     * Gère le clic sur un bouton de lancement de dés
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onRollDice(event) {
+        event.preventDefault();
+        const button = event.currentTarget;
+        const stat = button.dataset.stat;
+        const formula = this.actor.system[stat]?.value;
+        
+        if (!formula) {
+            ui.notifications.warn(`Aucune formule de dé définie pour ${stat}`);
+            return;
+        }
+
+        try {
+            const roll = new Roll(formula);
+            await roll.evaluate({async: true});
+            
+            const statName = this._getStatDisplayName(stat);
+            const templateData = {
+                title: `${this.actor.name} - ${statName}`,
+                subtitle: `Lance ${formula}`,
+                formula: formula,
+                total: roll.total,
+                dice: roll.dice
+            };
+
+            const html = await renderTemplate("systems/voidHorizon/templates/chat/roll.html", templateData);
+            
+            await ChatMessage.create({
+                user: game.user.id,
+                speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                content: html,
+                sound: CONFIG.sounds.dice
+            });
+            
+            console.log(`Lancement de dés ${formula} pour ${statName}: ${roll.total}`);
+        } catch (error) {
+            console.error(`Erreur lors du lancement de dés pour ${stat}:`, error);
+            ui.notifications.error(`Erreur lors du lancement de dés pour ${stat}`);
+        }
+    }
+
+    /**
+     * Retourne le nom d'affichage d'une statistique
+     * @param {string} stat - Le nom de la statistique
+     * @returns {string} - Le nom d'affichage
+     * @private
+     */
+    _getStatDisplayName(stat) {
+        const statNames = {
+            'martialite': 'Martialité',
+            'pimpance': 'Pimpance',
+            'acuite': 'Acuité',
+            'arcane': 'Arcane'
+        };
+        return statNames[stat] || stat.charAt(0).toUpperCase() + stat.slice(1);
     }
 
     /**
