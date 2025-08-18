@@ -9,9 +9,10 @@
 - ✅ Bouton de dés pour **Arcane**
 
 ### 2. Positionnement
-- Les boutons sont positionnés en haut à droite de chaque caractéristique
-- Style circulaire avec icône de dé (d20)
+- Les boutons sont positionnés en dessous des contrôles de statistiques
+- Style rectangulaire avec icône de dé (d20)
 - Couleurs cohérentes avec le thème voidHorizon (rouge #800000)
+- Structure verticale : Icône → Nom → Contrôles → Bouton de dés
 
 ### 3. Fonctionnalité
 - Clic sur le bouton lance automatiquement les dés correspondants
