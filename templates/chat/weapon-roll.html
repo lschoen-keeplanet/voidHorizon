@@ -17,9 +17,12 @@
                 <div class="weapon-type">
                     <strong>Type:</strong> {{weapon.type}}
                 </div>
-                <div class="weapon-score">
-                    <strong>Score:</strong> {{weapon.score}}
-                </div>
+                                 <div class="weapon-rank">
+                     <strong>Rang:</strong> {{weapon.rank}}
+                 </div>
+                 <div class="weapon-bonus">
+                     <strong>Bonus:</strong> {{#if (gt weapon.bonus 0)}}+{{/if}}{{weapon.bonus}}
+                 </div>
             </div>
             
             <div class="characteristic-info">

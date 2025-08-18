@@ -89,15 +89,15 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Initialiser les données d'armes si elles n'existent pas
         if (!data.actor.system.weapons) {
             data.actor.system.weapons = {
-                primary: { name: "", type: "strength", score: 0, description: "" },
-                secondary: { name: "", type: "strength", score: 0, description: "" }
+                primary: { name: "", type: "strength", rank: "1d4", bonus: 0, description: "" },
+                secondary: { name: "", type: "strength", rank: "1d4", bonus: 0, description: "" }
             };
         }
         if (!data.actor.system.weapons.primary) {
-            data.actor.system.weapons.primary = { name: "", type: "strength", score: 0, description: "" };
+            data.actor.system.weapons.primary = { name: "", type: "strength", rank: "1d4", bonus: 0, description: "" };
         }
         if (!data.actor.system.weapons.secondary) {
-            data.actor.system.weapons.secondary = { name: "", type: "strength", score: 0, description: "" };
+            data.actor.system.weapons.secondary = { name: "", type: "strength", rank: "1d4", bonus: 0, description: "" };
         }
         
         // Ajouter les helpers pour le template
@@ -781,7 +781,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         const weapon = this.actor.system.weapons[weaponType];
         
-        if (!weapon || !weapon.name || weapon.score === 0) {
+        if (!weapon || !weapon.name || !weapon.rank) {
             ui.notifications.warn(`Veuillez configurer l'arme ${weaponType === 'primary' ? 'principale' : 'secondaire'} avant de lancer les dés`);
             return;
         }
@@ -801,30 +801,37 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             }
             
             // Créer la formule de dé
-            const weaponScore = parseInt(weapon.score) || 0;
-            const formula = `${characteristic}+${weaponScore}`;
+            const weaponRank = weapon.rank || "1d4";
+            const weaponBonus = parseInt(weapon.bonus) || 0;
+            
+            // Construire la formule : caractéristique + rang de l'arme + bonus
+            let formula = `${characteristic}`;
+            if (weaponBonus !== 0) {
+                formula += `+${weaponBonus}`;
+            }
             
             // Lancer les dés
             const roll = new Roll(formula);
             await roll.evaluate({async: true});
             
             // Préparer les données pour le template
-            const templateData = {
-                title: `${this.actor.name} - ${weapon.name}`,
-                subtitle: `Attaque avec ${weapon.name} (${characteristicName} + ${weaponScore})`,
-                formula: formula,
-                total: roll.total,
-                dice: roll.dice,
-                weapon: {
-                    name: weapon.name,
-                    type: weapon.type === 'strength' ? 'Force' : 'Agilité',
-                    score: weaponScore
-                },
-                characteristic: {
-                    name: characteristicName,
-                    value: characteristic
-                }
-            };
+                         const templateData = {
+                 title: `${this.actor.name} - ${weapon.name}`,
+                 subtitle: `Attaque avec ${weapon.name} (${characteristicName} + ${weaponBonus !== 0 ? weaponBonus : ''})`,
+                 formula: formula,
+                 total: roll.total,
+                 dice: roll.dice,
+                 weapon: {
+                     name: weapon.name,
+                     type: weapon.type === 'strength' ? 'Force' : 'Agilité',
+                     rank: weaponRank,
+                     bonus: weaponBonus
+                 },
+                 characteristic: {
+                     name: characteristicName,
+                     value: characteristic
+                 }
+             };
             
             const html = await renderTemplate("systems/voidHorizon/templates/chat/weapon-roll.html", templateData);
             
@@ -1135,6 +1142,10 @@ Hooks.once("init", function() {
 
     Handlebars.registerHelper('gte', function(a, b) {
         return parseInt(a) >= parseInt(b);
+    });
+
+    Handlebars.registerHelper('gt', function(a, b) {
+        return parseInt(a) > parseInt(b);
     });
 
     Handlebars.registerHelper('contains', function(array, value) {

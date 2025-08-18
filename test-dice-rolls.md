@@ -40,12 +40,20 @@
 - Style cohérent avec l'interface
 
 ### 7. Système d'Armes
-- **Arme principale** : Configuration complète (nom, type, score, description)
-- **Arme secondaire** : Configuration complète (nom, type, score, description)
+- **Arme principale** : Configuration complète (nom, type, rang, bonus, description)
+- **Arme secondaire** : Configuration complète (nom, type, rang, bonus, description)
 - **Types d'armes** : Force (Martialité) et Agilité (Acuité)
+- **Rangs d'armes** : Basés sur les dés (1d4 à 1d20)
+  - 1d4 : Arme de base
+  - 1d6 : Arme commune
+  - 1d8 : Arme de qualité
+  - 1d10 : Arme supérieure
+  - 1d12 : Arme exceptionnelle
+  - 1d20 : Arme légendaire
+- **Champ bonus** : Entier (-5 à +10) additionné au résultat des dés
 - **Formules de dés** :
-  - Arme de force : `Martialité + score de l'arme`
-  - Arme d'agilité : `Acuité + score de l'arme`
+  - Arme de force : `Martialité + bonus de l'arme`
+  - Arme d'agilité : `Acuité + bonus de l'arme`
 - **Boutons de lancement** : Chaque arme a son bouton de lancement de dés
 - **Template de chat** : `templates/chat/weapon-roll.html` pour afficher les résultats
 
@@ -68,19 +76,23 @@
 2. **Configurer une arme principale** :
    - Nom : "Épée longue"
    - Type : "Force (Martialité)"
-   - Score : 3
+   - Rang : "Arme de qualité (1d8)"
+   - Bonus : 2
    - Description : "Une épée de qualité"
 3. **Configurer une arme secondaire** :
    - Nom : "Dague"
    - Type : "Agilité (Acuité)"
-   - Score : 2
+   - Rang : "Arme commune (1d6)"
+   - Bonus : 1
    - Description : "Une dague rapide"
 4. **Tester les lancers de dés** :
    - Cliquer sur "Lancer les dés" pour l'arme principale
-   - Vérifier que la formule est "1d4+3" (Martialité + score)
+   - Vérifier que la formule est "1d4+2" (Martialité + bonus)
    - Cliquer sur "Lancer les dés" pour l'arme secondaire
-   - Vérifier que la formule est "1d4+2" (Acuité + score)
+   - Vérifier que la formule est "1d4+1" (Acuité + bonus)
 5. **Vérifier l'affichage dans le chat** avec le template d'arme
+6. **Tester les différents rangs** : Changer le rang d'une arme et vérifier l'affichage
+7. **Tester les bonus négatifs** : Mettre un bonus négatif et vérifier l'affichage
 
 ## Structure des Fichiers Modifiés
 

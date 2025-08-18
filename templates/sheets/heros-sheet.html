@@ -265,8 +265,19 @@
                                  </select>
                              </div>
                              <div class="weapon-field">
-                                 <label>Score:</label>
-                                 <input type="number" name="system.weapons.primary.score" value="{{actor.system.weapons.primary.score}}" min="0" max="10">
+                                 <label>Rang:</label>
+                                 <select name="system.weapons.primary.rank">
+                                     <option value="1d4" {{selected "1d4" actor.system.weapons.primary.rank}}>Arme de base (1d4)</option>
+                                     <option value="1d6" {{selected "1d6" actor.system.weapons.primary.rank}}>Arme commune (1d6)</option>
+                                     <option value="1d8" {{selected "1d8" actor.system.weapons.primary.rank}}>Arme de qualité (1d8)</option>
+                                     <option value="1d10" {{selected "1d10" actor.system.weapons.primary.rank}}>Arme supérieure (1d10)</option>
+                                     <option value="1d12" {{selected "1d12" actor.system.weapons.primary.rank}}>Arme exceptionnelle (1d12)</option>
+                                     <option value="1d20" {{selected "1d20" actor.system.weapons.primary.rank}}>Arme légendaire (1d20)</option>
+                                 </select>
+                             </div>
+                             <div class="weapon-field">
+                                 <label>Bonus:</label>
+                                 <input type="number" name="system.weapons.primary.bonus" value="{{actor.system.weapons.primary.bonus}}" min="-5" max="10" placeholder="0">
                              </div>
                              <div class="weapon-field">
                                  <label>Description:</label>
@@ -294,8 +305,19 @@
                                  </select>
                              </div>
                              <div class="weapon-field">
-                                 <label>Score:</label>
-                                 <input type="number" name="system.weapons.secondary.score" value="{{actor.system.weapons.secondary.score}}" min="0" max="10">
+                                 <label>Rang:</label>
+                                 <select name="system.weapons.secondary.rank">
+                                     <option value="1d4" {{selected "1d4" actor.system.weapons.secondary.rank}}>Arme de base (1d4)</option>
+                                     <option value="1d6" {{selected "1d6" actor.system.weapons.secondary.rank}}>Arme commune (1d6)</option>
+                                     <option value="1d8" {{selected "1d8" actor.system.weapons.secondary.rank}}>Arme de qualité (1d8)</option>
+                                     <option value="1d10" {{selected "1d10" actor.system.weapons.secondary.rank}}>Arme supérieure (1d10)</option>
+                                     <option value="1d12" {{selected "1d12" actor.system.weapons.secondary.rank}}>Arme exceptionnelle (1d12)</option>
+                                     <option value="1d20" {{selected "1d20" actor.system.weapons.secondary.rank}}>Arme légendaire (1d20)</option>
+                                 </select>
+                             </div>
+                             <div class="weapon-field">
+                                 <label>Bonus:</label>
+                                 <input type="number" name="system.weapons.secondary.bonus" value="{{actor.system.weapons.secondary.bonus}}" min="-5" max="10" placeholder="0">
                              </div>
                              <div class="weapon-field">
                                  <label>Description:</label>
