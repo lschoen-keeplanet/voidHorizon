@@ -39,22 +39,27 @@
 - Détails de la formule et des valeurs individuelles
 - Style cohérent avec l'interface
 
-### 7. Système d'Armes
-- **Arme principale** : Configuration complète (nom, type, rang, bonus, description)
-- **Arme secondaire** : Configuration complète (nom, type, rang, bonus, description)
-- **Types d'armes** : Force (Martialité) et Agilité (Acuité)
-- **Rangs d'armes** : Basés sur les dés (1d4 à 1d20)
-  - 1d4 : Arme de base
-  - 1d6 : Arme commune
-  - 1d8 : Arme de qualité
-  - 1d10 : Arme supérieure
-  - 1d12 : Arme exceptionnelle
-  - 1d20 : Arme légendaire
-- **Champ bonus** : Entier (-5 à +10) additionné au résultat des dés
+### 7. Système d'Équipement
+- **Main principale** : Configuration complète (nom, type, rang, bonus, description)
+- **Main secondaire** : Configuration complète (nom, type, rang, bonus, description)
+- **Types d'équipement** : 
+  - Force (Martialité) : Pour les armes de mêlée
+  - Agilité (Acuité) : Pour les armes à distance
+  - Bouclier : Ajoute des bonus à l'armure et la constitution
+- **Rangs d'équipement** : Basés sur les dés (1d4 à 1d20)
+  - 1d4 : Équipement de base
+  - 1d6 : Équipement commun
+  - 1d8 : Équipement de qualité
+  - 1d10 : Équipement supérieur
+  - 1d12 : Équipement exceptionnel
+  - 1d20 : Équipement légendaire
+- **Champ bonus** : Entier (-5 à +10) additionné au résultat des dés ou aux défenses
 - **Formules de dés** :
-  - Arme de force : `Martialité + bonus de l'arme`
-  - Arme d'agilité : `Acuité + bonus de l'arme`
-- **Boutons de lancement** : Chaque arme a son bouton de lancement de dés
+  - Équipement de force : `Martialité + bonus de l'équipement`
+  - Équipement d'agilité : `Acuité + bonus de l'équipement`
+  - Bouclier : Pas de dés, bonus défensif uniquement
+- **Bonus des boucliers** : S'ajoutent automatiquement à l'armure et la constitution
+- **Boutons de lancement** : Chaque équipement d'attaque a son bouton de lancement de dés
 - **Template de chat** : `templates/chat/weapon-roll.html` pour afficher les résultats
 
 ## Comment Tester
@@ -71,28 +76,33 @@
 4. **Cliquer sur "Sauvegarder"** pour sauvegarder tous les changements
 5. **Vérifier que les changements sont persistants** après rechargement
 
-### Test du Système d'Armes
+### Test du Système d'Équipement
 1. **Aller dans l'onglet "Équipement & Actions"**
-2. **Configurer une arme principale** :
+2. **Configurer la main principale** :
    - Nom : "Épée longue"
    - Type : "Force (Martialité)"
-   - Rang : "Arme de qualité (1d8)"
+   - Rang : "Équipement de qualité (1d8)"
    - Bonus : 2
    - Description : "Une épée de qualité"
-3. **Configurer une arme secondaire** :
+3. **Configurer la main secondaire** :
    - Nom : "Dague"
    - Type : "Agilité (Acuité)"
-   - Rang : "Arme commune (1d6)"
+   - Rang : "Équipement commun (1d6)"
    - Bonus : 1
    - Description : "Une dague rapide"
 4. **Tester les lancers de dés** :
-   - Cliquer sur "Lancer les dés" pour l'arme principale
+   - Cliquer sur "Lancer les dés" pour la main principale
    - Vérifier que la formule est "1d4+2" (Martialité + bonus)
-   - Cliquer sur "Lancer les dés" pour l'arme secondaire
+   - Cliquer sur "Lancer les dés" pour la main secondaire
    - Vérifier que la formule est "1d4+1" (Acuité + bonus)
-5. **Vérifier l'affichage dans le chat** avec le template d'arme
-6. **Tester les différents rangs** : Changer le rang d'une arme et vérifier l'affichage
-7. **Tester les bonus négatifs** : Mettre un bonus négatif et vérifier l'affichage
+5. **Tester un bouclier** :
+   - Changer le type de la main secondaire en "Bouclier"
+   - Mettre un bonus de 3
+   - Vérifier que +3 s'affiche sous l'armure et la constitution
+   - Vérifier que le bouton "Lancer les dés" ne fonctionne plus (message d'info)
+6. **Vérifier l'affichage dans le chat** avec le template d'équipement
+7. **Tester les différents rangs** : Changer le rang d'un équipement et vérifier l'affichage
+8. **Tester les bonus négatifs** : Mettre un bonus négatif et vérifier l'affichage
 
 ## Structure des Fichiers Modifiés
 

@@ -921,4 +921,22 @@ textarea:focus {
     .weapons-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* Styles pour les indicateurs de bonus de bouclier */
+.shield-bonus-indicator {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border: 1px solid #2E7D32;
+}
+
+.shield-bonus-indicator:empty {
+    display: none;
 } 

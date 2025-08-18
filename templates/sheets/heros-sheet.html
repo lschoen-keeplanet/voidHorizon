@@ -249,21 +249,22 @@
                      <h2>Armes</h2>
                  </div>
                  <div class="weapons-grid">
-                     <!-- Arme Principale -->
-                     <div class="weapon-slot primary-weapon">
-                         <h3>Arme Principale</h3>
+                                           <!-- Main Principale -->
+                      <div class="weapon-slot primary-weapon">
+                          <h3>Main Principale</h3>
                          <div class="weapon-form">
                              <div class="weapon-field">
                                  <label>Nom de l'arme:</label>
                                  <input type="text" name="system.weapons.primary.name" value="{{actor.system.weapons.primary.name}}" placeholder="Nom de l'arme">
                              </div>
-                             <div class="weapon-field">
-                                 <label>Type:</label>
-                                 <select name="system.weapons.primary.type">
-                                     <option value="strength" {{selected "strength" actor.system.weapons.primary.type}}>Force (Martialité)</option>
-                                     <option value="agility" {{selected "agility" actor.system.weapons.primary.type}}>Agilité (Acuité)</option>
-                                 </select>
-                             </div>
+                                                           <div class="weapon-field">
+                                  <label>Type:</label>
+                                  <select name="system.weapons.primary.type">
+                                      <option value="strength" {{selected "strength" actor.system.weapons.primary.type}}>Force (Martialité)</option>
+                                      <option value="agility" {{selected "agility" actor.system.weapons.primary.type}}>Agilité (Acuité)</option>
+                                      <option value="shield" {{selected "shield" actor.system.weapons.primary.type}}>Bouclier</option>
+                                  </select>
+                              </div>
                              <div class="weapon-field">
                                  <label>Rang:</label>
                                  <select name="system.weapons.primary.rank">
@@ -289,21 +290,22 @@
                          </div>
                      </div>
                      
-                     <!-- Arme Secondaire -->
-                     <div class="weapon-slot secondary-weapon">
-                         <h3>Arme Secondaire</h3>
+                                           <!-- Main Secondaire -->
+                      <div class="weapon-slot secondary-weapon">
+                          <h3>Main Secondaire</h3>
                          <div class="weapon-form">
                              <div class="weapon-field">
                                  <label>Nom de l'arme:</label>
                                  <input type="text" name="system.weapons.secondary.name" value="{{actor.system.weapons.secondary.name}}" placeholder="Nom de l'arme">
                              </div>
-                             <div class="weapon-field">
-                                 <label>Type:</label>
-                                 <select name="system.weapons.secondary.type">
-                                     <option value="strength" {{selected "strength" actor.system.weapons.secondary.type}}>Force (Martialité)</option>
-                                     <option value="agility" {{selected "agility" actor.system.weapons.secondary.type}}>Agilité (Acuité)</option>
-                                 </select>
-                             </div>
+                                                           <div class="weapon-field">
+                                  <label>Type:</label>
+                                  <select name="system.weapons.secondary.type">
+                                      <option value="strength" {{selected "strength" actor.system.weapons.secondary.type}}>Force (Martialité)</option>
+                                      <option value="agility" {{selected "agility" actor.system.weapons.secondary.type}}>Agilité (Acuité)</option>
+                                      <option value="shield" {{selected "shield" actor.system.weapons.secondary.type}}>Bouclier</option>
+                                  </select>
+                              </div>
                              <div class="weapon-field">
                                  <label>Rang:</label>
                                  <select name="system.weapons.secondary.rank">

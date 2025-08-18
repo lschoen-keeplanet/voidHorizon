@@ -186,6 +186,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Gestion des changements d'affinité
         html.find('select[name="system.affinity.value"]').change(this._onSelectChange.bind(this));
         
+        // Gestion des changements de type d'équipement (pour les boucliers)
+        html.find('select[name^="system.weapons."][name$=".type"]').change(this._onWeaponTypeChange.bind(this));
+        
         // Initialiser l'état des cœurs et de la santé
         this._initializeHealthState();
     }
@@ -782,7 +785,13 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const weapon = this.actor.system.weapons[weaponType];
         
         if (!weapon || !weapon.name || !weapon.rank) {
-            ui.notifications.warn(`Veuillez configurer l'arme ${weaponType === 'primary' ? 'principale' : 'secondaire'} avant de lancer les dés`);
+            ui.notifications.warn(`Veuillez configurer l'équipement de la ${weaponType === 'primary' ? 'main principale' : 'main secondaire'} avant de lancer les dés`);
+            return;
+        }
+        
+        // Si c'est un bouclier, pas de lancement de dés
+        if (weapon.type === 'shield') {
+            ui.notifications.info(`${weapon.name} est un bouclier et ne peut pas être utilisé pour attaquer`);
             return;
         }
         
@@ -842,12 +851,96 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 sound: CONFIG.sounds.dice
             });
             
-            console.log(`Lancement d'arme ${weapon.name}: ${formula} = ${roll.total}`);
-        } catch (error) {
-            console.error(`Erreur lors du lancement d'arme ${weaponType}:`, error);
-            ui.notifications.error(`Erreur lors du lancement d'arme ${weaponType}`);
-        }
-    }
+                         console.log(`Lancement d'arme ${weapon.name}: ${formula} = ${roll.total}`);
+         } catch (error) {
+             console.error(`Erreur lors du lancement d'arme ${weaponType}:`, error);
+             ui.notifications.error(`Erreur lors du lancement d'arme ${weaponType}`);
+         }
+     }
+     
+     /**
+      * Applique les bonus des boucliers à l'armure et la constitution
+      * @private
+      */
+     _applyShieldBonuses() {
+         let totalArmorBonus = 0;
+         let totalConstitutionBonus = 0;
+         
+         // Vérifier la main principale
+         if (this.actor.system.weapons?.primary?.type === 'shield') {
+             const shield = this.actor.system.weapons.primary;
+             const bonus = parseInt(shield.bonus) || 0;
+             totalArmorBonus += bonus;
+             totalConstitutionBonus += bonus;
+         }
+         
+         // Vérifier la main secondaire
+         if (this.actor.system.weapons?.secondary?.type === 'shield') {
+             const shield = this.actor.system.weapons.secondary;
+             const bonus = parseInt(shield.bonus) || 0;
+             totalArmorBonus += bonus;
+             totalConstitutionBonus += bonus;
+         }
+         
+         // Mettre à jour l'affichage des bonus
+         this._updateShieldBonusDisplay(totalArmorBonus, totalConstitutionBonus);
+         
+         return { armorBonus: totalArmorBonus, constitutionBonus: totalConstitutionBonus };
+     }
+     
+     /**
+      * Met à jour l'affichage des bonus de bouclier
+      * @param {number} armorBonus - Bonus d'armure total
+      * @param {number} constitutionBonus - Bonus de constitution total
+      * @private
+      */
+     _updateShieldBonusDisplay(armorBonus, constitutionBonus) {
+         // Mettre à jour l'affichage de l'armure
+         const armorInput = this.element.find('input[name="system.resources.armor.value"]');
+         if (armorInput.length > 0) {
+             const baseArmor = parseInt(this.actor.system.resources.armor?.value) || 0;
+             const totalArmor = baseArmor + armorBonus;
+             
+             // Ajouter un indicateur visuel du bonus
+             const armorContainer = armorInput.closest('.resource');
+             let bonusIndicator = armorContainer.find('.shield-bonus-indicator');
+             
+             if (armorBonus > 0) {
+                 if (bonusIndicator.length === 0) {
+                     bonusIndicator = $(`<div class="shield-bonus-indicator">+${armorBonus} (Bouclier)</div>`);
+                     armorContainer.append(bonusIndicator);
+                 } else {
+                     bonusIndicator.text(`+${armorBonus} (Bouclier)`);
+                 }
+                 bonusIndicator.show();
+             } else if (bonusIndicator.length > 0) {
+                 bonusIndicator.hide();
+             }
+         }
+         
+         // Mettre à jour l'affichage de la constitution
+         const constitutionInput = this.element.find('input[name="system.constitution.value"]');
+         if (constitutionInput.length > 0) {
+             const baseConstitution = parseInt(this.actor.system.constitution?.value) || 0;
+             const totalConstitution = baseConstitution + constitutionBonus;
+             
+             // Ajouter un indicateur visuel du bonus
+             const constitutionContainer = constitutionInput.closest('.stat');
+             let bonusIndicator = constitutionContainer.find('.shield-bonus-indicator');
+             
+             if (constitutionBonus > 0) {
+                 if (bonusIndicator.length === 0) {
+                     bonusIndicator = $(`<div class="shield-bonus-indicator">+${constitutionBonus} (Bouclier)</div>`);
+                     constitutionContainer.append(bonusIndicator);
+                 } else {
+                     bonusIndicator.text(`+${constitutionBonus} (Bouclier)`);
+                 }
+                 bonusIndicator.show();
+             } else if (bonusIndicator.length > 0) {
+                 bonusIndicator.hide();
+             }
+         }
+     }
 
     /**
      * Gère le clic sur un cœur de constitution
@@ -1020,37 +1113,69 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         }
     }
 
-    /**
-     * Gère les changements de rang
-     * @param {Event} event - L'événement de changement
-     * @private
-     */
-    async _onRankChange(event) {
-        event.preventDefault();
-        const input = event.target;
-        const value = input.value;
-        
-        try {
-            await this.actor.update({
-                "system.rank.value": value
-            });
-            console.log(`Mise à jour réussie du rang: ${value}`);
-        } catch (error) {
-            console.error("Erreur lors de la mise à jour du rang:", error);
-            // Restaurer la valeur précédente en cas d'erreur
-            input.value = this.actor.system.rank.value;
-        }
-    }
+         /**
+      * Gère les changements de rang
+      * @param {Event} event - L'événement de changement
+      * @private
+      */
+     async _onRankChange(event) {
+         event.preventDefault();
+         const input = event.target;
+         const value = input.value;
+         
+         try {
+             await this.actor.update({
+                 "system.rank.value": value
+             });
+             console.log(`Mise à jour réussie du rang: ${value}`);
+         } catch (error) {
+             console.error("Erreur lors de la mise à jour du rang:", error);
+             // Restaurer la valeur précédente en cas d'erreur
+             input.value = this.actor.system.rank.value;
+         }
+     }
+     
+     /**
+      * Gère les changements de type d'équipement (pour les boucliers)
+      * @param {Event} event - L'événement de changement
+      * @private
+      */
+     async _onWeaponTypeChange(event) {
+         event.preventDefault();
+         const select = event.target;
+         const value = select.value;
+         const field = select.name;
+         
+         try {
+             // Mettre à jour l'acteur
+             await this.actor.update({
+                 [field]: value
+             });
+             
+             // Appliquer les bonus des boucliers
+             this._applyShieldBonuses();
+             
+             console.log(`Type d'équipement mis à jour: ${field} = ${value}`);
+         } catch (error) {
+             console.error("Erreur lors de la mise à jour du type d'équipement:", error);
+             // Restaurer la valeur précédente en cas d'erreur
+             const weaponType = field.includes('primary') ? 'primary' : 'secondary';
+             select.value = this.actor.system.weapons[weaponType]?.type || 'strength';
+         }
+     }
 
     /**
      * Initialise l'état de santé
      * @private
      */
-    _initializeHealthState() {
-        this._initializeHearts(this.element);
-        this._initializeShields(this.element);
-        this._updateHealthStatus();
-    }
+         _initializeHealthState() {
+         this._initializeHearts(this.element);
+         this._initializeShields(this.element);
+         this._updateHealthStatus();
+         
+         // Appliquer les bonus des boucliers
+         this._applyShieldBonuses();
+     }
 
     /**
      * Gère le basculement entre les modes édition et lecture
