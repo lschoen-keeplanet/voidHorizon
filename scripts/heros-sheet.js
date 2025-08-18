@@ -526,6 +526,23 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         event.preventDefault();
         const input = event.target;
         const field = input.name;
+        
+        // Si c'est un champ d'arme, utiliser le système de sauvegarde différée
+        if (field.includes('system.weapons.')) {
+            // Stocker le changement en mémoire sans sauvegarder
+            if (!this._pendingWeaponChanges) {
+                this._pendingWeaponChanges = {};
+            }
+            this._pendingWeaponChanges[field] = input.value;
+            
+            console.log(`Changement d'arme en attente pour ${field}: ${input.value}`);
+            
+            // Mettre à jour l'affichage local sans sauvegarder
+            this._updateLocalWeaponDisplay(field, input.value);
+            return;
+        }
+        
+        // Pour les autres champs texte, sauvegarder immédiatement
         const updateData = {};
         updateData[field] = input.value;
         
@@ -537,7 +554,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         } catch (error) {
             console.error("Erreur lors de la mise à jour:", error);
             // Restaurer la valeur précédente en cas d'erreur
-            input.value = this.actor.system[field.split('.')[2]].value;
+            if (field.includes('system.')) {
+                const fieldParts = field.split('.');
+                if (fieldParts.length >= 3) {
+                    input.value = this.actor.system[fieldParts[1]]?.[fieldParts[2]]?.value || '';
+                }
+            }
         }
     }
 
