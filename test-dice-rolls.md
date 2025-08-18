@@ -26,7 +26,14 @@
 - **Pas de sauvegarde automatique** : Les changements ne sont sauvegardés que lors du clic sur "Sauvegarder"
 - **Gestion des erreurs** : Restauration automatique des valeurs en cas d'échec de sauvegarde
 
-### 5. Template de Chat
+### 5. Labels des Caractéristiques
+- **Martialité** : Deux mains gauches (1d4) → Légende (1d20)
+- **Pimpance** : Tâche (1d4) → Ramirez (1d20)
+- **Acuité** : Aveugle (1d4) → Fulgurant (1d20)
+- **Arcane** : Insensible (1d4) → Archimage (1d20)
+- **Affichage cohérent** : Les labels s'affichent correctement dans les menus déroulants et en mode lecture
+
+### 6. Template de Chat
 - Template `templates/chat/roll.html` créé
 - Affichage élégant des résultats de dés
 - Détails de la formule et des valeurs individuelles

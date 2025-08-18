@@ -79,13 +79,37 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         data.helpers = {
             getSelectedText: (value, type) => {
                 const mappings = {
+                    martialite: {
+                        "1d4": "Deux mains gauches",
+                        "1d6": "Combatif",
+                        "1d8": "Soldat",
+                        "1d10": "Expérimenté",
+                        "1d12": "Vétéran",
+                        "1d20": "Légende"
+                    },
                     pimpance: {
                         "1d4": "Tâche",
                         "1d6": "Pas top",
                         "1d8": "Honnête",
-                        "1d10": "Clinquant",
-                        "1d12": "Majestueux",
+                        "1d10": "Beau",
+                        "1d12": "Splendide",
                         "1d20": "Ramirez"
+                    },
+                    acuite: {
+                        "1d4": "Aveugle",
+                        "1d6": "Distrait",
+                        "1d8": "Alerte",
+                        "1d10": "Vif",
+                        "1d12": "Clairvoyant",
+                        "1d20": "Fulgurant"
+                    },
+                    arcane: {
+                        "1d4": "Insensible",
+                        "1d6": "Eveillé",
+                        "1d8": "Novice",
+                        "1d10": "Initié",
+                        "1d12": "Maître",
+                        "1d20": "Archimage"
                     }
                 };
                 return mappings[type]?.[value] || value;
@@ -512,22 +536,56 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             const readModeElement = this.element.find(`select[name="${field}"]`).closest('.stat-block').find('.read-mode');
             
             if (readModeElement.length > 0) {
-                if (statName === 'pimpance') {
-                    // Utiliser le helper pour Pimpance
-                    const mappings = {
-                        "1d4": "Tâche",
-                        "1d6": "Pas top",
-                        "1d8": "Honnête",
-                        "1d10": "Clinquant",
-                        "1d12": "Majestueux",
-                        "1d20": "Ramirez"
-                    };
-                    readModeElement.text(mappings[value] || value);
-                } else {
-                    readModeElement.text(value);
-                }
+                const label = this._getStatLabel(statName, value);
+                readModeElement.text(label);
             }
         }
+    }
+
+    /**
+     * Retourne le label d'affichage pour une statistique
+     * @param {string} statName - Le nom de la statistique
+     * @param {string} value - La valeur de la statistique
+     * @returns {string} - Le label d'affichage
+     * @private
+     */
+    _getStatLabel(statName, value) {
+        const mappings = {
+            'martialite': {
+                "1d4": "Deux mains gauches",
+                "1d6": "Combatif",
+                "1d8": "Soldat",
+                "1d10": "Expérimenté",
+                "1d12": "Vétéran",
+                "1d20": "Légende"
+            },
+            'pimpance': {
+                "1d4": "Tâche",
+                "1d6": "Pas top",
+                "1d8": "Honnête",
+                "1d10": "Beau",
+                "1d12": "Splendide",
+                "1d20": "Ramirez"
+            },
+            'acuite': {
+                "1d4": "Aveugle",
+                "1d6": "Distrait",
+                "1d8": "Alerte",
+                "1d10": "Vif",
+                "1d12": "Clairvoyant",
+                "1d20": "Fulgurant"
+            },
+            'arcane': {
+                "1d4": "Insensible",
+                "1d6": "Eveillé",
+                "1d8": "Novice",
+                "1d10": "Initié",
+                "1d12": "Maître",
+                "1d20": "Archimage"
+            }
+        };
+        
+        return mappings[statName]?.[value] || value;
     }
 
     /**
@@ -573,7 +631,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         Object.keys(this._pendingChanges).forEach(field => {
             const select = this.element.find(`select[name="${field}"]`);
             if (select.length > 0) {
-                const originalValue = this.actor.system[field.split('.')[2]]?.value;
+                const statName = field.split('.')[1];
+                const originalValue = this.actor.system[statName]?.value;
                 select.val(originalValue);
                 this._updateLocalDisplay(field, originalValue);
             }
