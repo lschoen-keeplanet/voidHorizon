@@ -2007,6 +2007,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         for (const traitId in traits) {
             const trait = traits[traitId];
+            // Ignorer les traits null ou undefined
+            if (!trait || trait === null) {
+                continue;
+            }
             if (trait.bonusTarget === statName) {
                 totalBonus += trait.bonusValue || 0;
             }
@@ -2052,15 +2056,18 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         // Vérifier que les bonus sont cohérents avec les traits actuels
         const currentTraits = this.actor.system.traits || {};
-        const currentBonusCount = Object.keys(currentTraits).length;
+        // Compter seulement les traits valides (pas null)
+        const validTraits = Object.values(currentTraits).filter(trait => trait && trait !== null);
+        const currentBonusCount = validTraits.length;
         
         console.log('Recalcul des bonus - Traits actuels:', currentTraits);
-        console.log('Nombre de traits:', currentBonusCount);
+        console.log('Traits valides:', validTraits);
+        console.log('Nombre de traits valides:', currentBonusCount);
         console.log('Dernier compte:', this._lastTraitCount);
         
-        // Si le nombre de traits a changé, recalculer
+        // Si le nombre de traits valides a changé, recalculer
         if (this._lastTraitCount !== currentBonusCount) {
-            console.log('Nombre de traits changé, recalcul des bonus...');
+            console.log('Nombre de traits valides changé, recalcul des bonus...');
             this._applyTraitBonuses();
             this._lastTraitCount = currentBonusCount;
         }
