@@ -375,91 +375,91 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                                </div>
+                            </div>
 
-                        <!-- Contenu de l'onglet Traits -->
-                        <div class="tab-content" data-tab="traits">
-                            <div class="traits-section">
-                                <div class="traits-header">
-                                    <h3>Traits du personnage</h3>
-                                    <button type="button" class="create-trait-btn" id="create-trait-btn">
-                                        <i class="fas fa-plus"></i> Ajouter un trait
-                                    </button>
-                                </div>
-                                
-                                <!-- Message d'information -->
-                                <div class="traits-info">
-                                    <p><i class="fas fa-info-circle"></i> Les traits confèrent des bonus aux caractéristiques de votre personnage. Cliquez sur "Ajouter un trait" pour commencer.</p>
-                                </div>
-                                
-                                <!-- Formulaire de création de trait (caché par défaut) -->
-                                <div class="trait-form-container" id="trait-form-container" style="display: none;">
-                                    <div class="trait-form">
-                                        <h4>Nouveau trait</h4>
-                                        <div class="trait-form-fields">
-                                            <div class="trait-field">
-                                                <label>Nom du trait:</label>
-                                                <input type="text" id="trait-name-input" placeholder="Nom du trait" data-no-save="true" />
-                                            </div>
-                                            <div class="trait-field">
-                                                <label>Description:</label>
-                                                <textarea id="trait-description-input" placeholder="Description du trait" rows="3" data-no-save="true"></textarea>
-                                            </div>
-                                            <div class="trait-field">
-                                                <label>Bonus sur:</label>
-                                                <select id="trait-bonus-target" data-no-save="true">
-                                                    <option value="">Sélectionner une caractéristique</option>
-                                                    <option value="martialite">Martialité</option>
-                                                    <option value="pimpance">Pimpance</option>
-                                                    <option value="acuite">Acuité</option>
-                                                    <option value="arcane">Arcane</option>
-                                                    <option value="armor">Armure</option>
-                                                    <option value="constitution">Constitution</option>
-                                                </select>
-                                            </div>
-                                            <div class="trait-field">
-                                                <label>Valeur du bonus:</label>
-                                                <input type="number" id="trait-bonus-value" placeholder="+1" min="-5" max="10" data-no-save="true" />
-                                            </div>
-                                        </div>
-                                        <div class="trait-form-actions">
-                                            <button type="button" class="trait-save-btn" id="trait-save-btn">
-                                                <i class="fas fa-save"></i> Sauvegarder
-                                            </button>
-                                            <button type="button" class="trait-cancel-btn" id="trait-cancel-btn">
-                                                <i class="fas fa-times"></i> Annuler
-                                            </button>
-                                        </div>
+                            <!-- Contenu de l'onglet Traits -->
+                            <div class="tab-content" data-tab="traits">
+                                <div class="traits-section">
+                                    <div class="traits-header">
+                                        <h3>Traits du personnage</h3>
+                                        <button type="button" class="create-trait-btn" id="create-trait-btn">
+                                            <i class="fas fa-plus"></i> Ajouter un trait
+                                        </button>
                                     </div>
-                                </div>
-                                
-                                <!-- Liste des traits existants -->
-                                <div class="traits-list" id="traits-list">
-                                    {{#each actor.system.traits as |trait traitId|}}
-                                    <div class="trait" data-trait-id="{{traitId}}">
-                                        <div class="trait-header">
-                                            <div class="trait-name">
-                                                <h4>{{trait.name}}</h4>
-                                                <span class="trait-bonus-display">
-                                                    {{#if trait.bonusValue}}+{{/if}}{{trait.bonusValue}} {{trait.bonusTarget}}
-                                                </span>
-                                            </div>
-                                            <div class="trait-controls">
-                                                <button type="button" class="trait-control trait-edit" title="Modifier" data-trait-id="{{traitId}}">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button type="button" class="trait-control trait-delete" title="Supprimer" data-trait-id="{{traitId}}">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="trait-description">
-                                            {{trait.description}}
-                                        </div>
-                                    </div>
-                                    {{/each}}
                                     
-
+                                    <!-- Message d'information -->
+                                    <div class="traits-info">
+                                        <p><i class="fas fa-info-circle"></i> Les traits confèrent des bonus aux caractéristiques de votre personnage. Cliquez sur "Ajouter un trait" pour commencer.</p>
+                                    </div>
+                                    
+                                    <!-- Formulaire de création de trait (caché par défaut) -->
+                                    <div class="trait-form-container" id="trait-form-container" style="display: none;">
+                                        <div class="trait-form">
+                                            <h4>Nouveau trait</h4>
+                                            <div class="trait-form-fields">
+                                                <div class="trait-field">
+                                                    <label>Nom du trait:</label>
+                                                    <input type="text" id="trait-name-input" placeholder="Nom du trait" data-no-save="true" />
+                                                </div>
+                                                <div class="trait-field">
+                                                    <label>Description:</label>
+                                                    <textarea id="trait-description-input" placeholder="Description du trait" rows="3" data-no-save="true"></textarea>
+                                                </div>
+                                                <div class="trait-field">
+                                                    <label>Bonus sur:</label>
+                                                    <select id="trait-bonus-target" data-no-save="true">
+                                                        <option value="">Sélectionner une caractéristique</option>
+                                                        <option value="martialite">Martialité</option>
+                                                        <option value="pimpance">Pimpance</option>
+                                                        <option value="acuite">Acuité</option>
+                                                        <option value="arcane">Arcane</option>
+                                                        <option value="armor">Armure</option>
+                                                        <option value="constitution">Constitution</option>
+                                                    </select>
+                                                </div>
+                                                <div class="trait-field">
+                                                    <label>Valeur du bonus:</label>
+                                                    <input type="number" id="trait-bonus-value" placeholder="+1" min="-5" max="10" data-no-save="true" />
+                                                </div>
+                                            </div>
+                                            <div class="trait-form-actions">
+                                                <button type="button" class="trait-save-btn" id="trait-save-btn">
+                                                    <i class="fas fa-save"></i> Sauvegarder
+                                                </button>
+                                                <button type="button" class="trait-cancel-btn" id="trait-cancel-btn">
+                                                    <i class="fas fa-times"></i> Annuler
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Liste des traits existants -->
+                                    <div class="traits-list" id="traits-list">
+                                        {{#each actor.system.traits as |trait traitId|}}
+                                        <div class="trait" data-trait-id="{{traitId}}">
+                                            <div class="trait-header">
+                                                <div class="trait-name">
+                                                    <h4>{{trait.name}}</h4>
+                                                    <span class="trait-bonus-display">
+                                                        {{#if trait.bonusValue}}+{{/if}}{{trait.bonusValue}} {{trait.bonusTarget}}
+                                                    </span>
+                                                </div>
+                                                <div class="trait-controls">
+                                                    <button type="button" class="trait-control trait-edit" title="Modifier" data-trait-id="{{traitId}}">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button type="button" class="trait-control trait-delete" title="Supprimer" data-trait-id="{{traitId}}">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="trait-description">
+                                                {{trait.description}}
+                                            </div>
+                                        </div>
+                                        {{/each}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -501,39 +501,39 @@
                                 </div>
                             </div>
 
-                            <div class="armor-section">
-                                <div class="armor-container">
-                                    {{#each (times actor.system.resources.armor.value)}}
-                                    <div class="shield-wrapper">
-                                        <button type="button" class="shield-button active" data-shield-index="{{this}}"
-                                            data-active="true">
-                                            <i class="fas fa-shield-alt"></i>
-                                        </button>
-                                        <button type="button" class="shield-button broken" data-shield-index="{{this}}"
-                                            data-active="false">
-                                            <i class="fas fa-shield-alt" style="opacity: 0.3;"></i>
-                                        </button>
-                                    </div>
-                                    {{/each}}
-                                </div>
-                            </div>
+                                                         <div class="armor-section">
+                                 <div class="armor-container">
+                                     {{#each (times (getTotalArmor actor))}}
+                                     <div class="shield-wrapper">
+                                         <button type="button" class="shield-button active" data-shield-index="{{this}}"
+                                             data-active="true">
+                                             <i class="fas fa-shield-alt"></i>
+                                         </button>
+                                         <button type="button" class="shield-button broken" data-shield-index="{{this}}"
+                                             data-active="false">
+                                             <i class="fas fa-shield-alt" style="opacity: 0.3;"></i>
+                                         </button>
+                                     </div>
+                                     {{/each}}
+                                 </div>
+                             </div>
 
-                            <div class="health-section">
-                                <div class="hearts-container">
-                                    {{#each (times system.constitution.value)}}
-                                    <div class="heart-wrapper">
-                                        <button type="button" class="heart-button alive" data-heart-index="{{this}}"
-                                            data-alive="true">
-                                            <i class="fas fa-heart"></i>
-                                        </button>
-                                        <button type="button" class="heart-button dead" data-heart-index="{{this}}"
-                                            data-alive="false">
-                                            <i class="fas fa-heart-broken"></i>
-                                        </button>
-                                    </div>
-                                    {{/each}}
-                                </div>
-                            </div>
+                                                         <div class="health-section">
+                                 <div class="hearts-container">
+                                     {{#each (times (getTotalConstitution actor))}}
+                                     <div class="heart-wrapper">
+                                         <button type="button" class="heart-button alive" data-heart-index="{{this}}"
+                                             data-alive="true">
+                                             <i class="fas fa-heart"></i>
+                                         </button>
+                                         <button type="button" class="heart-button dead" data-heart-index="{{this}}"
+                                             data-alive="false">
+                                             <i class="fas fa-heart-broken"></i>
+                                         </button>
+                                     </div>
+                                     {{/each}}
+                                 </div>
+                             </div>
                         </div>
 
                         <div class="additional-stats">

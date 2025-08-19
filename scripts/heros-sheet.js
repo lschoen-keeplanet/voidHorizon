@@ -476,7 +476,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     _updateHeartsDisplay() {
-        const constitution = this.actor.system.constitution?.value || 0;
+        const totalConstitution = this._getTotalConstitution();
         const blessure = this.actor.system.resources.blessure?.value || 0;
         const hearts = this.element.find('.heart-wrapper');
         
@@ -501,10 +501,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      */
     _updateShieldsDisplay() {
         console.log("=== Debug Shields Display ===");
-        const armorValue = parseInt(this.actor.system.resources.armor?.value) || 0;
+        const totalArmor = this._getTotalArmor();
         const armorDamage = parseInt(this.actor.system.resources.armorDamage?.value) || 0;
         
-        console.log("Valeur d'armure:", armorValue);
+        console.log("Valeur d'armure totale (base + bonus):", totalArmor);
         console.log("Dégâts d'armure:", armorDamage);
         
         // Au lieu de recréer les boucliers, on force le re-render du template
@@ -1175,15 +1175,15 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     _updateHealthStatus() {
         console.log("=== Debug Health Status ===");
         
-        const constitution = this.actor.system.constitution?.value || 0;
+        const totalConstitution = this._getTotalConstitution();
         const blessure = this.actor.system.resources.blessure?.value || 0;
-        const armor = this.actor.system.resources.armor?.value || 0;
+        const totalArmor = this._getTotalArmor();
         const armorDamage = this.actor.system.resources.armorDamage?.value || 0;
-        const remainingHearts = constitution - blessure;
+        const remainingHearts = totalConstitution - blessure;
         
-        console.log("Constitution:", constitution);
+        console.log("Constitution totale (base + bonus):", totalConstitution);
         console.log("Blessures:", blessure);
-        console.log("Armure:", armor);
+        console.log("Armure totale (base + bonus):", totalArmor);
         console.log("Dégâts d'armure:", armorDamage);
         console.log("Points de vie restants:", remainingHearts);
         
@@ -1741,6 +1741,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Recalculer les bonus des traits
             this._applyTraitBonuses();
             
+            // Mettre à jour l'affichage des cœurs et boucliers
+            this._updateHealthStatus();
+            this._updateShieldsDisplay();
+            this._updateHeartsDisplay();
+            
             // Recharger la fiche pour afficher les changements
             this.render(true);
             
@@ -1902,11 +1907,16 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                          // Notification de succès
              ui.notifications.info(`Trait "${trait.name}" supprimé avec succès`);
              
-             // Recalculer les bonus des traits
-             this._applyTraitBonuses();
-             
-             // Recharger la fiche pour afficher les changements
-             this.render(true);
+                         // Recalculer les bonus des traits
+            this._applyTraitBonuses();
+            
+            // Mettre à jour l'affichage des cœurs et boucliers
+            this._updateHealthStatus();
+            this._updateShieldsDisplay();
+            this._updateHeartsDisplay();
+            
+            // Recharger la fiche pour afficher les changements
+            this.render(true);
             
         } catch (error) {
             console.error('Erreur lors de la suppression du trait:', error);
@@ -1961,6 +1971,43 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         this.actor.system.traitBonuses = bonuses;
         
         console.log('Bonus des traits appliqués:', bonuses);
+        
+        // Si les bonus d'armure ou de constitution ont changé, forcer la mise à jour de l'affichage
+        const oldArmorBonus = this._lastArmorBonus || 0;
+        const oldConstitutionBonus = this._lastConstitutionBonus || 0;
+        
+        if (bonuses.armor !== oldArmorBonus || bonuses.constitution !== oldConstitutionBonus) {
+            console.log('Bonus d\'armure ou de constitution changé, mise à jour de l\'affichage...');
+            this._updateHealthStatus();
+            this._updateShieldsDisplay();
+            this._updateHeartsDisplay();
+            
+            // Stocker les nouveaux bonus pour la prochaine comparaison
+            this._lastArmorBonus = bonuses.armor;
+            this._lastConstitutionBonus = bonuses.constitution;
+        }
+    }
+
+    /**
+     * Obtient la valeur totale de constitution incluant les bonus des traits
+     * @returns {number} - Valeur totale de constitution
+     * @private
+     */
+    _getTotalConstitution() {
+        const baseConstitution = parseInt(this.actor.system.constitution?.value) || 0;
+        const traitBonus = this.actor.system.traitBonuses?.constitution || 0;
+        return baseConstitution + traitBonus;
+    }
+
+    /**
+     * Obtient la valeur totale d'armure incluant les bonus des traits
+     * @returns {number} - Valeur totale d'armure
+     * @private
+     */
+    _getTotalArmor() {
+        const baseArmor = parseInt(this.actor.system.resources?.armor?.value) || 0;
+        const traitBonus = this.actor.system.traitBonuses?.armor || 0;
+        return baseArmor + traitBonus;
     }
     
     /**
@@ -2028,6 +2075,19 @@ Hooks.once("init", function() {
 
     Handlebars.registerHelper('contains', function(array, value) {
         return array && array.includes(parseInt(value));
+    });
+
+    // Nouveaux helpers pour les valeurs totales incluant les bonus des traits
+    Handlebars.registerHelper('getTotalConstitution', function(actor) {
+        const baseConstitution = parseInt(actor.system.constitution?.value) || 0;
+        const traitBonus = parseInt(actor.system.traitBonuses?.constitution) || 0;
+        return baseConstitution + traitBonus;
+    });
+
+    Handlebars.registerHelper('getTotalArmor', function(actor) {
+        const baseArmor = parseInt(actor.system.resources?.armor?.value) || 0;
+        const traitBonus = parseInt(actor.system.traitBonuses?.armor) || 0;
+        return baseArmor + traitBonus;
     });
 
     foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
