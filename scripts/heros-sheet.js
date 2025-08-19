@@ -1264,14 +1264,34 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      * Initialise l'état de santé
      * @private
      */
-         _initializeHealthState() {
-         this._initializeHearts(this.element);
-         this._initializeShields(this.element);
-         this._updateHealthStatus();
-         
-         // Appliquer les bonus des boucliers
-         this._applyShieldBonuses();
-     }
+    _initializeHealthState() {
+        this._initializeHearts(this.element);
+        this._initializeShields(this.element);
+        this._updateHealthStatus();
+        
+        // Appliquer les bonus des boucliers
+        this._applyShieldBonuses();
+        
+        // Reattacher les événements des boucliers après le re-render
+        this._reattachShieldEvents();
+    }
+    
+    /**
+     * Reattache les événements des boucliers après un re-render
+     * @private
+     */
+    _reattachShieldEvents() {
+        const shieldButtons = this.element.find('.armor-container .shield-button');
+        console.log(`Reattachement des événements pour ${shieldButtons.length} boutons de bouclier`);
+        
+        shieldButtons.each((index, button) => {
+            // Supprimer les anciens événements
+            $(button).off('click');
+            
+            // Attacher le nouvel événement
+            $(button).on('click', this._onShieldClick.bind(this));
+        });
+    }
 
          /**
       * Gère le basculement entre les modes édition et lecture
