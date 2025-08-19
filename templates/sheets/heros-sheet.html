@@ -393,15 +393,32 @@
                                         <div class="weapon-slot armor-slot">
                                             <h3>Armure</h3>
                                             <div class="weapon-form">
-                                                                            <div class="weapon-field">
+                                                                                                        <div class="weapon-field">
                                 <label>Nom de l'armure:</label>
                                 <input type="text" name="system.armor.name"
                                     value="{{actor.system.armor.name}}"
                                     placeholder="Nom de l'armure" class="edit-mode" data-no-save="true">
                                 <div class="read-mode">{{actor.system.armor.name}}</div>
                             </div>
-                                                                            
-                                                                            <div class="weapon-field">
+                            
+                            <div class="weapon-field">
+                                <label>Type d'armure:</label>
+                                <select name="system.armor.type" class="edit-mode" data-no-save="true">
+                                    <option value="tissu" {{#if (eq actor.system.armor.type "tissu")}}selected{{/if}}>Tissu (+0 armure)</option>
+                                    <option value="legere" {{#if (eq actor.system.armor.type "legere")}}selected{{/if}}>Légère (+1 armure)</option>
+                                    <option value="lourde" {{#if (eq actor.system.armor.type "lourde")}}selected{{/if}}>Lourde (+2 armure)</option>
+                                    <option value="blindee" {{#if (eq actor.system.armor.type "blindee")}}selected{{/if}}>Blindée (+4 armure)</option>
+                                </select>
+                                <div class="read-mode">
+                                    {{#if (eq actor.system.armor.type "tissu")}}Tissu (+0)
+                                    {{else if (eq actor.system.armor.type "legere")}}Légère (+1)
+                                    {{else if (eq actor.system.armor.type "lourde")}}Lourde (+2)
+                                    {{else if (eq actor.system.armor.type "blindee")}}Blindée (+4)
+                                    {{else}}Tissu (+0){{/if}}
+                                </div>
+                            </div>
+                            
+                            <div class="weapon-field">
                                 <label>Description:</label>
                                 <textarea name="system.armor.description"
                                     placeholder="Description de l'armure"

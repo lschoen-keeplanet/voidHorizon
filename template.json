@@ -107,10 +107,11 @@
                         "type": "Object",
                         "default": {}
                     },
-                    "armor": {
-                        "name": "",
-                        "description": ""
-                    }
+                                    "armor": {
+                    "name": "",
+                    "type": "tissu",
+                    "description": ""
+                }
                 }
             }
         }
