@@ -224,11 +224,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                  // Gestion des changements de type d'équipement (pour les boucliers)
          html.find('select[name^="system.weapons."][name$=".type"]').change(this._onWeaponTypeChange.bind(this));
          
-         // Gestion des changements d'armes (sans sauvegarde automatique)
-         html.find('input[name^="system.weapons."], select[name^="system.weapons."], textarea[name^="system.weapons."]').change(this._onWeaponFieldChange.bind(this));
+         // Gestion des changements d'armes et d'armure (sans sauvegarde automatique)
+         html.find('input[name^="system.weapons."], select[name^="system.weapons."], textarea[name^="system.weapons."], input[name^="system.armor."], textarea[name^="system.armor."]').change(this._onWeaponFieldChange.bind(this));
          
-                 // Gestion du mode édition/lecture des armes
-        html.find('.toggle-weapons-edit-mode').click(this._onToggleWeaponsEditMode.bind(this));
+         // Gestion du mode édition/lecture des armes
+         html.find('.toggle-weapons-edit-mode').click(this._onToggleWeaponsEditMode.bind(this));
         
         // Gestion des onglets Équipement/Traits
         const tabButtons = html.find('.tab-button');
@@ -687,9 +687,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             console.log(`Arcane et mana mis à jour localement: ${value} -> ${newMaxMana} points de mana`);
             
             // Ajouter les changements de mana aux changements en attente
-            if (!this._pendingChanges) {
-                this._pendingChanges = {};
-            }
+        if (!this._pendingChanges) {
+            this._pendingChanges = {};
+        }
             this._pendingChanges['system.mana.max'] = newMaxMana;
             this._pendingChanges['system.mana.value'] = newMaxMana;
             
@@ -1097,25 +1097,25 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             await roll.evaluate({async: true});
             
             // Préparer les données pour le template
-            const templateData = {
-                title: `${this.actor.name} - ${weapon.name}`,
+                         const templateData = {
+                 title: `${this.actor.name} - ${weapon.name}`,
                 subtitle: `Attaque avec ${weapon.name} (${characteristicName}${traitBonus !== 0 ? ` + ${traitBonus > 0 ? '+' : ''}${traitBonus} traits` : ''}${weaponBonus !== 0 ? ` + ${weaponBonus > 0 ? '+' : ''}${weaponBonus} arme` : ''})`,
-                formula: formula,
-                total: roll.total,
-                dice: roll.dice,
-                weapon: {
-                    name: weapon.name,
-                    type: weapon.type === 'strength' ? 'Force' : 'Agilité',
-                    rank: weaponRank,
-                    bonus: weaponBonus
-                },
-                characteristic: {
-                    name: characteristicName,
-                    value: characteristic
+                 formula: formula,
+                 total: roll.total,
+                 dice: roll.dice,
+                 weapon: {
+                     name: weapon.name,
+                     type: weapon.type === 'strength' ? 'Force' : 'Agilité',
+                     rank: weaponRank,
+                     bonus: weaponBonus
+                 },
+                 characteristic: {
+                     name: characteristicName,
+                     value: characteristic
                 },
                 traitBonus: traitBonus,
                 totalBonus: totalBonus
-            };
+             };
             
             const html = await renderTemplate("systems/voidHorizon/templates/chat/weapon-roll.html", templateData);
             
@@ -1127,10 +1127,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             });
             
             console.log(`Lancement d'arme ${weapon.name}: ${displayFormula} = ${roll.total} (base: ${characteristic}, bonus traits: ${traitBonus}, bonus arme: ${weaponBonus})`);
-        } catch (error) {
-            console.error(`Erreur lors du lancement d'arme ${weaponType}:`, error);
-            ui.notifications.error(`Erreur lors du lancement d'arme ${weaponType}`);
-        }
+         } catch (error) {
+             console.error(`Erreur lors du lancement d'arme ${weaponType}:`, error);
+             ui.notifications.error(`Erreur lors du lancement d'arme ${weaponType}`);
+         }
      }
      
      /**
@@ -1156,6 +1156,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
              totalArmorBonus += bonus;
              totalConstitutionBonus += bonus;
          }
+         
+         // Ajouter le bonus d'armure de l'équipement
+         const equipmentArmorBonus = parseInt(this.actor.system.armor?.bonus) || 0;
+         totalArmorBonus += equipmentArmorBonus;
          
          // Mettre à jour l'affichage des bonus
          this._updateShieldBonusDisplay(totalArmorBonus, totalConstitutionBonus);
@@ -1521,14 +1525,19 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
          }
          this._pendingWeaponChanges[field] = value;
          
-         console.log(`Changement d'arme en attente pour ${field}: ${value}`);
+         console.log(`Changement d'équipement en attente pour ${field}: ${value}`);
          
          // Mettre à jour l'affichage local sans sauvegarder
          this._updateLocalWeaponDisplay(field, value);
          
-         // Si c'est un changement de type, appliquer immédiatement les bonus des boucliers
+         // Si c'est un changement de type d'arme, appliquer immédiatement les bonus des boucliers
          if (field.endsWith('.type')) {
              this._applyShieldBonuses();
+         }
+         
+         // Si c'est un changement de bonus d'armure, mettre à jour l'affichage des boucliers
+         if (field === 'system.armor.bonus') {
+             this._updateShieldsDisplay();
          }
      }
 
@@ -1562,14 +1571,14 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      * Initialise l'état de santé
      * @private
      */
-    _initializeHealthState() {
-        this._initializeHearts(this.element);
-        this._initializeShields(this.element);
+         _initializeHealthState() {
+         this._initializeHearts(this.element);
+         this._initializeShields(this.element);
         this._updateManaDisplay();
-        this._updateHealthStatus();
-        
-        // Appliquer les bonus des boucliers
-        this._applyShieldBonuses();
+         this._updateHealthStatus();
+         
+         // Appliquer les bonus des boucliers
+         this._applyShieldBonuses();
         
         // Reattacher les événements des boucliers après le re-render
         this._reattachShieldEvents();
@@ -1641,7 +1650,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Attacher le nouvel événement
             $(button).on('click', this._onShieldClick.bind(this));
         });
-    }
+     }
 
          /**
       * Gère le basculement entre les modes édition et lecture
@@ -1680,32 +1689,30 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
       * @param {Event} event - L'événement de clic
       * @private
       */
-     _onToggleWeaponsEditMode(event) {
-         event.preventDefault();
-         const weaponsSection = event.currentTarget.closest('.weapons-section');
-         const isEditing = weaponsSection.classList.contains('editing');
-         
-         if (isEditing) {
-             // Mode sauvegarde - sauvegarder tous les changements d'armes
-             if (this._pendingWeaponChanges && Object.keys(this._pendingWeaponChanges).length > 0) {
-                 this._saveAllWeaponChanges();
-             }
-             
-             weaponsSection.classList.remove('editing');
-             weaponsSection.classList.add('read-only');
-             event.currentTarget.querySelector('i').classList.remove('fa-save');
-             event.currentTarget.querySelector('i').classList.add('fa-edit');
-             event.currentTarget.querySelector('.button-text').textContent = 'Éditer';
-         } else {
-             // Mode édition - initialiser les changements en attente
-             this._pendingWeaponChanges = {};
-             weaponsSection.classList.remove('read-only');
-             weaponsSection.classList.add('editing');
-             event.currentTarget.querySelector('i').classList.remove('fa-edit');
-             event.currentTarget.querySelector('i').classList.add('fa-save');
-             event.currentTarget.querySelector('.button-text').textContent = 'Sauvegarder';
-         }
-     }
+         _onToggleWeaponsEditMode(event) {
+        event.preventDefault();
+        const weaponsSection = event.currentTarget.closest('.weapons-section');
+        const isEditing = weaponsSection.classList.contains('editing');
+        
+        if (isEditing) {
+            // Mode sauvegarde - sauvegarder tous les changements d'armes
+            if (this._pendingWeaponChanges && Object.keys(this._pendingWeaponChanges).length > 0) {
+                this._saveAllWeaponChanges();
+            }
+            
+            weaponsSection.classList.remove('editing');
+            weaponsSection.classList.add('read-only');
+            event.currentTarget.querySelector('i').classList.remove('fa-save');
+            event.currentTarget.querySelector('i').classList.add('fa-edit');
+        } else {
+            // Mode édition - initialiser les changements en attente
+            this._pendingWeaponChanges = {};
+            weaponsSection.classList.remove('read-only');
+            weaponsSection.classList.add('editing');
+            event.currentTarget.querySelector('i').classList.remove('fa-edit');
+            event.currentTarget.querySelector('i').classList.add('fa-save');
+        }
+    }
 
      /**
       * Sauvegarde tous les changements d'armes en attente
@@ -1750,15 +1757,27 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
          Object.keys(this._pendingWeaponChanges).forEach(field => {
              const input = this.element.find(`[name="${field}"]`);
              if (input.length > 0) {
-                 // Extraire le nom du champ et la main (primary/secondary)
-                 const fieldParts = field.split('.');
-                 const weaponType = fieldParts[2]; // primary ou secondary
-                 const fieldName = fieldParts[3]; // name, type, rank, bonus, description
-                 
-                 // Restaurer la valeur depuis l'acteur
-                 const originalValue = this.actor.system.weapons[weaponType]?.[fieldName];
-                 if (originalValue !== undefined) {
-                     input.val(originalValue);
+                 if (field.includes('system.weapons.')) {
+                     // Extraire le nom du champ et la main (primary/secondary)
+                     const fieldParts = field.split('.');
+                     const weaponType = fieldParts[2]; // primary ou secondary
+                     const fieldName = fieldParts[3]; // name, type, rank, bonus, description
+                     
+                     // Restaurer la valeur depuis l'acteur
+                     const originalValue = this.actor.system.weapons[weaponType]?.[fieldName];
+                     if (originalValue !== undefined) {
+                         input.val(originalValue);
+                     }
+                 } else if (field.includes('system.armor.')) {
+                     // Gérer l'armure
+                     const fieldParts = field.split('.');
+                     const fieldName = fieldParts[2]; // name, bonus, description
+                     
+                     // Restaurer la valeur depuis l'acteur
+                     const originalValue = this.actor.system.armor?.[fieldName];
+                     if (originalValue !== undefined) {
+                         input.val(originalValue);
+                     }
                  }
              }
          });
@@ -1798,6 +1817,27 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                      }
                  } else if (fieldName === 'bonus') {
                      // Gérer l'affichage du bonus
+                     const bonusValue = parseInt(value) || 0;
+                     if (bonusValue > 0) {
+                         readModeElement.text(`+${bonusValue}`);
+                     } else {
+                         readModeElement.text(bonusValue.toString());
+                     }
+                 } else {
+                     // Pour les autres champs (name, description)
+                     readModeElement.text(value || '');
+                 }
+             }
+         } else if (field.includes('system.armor.')) {
+             // Mettre à jour l'affichage en mode lecture pour l'armure
+             const fieldParts = field.split('.');
+             const fieldName = fieldParts[2]; // name, bonus, description
+             
+             const readModeElement = this.element.find(`[name="${field}"]`).closest('.weapon-field').find('.read-mode');
+             
+             if (readModeElement.length > 0) {
+                 if (fieldName === 'bonus') {
+                     // Gérer l'affichage du bonus d'armure
                      const bonusValue = parseInt(value) || 0;
                      if (bonusValue > 0) {
                          readModeElement.text(`+${bonusValue}`);
@@ -2209,7 +2249,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     _getTotalArmor() {
         const baseArmor = parseInt(this.actor.system.resources?.armor?.value) || 0;
         const traitBonus = this.actor.system.traitBonuses?.armor || 0;
-        return baseArmor + traitBonus;
+        const equipmentBonus = parseInt(this.actor.system.armor?.bonus) || 0;
+        return baseArmor + traitBonus + equipmentBonus;
     }
     
     /**
@@ -2289,7 +2330,8 @@ Hooks.once("init", function() {
         Handlebars.registerHelper('getTotalArmor', function(actor) {
             const baseArmor = parseInt(actor.system.resources?.armor?.value) || 0;
             const traitBonus = parseInt(actor.system.traitBonuses?.armor) || 0;
-            return baseArmor + traitBonus;
+            const equipmentBonus = parseInt(actor.system.armor?.bonus) || 0;
+            return baseArmor + traitBonus + equipmentBonus;
         });
 
         // Helper pour calculer le mana total basé sur le degré d'Arcane
@@ -2323,7 +2365,7 @@ Hooks.once("init", function() {
                 "6d4": "1d24"   // Degré 6
             };
             return safeToUnsafe[safeValue] || safeValue;
-        });
+    });
 
     foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
     foundry.documents.collections.Actors.registerSheet("voidHorizon", HeroSheet, {
