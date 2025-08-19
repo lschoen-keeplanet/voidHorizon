@@ -1296,8 +1296,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         event.preventDefault();
         console.log('Clic sur onglet détecté');
         
-        const button = event.currentTarget;
-        const tabName = button.dataset.tab;
+        const button = $(event.currentTarget); // Convertir en objet jQuery
+        const tabName = button.data('tab');
         console.log('Nom de l\'onglet:', tabName);
         
         // Mettre à jour l'état actif des boutons
