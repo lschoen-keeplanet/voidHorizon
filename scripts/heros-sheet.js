@@ -1825,6 +1825,22 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         const trait = this.actor.system.traits?.[traitId];
         
+        // Si le trait est null, c'est qu'il a déjà été supprimé
+        if (trait === null) {
+            console.log('Trait déjà supprimé (null), nettoyage de la structure...');
+            // Nettoyer la structure en supprimant complètement la propriété
+            const cleanTraits = { ...this.actor.system.traits };
+            delete cleanTraits[traitId];
+            
+            await this.actor.update({
+                'system.traits': cleanTraits
+            });
+            
+            ui.notifications.info('Structure des traits nettoyée');
+            this.render(true);
+            return;
+        }
+        
         if (!trait) {
             console.error('Trait non trouvé pour ID:', traitId);
             ui.notifications.error('Trait non trouvé');
