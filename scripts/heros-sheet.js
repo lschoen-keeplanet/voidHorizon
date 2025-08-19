@@ -232,6 +232,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const armorDamage = this.actor.system.resources.armorDamage?.value || 0;
         const shields = html.find('.armor-container .shield-wrapper');
         
+        console.log(`Initialisation des boucliers: ${shields.length} trouvés, dégâts: ${armorDamage}`);
+        
         shields.each((index, wrapper) => {
             const shieldIndex = index;
             const activeButton = wrapper.querySelector('.active');
@@ -246,9 +248,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             if (shieldIndex < armorDamage) {
                 activeButton.classList.add('hidden');
                 brokenButton.classList.remove('hidden');
+                console.log(`Bouclier ${shieldIndex} marqué comme cassé`);
             } else {
                 activeButton.classList.remove('hidden');
                 brokenButton.classList.add('hidden');
+                console.log(`Bouclier ${shieldIndex} marqué comme actif`);
             }
         });
     }
@@ -478,42 +482,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         console.log("Valeur d'armure:", armorValue);
         console.log("Dégâts d'armure:", armorDamage);
         
-        const shields = this.element.find('.shield-wrapper');
-        console.log("Boucliers existants:", shields.length);
-        
-        // Supprimer les boucliers existants
-        shields.remove();
-        
-        // Créer les nouveaux boucliers
-        const armorContainer = this.element.find('.armor-container');
-        console.log("Container d'armure trouvé:", armorContainer.length > 0);
-        
-        for (let i = 0; i < armorValue; i++) {
-            const shieldWrapper = $(`
-                <div class="shield-wrapper">
-                    <button type="button" class="shield-button active" data-shield-index="${i}" data-active="true">
-                        <i class="fas fa-shield-alt"></i>
-                    </button>
-                    <button type="button" class="shield-button broken" data-shield-index="${i}" data-active="false">
-                        <i class="fas fa-shield-alt" style="opacity: 0.3;"></i>
-                    </button>
-                </div>
-            `);
-            armorContainer.append(shieldWrapper);
-            
-            // Mettre à jour l'état du bouclier
-            const activeButton = shieldWrapper.find('.active');
-            const brokenButton = shieldWrapper.find('.broken');
-            
-            if (i < armorDamage) {
-                activeButton.addClass('hidden');
-                brokenButton.removeClass('hidden');
-            } else {
-                activeButton.removeClass('hidden');
-                brokenButton.addClass('hidden');
-            }
-        }
-        console.log("Nouveaux boucliers créés:", armorValue);
+        // Au lieu de recréer les boucliers, on force le re-render du template
+        // car les boucliers sont générés par Handlebars
+        console.log("Forcer le re-render pour mettre à jour les boucliers");
+        this.render(true);
         console.log("=== Fin Debug Shields Display ===");
     }
 
@@ -1149,6 +1121,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const isActive = button.dataset.active === "true";
         const shieldWrapper = button.closest('.shield-wrapper');
         
+        console.log(`Clic sur bouclier ${shieldIndex}, actif: ${isActive}`);
+        
         // Vérification de sécurité
         if (!shieldWrapper) {
             console.error("Wrapper d'armure non trouvé");
@@ -1158,6 +1132,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Mettre à jour la valeur de dégâts d'armure
         const currentDamage = this.actor.system.resources.armorDamage?.value || 0;
         const newDamage = isActive ? currentDamage + 1 : currentDamage - 1;
+        
+        console.log(`Dégâts d'armure: ${currentDamage} -> ${newDamage}`);
         
         try {
             // Mettre à jour l'acteur avec la nouvelle valeur de dégâts d'armure
@@ -1171,8 +1147,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Mettre à jour l'affichage des boutons
             this._updateShieldDisplay(shieldWrapper, isActive);
             
-            // Forcer la mise à jour de l'affichage
-            this.render(true);
+            console.log("Bouclier mis à jour avec succès");
         } catch (error) {
             console.error("Erreur lors de la mise à jour des boucliers:", error);
         }
@@ -1188,6 +1163,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const activeButton = shieldWrapper.querySelector('.active');
         const brokenButton = shieldWrapper.querySelector('.broken');
         
+        console.log("Mise à jour de l'affichage du bouclier:", { activeButton, brokenButton, isActive });
+        
         // Vérification de sécurité
         if (!activeButton || !brokenButton) {
             console.error("Boutons d'armure non trouvés:", { activeButton, brokenButton });
@@ -1195,11 +1172,15 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         }
         
         if (isActive) {
+            // Le bouclier était actif, on le casse
             activeButton.classList.add('hidden');
             brokenButton.classList.remove('hidden');
+            console.log("Bouclier marqué comme cassé");
         } else {
+            // Le bouclier était cassé, on le répare
             activeButton.classList.remove('hidden');
             brokenButton.classList.add('hidden');
+            console.log("Bouclier marqué comme actif");
         }
     }
 
