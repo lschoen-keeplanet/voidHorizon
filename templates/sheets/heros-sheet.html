@@ -73,20 +73,26 @@
                                         <select name="system.martialite.value" class="edit-mode">
                                             {{#select system.martialite.value}}
                                             <option value="1d4">Incompétent</option>
-                                            <option value="1d6">Combatif</option>
-                                            <option value="1d8">Soldat</option>
-                                            <option value="1d10">Expérimenté</option>
-                                            <option value="1d12">Vétéran</option>
-                                            <option value="1d20">Légende</option>
+                                            <option value="2d4">Combatif</option>
+                                            <option value="3d4">Soldat</option>
+                                            <option value="4d4">Expérimenté</option>
+                                            <option value="5d4">Vétéran</option>
+                                            <option value="6d4">Légende</option>
                                             {{/select}}
                                         </select>
                                         <div class="read-mode">{{helpers.getSelectedText actor.system.martialite.value
                                             "martialite"}}</div>
                                     </div>
-                                    <button type="button" class="roll-dice-btn" data-stat="martialite"
-                                        title="Lancer les dés de Martialité">
-                                        <i class="fas fa-dice-d20"></i>
-                                    </button>
+                                    <div class="roll-buttons">
+                                        <button type="button" class="roll-dice-btn safe" data-stat="martialite" data-unsafe="false"
+                                            title="Lancer les dés de Martialité (Mode Safe - {{system.martialite.value}})">
+                                            <i class="fas fa-shield-alt"></i> Safe
+                                        </button>
+                                        <button type="button" class="roll-dice-btn unsafe" data-stat="martialite" data-unsafe="true"
+                                            title="Lancer les dés de Martialité (Mode Unsafe - {{helpers.getUnsafeFormula system.martialite.value}})">
+                                            <i class="fas fa-skull-crossbones"></i> Unsafe
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <div class="stat-block">
@@ -99,20 +105,26 @@
                                         <select name="system.pimpance.value" class="edit-mode">
                                             {{#select system.pimpance.value}}
                                             <option value="1d4">Tâche</option>
-                                            <option value="1d6">Pas top</option>
-                                            <option value="1d8">Honnête</option>
-                                            <option value="1d10">Beau</option>
-                                            <option value="1d12">Splendide</option>
-                                            <option value="1d20">Ramirez</option>
+                                            <option value="2d4">Pas top</option>
+                                            <option value="3d4">Honnête</option>
+                                            <option value="4d4">Beau</option>
+                                            <option value="5d4">Splendide</option>
+                                            <option value="6d4">Ramirez</option>
                                             {{/select}}
                                         </select>
                                         <div class="read-mode">{{helpers.getSelectedText actor.system.pimpance.value
                                             "pimpance"}}</div>
                                     </div>
-                                    <button type="button" class="roll-dice-btn" data-stat="pimpance"
-                                        title="Lancer les dés de Pimpance">
-                                        <i class="fas fa-dice-d20"></i>
-                                    </button>
+                                    <div class="roll-buttons">
+                                        <button type="button" class="roll-dice-btn safe" data-stat="pimpance" data-unsafe="false"
+                                            title="Lancer les dés de Pimpance (Mode Safe - {{system.pimpance.value}})">
+                                            <i class="fas fa-shield-alt"></i> Safe
+                                        </button>
+                                        <button type="button" class="roll-dice-btn unsafe" data-stat="pimpance" data-unsafe="true"
+                                            title="Lancer les dés de Pimpance (Mode Unsafe - {{helpers.getUnsafeFormula system.pimpance.value}})">
+                                            <i class="fas fa-skull-crossbones"></i> Unsafe
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <div class="stat-block">
@@ -125,20 +137,26 @@
                                         <select name="system.acuite.value" class="edit-mode" data-dtype="String">
                                             {{#select system.acuite.value}}
                                             <option value="1d4">Aveugle</option>
-                                            <option value="1d6">Distrait</option>
-                                            <option value="1d8">Alerte</option>
-                                            <option value="1d10">Vif</option>
-                                            <option value="1d12">Clairvoyant</option>
-                                            <option value="1d20">Fulgurant</option>
+                                            <option value="2d4">Distrait</option>
+                                            <option value="3d4">Alerte</option>
+                                            <option value="4d4">Vif</option>
+                                            <option value="5d4">Clairvoyant</option>
+                                            <option value="6d4">Fulgurant</option>
                                             {{/select}}
                                         </select>
                                         <div class="read-mode">{{helpers.getSelectedText actor.system.acuite.value
                                             "acuite"}}</div>
                                     </div>
-                                    <button type="button" class="roll-dice-btn" data-stat="acuite"
-                                        title="Lancer les dés d'Acuité">
-                                        <i class="fas fa-dice-d20"></i>
-                                    </button>
+                                    <div class="roll-buttons">
+                                        <button type="button" class="roll-dice-btn safe" data-stat="acuite" data-unsafe="false"
+                                            title="Lancer les dés d'Acuité (Mode Safe - {{system.acuite.value}})">
+                                            <i class="fas fa-shield-alt"></i> Safe
+                                        </button>
+                                        <button type="button" class="roll-dice-btn unsafe" data-stat="acuite" data-unsafe="true"
+                                            title="Lancer les dés d'Acuité (Mode Unsafe - {{helpers.getUnsafeFormula system.acuite.value}})">
+                                            <i class="fas fa-skull-crossbones"></i> Unsafe
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <div class="stat-block">
@@ -151,20 +169,26 @@
                                         <select name="system.arcane.value" class="edit-mode">
                                             {{#select system.arcane.value}}
                                             <option value="1d4">Insensible</option>
-                                            <option value="1d6">Eveillé</option>
-                                            <option value="1d8">Novice</option>
-                                            <option value="1d10">Initié</option>
-                                            <option value="1d12">Maître</option>
-                                            <option value="1d20">Archimage</option>
+                                            <option value="2d4">Eveillé</option>
+                                            <option value="3d4">Novice</option>
+                                            <option value="4d4">Initié</option>
+                                            <option value="5d4">Maître</option>
+                                            <option value="6d4">Archimage</option>
                                             {{/select}}
                                         </select>
                                         <div class="read-mode">{{helpers.getSelectedText actor.system.arcane.value
                                             "arcane"}}</div>
                                     </div>
-                                    <button type="button" class="roll-dice-btn" data-stat="arcane"
-                                        title="Lancer les dés d'Arcane">
-                                        <i class="fas fa-dice-d20"></i>
-                                    </button>
+                                    <div class="roll-buttons">
+                                        <button type="button" class="roll-dice-btn safe" data-stat="arcane" data-unsafe="false"
+                                            title="Lancer les dés d'Arcane (Mode Safe - {{system.arcane.value}})">
+                                            <i class="fas fa-shield-alt"></i> Safe
+                                        </button>
+                                        <button type="button" class="roll-dice-btn unsafe" data-stat="arcane" data-unsafe="true"
+                                            title="Lancer les dés d'Arcane (Mode Unsafe - {{helpers.getUnsafeFormula system.arcane.value}})">
+                                            <i class="fas fa-skull-crossbones"></i> Unsafe
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="edit-mode-button">
                                     <button type="button" class="toggle-edit-mode"

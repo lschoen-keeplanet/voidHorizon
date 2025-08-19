@@ -252,6 +252,38 @@ img{
     font-size: 10px;
 }
 
+/* Nouveaux boutons Safe/Unsafe */
+.roll-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.roll-dice-btn.safe {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    border-color: #4CAF50;
+    color: white;
+}
+
+.roll-dice-btn.safe:hover {
+    background: linear-gradient(135deg, #45a049, #3d8b40);
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.4);
+}
+
+.roll-dice-btn.unsafe {
+    background: linear-gradient(135deg, #f44336, #da190b);
+    border-color: #f44336;
+    color: white;
+}
+
+.roll-dice-btn.unsafe:hover {
+    background: linear-gradient(135deg, #da190b, #c62828);
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(244, 67, 54, 0.4);
+}
+
 .stat-controls {
     display: flex;
     justify-content: center;
