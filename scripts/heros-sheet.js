@@ -408,6 +408,13 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     async _onResourceChange(event) {
         event.preventDefault();
         const target = event.target;
+        
+        // Ignorer les champs marqués comme ne devant pas être sauvegardés automatiquement
+        if (target.hasAttribute('data-no-save')) {
+            console.log(`Champ numérique ${target.name} ignoré (data-no-save)`);
+            return;
+        }
+        
         const value = parseInt(target.value);
         const name = target.name;
 
@@ -518,6 +525,13 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     async _onTextChange(event) {
         event.preventDefault();
         const input = event.target;
+        
+        // Ignorer les champs marqués comme ne devant pas être sauvegardés automatiquement
+        if (input.hasAttribute('data-no-save')) {
+            console.log(`Champ texte ${input.name} ignoré (data-no-save)`);
+            return;
+        }
+        
         const field = input.name;
         
         // Si c'est un champ d'arme, utiliser le système de sauvegarde différée
@@ -564,6 +578,13 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     async _onSelectChange(event) {
         event.preventDefault();
         const select = event.target;
+        
+        // Ignorer les champs marqués comme ne devant pas être sauvegardés automatiquement
+        if (select.hasAttribute('data-no-save')) {
+            console.log(`Champ ${select.name} ignoré (data-no-save)`);
+            return;
+        }
+        
         const field = select.name;
         const value = select.value;
         
