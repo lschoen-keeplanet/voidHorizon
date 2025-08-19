@@ -1869,14 +1869,22 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 'system.traits': currentTraits
             });
             
+            console.log('Acteur mis à jour, traits actuels:', this.actor.system.traits);
+            
             // Notification de succès
             ui.notifications.info(`Trait "${trait.name}" supprimé avec succès`);
             
-            // Recalculer les bonus des traits
-            this._applyTraitBonuses();
+            // Forcer la mise à jour des données de l'acteur
+            await this.actor.sheet.render(true);
             
-            // Recharger la fiche
-            this.render(true);
+            // Recalculer les bonus des traits
+            console.log("Recalcul des bonus après suppression...");
+            this._applyTraitBonuses();
+            console.log("Bonus recalculés:", this.actor.system.traitBonuses);
+            
+            // Vérifier que la suppression a bien fonctionné
+            console.log("Vérification finale - Traits restants:", this.actor.system.traits);
+            console.log("Nombre de traits:", Object.keys(this.actor.system.traits || {}).length);
             
         } catch (error) {
             console.error('Erreur lors de la suppression du trait:', error);
