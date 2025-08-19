@@ -60,257 +60,258 @@
         <div class="main-content">
             <div class="stats-health-row">
                 <div class="main">
-                    <div class="stats-grid">
-                        <div class="stat-block">
-                            <div class="stat-header">
-                                <img src="systems/voidHorizon/assets/icons/martialite.png" class="stat-icon" alt="Martialité">
-                                <label class="rollable" data-stat="martialite">Martialité</label>
-                            </div>
-                            <div class="stat-controls">
-                                <select name="system.martialite.value" class="edit-mode">
-                                    {{#select system.martialite.value}}
-                                                                         <option value="1d4">Incompétent</option>
-                                    <option value="1d6">Combatif</option>
-                                    <option value="1d8">Soldat</option>
-                                    <option value="1d10">Expérimenté</option>
-                                    <option value="1d12">Vétéran</option>
-                                    <option value="1d20">Légende</option>
-                                    {{/select}}
-                                </select>
-                                <div class="read-mode">{{helpers.getSelectedText actor.system.martialite.value "martialite"}}</div>
-                            </div>
-                            <button type="button" class="roll-dice-btn" data-stat="martialite" title="Lancer les dés de Martialité">
-                                <i class="fas fa-dice-d20"></i>
-                            </button>
-                        </div>
-                        
-                        <div class="stat-block">
-                            <div class="stat-header">
-                                <img src="systems/voidHorizon/assets/icons/pimpance.png" class="stat-icon" alt="Pimpance">
-                                <label class="rollable" data-stat="pimpance">Pimpance</label>
-                            </div>
-                            <div class="stat-controls">
-                                <select name="system.pimpance.value" class="edit-mode">
-                                    {{#select system.pimpance.value}}
-                                    <option value="1d4">Tâche</option>
-                                    <option value="1d6">Pas top</option>
-                                    <option value="1d8">Honnête</option>
-                                    <option value="1d10">Beau</option>
-                                    <option value="1d12">Splendide</option>
-                                    <option value="1d20">Ramirez</option>
-                                    {{/select}}
-                                </select>
-                                <div class="read-mode">{{helpers.getSelectedText actor.system.pimpance.value "pimpance"}}</div>
-                            </div>
-                            <button type="button" class="roll-dice-btn" data-stat="pimpance" title="Lancer les dés de Pimpance">
-                                <i class="fas fa-dice-d20"></i>
-                            </button>
-                        </div>
-                        
-                        <div class="stat-block">
-                            <div class="stat-header">
-                                <img src="systems/voidHorizon/assets/icons/acuite.png" class="stat-icon" alt="Acuité">
-                                <label class="rollable" data-stat="acuite">Acuité</label>
-                            </div>
-                            <div class="stat-controls">
-                                <select name="system.acuite.value" class="edit-mode" data-dtype="String">
-                                    {{#select system.acuite.value}}
-                                    <option value="1d4">Aveugle</option>
-                                    <option value="1d6">Distrait</option>
-                                    <option value="1d8">Alerte</option>
-                                    <option value="1d10">Vif</option>
-                                    <option value="1d12">Clairvoyant</option>
-                                    <option value="1d20">Fulgurant</option>
-                                    {{/select}}
-                                </select>
-                                <div class="read-mode">{{helpers.getSelectedText actor.system.acuite.value "acuite"}}</div>
-                            </div>
-                            <button type="button" class="roll-dice-btn" data-stat="acuite" title="Lancer les dés d'Acuité">
-                                <i class="fas fa-dice-d20"></i>
-                            </button>
-                        </div>
-                        
-                        <div class="stat-block">
-                            <div class="stat-header">
-                                <img src="systems/voidHorizon/assets/icons/arcane.png" class="stat-icon" alt="Arcane">
-                                <label class="rollable" data-stat="arcane">Arcane</label>
-                            </div>
-                            <div class="stat-controls">
-                                <select name="system.arcane.value" class="edit-mode">
-                                    {{#select system.arcane.value}}
-                                    <option value="1d4">Insensible</option>
-                                    <option value="1d6">Eveillé</option>
-                                    <option value="1d8">Novice</option>
-                                    <option value="1d10">Initié</option>
-                                    <option value="1d12">Maître</option>
-                                    <option value="1d20">Archimage</option>
-                                    {{/select}}
-                                </select>
-                                <div class="read-mode">{{helpers.getSelectedText actor.system.arcane.value "arcane"}}</div>
-                            </div>
-                            <button type="button" class="roll-dice-btn" data-stat="arcane" title="Lancer les dés d'Arcane">
-                                <i class="fas fa-dice-d20"></i>
-                            </button>
-                        </div>
-                        <div class="edit-mode-button">
-                            <button type="button" class="toggle-edit-mode" title="Cliquer pour éditer, cliquer à nouveau pour sauvegarder">
-                                <i class="fas fa-edit"></i>
-                                <span class="button-text">Éditer</span>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Section des Armes et Traits -->
-                    <div class="weapons-traits-section">
-                        <div class="section-header">
-                            <div class="tab-buttons">
-                                <button type="button" class="tab-button active" data-tab="equipment">
-                                    <h2>Équipement</h2>
-                                </button>
-                                <button type="button" class="tab-button" data-tab="traits">
-                                    <h2>Traits</h2>
+                    <div class="main-fiche">
+                        <div class="stats-grid">
+                            <div class="stat-block">
+                                <div class="stat-header">
+                                    <img src="systems/voidHorizon/assets/icons/martialite.png" class="stat-icon" alt="Martialité">
+                                    <label class="rollable" data-stat="martialite">Martialité</label>
+                                </div>
+                                <div class="stat-controls">
+                                    <select name="system.martialite.value" class="edit-mode">
+                                        {{#select system.martialite.value}}
+                                                                             <option value="1d4">Incompétent</option>
+                                        <option value="1d6">Combatif</option>
+                                        <option value="1d8">Soldat</option>
+                                        <option value="1d10">Expérimenté</option>
+                                        <option value="1d12">Vétéran</option>
+                                        <option value="1d20">Légende</option>
+                                        {{/select}}
+                                    </select>
+                                    <div class="read-mode">{{helpers.getSelectedText actor.system.martialite.value "martialite"}}</div>
+                                </div>
+                                <button type="button" class="roll-dice-btn" data-stat="martialite" title="Lancer les dés de Martialité">
+                                    <i class="fas fa-dice-d20"></i>
                                 </button>
                             </div>
-                            <div class="weapons-edit-mode-button" id="weapons-edit-button">
-                                <button type="button" class="toggle-weapons-edit-mode" title="Cliquer pour éditer, cliquer à nouveau pour sauvegarder">
+                            
+                            <div class="stat-block">
+                                <div class="stat-header">
+                                    <img src="systems/voidHorizon/assets/icons/pimpance.png" class="stat-icon" alt="Pimpance">
+                                    <label class="rollable" data-stat="pimpance">Pimpance</label>
+                                </div>
+                                <div class="stat-controls">
+                                    <select name="system.pimpance.value" class="edit-mode">
+                                        {{#select system.pimpance.value}}
+                                        <option value="1d4">Tâche</option>
+                                        <option value="1d6">Pas top</option>
+                                        <option value="1d8">Honnête</option>
+                                        <option value="1d10">Beau</option>
+                                        <option value="1d12">Splendide</option>
+                                        <option value="1d20">Ramirez</option>
+                                        {{/select}}
+                                    </select>
+                                    <div class="read-mode">{{helpers.getSelectedText actor.system.pimpance.value "pimpance"}}</div>
+                                </div>
+                                <button type="button" class="roll-dice-btn" data-stat="pimpance" title="Lancer les dés de Pimpance">
+                                    <i class="fas fa-dice-d20"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="stat-block">
+                                <div class="stat-header">
+                                    <img src="systems/voidHorizon/assets/icons/acuite.png" class="stat-icon" alt="Acuité">
+                                    <label class="rollable" data-stat="acuite">Acuité</label>
+                                </div>
+                                <div class="stat-controls">
+                                    <select name="system.acuite.value" class="edit-mode" data-dtype="String">
+                                        {{#select system.acuite.value}}
+                                        <option value="1d4">Aveugle</option>
+                                        <option value="1d6">Distrait</option>
+                                        <option value="1d8">Alerte</option>
+                                        <option value="1d10">Vif</option>
+                                        <option value="1d12">Clairvoyant</option>
+                                        <option value="1d20">Fulgurant</option>
+                                        {{/select}}
+                                    </select>
+                                    <div class="read-mode">{{helpers.getSelectedText actor.system.acuite.value "acuite"}}</div>
+                                </div>
+                                <button type="button" class="roll-dice-btn" data-stat="acuite" title="Lancer les dés d'Acuité">
+                                    <i class="fas fa-dice-d20"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="stat-block">
+                                <div class="stat-header">
+                                    <img src="systems/voidHorizon/assets/icons/arcane.png" class="stat-icon" alt="Arcane">
+                                    <label class="rollable" data-stat="arcane">Arcane</label>
+                                </div>
+                                <div class="stat-controls">
+                                    <select name="system.arcane.value" class="edit-mode">
+                                        {{#select system.arcane.value}}
+                                        <option value="1d4">Insensible</option>
+                                        <option value="1d6">Eveillé</option>
+                                        <option value="1d8">Novice</option>
+                                        <option value="1d10">Initié</option>
+                                        <option value="1d12">Maître</option>
+                                        <option value="1d20">Archimage</option>
+                                        {{/select}}
+                                    </select>
+                                    <div class="read-mode">{{helpers.getSelectedText actor.system.arcane.value "arcane"}}</div>
+                                </div>
+                                <button type="button" class="roll-dice-btn" data-stat="arcane" title="Lancer les dés d'Arcane">
+                                    <i class="fas fa-dice-d20"></i>
+                                </button>
+                            </div>
+                            <div class="edit-mode-button">
+                                <button type="button" class="toggle-edit-mode" title="Cliquer pour éditer, cliquer à nouveau pour sauvegarder">
                                     <i class="fas fa-edit"></i>
                                     <span class="button-text">Éditer</span>
                                 </button>
                             </div>
                         </div>
                         
-                        <!-- Contenu de l'onglet Équipement -->
-                        <div class="tab-content active" data-tab="equipment">
-                            <div class="weapons-section read-only">
-                                <div class="weapons-grid">
-                            <!-- Main Principale -->
-                            <div class="weapon-slot primary-weapon">
-                                <h3>Main Principale</h3>
-                                <div class="weapon-form">
-                                    <div class="weapon-field">
-                                        <label>Nom de l'arme:</label>
-                                        <input type="text" name="system.weapons.primary.name" value="{{actor.system.weapons.primary.name}}" placeholder="Nom de l'arme" class="edit-mode">
-                                        <div class="read-mode">{{actor.system.weapons.primary.name}}</div>
-                                    </div>
-                                    <div class="weapon-field">
-                                        <label>Type:</label>
-                                        <select name="system.weapons.primary.type" class="edit-mode">
-                                            <option value="strength" {{selected "strength" actor.system.weapons.primary.type}}>Force (Martialité)</option>
-                                            <option value="agility" {{selected "agility" actor.system.weapons.primary.type}}>Agilité (Acuité)</option>
-                                            <option value="shield" {{selected "shield" actor.system.weapons.primary.type}}>Bouclier</option>
-                                        </select>
-                                        <div class="read-mode">{{#if (eq actor.system.weapons.primary.type "strength")}}Force (Martialité){{else if (eq actor.system.weapons.primary.type "agility")}}Agilité (Acuité){{else if (eq actor.system.weapons.primary.type "shield")}}Bouclier{{else}}Non défini{{/if}}</div>
-                                    </div>
-                                    <div class="weapon-field">
-                                        <label>Qualité:</label>
-                                        <select name="system.weapons.primary.rank" class="edit-mode">
-                                            <option value="0" {{selected "0" actor.system.weapons.primary.rank}}>Équipement brisé (0)</option>
-                                            <option value="1d4" {{selected "1d4" actor.system.weapons.primary.rank}}>Équipement commun (1d4)</option>
-                                            <option value="1d6" {{selected "1d6" actor.system.weapons.primary.rank}}>Équipement de qualité (1d6)</option>
-                                            <option value="1d8" {{selected "1d8" actor.system.weapons.primary.rank}}>Équipement rare (1d8)</option>
-                                            <option value="1d10" {{selected "1d10" actor.system.weapons.primary.rank}}>Équipement exceptionnel (1d10)</option>
-                                            <option value="1d12" {{selected "1d12" actor.system.weapons.primary.rank}}>Équipement légendaire (1d12)</option>
-                                            <option value="1d20" {{selected "1d20" actor.system.weapons.primary.rank}}>Équipement mythique (1d20)</option>
-                                        </select>
-                                        <div class="read-mode">{{#if (eq actor.system.weapons.primary.rank "0")}}Équipement brisé{{else}}{{actor.system.weapons.primary.rank}}{{/if}}</div>
-                                    </div>
-                                    <div class="weapon-field">
-                                        <label>Bonus:</label>
-                                        <input type="number" name="system.weapons.primary.bonus" value="{{actor.system.weapons.primary.bonus}}" min="-5" max="10" placeholder="0" class="edit-mode">
-                                        <div class="read-mode">{{#if (gt actor.system.weapons.primary.bonus 0)}}+{{/if}}{{actor.system.weapons.primary.bonus}}</div>
-                                    </div>
-                                    <div class="weapon-field">
-                                        <label>Description:</label>
-                                        <textarea name="system.weapons.primary.description" placeholder="Description de l'arme" class="edit-mode">{{actor.system.weapons.primary.description}}</textarea>
-                                        <div class="read-mode">{{actor.system.weapons.primary.description}}</div>
-                                    </div>
-                                    <button type="button" class="roll-weapon-btn read-mode" data-weapon="primary" title="Lancer les dés pour l'arme principale">
-                                        <i class="fas fa-sword"></i> Lancer les dés
+                        <!-- Section des Armes et Traits -->
+                        <div class="weapons-traits-section">
+                            <div class="section-header">
+                                <div class="tab-buttons">
+                                    <button type="button" class="tab-button active" data-tab="equipment">
+                                        <h2>Équipement</h2>
+                                    </button>
+                                    <button type="button" class="tab-button" data-tab="traits">
+                                        <h2>Traits</h2>
+                                    </button>
+                                </div>
+                                <div class="weapons-edit-mode-button" id="weapons-edit-button">
+                                    <button type="button" class="toggle-weapons-edit-mode" title="Cliquer pour éditer, cliquer à nouveau pour sauvegarder">
+                                        <i class="fas fa-edit"></i>
+                                        <span class="button-text">Éditer</span>
                                     </button>
                                 </div>
                             </div>
                             
-                            <!-- Main Secondaire -->
-                            <div class="weapon-slot secondary-weapon">
-                                <h3>Main Secondaire</h3>
-                                <div class="weapon-form">
-                                    <div class="weapon-field">
-                                        <label>Nom de l'arme:</label>
-                                        <input type="text" name="system.weapons.secondary.name" value="{{actor.system.weapons.secondary.name}}" placeholder="Nom de l'arme" class="edit-mode">
-                                        <div class="read-mode">{{actor.system.weapons.secondary.name}}</div>
+                            <!-- Contenu de l'onglet Équipement -->
+                            <div class="tab-content active" data-tab="equipment">
+                                <div class="weapons-section read-only">
+                                    <div class="weapons-grid">
+                                <!-- Main Principale -->
+                                <div class="weapon-slot primary-weapon">
+                                    <h3>Main Principale</h3>
+                                    <div class="weapon-form">
+                                        <div class="weapon-field">
+                                            <label>Nom de l'arme:</label>
+                                            <input type="text" name="system.weapons.primary.name" value="{{actor.system.weapons.primary.name}}" placeholder="Nom de l'arme" class="edit-mode">
+                                            <div class="read-mode">{{actor.system.weapons.primary.name}}</div>
+                                        </div>
+                                        <div class="weapon-field">
+                                            <label>Type:</label>
+                                            <select name="system.weapons.primary.type" class="edit-mode">
+                                                <option value="strength" {{selected "strength" actor.system.weapons.primary.type}}>Force (Martialité)</option>
+                                                <option value="agility" {{selected "agility" actor.system.weapons.primary.type}}>Agilité (Acuité)</option>
+                                                <option value="shield" {{selected "shield" actor.system.weapons.primary.type}}>Bouclier</option>
+                                            </select>
+                                            <div class="read-mode">{{#if (eq actor.system.weapons.primary.type "strength")}}Force (Martialité){{else if (eq actor.system.weapons.primary.type "agility")}}Agilité (Acuité){{else if (eq actor.system.weapons.primary.type "shield")}}Bouclier{{else}}Non défini{{/if}}</div>
+                                        </div>
+                                        <div class="weapon-field">
+                                            <label>Qualité:</label>
+                                            <select name="system.weapons.primary.rank" class="edit-mode">
+                                                <option value="0" {{selected "0" actor.system.weapons.primary.rank}}>Équipement brisé (0)</option>
+                                                <option value="1d4" {{selected "1d4" actor.system.weapons.primary.rank}}>Équipement commun (1d4)</option>
+                                                <option value="1d6" {{selected "1d6" actor.system.weapons.primary.rank}}>Équipement de qualité (1d6)</option>
+                                                <option value="1d8" {{selected "1d8" actor.system.weapons.primary.rank}}>Équipement rare (1d8)</option>
+                                                <option value="1d10" {{selected "1d10" actor.system.weapons.primary.rank}}>Équipement exceptionnel (1d10)</option>
+                                                <option value="1d12" {{selected "1d12" actor.system.weapons.primary.rank}}>Équipement légendaire (1d12)</option>
+                                                <option value="1d20" {{selected "1d20" actor.system.weapons.primary.rank}}>Équipement mythique (1d20)</option>
+                                            </select>
+                                            <div class="read-mode">{{#if (eq actor.system.weapons.primary.rank "0")}}Équipement brisé{{else}}{{actor.system.weapons.primary.rank}}{{/if}}</div>
+                                        </div>
+                                        <div class="weapon-field">
+                                            <label>Bonus:</label>
+                                            <input type="number" name="system.weapons.primary.bonus" value="{{actor.system.weapons.primary.bonus}}" min="-5" max="10" placeholder="0" class="edit-mode">
+                                            <div class="read-mode">{{#if (gt actor.system.weapons.primary.bonus 0)}}+{{/if}}{{actor.system.weapons.primary.bonus}}</div>
+                                        </div>
+                                        <div class="weapon-field">
+                                            <label>Description:</label>
+                                            <textarea name="system.weapons.primary.description" placeholder="Description de l'arme" class="edit-mode">{{actor.system.weapons.primary.description}}</textarea>
+                                            <div class="read-mode">{{actor.system.weapons.primary.description}}</div>
+                                        </div>
+                                        <button type="button" class="roll-weapon-btn read-mode" data-weapon="primary" title="Lancer les dés pour l'arme principale">
+                                            <i class="fas fa-sword"></i> Lancer les dés
+                                        </button>
                                     </div>
-                                    <div class="weapon-field">
-                                        <label>Type:</label>
-                                        <select name="system.weapons.secondary.type" class="edit-mode">
-                                            <option value="strength" {{selected "strength" actor.system.weapons.secondary.type}}>Force (Martialité)</option>
-                                            <option value="agility" {{selected "agility" actor.system.weapons.secondary.type}}>Agilité (Acuité)</option>
-                                            <option value="shield" {{selected "shield" actor.system.weapons.secondary.type}}>Bouclier</option>
-                                        </select>
-                                        <div class="read-mode">{{#if (eq actor.system.weapons.secondary.type "strength")}}Force (Martialité){{else if (eq actor.system.weapons.secondary.type "agility")}}Agilité (Acuité){{else if (eq actor.system.weapons.secondary.type "shield")}}Bouclier{{else}}Non défini{{/if}}</div>
+                                </div>
+                                
+                                <!-- Main Secondaire -->
+                                <div class="weapon-slot secondary-weapon">
+                                    <h3>Main Secondaire</h3>
+                                    <div class="weapon-form">
+                                        <div class="weapon-field">
+                                            <label>Nom de l'arme:</label>
+                                            <input type="text" name="system.weapons.secondary.name" value="{{actor.system.weapons.secondary.name}}" placeholder="Nom de l'arme" class="edit-mode">
+                                            <div class="read-mode">{{actor.system.weapons.secondary.name}}</div>
+                                        </div>
+                                        <div class="weapon-field">
+                                            <label>Type:</label>
+                                            <select name="system.weapons.secondary.type" class="edit-mode">
+                                                <option value="strength" {{selected "strength" actor.system.weapons.secondary.type}}>Force (Martialité)</option>
+                                                <option value="agility" {{selected "agility" actor.system.weapons.secondary.type}}>Agilité (Acuité)</option>
+                                                <option value="shield" {{selected "shield" actor.system.weapons.secondary.type}}>Bouclier</option>
+                                            </select>
+                                            <div class="read-mode">{{#if (eq actor.system.weapons.secondary.type "strength")}}Force (Martialité){{else if (eq actor.system.weapons.secondary.type "agility")}}Agilité (Acuité){{else if (eq actor.system.weapons.secondary.type "shield")}}Bouclier{{else}}Non défini{{/if}}</div>
+                                        </div>
+                                        <div class="weapon-field">
+                                            <label>Qualité:</label>
+                                                                               <select name="system.weapons.secondary.rank" class="edit-mode">
+                                           <option value="0" {{selected "0" actor.system.weapons.secondary.rank}}>Équipement brisé (0)</option>
+                                           <option value="1d4" {{selected "1d4" actor.system.weapons.secondary.rank}}>Équipement commun (1d4)</option>
+                                           <option value="1d6" {{selected "1d6" actor.system.weapons.secondary.rank}}>Équipement de qualité (1d6)</option>
+                                           <option value="1d8" {{selected "1d8" actor.system.weapons.secondary.rank}}>Équipement rare (1d8)</option>
+                                           <option value="1d10" {{selected "1d10" actor.system.weapons.secondary.rank}}>Équipement exceptionnel (1d10)</option>
+                                           <option value="1d12" {{selected "1d12" actor.system.weapons.secondary.rank}}>Équipement légendaire (1d12)</option>
+                                           <option value="1d20" {{selected "1d20" actor.system.weapons.secondary.rank}}>Équipement mythique (1d20)</option>
+                                       </select>
+                                            <div class="read-mode">{{#if (eq actor.system.weapons.secondary.rank "0")}}Équipement brisé{{else}}{{actor.system.weapons.secondary.rank}}{{/if}}</div>
+                                        </div>
+                                        <div class="weapon-field">
+                                            <label>Bonus:</label>
+                                            <input type="number" name="system.weapons.secondary.bonus" value="{{actor.system.weapons.secondary.bonus}}" min="-5" max="10" placeholder="0" class="edit-mode">
+                                            <div class="read-mode">{{#if (gt actor.system.weapons.secondary.bonus 0)}}+{{/if}}{{actor.system.weapons.secondary.bonus}}</div>
+                                        </div>
+                                        <div class="weapon-field">
+                                            <label>Description:</label>
+                                            <textarea name="system.weapons.secondary.description" placeholder="Description de l'arme" class="edit-mode">{{actor.system.weapons.secondary.description}}</textarea>
+                                            <div class="read-mode">{{actor.system.weapons.secondary.description}}</div>
+                                        </div>
+                                        <button type="button" class="roll-weapon-btn read-mode" data-weapon="secondary" title="Lancer les dés pour l'arme secondaire">
+                                            <i class="fas fa-sword"></i> Lancer les dés
+                                        </button>
                                     </div>
-                                    <div class="weapon-field">
-                                        <label>Qualité:</label>
-                                                                           <select name="system.weapons.secondary.rank" class="edit-mode">
-                                       <option value="0" {{selected "0" actor.system.weapons.secondary.rank}}>Équipement brisé (0)</option>
-                                       <option value="1d4" {{selected "1d4" actor.system.weapons.secondary.rank}}>Équipement commun (1d4)</option>
-                                       <option value="1d6" {{selected "1d6" actor.system.weapons.secondary.rank}}>Équipement de qualité (1d6)</option>
-                                       <option value="1d8" {{selected "1d8" actor.system.weapons.secondary.rank}}>Équipement rare (1d8)</option>
-                                       <option value="1d10" {{selected "1d10" actor.system.weapons.secondary.rank}}>Équipement exceptionnel (1d10)</option>
-                                       <option value="1d12" {{selected "1d12" actor.system.weapons.secondary.rank}}>Équipement légendaire (1d12)</option>
-                                       <option value="1d20" {{selected "1d20" actor.system.weapons.secondary.rank}}>Équipement mythique (1d20)</option>
-                                   </select>
-                                        <div class="read-mode">{{#if (eq actor.system.weapons.secondary.rank "0")}}Équipement brisé{{else}}{{actor.system.weapons.secondary.rank}}{{/if}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Contenu de l'onglet Traits -->
+                        <div class="tab-content" data-tab="traits">
+                            <div class="traits-section">
+                                <div class="traits-header">
+                                    <h3>Traits du personnage</h3>
+                                    <button type="button" class="create-trait"><i class="fas fa-plus"></i> Ajouter un trait</button>
+                                </div>
+                                <div class="traits-list">
+                                    {{#each actor.items as |item id|}}
+                                    {{#if (eq item.type "trait")}}
+                                    <div class="trait" data-item-id="{{item._id}}">
+                                        <div class="trait-header">
+                                            <div class="trait-name">
+                                                <h4>{{item.name}}</h4>
+                                            </div>
+                                            <div class="trait-controls">
+                                                <a class="trait-control trait-edit" title="Modifier"><i class="fas fa-edit"></i></a>
+                                                <a class="trait-control trait-delete" title="Supprimer"><i class="fas fa-trash"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="trait-description">
+                                            {{item.system.description}}
+                                        </div>
                                     </div>
-                                    <div class="weapon-field">
-                                        <label>Bonus:</label>
-                                        <input type="number" name="system.weapons.secondary.bonus" value="{{actor.system.weapons.secondary.bonus}}" min="-5" max="10" placeholder="0" class="edit-mode">
-                                        <div class="read-mode">{{#if (gt actor.system.weapons.secondary.bonus 0)}}+{{/if}}{{actor.system.weapons.secondary.bonus}}</div>
-                                    </div>
-                                    <div class="weapon-field">
-                                        <label>Description:</label>
-                                        <textarea name="system.weapons.secondary.description" placeholder="Description de l'arme" class="edit-mode">{{actor.system.weapons.secondary.description}}</textarea>
-                                        <div class="read-mode">{{actor.system.weapons.secondary.description}}</div>
-                                    </div>
-                                    <button type="button" class="roll-weapon-btn read-mode" data-weapon="secondary" title="Lancer les dés pour l'arme secondaire">
-                                        <i class="fas fa-sword"></i> Lancer les dés
-                                    </button>
+                                    {{/if}}
+                                    {{/each}}
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Contenu de l'onglet Traits -->
-                <div class="tab-content" data-tab="traits">
-                    <div class="traits-section">
-                        <div class="traits-header">
-                            <h3>Traits du personnage</h3>
-                            <button type="button" class="create-trait"><i class="fas fa-plus"></i> Ajouter un trait</button>
-                        </div>
-                        <div class="traits-list">
-                            {{#each actor.items as |item id|}}
-                            {{#if (eq item.type "trait")}}
-                            <div class="trait" data-item-id="{{item._id}}">
-                                <div class="trait-header">
-                                    <div class="trait-name">
-                                        <h4>{{item.name}}</h4>
-                                    </div>
-                                    <div class="trait-controls">
-                                        <a class="trait-control trait-edit" title="Modifier"><i class="fas fa-edit"></i></a>
-                                        <a class="trait-control trait-delete" title="Supprimer"><i class="fas fa-trash"></i></a>
-                                    </div>
-                                </div>
-                                <div class="trait-description">
-                                    {{item.system.description}}
-                                </div>
-                            </div>
-                            {{/if}}
-                            {{/each}}
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="health-column">
+                    
+                    <div class="health-column">
                     <div class="health-status">
                         <span class="status-label">État :</span>
                         <span class="status-value" data-health-status>
