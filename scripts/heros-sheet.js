@@ -461,23 +461,29 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         console.log("Value:", value);
         console.log("Current actor data:", this.actor.system);
 
+        // Si c'est un champ d'armure de base, utiliser le système de sauvegarde différée
+        if (name === "system.resources.armor.value") {
+            // Stocker le changement en mémoire sans sauvegarder
+            if (!this._pendingWeaponChanges) {
+                this._pendingWeaponChanges = {};
+            }
+            this._pendingWeaponChanges[name] = value;
+            
+            console.log(`Changement d'armure de base en attente pour ${name}: ${value}`);
+            
+            // Mettre à jour l'affichage local sans sauvegarder
+            this._updateLocalArmorDisplay(value);
+            
+            // Mettre à jour l'affichage des boucliers
+            this._updateShieldsDisplay();
+            return;
+        }
+
         try {
             let updateData = {};
             
             // Déterminer quel champ mettre à jour en fonction du nom
-            if (name === "system.resources.armor.value") {
-                updateData = {
-                    system: {
-                        resources: {
-                            armor: {
-                                value: value
-                            }
-                        }
-                    }
-                };
-                await this.actor.update(updateData);
-                this._updateShieldsDisplay();
-            } else if (name === "system.constitution.value") {
+            if (name === "system.constitution.value") {
                 updateData = {
                     system: {
                         constitution: {
@@ -493,17 +499,13 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             this._updateHealthStatus();
             
             // Mettre à jour uniquement les sections nécessaires
-            if (name === "system.resources.armor.value") {
-                this._updateShieldsDisplay();
-            } else if (name === "system.constitution.value") {
+            if (name === "system.constitution.value") {
                 this._updateHeartsDisplay();
             }
         } catch (error) {
             console.error("Erreur lors de la mise à jour:", error);
             // Restaurer la valeur précédente en cas d'erreur
-            if (name === "system.resources.armor.value") {
-                target.value = this.actor.system.resources.armor.value;
-            } else if (name === "system.constitution.value") {
+            if (name === "system.constitution.value") {
                 target.value = this.actor.system.constitution.value;
             }
         }
@@ -725,6 +727,17 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 readModeElement.text(label);
             }
         }
+    }
+
+    /**
+     * Met à jour l'affichage local de l'armure sans sauvegarder
+     * @param {number} value - La nouvelle valeur d'armure
+     * @private
+     */
+    _updateLocalArmorDisplay(value) {
+        // Mettre à jour l'affichage local de l'armure
+        // Cette méthode peut être étendue si nécessaire pour mettre à jour d'autres éléments d'affichage
+        console.log(`Affichage local de l'armure mis à jour: ${value}`);
     }
 
     /**
@@ -1759,39 +1772,45 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
       * Restaure les valeurs précédentes des armes en cas d'erreur
       * @private
       */
-     _restorePreviousWeaponValues() {
-         if (!this._pendingWeaponChanges) return;
-         
-         Object.keys(this._pendingWeaponChanges).forEach(field => {
-             const input = this.element.find(`[name="${field}"]`);
-             if (input.length > 0) {
-                 if (field.includes('system.weapons.')) {
-                 // Extraire le nom du champ et la main (primary/secondary)
-                 const fieldParts = field.split('.');
-                 const weaponType = fieldParts[2]; // primary ou secondary
-                 const fieldName = fieldParts[3]; // name, type, rank, bonus, description
-                 
-                 // Restaurer la valeur depuis l'acteur
-                 const originalValue = this.actor.system.weapons[weaponType]?.[fieldName];
-                 if (originalValue !== undefined) {
-                     input.val(originalValue);
-                     }
-                 } else if (field.includes('system.armor.')) {
-                     // Gérer l'armure
-                     const fieldParts = field.split('.');
-                     const fieldName = fieldParts[2]; // name, bonus, description
-                     
-                     // Restaurer la valeur depuis l'acteur
-                     const originalValue = this.actor.system.armor?.[fieldName];
-                     if (originalValue !== undefined) {
-                         input.val(originalValue);
-                     }
-                 }
-             }
-         });
-         
-         this._pendingWeaponChanges = {};
-     }
+         _restorePreviousWeaponValues() {
+        if (!this._pendingWeaponChanges) return;
+        
+        Object.keys(this._pendingWeaponChanges).forEach(field => {
+            const input = this.element.find(`[name="${field}"]`);
+            if (input.length > 0) {
+                if (field.includes('system.weapons.')) {
+                // Extraire le nom du champ et la main (primary/secondary)
+                const fieldParts = field.split('.');
+                const weaponType = fieldParts[2]; // primary ou secondary
+                const fieldName = fieldParts[3]; // name, type, rank, bonus, description
+                
+                // Restaurer la valeur depuis l'acteur
+                const originalValue = this.actor.system.weapons[weaponType]?.[fieldName];
+                if (originalValue !== undefined) {
+                    input.val(originalValue);
+                    }
+                } else if (field.includes('system.armor.')) {
+                    // Gérer l'armure d'équipement
+                    const fieldParts = field.split('.');
+                    const fieldName = fieldParts[2]; // name, bonus, description
+                    
+                    // Restaurer la valeur depuis l'acteur
+                    const originalValue = this.actor.system.armor?.[fieldName];
+                    if (originalValue !== undefined) {
+                        input.val(originalValue);
+                    }
+                } else if (field === 'system.resources.armor.value') {
+                    // Gérer l'armure de base
+                    const originalValue = this.actor.system.resources?.armor?.value;
+                    if (originalValue !== undefined) {
+                        input.val(originalValue);
+                    }
+                }
+            }
+        });
+        
+        this._pendingWeaponChanges = {};
+    }
 
      /**
       * Met à jour l'affichage local des armes sans sauvegarder
