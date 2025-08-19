@@ -393,26 +393,26 @@
                                         <div class="weapon-slot armor-slot">
                                             <h3>Armure</h3>
                                             <div class="weapon-form">
-                                                <div class="weapon-field">
-                                                    <label>Nom de l'armure:</label>
-                                                    <input type="text" name="system.armor.name"
-                                                        value="{{actor.system.armor.name}}"
-                                                        placeholder="Nom de l'armure" class="edit-mode">
-                                                    <div class="read-mode">{{actor.system.armor.name}}</div>
-                                                </div>
-                                                <div class="weapon-field">
-                                                    <label>Bonus d'armure (boucliers ajoutés):</label>
-                                                    <input type="number" name="system.armor.bonus"
-                                                        value="{{actor.system.armor.bonus}}" min="0" max="10" placeholder="0" class="edit-mode">
-                                                    <div class="read-mode">{{#if (gt actor.system.armor.bonus 0)}}+{{/if}}{{actor.system.armor.bonus}}</div>
-                                                </div>
-                                                <div class="weapon-field">
-                                                    <label>Description:</label>
-                                                    <textarea name="system.armor.description"
-                                                        placeholder="Description de l'armure"
-                                                        class="edit-mode">{{actor.system.armor.description}}</textarea>
-                                                    <div class="read-mode">{{actor.system.armor.description}}</div>
-                                                </div>
+                                                                            <div class="weapon-field">
+                                <label>Nom de l'armure:</label>
+                                <input type="text" name="system.armor.name"
+                                    value="{{actor.system.armor.name}}"
+                                    placeholder="Nom de l'armure" class="edit-mode" data-no-save="true">
+                                <div class="read-mode">{{actor.system.armor.name}}</div>
+                            </div>
+                                                                            <div class="weapon-field">
+                                <label>Bonus d'armure (boucliers ajoutés):</label>
+                                <input type="number" name="system.armor.bonus"
+                                    value="{{actor.system.armor.bonus}}" min="0" max="10" placeholder="0" class="edit-mode" data-no-save="true">
+                                <div class="read-mode">{{#if (gt actor.system.armor.bonus 0)}}+{{/if}}{{actor.system.armor.bonus}}</div>
+                            </div>
+                                                                            <div class="weapon-field">
+                                <label>Description:</label>
+                                <textarea name="system.armor.description"
+                                    placeholder="Description de l'armure"
+                                    class="edit-mode" data-no-save="true">{{actor.system.armor.description}}</textarea>
+                                <div class="read-mode">{{actor.system.armor.description}}</div>
+                            </div>
                                             </div>
                                         </div>
                                     </div>
