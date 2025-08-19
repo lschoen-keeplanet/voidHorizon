@@ -486,6 +486,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // car les boucliers sont générés par Handlebars
         console.log("Forcer le re-render pour mettre à jour les boucliers");
         this.render(true);
+        
+        // Après le re-render, reattacher les événements
+        setTimeout(() => {
+            this._reattachShieldEvents();
+        }, 100);
+        
         console.log("=== Fin Debug Shields Display ===");
     }
 
