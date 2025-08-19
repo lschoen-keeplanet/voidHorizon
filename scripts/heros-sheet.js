@@ -120,10 +120,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             data.actor.system.weapons.secondary = { name: "", type: "strength", rank: "0", bonus: 0, description: "" };
         }
         
-        // Initialiser les données d'armure si elles n'existent pas
-        if (!data.actor.system.armor) {
-            data.actor.system.armor = { name: "", bonus: 0, description: "" };
-        }
+                 // Initialiser les données d'armure si elles n'existent pas
+         if (!data.actor.system.armor) {
+             data.actor.system.armor = { name: "", description: "" };
+         }
         
         // Ajouter les helpers pour le template
         data.helpers = {
@@ -1158,35 +1158,31 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
       * Applique les bonus des boucliers à l'armure et la constitution
       * @private
       */
-     _applyShieldBonuses() {
-         let totalArmorBonus = 0;
-         let totalConstitutionBonus = 0;
-         
-         // Vérifier la main principale
-         if (this.actor.system.weapons?.primary?.type === 'shield') {
-             const shield = this.actor.system.weapons.primary;
-             const bonus = parseInt(shield.bonus) || 0;
-             totalArmorBonus += bonus;
-             totalConstitutionBonus += bonus;
-         }
-         
-         // Vérifier la main secondaire
-         if (this.actor.system.weapons?.secondary?.type === 'shield') {
-             const shield = this.actor.system.weapons.secondary;
-             const bonus = parseInt(shield.bonus) || 0;
-             totalArmorBonus += bonus;
-             totalConstitutionBonus += bonus;
-         }
-         
-         // Ajouter le bonus d'armure de l'équipement
-         const equipmentArmorBonus = parseInt(this.actor.system.armor?.bonus) || 0;
-         totalArmorBonus += equipmentArmorBonus;
-         
-         // Mettre à jour l'affichage des bonus
-         this._updateShieldBonusDisplay(totalArmorBonus, totalConstitutionBonus);
-         
-         return { armorBonus: totalArmorBonus, constitutionBonus: totalConstitutionBonus };
-     }
+           _applyShieldBonuses() {
+          let totalArmorBonus = 0;
+          let totalConstitutionBonus = 0;
+          
+          // Vérifier la main principale
+          if (this.actor.system.weapons?.primary?.type === 'shield') {
+              const shield = this.actor.system.weapons.primary;
+              const bonus = parseInt(shield.bonus) || 0;
+              totalArmorBonus += bonus;
+              totalConstitutionBonus += bonus;
+          }
+          
+          // Vérifier la main secondaire
+          if (this.actor.system.weapons?.secondary?.type === 'shield') {
+              const shield = this.actor.system.weapons.secondary;
+              const bonus = parseInt(shield.bonus) || 0;
+              totalArmorBonus += bonus;
+              totalConstitutionBonus += bonus;
+          }
+          
+          // Mettre à jour l'affichage des bonus
+          this._updateShieldBonusDisplay(totalArmorBonus, totalConstitutionBonus);
+          
+          return { armorBonus: totalArmorBonus, constitutionBonus: totalConstitutionBonus };
+      }
      
      /**
       * Met à jour l'affichage des bonus de bouclier
@@ -1556,10 +1552,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
              this._applyShieldBonuses();
          }
          
-         // Si c'est un changement de bonus d'armure, mettre à jour l'affichage des boucliers
-         if (field === 'system.armor.bonus') {
-             this._updateShieldsDisplay();
-         }
+         
      }
 
      /**
@@ -1797,17 +1790,17 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 if (originalValue !== undefined) {
                     input.val(originalValue);
                     }
-                } else if (field.includes('system.armor.')) {
-                    // Gérer l'armure d'équipement
-                    const fieldParts = field.split('.');
-                    const fieldName = fieldParts[2]; // name, bonus, description
-                    
-                    // Restaurer la valeur depuis l'acteur
-                    const originalValue = this.actor.system.armor?.[fieldName];
-                    if (originalValue !== undefined) {
-                        input.val(originalValue);
-                    }
-                } else if (field === 'system.resources.armor.value') {
+                                 } else if (field.includes('system.armor.')) {
+                     // Gérer l'armure d'équipement
+                     const fieldParts = field.split('.');
+                     const fieldName = fieldParts[2]; // name, description
+                     
+                     // Restaurer la valeur depuis l'acteur
+                     const originalValue = this.actor.system.armor?.[fieldName];
+                     if (originalValue !== undefined) {
+                         input.val(originalValue);
+                     }
+                 } else if (field === 'system.resources.armor.value') {
                     // Gérer l'armure de base
                     const originalValue = this.actor.system.resources?.armor?.value;
                     if (originalValue !== undefined) {
@@ -1863,28 +1856,18 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                      readModeElement.text(value || '');
                  }
              }
-         } else if (field.includes('system.armor.')) {
-             // Mettre à jour l'affichage en mode lecture pour l'armure
-             const fieldParts = field.split('.');
-             const fieldName = fieldParts[2]; // name, bonus, description
-             
-             const readModeElement = this.element.find(`[name="${field}"]`).closest('.weapon-field').find('.read-mode');
-             
-             if (readModeElement.length > 0) {
-                 if (fieldName === 'bonus') {
-                     // Gérer l'affichage du bonus d'armure
-                     const bonusValue = parseInt(value) || 0;
-                     if (bonusValue > 0) {
-                         readModeElement.text(`+${bonusValue}`);
-                     } else {
-                         readModeElement.text(bonusValue.toString());
-                     }
-                 } else {
-                     // Pour les autres champs (name, description)
-                     readModeElement.text(value || '');
-                 }
-             }
-         }
+                   } else if (field.includes('system.armor.')) {
+              // Mettre à jour l'affichage en mode lecture pour l'armure
+              const fieldParts = field.split('.');
+              const fieldName = fieldParts[2]; // name, description
+              
+              const readModeElement = this.element.find(`[name="${field}"]`).closest('.weapon-field').find('.read-mode');
+              
+              if (readModeElement.length > 0) {
+                  // Pour les champs (name, description)
+                  readModeElement.text(value || '');
+              }
+          }
      }
 
     async _updateObject(event, formData) {
@@ -2281,25 +2264,24 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      * @returns {number} - Valeur totale d'armure
      * @private
      */
-    _getTotalArmor() {
-        const baseArmor = parseInt(this.actor.system.resources?.armor?.value) || 0;
-        const traitBonus = this.actor.system.traitBonuses?.armor || 0;
-        const equipmentBonus = parseInt(this.actor.system.armor?.bonus) || 0;
-        
-        // Ajouter les bonus des boucliers d'armes
-        let shieldBonus = 0;
-        if (this.actor.system.weapons?.primary?.type === 'shield') {
-            shieldBonus += parseInt(this.actor.system.weapons.primary.bonus) || 0;
-        }
-        if (this.actor.system.weapons?.secondary?.type === 'shield') {
-            shieldBonus += parseInt(this.actor.system.weapons.secondary.bonus) || 0;
-        }
-        
-        const totalArmor = baseArmor + traitBonus + equipmentBonus + shieldBonus;
-        console.log(`Calcul armure totale: base(${baseArmor}) + traits(${traitBonus}) + équipement(${equipmentBonus}) + boucliers(${shieldBonus}) = ${totalArmor}`);
-        
-        return totalArmor;
-    }
+         _getTotalArmor() {
+         const baseArmor = parseInt(this.actor.system.resources?.armor?.value) || 0;
+         const traitBonus = this.actor.system.traitBonuses?.armor || 0;
+         
+         // Ajouter les bonus des boucliers d'armes
+         let shieldBonus = 0;
+         if (this.actor.system.weapons?.primary?.type === 'shield') {
+             shieldBonus += parseInt(this.actor.system.weapons.primary.bonus) || 0;
+         }
+         if (this.actor.system.weapons?.secondary?.type === 'shield') {
+             shieldBonus += parseInt(this.actor.system.weapons.secondary.bonus) || 0;
+         }
+         
+         const totalArmor = baseArmor + traitBonus + shieldBonus;
+         console.log(`Calcul armure totale: base(${baseArmor}) + traits(${traitBonus}) + boucliers(${shieldBonus}) = ${totalArmor}`);
+         
+         return totalArmor;
+     }
     
     /**
      * Recalcule les bonus des traits (appelé avant chaque jet de dé)
@@ -2375,22 +2357,21 @@ Hooks.once("init", function() {
             return baseConstitution + traitBonus;
         });
 
-        Handlebars.registerHelper('getTotalArmor', function(actor) {
-            const baseArmor = parseInt(actor.system.resources?.armor?.value) || 0;
-            const traitBonus = parseInt(actor.system.traitBonuses?.armor) || 0;
-            const equipmentBonus = parseInt(actor.system.armor?.bonus) || 0;
-            
-            // Ajouter les bonus des boucliers d'armes
-            let shieldBonus = 0;
-            if (actor.system.weapons?.primary?.type === 'shield') {
-                shieldBonus += parseInt(actor.system.weapons.primary.bonus) || 0;
-            }
-            if (actor.system.weapons?.secondary?.type === 'shield') {
-                shieldBonus += parseInt(actor.system.weapons.secondary.bonus) || 0;
-            }
-            
-            return baseArmor + traitBonus + equipmentBonus + shieldBonus;
-        });
+                 Handlebars.registerHelper('getTotalArmor', function(actor) {
+             const baseArmor = parseInt(actor.system.resources?.armor?.value) || 0;
+             const traitBonus = parseInt(actor.system.traitBonuses?.armor) || 0;
+             
+             // Ajouter les bonus des boucliers d'armes
+             let shieldBonus = 0;
+             if (actor.system.weapons?.primary?.type === 'shield') {
+                 shieldBonus += parseInt(actor.system.weapons.primary.bonus) || 0;
+             }
+             if (actor.system.weapons?.secondary?.type === 'shield') {
+                 shieldBonus += parseInt(actor.system.weapons.secondary.bonus) || 0;
+             }
+             
+             return baseArmor + traitBonus + shieldBonus;
+         });
 
         // Helper pour calculer le mana total basé sur le degré d'Arcane
         Handlebars.registerHelper('getTotalMana', function(actor) {

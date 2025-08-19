@@ -400,12 +400,7 @@
                                     placeholder="Nom de l'armure" class="edit-mode" data-no-save="true">
                                 <div class="read-mode">{{actor.system.armor.name}}</div>
                             </div>
-                                                                            <div class="weapon-field">
-                                <label>Bonus d'armure (boucliers ajoutés):</label>
-                                <input type="number" name="system.armor.bonus"
-                                    value="{{actor.system.armor.bonus}}" min="0" max="10" placeholder="0" class="edit-mode" data-no-save="true">
-                                <div class="read-mode">{{#if (gt actor.system.armor.bonus 0)}}+{{/if}}{{actor.system.armor.bonus}}</div>
-                            </div>
+                                                                            
                                                                             <div class="weapon-field">
                                 <label>Description:</label>
                                 <textarea name="system.armor.description"
