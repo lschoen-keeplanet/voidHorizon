@@ -1865,9 +1865,19 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             console.log('Traits restants:', currentTraits);
             
             // Mettre à jour l'acteur avec les traits restants
-            await this.actor.update({
+            // Utiliser une approche différente : mettre à jour tout l'objet traits
+            const updateData = {
                 'system.traits': currentTraits
-            });
+            };
+            
+            console.log('Données de mise à jour:', updateData);
+            await this.actor.update(updateData);
+            
+            // Forcer la synchronisation des données
+            await this.actor.sheet.render(true);
+            
+            // Attendre un peu pour s'assurer que la synchronisation est complète
+            await new Promise(resolve => setTimeout(resolve, 100));
             
             // Vérifier que la mise à jour a bien fonctionné
             console.log('Acteur mis à jour, traits actuels:', this.actor.system.traits);
@@ -1875,8 +1885,24 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Vérifier que la suppression est bien persistante
             if (this.actor.system.traits[traitId]) {
                 console.error('Le trait est toujours présent après la mise à jour !');
-                ui.notifications.error('Erreur : le trait n\'a pas été supprimé');
-                return;
+                console.log('Tentative de suppression forcée...');
+                
+                // Essayer une suppression forcée
+                const forcedUpdate = { ...this.actor.system.traits };
+                delete forcedUpdate[traitId];
+                
+                await this.actor.update({
+                    'system.traits': forcedUpdate
+                });
+                
+                // Vérifier à nouveau
+                if (this.actor.system.traits[traitId]) {
+                    console.error('La suppression forcée a aussi échoué !');
+                    ui.notifications.error('Erreur : le trait n\'a pas été supprimé malgré la suppression forcée');
+                    return;
+                } else {
+                    console.log('Suppression forcée réussie !');
+                }
             }
             
             // Attendre un peu pour s'assurer que la mise à jour est persistante
