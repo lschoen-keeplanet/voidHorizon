@@ -1689,30 +1689,30 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
       * @param {Event} event - L'événement de clic
       * @private
       */
-         _onToggleWeaponsEditMode(event) {
-        event.preventDefault();
-        const weaponsSection = event.currentTarget.closest('.weapons-section');
-        const isEditing = weaponsSection.classList.contains('editing');
-        
-        if (isEditing) {
-            // Mode sauvegarde - sauvegarder tous les changements d'armes
-            if (this._pendingWeaponChanges && Object.keys(this._pendingWeaponChanges).length > 0) {
-                this._saveAllWeaponChanges();
-            }
-            
-            weaponsSection.classList.remove('editing');
-            weaponsSection.classList.add('read-only');
-            event.currentTarget.querySelector('i').classList.remove('fa-save');
-            event.currentTarget.querySelector('i').classList.add('fa-edit');
-        } else {
-            // Mode édition - initialiser les changements en attente
-            this._pendingWeaponChanges = {};
-            weaponsSection.classList.remove('read-only');
-            weaponsSection.classList.add('editing');
-            event.currentTarget.querySelector('i').classList.remove('fa-edit');
-            event.currentTarget.querySelector('i').classList.add('fa-save');
-        }
-    }
+     _onToggleWeaponsEditMode(event) {
+         event.preventDefault();
+         const weaponsSection = event.currentTarget.closest('.weapons-section');
+         const isEditing = weaponsSection.classList.contains('editing');
+         
+         if (isEditing) {
+             // Mode sauvegarde - sauvegarder tous les changements d'armes
+             if (this._pendingWeaponChanges && Object.keys(this._pendingWeaponChanges).length > 0) {
+                 this._saveAllWeaponChanges();
+             }
+             
+             weaponsSection.classList.remove('editing');
+             weaponsSection.classList.add('read-only');
+             event.currentTarget.querySelector('i').classList.remove('fa-save');
+             event.currentTarget.querySelector('i').classList.add('fa-edit');
+         } else {
+             // Mode édition - initialiser les changements en attente
+             this._pendingWeaponChanges = {};
+             weaponsSection.classList.remove('read-only');
+             weaponsSection.classList.add('editing');
+             event.currentTarget.querySelector('i').classList.remove('fa-edit');
+             event.currentTarget.querySelector('i').classList.add('fa-save');
+         }
+     }
 
      /**
       * Sauvegarde tous les changements d'armes en attente
@@ -1758,15 +1758,15 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
              const input = this.element.find(`[name="${field}"]`);
              if (input.length > 0) {
                  if (field.includes('system.weapons.')) {
-                     // Extraire le nom du champ et la main (primary/secondary)
-                     const fieldParts = field.split('.');
-                     const weaponType = fieldParts[2]; // primary ou secondary
-                     const fieldName = fieldParts[3]; // name, type, rank, bonus, description
-                     
-                     // Restaurer la valeur depuis l'acteur
-                     const originalValue = this.actor.system.weapons[weaponType]?.[fieldName];
-                     if (originalValue !== undefined) {
-                         input.val(originalValue);
+                 // Extraire le nom du champ et la main (primary/secondary)
+                 const fieldParts = field.split('.');
+                 const weaponType = fieldParts[2]; // primary ou secondary
+                 const fieldName = fieldParts[3]; // name, type, rank, bonus, description
+                 
+                 // Restaurer la valeur depuis l'acteur
+                 const originalValue = this.actor.system.weapons[weaponType]?.[fieldName];
+                 if (originalValue !== undefined) {
+                     input.val(originalValue);
                      }
                  } else if (field.includes('system.armor.')) {
                      // Gérer l'armure
