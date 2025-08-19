@@ -192,8 +192,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
          // Gestion des changements d'armes (sans sauvegarde automatique)
          html.find('input[name^="system.weapons."], select[name^="system.weapons."], textarea[name^="system.weapons."]').change(this._onWeaponFieldChange.bind(this));
          
-         // Gestion du mode édition/lecture des armes
-         html.find('.toggle-weapons-edit-mode').click(this._onToggleWeaponsEditMode.bind(this));
+                 // Gestion du mode édition/lecture des armes
+        html.find('.toggle-weapons-edit-mode').click(this._onToggleWeaponsEditMode.bind(this));
+        
+        // Gestion des onglets Équipement/Traits
+        html.find('.tab-button').click(this._onTabButtonClick.bind(this));
         
         // Initialiser l'état des cœurs et de la santé
         this._initializeHealthState();
@@ -1282,6 +1285,37 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         this._reattachShieldEvents();
     }
     
+    /**
+     * Gère le clic sur les boutons d'onglets (Équipement/Traits)
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    _onTabButtonClick(event) {
+        event.preventDefault();
+        const button = event.currentTarget;
+        const tabName = button.dataset.tab;
+        
+        // Mettre à jour l'état actif des boutons
+        this.element.find('.tab-button').removeClass('active');
+        button.addClass('active');
+        
+        // Masquer tous les contenus d'onglets
+        this.element.find('.tab-content').removeClass('active');
+        
+        // Afficher le contenu de l'onglet sélectionné
+        this.element.find(`.tab-content[data-tab="${tabName}"]`).addClass('active');
+        
+        // Afficher/masquer le bouton d'édition selon l'onglet
+        const editButton = this.element.find('#weapons-edit-button');
+        if (tabName === 'equipment') {
+            editButton.show();
+        } else {
+            editButton.hide();
+        }
+        
+        console.log(`Onglet ${tabName} activé`);
+    }
+
     /**
      * Reattache les événements des boucliers après un re-render
      * @private

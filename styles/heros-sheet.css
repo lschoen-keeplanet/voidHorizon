@@ -298,25 +298,7 @@ img{
     border-radius: 4px;
 }
 
-/* Navigation Tabs */
-.sheet-tabs {
-    flex: 0;
-    margin-bottom: 5px;
-    border-top: 1px solid #AAA;
-    border-bottom: 1px solid #AAA;
-}
 
-.sheet-tabs .item {
-    font-weight: bold;
-    padding: 5px;
-    margin: 0 5px;
-    white-space: nowrap;
-}
-
-.sheet-tabs .item.active {
-    border-top: 2px solid #800000;
-    border-bottom: 2px solid #800000;
-}
 
 /* Stats Grid */
 .stats-grid {
@@ -1020,4 +1002,171 @@ textarea:focus {
     content: "Non défini";
     color: #999;
     font-style: italic;
-} 
+}
+
+/* Styles pour les onglets Équipement/Traits */
+.weapons-traits-section {
+    margin-bottom: 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.tab-buttons {
+    display: flex;
+    gap: 0;
+    border: 2px solid #800000;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.tab-button {
+    background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+    color: #800000;
+    border: none;
+    padding: 12px 24px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    border-right: 1px solid #800000;
+}
+
+.tab-button:last-child {
+    border-right: none;
+}
+
+.tab-button:hover {
+    background: linear-gradient(135deg, #e0e0e0, #d0d0d0);
+    transform: translateY(-1px);
+}
+
+.tab-button.active {
+    background: linear-gradient(135deg, #800000, #600000);
+    color: white;
+}
+
+.tab-button h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Styles pour l'onglet Traits */
+.traits-section {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #800000;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.traits-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #800000;
+    padding-bottom: 10px;
+}
+
+.traits-header h3 {
+    margin: 0;
+    color: #800000;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.create-trait {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.create-trait:hover {
+    background: linear-gradient(135deg, #45a049, #3d8b40);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.traits-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.trait {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    transition: all 0.2s ease;
+}
+
+.trait:hover {
+    border-color: #800000;
+    box-shadow: 0 2px 8px rgba(128, 0, 0, 0.1);
+}
+
+.trait-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.trait-name h4 {
+    margin: 0;
+    color: #800000;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.trait-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.trait-control {
+    color: #800000;
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.trait-control:hover {
+    background: rgba(128, 0, 0, 0.1);
+    transform: scale(1.1);
+}
+
+.trait-description {
+    color: #333;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.trait-description:empty::before {
+    content: "Aucune description";
+    color: #999;
+    font-style: italic;
+}
