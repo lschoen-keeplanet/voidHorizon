@@ -461,54 +461,37 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         console.log("Value:", value);
         console.log("Current actor data:", this.actor.system);
 
-        // Si c'est un champ d'armure de base, utiliser le système de sauvegarde différée
-        if (name === "system.resources.armor.value") {
+        // Si c'est un champ d'armure de base ou de constitution, utiliser le système de sauvegarde différée
+        if (name === "system.resources.armor.value" || name === "system.constitution.value") {
             // Stocker le changement en mémoire sans sauvegarder
             if (!this._pendingWeaponChanges) {
                 this._pendingWeaponChanges = {};
             }
             this._pendingWeaponChanges[name] = value;
             
-            console.log(`Changement d'armure de base en attente pour ${name}: ${value}`);
+            console.log(`Changement en attente pour ${name}: ${value}`);
             
-            // Mettre à jour l'affichage local sans sauvegarder
-            this._updateLocalArmorDisplay(value);
-            
-            // Mettre à jour l'affichage des boucliers
-            this._updateShieldsDisplay();
+            if (name === "system.resources.armor.value") {
+                // Mettre à jour l'affichage local sans sauvegarder
+                this._updateLocalArmorDisplay(value);
+                
+                // Mettre à jour l'affichage des boucliers
+                this._updateShieldsDisplay();
+            } else if (name === "system.constitution.value") {
+                // Mettre à jour l'affichage local sans sauvegarder
+                this._updateLocalConstitutionDisplay(value);
+                
+                // Mettre à jour l'affichage des cœurs
+                this._updateHeartsDisplay();
+                
+                // Mettre à jour l'état de santé
+                this._updateHealthStatus();
+            }
             return;
         }
 
-        try {
-            let updateData = {};
-            
-            // Déterminer quel champ mettre à jour en fonction du nom
-            if (name === "system.constitution.value") {
-                updateData = {
-                    system: {
-                        constitution: {
-                            value: value
-                        }
-                    }
-                };
-                await this.actor.update(updateData);
-                this._updateHeartsDisplay();
-            }
-
-            // Mettre à jour l'état de santé
-            this._updateHealthStatus();
-            
-            // Mettre à jour uniquement les sections nécessaires
-            if (name === "system.constitution.value") {
-                this._updateHeartsDisplay();
-            }
-        } catch (error) {
-            console.error("Erreur lors de la mise à jour:", error);
-            // Restaurer la valeur précédente en cas d'erreur
-            if (name === "system.constitution.value") {
-                target.value = this.actor.system.constitution.value;
-            }
-        }
+        // Pour les autres champs numériques, pas de traitement automatique
+        console.log(`Champ numérique non géré: ${name}`);
         console.log("=== Fin Debug Resource Change ===");
     }
 
@@ -538,6 +521,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      */
     _updateShieldsDisplay() {
         console.log("=== Debug Shields Display ===");
+        
+        // Appliquer les bonus des boucliers avant de calculer l'armure totale
+        this._applyShieldBonuses();
+        
         const totalArmor = this._getTotalArmor();
         const armorDamage = parseInt(this.actor.system.resources.armorDamage?.value) || 0;
         
@@ -738,6 +725,16 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Mettre à jour l'affichage local de l'armure
         // Cette méthode peut être étendue si nécessaire pour mettre à jour d'autres éléments d'affichage
         console.log(`Affichage local de l'armure mis à jour: ${value}`);
+    }
+
+    /**
+     * Met à jour l'affichage local de la constitution sans sauvegarder
+     * @param {number} value - La nouvelle valeur de constitution
+     * @private
+     */
+    _updateLocalConstitutionDisplay(value) {
+        // Mettre à jour l'affichage local de la constitution
+        console.log(`Affichage local de la constitution mis à jour: ${value}`);
     }
 
     /**
@@ -2277,7 +2274,20 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const baseArmor = parseInt(this.actor.system.resources?.armor?.value) || 0;
         const traitBonus = this.actor.system.traitBonuses?.armor || 0;
         const equipmentBonus = parseInt(this.actor.system.armor?.bonus) || 0;
-        return baseArmor + traitBonus + equipmentBonus;
+        
+        // Ajouter les bonus des boucliers d'armes
+        let shieldBonus = 0;
+        if (this.actor.system.weapons?.primary?.type === 'shield') {
+            shieldBonus += parseInt(this.actor.system.weapons.primary.bonus) || 0;
+        }
+        if (this.actor.system.weapons?.secondary?.type === 'shield') {
+            shieldBonus += parseInt(this.actor.system.weapons.secondary.bonus) || 0;
+        }
+        
+        const totalArmor = baseArmor + traitBonus + equipmentBonus + shieldBonus;
+        console.log(`Calcul armure totale: base(${baseArmor}) + traits(${traitBonus}) + équipement(${equipmentBonus}) + boucliers(${shieldBonus}) = ${totalArmor}`);
+        
+        return totalArmor;
     }
     
     /**
@@ -2358,7 +2368,17 @@ Hooks.once("init", function() {
             const baseArmor = parseInt(actor.system.resources?.armor?.value) || 0;
             const traitBonus = parseInt(actor.system.traitBonuses?.armor) || 0;
             const equipmentBonus = parseInt(actor.system.armor?.bonus) || 0;
-            return baseArmor + traitBonus + equipmentBonus;
+            
+            // Ajouter les bonus des boucliers d'armes
+            let shieldBonus = 0;
+            if (actor.system.weapons?.primary?.type === 'shield') {
+                shieldBonus += parseInt(actor.system.weapons.primary.bonus) || 0;
+            }
+            if (actor.system.weapons?.secondary?.type === 'shield') {
+                shieldBonus += parseInt(actor.system.weapons.secondary.bonus) || 0;
+            }
+            
+            return baseArmor + traitBonus + equipmentBonus + shieldBonus;
         });
 
         // Helper pour calculer le mana total basé sur le degré d'Arcane
