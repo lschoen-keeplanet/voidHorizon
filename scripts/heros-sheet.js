@@ -1864,22 +1864,21 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         if (!confirmed) return;
         
         try {
-            // Supprimer le trait
+            // Mettre le trait à null au lieu de le supprimer complètement
             const currentTraits = { ...this.actor.system.traits };
-            delete currentTraits[traitId];
+            currentTraits[traitId] = null; // Explicitement mettre le trait à null
             
             console.log('Suppression du trait:', traitId);
             console.log('Traits restants:', currentTraits);
             
-            // Vérifier que la suppression locale a bien fonctionné
-            if (currentTraits[traitId]) {
-                console.error('Erreur : le trait est toujours présent dans la copie locale !');
+            // Vérifier que la mise à null locale a bien fonctionné
+            if (currentTraits[traitId] !== null) {
+                console.error('Erreur : le trait n\'a pas été mis à null dans la copie locale !');
                 ui.notifications.error('Erreur interne lors de la suppression du trait');
                 return;
             }
             
-            // Mettre à jour l'acteur avec les traits restants
-            // Utiliser une approche différente : mettre à jour tout l'objet traits
+            // Mettre à jour l'acteur avec les traits (le trait supprimé est maintenant null)
             const updateData = {
                 'system.traits': currentTraits
             };
@@ -1893,10 +1892,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                          // Synchronisation des données
              await this.actor.sheet.render(true);
             
-                         // Vérifier que la suppression est bien persistante
-             if (this.actor.system.traits[traitId]) {
-                 console.log('Le trait est toujours présent après la mise à jour, mais sera masqué par CSS');
-             }
+                                     // Vérifier que la mise à null est bien persistante
+            if (this.actor.system.traits[traitId] !== null) {
+                console.log('Le trait n\'a pas été mis à null après la mise à jour !');
+            } else {
+                console.log('Le trait a été mis à null avec succès, il sera masqué par CSS');
+            }
             
                          // Notification de succès
              ui.notifications.info(`Trait "${trait.name}" supprimé avec succès`);
