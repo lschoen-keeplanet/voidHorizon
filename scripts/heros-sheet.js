@@ -1884,35 +1884,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
           }
      }
 
-    async _updateObject(event, formData) {
-        // Mise à jour des données du formulaire
-        const updateData = {};
-        
-        // Parcourir les données du formulaire
-        for (let [key, value] of formData.entries()) {
-            console.log(`Form data - Key: ${key}, Value: ${value}`);
-            // Vérifier si c'est une statistique
-            if (key.startsWith('system.') && key.endsWith('.value')) {
-                const stat = key.split('.')[1];
-                console.log(`Stat found: ${stat}`);
-                if (['martialite', 'pimpance', 'acuite', 'arcane'].includes(stat)) {
-                    // S'assurer que la valeur est une chaîne de caractères
-                    updateData[key] = String(value);
-                    console.log(`Adding to updateData: ${key} = ${updateData[key]}`);
-                }
-            }
-        }
 
-        console.log('Final updateData:', updateData);
-        // Mettre à jour l'acteur
-        try {
-            await this.actor.update(updateData);
-            console.log('Update successful');
-        } catch (error) {
-            console.error('Error updating actor:', error);
-            ui.notifications.error('Erreur lors de la mise à jour des données');
-        }
-    }
 
     /**
      * Gère le clic sur le bouton de création de trait
