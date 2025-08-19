@@ -1379,3 +1379,72 @@ textarea:focus {
 .trait:has(.trait-name h4:contains("null")) {
     display: none !important;
 }
+
+/* Styles pour les points de mana */
+.mana-section {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.mana-section h4 {
+    margin: 0 0 15px 0;
+    color: #800000;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.mana-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.mana-wrapper {
+    position: relative;
+}
+
+.mana-button {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    padding: 0;
+}
+
+.mana-button.active {
+    background: linear-gradient(135deg, #4A90E2, #357ABD);
+    color: white;
+    box-shadow: 0 2px 4px rgba(74, 144, 226, 0.3);
+}
+
+.mana-button.active:hover {
+    background: linear-gradient(135deg, #357ABD, #2E6DA4);
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(74, 144, 226, 0.4);
+}
+
+.mana-button.depleted {
+    background: linear-gradient(135deg, #ccc, #999);
+    color: #666;
+    opacity: 0.6;
+}
+
+.mana-button.depleted:hover {
+    background: linear-gradient(135deg, #999, #777);
+    opacity: 0.8;
+}
+
+.mana-button i {
+    font-size: 16px;
+}

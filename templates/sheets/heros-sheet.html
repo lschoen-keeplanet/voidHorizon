@@ -534,6 +534,21 @@
                                      {{/each}}
                                  </div>
                              </div>
+
+                                     <!-- Section des points de mana -->
+        <div class="mana-section">
+            <h4>Points de Mana</h4>
+            <div class="mana-container">
+                {{#each (times (getTotalMana actor))}}
+                <div class="mana-wrapper">
+                    <button type="button" class="mana-button {{#if (gte this (add (get actor.system.mana.value 0) 1))}}active{{else}}depleted{{/if}}" 
+                        data-mana-index="{{this}}" data-active="{{#if (gte this (add (get actor.system.mana.value 0) 1))}}true{{else}}false{{/if}}">
+                        <i class="fas fa-gem"></i>
+                    </button>
+                </div>
+                {{/each}}
+            </div>
+        </div>
                         </div>
 
                         <div class="additional-stats">

@@ -34,6 +34,26 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             data.actor.system.resources.armorDamage = { value: 0 };
         }
         
+        // S'assurer que le mana existe et est initialisé avec la valeur maximale
+        if (!data.actor.system.mana) {
+            data.actor.system.mana = { value: 0, max: 0 };
+        }
+        // Initialiser le mana avec la valeur maximale basée sur l'Arcane si c'est la première fois
+        if (data.actor.system.mana.value === 0 && data.actor.system.mana.max === 0) {
+            const arcaneValue = data.actor.system.arcane?.value || "1d4";
+            const manaPerLevel = {
+                "1d4": 2,   // Insensible
+                "1d6": 4,   // Eveillé
+                "1d8": 6,   // Novice
+                "1d10": 8,  // Initié
+                "1d12": 10, // Maître
+                "1d20": 12  // Archimage
+            };
+            const maxMana = manaPerLevel[arcaneValue] || 2;
+            data.actor.system.mana.value = maxMana;
+            data.actor.system.mana.max = maxMana;
+        }
+        
         // Préparation des statistiques principales
         data.system = {
             ...data.system,
@@ -179,6 +199,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
 
         // Gestion des boucliers d'armure
         html.find('.armor-container .shield-button').click(this._onShieldClick.bind(this));
+
+        // Gestion des points de mana
+        html.find('.mana-button').click(this._onManaClick.bind(this));
 
         // Gestion des changements de rang
         html.find('input[name="system.rank.value"]').change(this._onRankChange.bind(this));
@@ -627,6 +650,42 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 } else if (field === "system.affinity.value") {
                     select.value = this.actor.system.affinity?.value || "aucune";
                 }
+            }
+            return;
+        }
+        
+        // Si c'est un changement d'Arcane, mettre à jour le mana et sauvegarder
+        if (field === "system.arcane.value") {
+            try {
+                // Calculer le nouveau mana maximum basé sur la nouvelle valeur d'Arcane
+                const manaPerLevel = {
+                    "1d4": 2,   // Insensible
+                    "1d6": 4,   // Eveillé
+                    "1d8": 6,   // Novice
+                    "1d10": 8,  // Initié
+                    "1d12": 10, // Maître
+                    "1d20": 12  // Archimage
+                };
+                const newMaxMana = manaPerLevel[value] || 2;
+                
+                // Mettre à jour l'acteur avec la nouvelle valeur d'Arcane et le nouveau mana
+                const updateData = {
+                    [field]: value,
+                    'system.mana.max': newMaxMana,
+                    'system.mana.value': newMaxMana // Réinitialiser le mana actuel au maximum
+                };
+                
+                await this.actor.update(updateData);
+                console.log(`Arcane et mana mis à jour: ${value} -> ${newMaxMana} points de mana`);
+                
+                // Mettre à jour l'affichage du mana
+                this._updateManaDisplay();
+                
+            } catch (error) {
+                console.error("Erreur lors de la mise à jour de l'Arcane et du mana:", error);
+                
+                // Restaurer la valeur précédente en cas d'erreur
+                select.value = this.actor.system.arcane?.value || "1d4";
             }
             return;
         }
@@ -1291,6 +1350,91 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         }
     }
 
+    /**
+     * Gère le clic sur un point de mana
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onManaClick(event) {
+        event.preventDefault();
+        const button = event.currentTarget;
+        const manaIndex = parseInt(button.dataset.manaIndex);
+        const isActive = button.dataset.active === "true";
+        
+        console.log(`Clic sur point de mana ${manaIndex}, actif: ${isActive}`);
+        
+        // Mettre à jour la valeur de mana actuel
+        const currentMana = this.actor.system.mana?.value || 0;
+        const newMana = isActive ? currentMana - 1 : currentMana + 1;
+        
+        // S'assurer que le mana ne descend pas en dessous de 0
+        const finalMana = Math.max(0, newMana);
+        
+        console.log(`Mana: ${currentMana} -> ${finalMana}`);
+        
+        try {
+            // Mettre à jour l'acteur avec la nouvelle valeur de mana
+            const updateData = {
+                'system.mana.value': finalMana
+            };
+            
+            console.log("Mise à jour du mana:", updateData);
+            await this.actor.update(updateData);
+            
+            // Mettre à jour l'affichage des points de mana
+            this._updateManaDisplay();
+            
+            console.log("Mana mis à jour avec succès");
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour du mana:", error);
+        }
+    }
+
+    /**
+     * Met à jour l'affichage des points de mana
+     * @private
+     */
+    _updateManaDisplay() {
+        const totalMana = this._getTotalMana();
+        const currentMana = this.actor.system.mana?.value || 0;
+        const manaButtons = this.element.find('.mana-button');
+        
+        console.log(`Mise à jour affichage mana: total=${totalMana}, actuel=${currentMana}`);
+        
+        manaButtons.each((index, button) => {
+            const manaIndex = index + 1;
+            const isActive = manaIndex <= currentMana;
+            
+            if (isActive) {
+                button.classList.remove('depleted');
+                button.classList.add('active');
+                button.dataset.active = "true";
+            } else {
+                button.classList.remove('active');
+                button.classList.add('depleted');
+                button.dataset.active = "false";
+            }
+        });
+    }
+
+    /**
+     * Calcule le mana total basé sur le degré d'Arcane
+     * @returns {number} Le nombre total de points de mana
+     * @private
+     */
+    _getTotalMana() {
+        const arcaneValue = this.actor.system.arcane?.value || "1d4";
+        const manaPerLevel = {
+            "1d4": 2,   // Insensible
+            "1d6": 4,   // Eveillé
+            "1d8": 6,   // Novice
+            "1d10": 8,  // Initié
+            "1d12": 10, // Maître
+            "1d20": 12  // Archimage
+        };
+        return manaPerLevel[arcaneValue] || 2;
+    }
+
          /**
       * Gère les changements de rang
       * @param {Event} event - L'événement de changement
@@ -1374,6 +1518,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     _initializeHealthState() {
         this._initializeHearts(this.element);
         this._initializeShields(this.element);
+        this._updateManaDisplay();
         this._updateHealthStatus();
         
         // Appliquer les bonus des boucliers
@@ -1741,10 +1886,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Recalculer les bonus des traits
             this._applyTraitBonuses();
             
-            // Mettre à jour l'affichage des cœurs et boucliers
+            // Mettre à jour l'affichage des cœurs, boucliers et mana
             this._updateHealthStatus();
             this._updateShieldsDisplay();
             this._updateHeartsDisplay();
+            this._updateManaDisplay();
             
             // Recharger la fiche pour afficher les changements
             this.render(true);
@@ -1910,10 +2056,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                          // Recalculer les bonus des traits
             this._applyTraitBonuses();
             
-            // Mettre à jour l'affichage des cœurs et boucliers
+            // Mettre à jour l'affichage des cœurs, boucliers et mana
             this._updateHealthStatus();
             this._updateShieldsDisplay();
             this._updateHeartsDisplay();
+            this._updateManaDisplay();
             
             // Recharger la fiche pour afficher les changements
             this.render(true);
@@ -1975,16 +2122,24 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Si les bonus d'armure ou de constitution ont changé, forcer la mise à jour de l'affichage
         const oldArmorBonus = this._lastArmorBonus || 0;
         const oldConstitutionBonus = this._lastConstitutionBonus || 0;
+        const oldArcaneBonus = this._lastArcaneBonus || 0;
         
-        if (bonuses.armor !== oldArmorBonus || bonuses.constitution !== oldConstitutionBonus) {
-            console.log('Bonus d\'armure ou de constitution changé, mise à jour de l\'affichage...');
+        if (bonuses.armor !== oldArmorBonus || bonuses.constitution !== oldConstitutionBonus || bonuses.arcane !== oldArcaneBonus) {
+            console.log('Bonus d\'armure, constitution ou arcane changé, mise à jour de l\'affichage...');
             this._updateHealthStatus();
             this._updateShieldsDisplay();
             this._updateHeartsDisplay();
             
+            // Si le bonus d'Arcane a changé, mettre à jour le mana
+            if (bonuses.arcane !== oldArcaneBonus) {
+                console.log('Bonus d\'Arcane changé, mise à jour du mana...');
+                this._updateManaDisplay();
+            }
+            
             // Stocker les nouveaux bonus pour la prochaine comparaison
             this._lastArmorBonus = bonuses.armor;
             this._lastConstitutionBonus = bonuses.constitution;
+            this._lastArcaneBonus = bonuses.arcane;
         }
     }
 
@@ -2077,18 +2232,32 @@ Hooks.once("init", function() {
         return array && array.includes(parseInt(value));
     });
 
-    // Nouveaux helpers pour les valeurs totales incluant les bonus des traits
-    Handlebars.registerHelper('getTotalConstitution', function(actor) {
-        const baseConstitution = parseInt(actor.system.constitution?.value) || 0;
-        const traitBonus = parseInt(actor.system.traitBonuses?.constitution) || 0;
-        return baseConstitution + traitBonus;
-    });
+            // Nouveaux helpers pour les valeurs totales incluant les bonus des traits
+        Handlebars.registerHelper('getTotalConstitution', function(actor) {
+            const baseConstitution = parseInt(actor.system.constitution?.value) || 0;
+            const traitBonus = parseInt(actor.system.traitBonuses?.constitution) || 0;
+            return baseConstitution + traitBonus;
+        });
 
-    Handlebars.registerHelper('getTotalArmor', function(actor) {
-        const baseArmor = parseInt(actor.system.resources?.armor?.value) || 0;
-        const traitBonus = parseInt(actor.system.traitBonuses?.armor) || 0;
-        return baseArmor + traitBonus;
-    });
+        Handlebars.registerHelper('getTotalArmor', function(actor) {
+            const baseArmor = parseInt(actor.system.resources?.armor?.value) || 0;
+            const traitBonus = parseInt(actor.system.traitBonuses?.armor) || 0;
+            return baseArmor + traitBonus;
+        });
+
+        // Helper pour calculer le mana total basé sur le degré d'Arcane
+        Handlebars.registerHelper('getTotalMana', function(actor) {
+            const arcaneValue = actor.system.arcane?.value || "1d4";
+            const manaPerLevel = {
+                "1d4": 2,   // Insensible
+                "1d6": 4,   // Eveillé
+                "1d8": 6,   // Novice
+                "1d10": 8,  // Initié
+                "1d12": 10, // Maître
+                "1d20": 12  // Archimage
+            };
+            return manaPerLevel[arcaneValue] || 2;
+        });
 
     foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
     foundry.documents.collections.Actors.registerSheet("voidHorizon", HeroSheet, {
