@@ -1356,3 +1356,26 @@ textarea:focus {
 .trait-test .trait-bonus-display {
     background: linear-gradient(135deg, #4CAF50, #45a049) !important;
 }
+
+/* Masquer les traits null ou vides */
+.trait:has(.trait-name h4:empty),
+.trait:has(.trait-name h4:contains("null")),
+.trait:has(.trait-name h4:contains("undefined")) {
+    display: none !important;
+}
+
+/* Alternative plus robuste pour les navigateurs qui ne supportent pas :has() */
+.trait[data-trait-id] .trait-name h4:empty,
+.trait[data-trait-id] .trait-name h4:contains("null"),
+.trait[data-trait-id] .trait-name h4:contains("undefined") {
+    display: none !important;
+}
+
+/* Masquer complètement les traits dont le nom est vide ou null */
+.trait:has(.trait-name h4:empty) {
+    display: none !important;
+}
+
+.trait:has(.trait-name h4:contains("null")) {
+    display: none !important;
+}

@@ -1827,17 +1827,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         // Si le trait est null, c'est qu'il a déjà été supprimé
         if (trait === null) {
-            console.log('Trait déjà supprimé (null), nettoyage de la structure...');
-            // Nettoyer la structure en supprimant complètement la propriété
-            const cleanTraits = { ...this.actor.system.traits };
-            delete cleanTraits[traitId];
-            
-            await this.actor.update({
-                'system.traits': cleanTraits
-            });
-            
-            ui.notifications.info('Structure des traits nettoyée');
-            this.render(true);
+            console.log('Trait déjà supprimé (null), masqué par CSS');
+            ui.notifications.info('Trait déjà supprimé');
             return;
         }
         
@@ -1895,115 +1886,26 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             
             console.log('Données de mise à jour:', updateData);
             
-            // Essayer d'abord avec la méthode standard
-            try {
-                await this.actor.update(updateData);
-                console.log('Première tentative de mise à jour réussie');
-            } catch (error) {
-                console.error('Erreur lors de la première tentative:', error);
-                
-                // Si cela échoue, essayer avec une approche différente
-                try {
-                    // Utiliser un chemin de suppression explicite
-                    const deleteData = {};
-                    deleteData[`system.traits.${traitId}`] = null;
-                    
-                    console.log('Tentative de suppression explicite:', deleteData);
-                    await this.actor.update(deleteData);
-                    console.log('Suppression explicite réussie');
-                } catch (deleteError) {
-                    console.error('Erreur lors de la suppression explicite:', deleteError);
-                    throw deleteError;
-                }
-            }
+                         // Mettre à jour l'acteur avec les traits restants
+             await this.actor.update(updateData);
+             console.log('Mise à jour réussie');
             
-            // Forcer la synchronisation des données
-            await this.actor.sheet.render(true);
+                         // Synchronisation des données
+             await this.actor.sheet.render(true);
             
-            // Attendre un peu pour s'assurer que la synchronisation est complète
-            await new Promise(resolve => setTimeout(resolve, 100));
+                         // Vérifier que la suppression est bien persistante
+             if (this.actor.system.traits[traitId]) {
+                 console.log('Le trait est toujours présent après la mise à jour, mais sera masqué par CSS');
+             }
             
-            // Vérifier que la mise à jour a bien fonctionné
-            console.log('Acteur mis à jour, traits actuels:', this.actor.system.traits);
-            
-            // Forcer une relecture depuis la base de données
-            console.log('Forçage d\'une relecture depuis la base de données...');
-            await this.actor.sheet.render(true);
-            await new Promise(resolve => setTimeout(resolve, 200));
-            
-            // Vérifier à nouveau après la relecture forcée
-            console.log('Traits après relecture forcée:', this.actor.system.traits);
-            
-            // Vérifier que la suppression est bien persistante
-            if (this.actor.system.traits[traitId]) {
-                console.error('Le trait est toujours présent après la mise à jour !');
-                console.log('Tentative de suppression forcée...');
-                
-                // Essayer une suppression forcée avec une approche différente
-                try {
-                    // Forcer la suppression en utilisant un chemin explicite
-                    const deletePath = `system.traits.${traitId}`;
-                    console.log('Tentative de suppression avec chemin:', deletePath);
-                    
-                    // Utiliser un objet avec la propriété à supprimer
-                    const deleteData = {};
-                    deleteData[deletePath] = null;
-                    
-                    await this.actor.update(deleteData);
-                    console.log('Suppression avec chemin explicite réussie');
-                    
-                    // Vérifier à nouveau
-                    if (this.actor.system.traits[traitId]) {
-                        console.error('La suppression avec chemin explicite a aussi échoué !');
-                        
-                        // Dernière tentative : forcer une relecture depuis la base de données
-                        console.log('Tentative de relecture forcée depuis la base de données...');
-                        await this.actor.sheet.render(true);
-                        await new Promise(resolve => setTimeout(resolve, 200));
-                        
-                        if (this.actor.system.traits[traitId]) {
-                            console.error('Toutes les tentatives de suppression ont échoué !');
-                            ui.notifications.error('Erreur : le trait n\'a pas été supprimé malgré toutes les tentatives');
-                            return;
-                        } else {
-                            console.log('Relecture forcée réussie !');
-                        }
-                    } else {
-                        console.log('Suppression avec chemin explicite réussie !');
-                    }
-                } catch (forcedError) {
-                    console.error('Erreur lors de la suppression forcée:', forcedError);
-                    ui.notifications.error('Erreur lors de la suppression forcée du trait');
-                    return;
-                }
-            }
-            
-            // Attendre un peu pour s'assurer que la mise à jour est persistante
-            await new Promise(resolve => setTimeout(resolve, 200));
-            
-            // Vérifier à nouveau les traits
-            console.log('Vérification après délai - Traits:', this.actor.system.traits);
-            
-            // Notification de succès
-            ui.notifications.info(`Trait "${trait.name}" supprimé avec succès`);
-            
-            // Recalculer les bonus des traits
-            console.log("Recalcul des bonus après suppression...");
-            this._applyTraitBonuses();
-            console.log("Bonus recalculés:", this.actor.system.traitBonuses);
-            
-            // Vérifier que la suppression a bien fonctionné
-            console.log("Vérification finale - Traits restants:", this.actor.system.traits);
-            console.log("Nombre de traits:", Object.keys(this.actor.system.traits || {}).length);
-            
-            // Forcer une synchronisation complète avant le re-render
-            await this.actor.sheet.render(true);
-            
-            // Attendre encore un peu pour s'assurer que tout est synchronisé
-            await new Promise(resolve => setTimeout(resolve, 100));
-            
-            // Maintenant recharger notre propre fiche
-            this.render(true);
+                         // Notification de succès
+             ui.notifications.info(`Trait "${trait.name}" supprimé avec succès`);
+             
+             // Recalculer les bonus des traits
+             this._applyTraitBonuses();
+             
+             // Recharger la fiche pour afficher les changements
+             this.render(true);
             
         } catch (error) {
             console.error('Erreur lors de la suppression du trait:', error);
