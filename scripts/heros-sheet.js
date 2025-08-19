@@ -666,40 +666,34 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             return;
         }
         
-        // Si c'est un changement d'Arcane, mettre à jour le mana et sauvegarder
+        // Si c'est un changement d'Arcane, mettre à jour seulement l'affichage du mana localement
         if (field === "system.arcane.value") {
-            try {
-                // Calculer le nouveau mana maximum basé sur la nouvelle valeur d'Arcane
-                const manaPerLevel = {
-                    "1d4": 2,   // Insensible
-                    "2d4": 4,   // Eveillé
-                    "3d4": 6,   // Novice
-                    "4d4": 8,   // Initié
-                    "5d4": 10,  // Maître
-                    "6d4": 12   // Archimage
-                };
-                const newMaxMana = manaPerLevel[value] || 2;
-                
-                // Mettre à jour l'acteur avec la nouvelle valeur d'Arcane et le nouveau mana
-                const updateData = {
-                    [field]: value,
-                    'system.mana.max': newMaxMana,
-                    'system.mana.value': newMaxMana // Réinitialiser le mana actuel au maximum
-                };
-                
-                await this.actor.update(updateData);
-                console.log(`Arcane et mana mis à jour: ${value} -> ${newMaxMana} points de mana`);
-                
-                // Mettre à jour l'affichage du mana
-                this._updateManaDisplay();
-                
-            } catch (error) {
-                console.error("Erreur lors de la mise à jour de l'Arcane et du mana:", error);
-                
-                // Restaurer la valeur précédente en cas d'erreur
-                select.value = this.actor.system.arcane?.value || "1d4";
+            // Calculer le nouveau mana maximum basé sur la nouvelle valeur d'Arcane
+            const manaPerLevel = {
+                "1d4": 2,   // Insensible
+                "2d4": 4,   // Eveillé
+                "3d4": 6,   // Novice
+                "4d4": 8,   // Initié
+                "5d4": 10,  // Maître
+                "6d4": 12   // Archimage
+            };
+            const newMaxMana = manaPerLevel[value] || 2;
+            
+            // Mettre à jour seulement l'affichage local, pas la sauvegarde
+            this.actor.system.mana.max = newMaxMana;
+            this.actor.system.mana.value = newMaxMana;
+            this._updateManaDisplay();
+            
+            console.log(`Arcane et mana mis à jour localement: ${value} -> ${newMaxMana} points de mana`);
+            
+            // Ajouter les changements de mana aux changements en attente
+            if (!this._pendingChanges) {
+                this._pendingChanges = {};
             }
-            return;
+            this._pendingChanges['system.mana.max'] = newMaxMana;
+            this._pendingChanges['system.mana.value'] = newMaxMana;
+            
+            // Continuer vers le traitement standard (stockage en mémoire sans sauvegarde)
         }
         
         // Pour les autres champs (caractéristiques), stocker le changement en mémoire sans sauvegarder
