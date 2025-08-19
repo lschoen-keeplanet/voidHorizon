@@ -2259,6 +2259,12 @@ Hooks.once("init", function() {
             return manaPerLevel[arcaneValue] || 2;
         });
 
+        // Helper pour accéder aux propriétés imbriquées
+        Handlebars.registerHelper('get', function(obj, key) {
+            if (!obj || typeof obj !== 'object') return 0;
+            return obj[key] || 0;
+        });
+
     foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
     foundry.documents.collections.Actors.registerSheet("voidHorizon", HeroSheet, {
         types: ["heros"],
