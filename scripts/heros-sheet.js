@@ -1818,12 +1818,20 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         event.preventDefault();
         const button = $(event.currentTarget);
         const traitId = button.data('trait-id');
+        
+        console.log('=== SUPPRESSION DE TRAIT ===');
+        console.log('Trait ID:', traitId);
+        console.log('Traits actuels:', this.actor.system.traits);
+        
         const trait = this.actor.system.traits?.[traitId];
         
         if (!trait) {
+            console.error('Trait non trouvé pour ID:', traitId);
             ui.notifications.error('Trait non trouvé');
             return;
         }
+        
+        console.log('Trait à supprimer:', trait);
         
         // Demander confirmation
         const confirmed = await new Promise((resolve) => {
@@ -1853,6 +1861,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             const currentTraits = { ...this.actor.system.traits };
             delete currentTraits[traitId];
             
+            console.log('Suppression du trait:', traitId);
+            console.log('Traits restants:', currentTraits);
+            
+            // Mettre à jour l'acteur avec les traits restants
             await this.actor.update({
                 'system.traits': currentTraits
             });
@@ -1911,7 +1923,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             constitution: this._calculateTraitBonus('constitution')
         };
         
-        // Stocker les bonus dans l'acteur pour utilisation ultérieure
+        // Stocker les bonus dans l'acteur pour utilisation ultérieure (en mémoire seulement)
         this.actor.system.traitBonuses = bonuses;
         
         console.log('Bonus des traits appliqués:', bonuses);
@@ -1931,8 +1943,13 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const currentTraits = this.actor.system.traits || {};
         const currentBonusCount = Object.keys(currentTraits).length;
         
+        console.log('Recalcul des bonus - Traits actuels:', currentTraits);
+        console.log('Nombre de traits:', currentBonusCount);
+        console.log('Dernier compte:', this._lastTraitCount);
+        
         // Si le nombre de traits a changé, recalculer
         if (this._lastTraitCount !== currentBonusCount) {
+            console.log('Nombre de traits changé, recalcul des bonus...');
             this._applyTraitBonuses();
             this._lastTraitCount = currentBonusCount;
         }
