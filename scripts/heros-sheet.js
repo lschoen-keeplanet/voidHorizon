@@ -568,21 +568,44 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      * @param {Event} event - L'événement de changement
      * @private
      */
-    _onSelectChange(event) {
+    async _onSelectChange(event) {
         event.preventDefault();
         const select = event.target;
         const field = select.name;
+        const value = select.value;
         
-        // Stocker le changement en mémoire sans sauvegarder
+        // Si c'est un changement de faction, sauvegarder immédiatement
+        if (field === "system.faction.value") {
+            try {
+                await this.actor.update({ [field]: value });
+                console.log(`Faction sauvegardée immédiatement: ${value}`);
+                
+                // Mettre à jour l'affichage du blason de faction
+                this._updateFactionCrest(value);
+                
+                // Notification de succès
+                ui.notifications.info("Faction mise à jour avec succès");
+                
+            } catch (error) {
+                console.error("Erreur lors de la sauvegarde de la faction:", error);
+                ui.notifications.error("Erreur lors de la mise à jour de la faction");
+                
+                // Restaurer la valeur précédente en cas d'erreur
+                select.value = this.actor.system.faction?.value || "caradoc";
+            }
+            return;
+        }
+        
+        // Pour les autres champs, stocker le changement en mémoire sans sauvegarder
         if (!this._pendingChanges) {
             this._pendingChanges = {};
         }
-        this._pendingChanges[field] = select.value;
+        this._pendingChanges[field] = value;
         
-        console.log(`Changement en attente pour ${field}: ${select.value}`);
+        console.log(`Changement en attente pour ${field}: ${value}`);
         
         // Mettre à jour l'affichage local sans sauvegarder
-        this._updateLocalDisplay(field, select.value);
+        this._updateLocalDisplay(field, value);
     }
 
     /**
@@ -601,6 +624,21 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 const label = this._getStatLabel(statName, value);
                 readModeElement.text(label);
             }
+        }
+    }
+
+    /**
+     * Met à jour l'affichage du blason de faction
+     * @param {string} factionValue - La nouvelle valeur de faction
+     * @private
+     */
+    _updateFactionCrest(factionValue) {
+        const crestImg = this.element.find('.faction-crest img');
+        if (crestImg.length > 0) {
+            const newSrc = `systems/voidHorizon/assets/crests/${factionValue}.png`;
+            crestImg.attr('src', newSrc);
+            crestImg.attr('alt', `Blason ${factionValue}`);
+            console.log(`Blason de faction mis à jour: ${newSrc}`);
         }
     }
 
