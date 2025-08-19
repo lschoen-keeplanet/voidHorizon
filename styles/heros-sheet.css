@@ -940,33 +940,40 @@ textarea:focus {
 
 .weapons-edit-mode-button {
     display: flex;
-    align-items: center;
+    justify-content: flex-end;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .toggle-weapons-edit-mode {
-    background: linear-gradient(135deg, #800000, #600000);
-    color: white;
-    border: 2px solid #800000;
-    border-radius: 6px;
-    padding: 8px 16px;
+    background: transparent;
+    color: #888;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 0.3rem 0.6rem;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 0.8em;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .toggle-weapons-edit-mode:hover {
-    background: linear-gradient(135deg, #900000, #700000);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    background: #f5f5f5;
+    color: #666;
+    border-color: #ccc;
 }
 
 .toggle-weapons-edit-mode .button-text {
-    font-weight: bold;
+    display: none;
+}
+
+.subtle-edit-btn {
+    opacity: 0.7;
+}
+
+.subtle-edit-btn:hover {
+    opacity: 1;
 }
 
 /* Mode édition/lecture des armes */
@@ -1095,7 +1102,7 @@ textarea:focus {
     font-weight: bold;
 }
 
-.create-trait {
+.create-trait-btn {
     background: linear-gradient(135deg, #4CAF50, #45a049);
     color: white;
     border: none;
@@ -1108,12 +1115,117 @@ textarea:focus {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.create-trait:hover {
+.create-trait-btn:hover {
     background: linear-gradient(135deg, #45a049, #3d8b40);
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
+/* Formulaire de création de trait */
+.trait-form-container {
+    margin-bottom: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid #4CAF50;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.trait-form h4 {
+    margin: 0 0 15px 0;
+    color: #4CAF50;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.trait-form-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.trait-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.trait-field:nth-child(2) {
+    grid-column: 1 / -1;
+}
+
+.trait-field label {
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
+}
+
+.trait-field input,
+.trait-field select,
+.trait-field textarea {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+}
+
+.trait-field input:focus,
+.trait-field select:focus,
+.trait-field textarea:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 3px rgba(76, 175, 80, 0.3);
+}
+
+.trait-field textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+.trait-form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.trait-save-btn,
+.trait-cancel-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.trait-save-btn {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+}
+
+.trait-save-btn:hover {
+    background: linear-gradient(135deg, #45a049, #3d8b40);
+    transform: translateY(-1px);
+}
+
+.trait-cancel-btn {
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+    color: white;
+}
+
+.trait-cancel-btn:hover {
+    background: linear-gradient(135deg, #d32f2f, #b71c1c);
+    transform: translateY(-1px);
+}
+
+/* Liste des traits existants */
 .traits-list {
     display: flex;
     flex-direction: column;
@@ -1136,15 +1248,30 @@ textarea:focus {
 .trait-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 10px;
 }
 
+.trait-name {
+    flex: 1;
+}
+
 .trait-name h4 {
-    margin: 0;
+    margin: 0 0 5px 0;
     color: #800000;
     font-size: 16px;
     font-weight: bold;
+}
+
+.trait-bonus-display {
+    display: inline-block;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: capitalize;
 }
 
 .trait-controls {
@@ -1153,12 +1280,14 @@ textarea:focus {
 }
 
 .trait-control {
+    background: none;
+    border: none;
     color: #800000;
     font-size: 14px;
     padding: 4px 8px;
     border-radius: 4px;
     transition: all 0.2s ease;
-    text-decoration: none;
+    cursor: pointer;
 }
 
 .trait-control:hover {

@@ -200,8 +200,18 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         console.log(`Trouvé ${tabButtons.length} boutons d'onglets`);
         tabButtons.click(this._onTabButtonClick.bind(this));
         
+        // Gestion des traits
+        html.find('#create-trait-btn').click(this._onCreateTraitClick.bind(this));
+        html.find('#trait-save-btn').click(this._onSaveTraitClick.bind(this));
+        html.find('#trait-cancel-btn').click(this._onCancelTraitClick.bind(this));
+        html.find('.trait-edit').click(this._onEditTraitClick.bind(this));
+        html.find('.trait-delete').click(this._onDeleteTraitClick.bind(this));
+        
         // Initialiser l'état des cœurs et de la santé
         this._initializeHealthState();
+        
+        // Appliquer les bonus des traits
+        this._applyTraitBonuses();
     }
 
     /**
@@ -1545,6 +1555,265 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             console.error('Error updating actor:', error);
             ui.notifications.error('Erreur lors de la mise à jour des données');
         }
+    }
+
+    /**
+     * Gère le clic sur le bouton de création de trait
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    _onCreateTraitClick(event) {
+        event.preventDefault();
+        const formContainer = this.element.find('#trait-form-container');
+        formContainer.show();
+        
+        // Vider les champs du formulaire
+        this.element.find('#trait-name-input').val('');
+        this.element.find('#trait-description-input').val('');
+        this.element.find('#trait-bonus-target').val('');
+        this.element.find('#trait-bonus-value').val('');
+        
+        // Focus sur le premier champ
+        this.element.find('#trait-name-input').focus();
+    }
+
+    /**
+     * Gère le clic sur le bouton de sauvegarde de trait
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onSaveTraitClick(event) {
+        event.preventDefault();
+        
+        const name = this.element.find('#trait-name-input').val().trim();
+        const description = this.element.find('#trait-description-input').val().trim();
+        const bonusTarget = this.element.find('#trait-bonus-target').val();
+        const bonusValue = parseInt(this.element.find('#trait-bonus-value').val()) || 0;
+        
+        // Validation
+        if (!name) {
+            ui.notifications.warn('Le nom du trait est requis');
+            return;
+        }
+        
+        if (!bonusTarget) {
+            ui.notifications.warn('Veuillez sélectionner une caractéristique pour le bonus');
+            return;
+        }
+        
+        try {
+            const saveButton = this.element.find('#trait-save-btn');
+            const isEditing = saveButton.attr('data-edit-trait-id');
+            
+            if (isEditing) {
+                // Mode édition - mettre à jour le trait existant
+                const traitId = isEditing;
+                const traitData = {
+                    name: name,
+                    description: description,
+                    bonusTarget: bonusTarget,
+                    bonusValue: bonusValue
+                };
+                
+                await this.actor.update({
+                    [`system.traits.${traitId}`]: traitData
+                });
+                
+                ui.notifications.info(`Trait "${name}" modifié avec succès`);
+                
+                // Réinitialiser le bouton
+                saveButton.removeAttr('data-edit-trait-id').text('Sauvegarder');
+                
+            } else {
+                // Mode création - créer un nouveau trait
+                const traitId = `trait_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                
+                const traitData = {
+                    name: name,
+                    description: description,
+                    bonusTarget: bonusTarget,
+                    bonusValue: bonusValue
+                };
+                
+                await this.actor.update({
+                    [`system.traits.${traitId}`]: traitData
+                });
+                
+                ui.notifications.info(`Trait "${name}" créé avec succès`);
+            }
+            
+            // Masquer le formulaire
+            this.element.find('#trait-form-container').hide();
+            
+            // Recharger la fiche pour afficher les changements
+            this.render(true);
+            
+        } catch (error) {
+            console.error('Erreur lors de la sauvegarde du trait:', error);
+            ui.notifications.error('Erreur lors de la sauvegarde du trait');
+        }
+    }
+
+    /**
+     * Gère le clic sur le bouton d'annulation de création de trait
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    _onCancelTraitClick(event) {
+        event.preventDefault();
+        
+        // Masquer le formulaire
+        this.element.find('#trait-form-container').hide();
+        
+        // Réinitialiser le formulaire
+        this.element.find('#trait-name-input').val('');
+        this.element.find('#trait-description-input').val('');
+        this.element.find('#trait-bonus-target').val('');
+        this.element.find('#trait-bonus-value').val('');
+        
+        // Réinitialiser le bouton de sauvegarde
+        const saveButton = this.element.find('#trait-save-btn');
+        saveButton.removeAttr('data-edit-trait-id').text('Sauvegarder');
+        
+        // Réinitialiser le titre
+        this.element.find('#trait-form-container h4').text('Nouveau trait');
+    }
+
+    /**
+     * Gère le clic sur le bouton d'édition de trait
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    _onEditTraitClick(event) {
+        event.preventDefault();
+        const button = $(event.currentTarget);
+        const traitId = button.data('trait-id');
+        const trait = this.actor.system.traits?.[traitId];
+        
+        if (!trait) {
+            ui.notifications.error('Trait non trouvé');
+            return;
+        }
+        
+        // Afficher le formulaire avec les données du trait
+        const formContainer = this.element.find('#trait-form-container');
+        formContainer.show();
+        
+        // Remplir les champs avec les données existantes
+        this.element.find('#trait-name-input').val(trait.name);
+        this.element.find('#trait-description-input').val(trait.description);
+        this.element.find('#trait-bonus-target').val(trait.bonusTarget);
+        this.element.find('#trait-bonus-value').val(trait.bonusValue);
+        
+        // Changer le titre et le bouton de sauvegarde
+        formContainer.find('h4').text('Modifier le trait');
+        formContainer.find('#trait-save-btn').text('Modifier').attr('data-edit-trait-id', traitId);
+        
+        // Focus sur le premier champ
+        this.element.find('#trait-name-input').focus();
+    }
+
+    /**
+     * Gère le clic sur le bouton de suppression de trait
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onDeleteTraitClick(event) {
+        event.preventDefault();
+        const button = $(event.currentTarget);
+        const traitId = button.data('trait-id');
+        const trait = this.actor.system.traits?.[traitId];
+        
+        if (!trait) {
+            ui.notifications.error('Trait non trouvé');
+            return;
+        }
+        
+        // Demander confirmation
+        const confirmed = await new Promise((resolve) => {
+            new Dialog({
+                title: 'Confirmer la suppression',
+                content: `<p>Êtes-vous sûr de vouloir supprimer le trait "${trait.name}" ?</p>`,
+                buttons: {
+                    yes: {
+                        icon: '<i class="fas fa-check"></i>',
+                        label: 'Oui',
+                        callback: () => resolve(true)
+                    },
+                    no: {
+                        icon: '<i class="fas fa-times"></i>',
+                        label: 'Non',
+                        callback: () => resolve(false)
+                    }
+                },
+                default: 'no'
+            }).render(true);
+        });
+        
+        if (!confirmed) return;
+        
+        try {
+            // Supprimer le trait
+            const currentTraits = { ...this.actor.system.traits };
+            delete currentTraits[traitId];
+            
+            await this.actor.update({
+                'system.traits': currentTraits
+            });
+            
+            // Notification de succès
+            ui.notifications.info(`Trait "${trait.name}" supprimé avec succès`);
+            
+            // Recharger la fiche
+            this.render(true);
+            
+        } catch (error) {
+            console.error('Erreur lors de la suppression du trait:', error);
+            ui.notifications.error('Erreur lors de la suppression du trait');
+        }
+    }
+
+    /**
+     * Calcule le bonus total d'un trait sur une caractéristique
+     * @param {string} statName - Nom de la caractéristique
+     * @returns {number} - Bonus total
+     * @private
+     */
+    _calculateTraitBonus(statName) {
+        const traits = this.actor.system.traits || {};
+        let totalBonus = 0;
+        
+        for (const traitId in traits) {
+            const trait = traits[traitId];
+            if (trait.bonusTarget === statName) {
+                totalBonus += trait.bonusValue || 0;
+            }
+        }
+        
+        return totalBonus;
+    }
+
+    /**
+     * Applique les bonus des traits aux caractéristiques
+     * @private
+     */
+    _applyTraitBonuses() {
+        const traits = this.actor.system.traits || {};
+        
+        // Calculer les bonus pour chaque caractéristique
+        const bonuses = {
+            martialite: this._calculateTraitBonus('martialite'),
+            pimpance: this._calculateTraitBonus('pimpance'),
+            acuite: this._calculateTraitBonus('acuite'),
+            arcane: this._calculateTraitBonus('arcane'),
+            armor: this._calculateTraitBonus('armor'),
+            constitution: this._calculateTraitBonus('constitution')
+        };
+        
+        // Stocker les bonus dans l'acteur pour utilisation ultérieure
+        this.actor.system.traitBonuses = bonuses;
+        
+        console.log('Bonus des traits appliqués:', bonuses);
     }
 }
 

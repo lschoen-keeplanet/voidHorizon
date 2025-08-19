@@ -190,13 +190,6 @@
 
                                 <!-- Contenu de l'onglet Équipement -->
                                 <div class="tab-content active" data-tab="equipment">
-                                    <div class="weapons-edit-mode-button" id="weapons-edit-button">
-                                        <button type="button" class="toggle-weapons-edit-mode"
-                                            title="Cliquer pour éditer, cliquer à nouveau pour sauvegarder">
-                                            <i class="fas fa-edit"></i>
-                                            <span class="button-text">Éditer</span>
-                                        </button>
-                                    </div>
                                     <div class="weapons-section read-only">
                                         <div class="weapons-grid">
                                             <!-- Main Principale -->
@@ -372,35 +365,90 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                    <!-- Bouton d'édition discret -->
+                                    <div class="weapons-edit-mode-button" id="weapons-edit-button">
+                                        <button type="button" class="toggle-weapons-edit-mode subtle-edit-btn"
+                                            title="Cliquer pour éditer, cliquer à nouveau pour sauvegarder">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
 
                                     <!-- Contenu de l'onglet Traits -->
                                     <div class="tab-content" data-tab="traits">
                                         <div class="traits-section">
                                             <div class="traits-header">
                                                 <h3>Traits du personnage</h3>
-                                                <button type="button" class="create-trait"><i class="fas fa-plus"></i>
-                                                    Ajouter un trait</button>
+                                                <button type="button" class="create-trait-btn" id="create-trait-btn">
+                                                    <i class="fas fa-plus"></i> Ajouter un trait
+                                                </button>
                                             </div>
-                                            <div class="traits-list">
-                                                {{#each actor.items as |item id|}}
-                                                {{#if (eq item.type "trait")}}
-                                                <div class="trait" data-item-id="{{item._id}}">
+                                            
+                                            <!-- Formulaire de création de trait (caché par défaut) -->
+                                            <div class="trait-form-container" id="trait-form-container" style="display: none;">
+                                                <div class="trait-form">
+                                                    <h4>Nouveau trait</h4>
+                                                    <div class="trait-form-fields">
+                                                        <div class="trait-field">
+                                                            <label>Nom du trait:</label>
+                                                            <input type="text" id="trait-name-input" placeholder="Nom du trait" />
+                                                        </div>
+                                                        <div class="trait-field">
+                                                            <label>Description:</label>
+                                                            <textarea id="trait-description-input" placeholder="Description du trait" rows="3"></textarea>
+                                                        </div>
+                                                        <div class="trait-field">
+                                                            <label>Bonus sur:</label>
+                                                            <select id="trait-bonus-target">
+                                                                <option value="">Sélectionner une caractéristique</option>
+                                                                <option value="martialite">Martialité</option>
+                                                                <option value="pimpance">Pimpance</option>
+                                                                <option value="acuite">Acuité</option>
+                                                                <option value="arcane">Arcane</option>
+                                                                <option value="armor">Armure</option>
+                                                                <option value="constitution">Constitution</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="trait-field">
+                                                            <label>Valeur du bonus:</label>
+                                                            <input type="number" id="trait-bonus-value" placeholder="+1" min="-5" max="10" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="trait-form-actions">
+                                                        <button type="button" class="trait-save-btn" id="trait-save-btn">
+                                                            <i class="fas fa-save"></i> Sauvegarder
+                                                        </button>
+                                                        <button type="button" class="trait-cancel-btn" id="trait-cancel-btn">
+                                                            <i class="fas fa-times"></i> Annuler
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Liste des traits existants -->
+                                            <div class="traits-list" id="traits-list">
+                                                {{#each actor.system.traits as |trait traitId|}}
+                                                <div class="trait" data-trait-id="{{traitId}}">
                                                     <div class="trait-header">
                                                         <div class="trait-name">
-                                                            <h4>{{item.name}}</h4>
+                                                            <h4>{{trait.name}}</h4>
+                                                            <span class="trait-bonus-display">
+                                                                {{#if trait.bonusValue}}+{{/if}}{{trait.bonusValue}} {{trait.bonusTarget}}
+                                                            </span>
                                                         </div>
                                                         <div class="trait-controls">
-                                                            <a class="trait-control trait-edit" title="Modifier"><i
-                                                                    class="fas fa-edit"></i></a>
-                                                            <a class="trait-control trait-delete" title="Supprimer"><i
-                                                                    class="fas fa-trash"></i></a>
+                                                            <button type="button" class="trait-control trait-edit" title="Modifier" data-trait-id="{{traitId}}">
+                                                                <i class="fas fa-edit"></i>
+                                                            </button>
+                                                            <button type="button" class="trait-control trait-delete" title="Supprimer" data-trait-id="{{traitId}}">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
                                                         </div>
                                                     </div>
                                                     <div class="trait-description">
-                                                        {{item.system.description}}
+                                                        {{trait.description}}
                                                     </div>
                                                 </div>
-                                                {{/if}}
                                                 {{/each}}
                                             </div>
                                         </div>
