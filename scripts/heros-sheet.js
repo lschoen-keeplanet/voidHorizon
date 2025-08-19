@@ -43,11 +43,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             const arcaneValue = data.actor.system.arcane?.value || "1d4";
             const manaPerLevel = {
                 "1d4": 2,   // Insensible
-                "1d6": 4,   // Eveillé
-                "1d8": 6,   // Novice
-                "1d10": 8,  // Initié
-                "1d12": 10, // Maître
-                "1d20": 12  // Archimage
+                "2d4": 4,   // Eveillé
+                "3d4": 6,   // Novice
+                "4d4": 8,   // Initié
+                "5d4": 10,  // Maître
+                "6d4": 12   // Archimage
             };
             const maxMana = manaPerLevel[arcaneValue] || 2;
             data.actor.system.mana.value = maxMana;
@@ -127,40 +127,52 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 const mappings = {
                     martialite: {
                         "1d4": "Incompétent",
-                        "1d6": "Combatif",
-                        "1d8": "Soldat",
-                        "1d10": "Expérimenté",
-                        "1d12": "Vétéran",
-                        "1d20": "Légende"
+                        "2d4": "Combatif",
+                        "3d4": "Soldat",
+                        "4d4": "Expérimenté",
+                        "5d4": "Vétéran",
+                        "6d4": "Légende"
                     },
                     pimpance: {
                         "1d4": "Tâche",
-                        "1d6": "Pas top",
-                        "1d8": "Honnête",
-                        "1d10": "Beau",
-                        "1d12": "Splendide",
-                        "1d20": "Ramirez"
+                        "2d4": "Pas top",
+                        "3d4": "Honnête",
+                        "4d4": "Beau",
+                        "5d4": "Splendide",
+                        "6d4": "Ramirez"
                     },
                     acuite: {
                         "1d4": "Aveugle",
-                        "1d6": "Distrait",
-                        "1d8": "Alerte",
-                        "1d10": "Vif",
-                        "1d12": "Clairvoyant",
-                        "1d20": "Fulgurant"
+                        "2d4": "Distrait",
+                        "3d4": "Alerte",
+                        "4d4": "Vif",
+                        "5d4": "Clairvoyant",
+                        "6d4": "Fulgurant"
                     },
                     arcane: {
                         "1d4": "Insensible",
-                        "1d6": "Eveillé",
-                        "1d8": "Novice",
-                        "1d10": "Initié",
-                        "1d12": "Maître",
-                        "1d20": "Archimage"
+                        "2d4": "Eveillé",
+                        "3d4": "Novice",
+                        "4d4": "Initié",
+                        "5d4": "Maître",
+                        "6d4": "Archimage"
                     }
                 };
                 const result = mappings[type]?.[value] || value;
                 console.log(`Helper getSelectedText retourne: ${result}`);
                 return result;
+            },
+            // Helper pour obtenir la formule de dé en mode unsafe
+            getUnsafeFormula: (safeValue) => {
+                const safeToUnsafe = {
+                    "1d4": "1d4",   // Degré 1
+                    "2d4": "1d8",   // Degré 2
+                    "3d4": "1d12",  // Degré 3
+                    "4d4": "1d16",  // Degré 4
+                    "5d4": "1d20",  // Degré 5
+                    "6d4": "1d24"   // Degré 6
+                };
+                return safeToUnsafe[safeValue] || safeValue;
             }
         };
         
@@ -660,11 +672,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 // Calculer le nouveau mana maximum basé sur la nouvelle valeur d'Arcane
                 const manaPerLevel = {
                     "1d4": 2,   // Insensible
-                    "1d6": 4,   // Eveillé
-                    "1d8": 6,   // Novice
-                    "1d10": 8,  // Initié
-                    "1d12": 10, // Maître
-                    "1d20": 12  // Archimage
+                    "2d4": 4,   // Eveillé
+                    "3d4": 6,   // Novice
+                    "4d4": 8,   // Initié
+                    "5d4": 10,  // Maître
+                    "6d4": 12   // Archimage
                 };
                 const newMaxMana = manaPerLevel[value] || 2;
                 
@@ -747,39 +759,57 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const mappings = {
             'martialite': {
                 "1d4": "Incompétent",
-                "1d6": "Combatif",
-                "1d8": "Soldat",
-                "1d10": "Expérimenté",
-                "1d12": "Vétéran",
-                "1d20": "Légende"
+                "2d4": "Combatif",
+                "3d4": "Soldat",
+                "4d4": "Expérimenté",
+                "5d4": "Vétéran",
+                "6d4": "Légende"
             },
             'pimpance': {
                 "1d4": "Tâche",
-                "1d6": "Pas top",
-                "1d8": "Honnête",
-                "1d10": "Beau",
-                "1d12": "Splendide",
-                "1d20": "Ramirez"
+                "2d4": "Pas top",
+                "3d4": "Honnête",
+                "4d4": "Beau",
+                "5d4": "Splendide",
+                "6d4": "Ramirez"
             },
             'acuite': {
                 "1d4": "Aveugle",
-                "1d6": "Distrait",
-                "1d8": "Alerte",
-                "1d10": "Vif",
-                "1d12": "Clairvoyant",
-                "1d20": "Fulgurant"
+                "2d4": "Distrait",
+                "3d4": "Alerte",
+                "4d4": "Vif",
+                "5d4": "Clairvoyant",
+                "6d4": "Fulgurant"
             },
             'arcane': {
                 "1d4": "Insensible",
-                "1d6": "Eveillé",
-                "1d8": "Novice",
-                "1d10": "Initié",
-                "1d12": "Maître",
-                "1d20": "Archimage"
+                "2d4": "Eveillé",
+                "3d4": "Novice",
+                "4d4": "Initié",
+                "5d4": "Maître",
+                "6d4": "Archimage"
             }
         };
         
         return mappings[statName]?.[value] || value;
+    }
+
+    /**
+     * Obtient la formule de dé en mode unsafe basée sur la valeur safe
+     * @param {string} safeValue - La valeur en mode safe (ex: "2d4")
+     * @returns {string} - La formule de dé en mode unsafe
+     * @private
+     */
+    _getUnsafeFormula(safeValue) {
+        const safeToUnsafe = {
+            "1d4": "1d4",   // Degré 1
+            "2d4": "1d8",   // Degré 2
+            "3d4": "1d12",  // Degré 3
+            "4d4": "1d16",  // Degré 4
+            "5d4": "1d20",  // Degré 5
+            "6d4": "1d24"   // Degré 6
+        };
+        return safeToUnsafe[safeValue] || safeValue;
     }
 
     /**
@@ -838,6 +868,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     /**
      * Lance un dé pour une statistique
      * @param {string} stat - Le nom de la statistique
+     * @param {boolean} isUnsafe - Si le mode unsafe est activé
      * @private
      */
     async _onRollStat(event) {
@@ -848,35 +879,46 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         const stat = event.currentTarget.dataset.stat;
         const baseFormula = this.actor.system[stat].value;
+        const isUnsafe = event.currentTarget.dataset.unsafe === "true";
         
         if (!baseFormula) {
             ui.notifications.warn(`Aucune formule de dé définie pour ${stat}`);
             return;
         }
 
+        // Déterminer la formule de base selon le mode
+        let actualFormula = baseFormula;
+        let modeLabel = "Safe";
+        
+        if (isUnsafe) {
+            actualFormula = this._getUnsafeFormula(baseFormula);
+            modeLabel = "Unsafe";
+        }
+
         // Récupérer le bonus des traits pour cette statistique
         const traitBonus = this.actor.system.traitBonuses?.[stat] || 0;
         
         // Construire la formule finale avec le bonus des traits
-        let finalFormula = baseFormula;
-        let displayFormula = baseFormula;
+        let finalFormula = actualFormula;
+        let displayFormula = actualFormula;
         
         if (traitBonus !== 0) {
-            finalFormula = `${baseFormula}+${traitBonus}`;
-            displayFormula = `${baseFormula} + ${traitBonus > 0 ? '+' : ''}${traitBonus}`;
+            finalFormula = `${actualFormula}+${traitBonus}`;
+            displayFormula = `${actualFormula} + ${traitBonus > 0 ? '+' : ''}${traitBonus}`;
         }
 
         const roll = new Roll(finalFormula);
         await roll.evaluate({async: true});
         
         const templateData = {
-            title: `${this.actor.name} - ${this._getStatDisplayName(stat)}`,
-            subtitle: traitBonus !== 0 ? `Lance ${displayFormula} (${baseFormula} + bonus des traits)` : `Lance ${displayFormula}`,
+            title: `${this.actor.name} - ${this._getStatDisplayName(stat)} (${modeLabel})`,
+            subtitle: traitBonus !== 0 ? `Lance ${displayFormula} (${actualFormula} + bonus des traits)` : `Lance ${displayFormula}`,
             formula: finalFormula,
             total: roll.total,
             dice: roll.dice,
-            baseFormula: baseFormula,
-            traitBonus: traitBonus
+            baseFormula: actualFormula,
+            traitBonus: traitBonus,
+            mode: modeLabel
         };
 
         const html = await renderTemplate("systems/voidHorizon/templates/chat/roll.html", templateData);
@@ -888,7 +930,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             sound: CONFIG.sounds.dice
         });
         
-        console.log(`Jet de ${stat}: ${displayFormula} = ${roll.total} (base: ${baseFormula}, bonus traits: ${traitBonus})`);
+        console.log(`Jet de ${stat} (${modeLabel}): ${displayFormula} = ${roll.total} (base: ${actualFormula}, bonus traits: ${traitBonus})`);
     }
 
     /**
@@ -905,6 +947,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const button = event.currentTarget;
         const stat = button.dataset.stat;
         const baseFormula = this.actor.system[stat]?.value;
+        const isUnsafe = button.dataset.unsafe === "true";
         
         if (!baseFormula) {
             ui.notifications.warn(`Aucune formule de dé définie pour ${stat}`);
@@ -912,16 +955,25 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         }
 
         try {
+            // Déterminer la formule de base selon le mode
+            let actualFormula = baseFormula;
+            let modeLabel = "Safe";
+            
+            if (isUnsafe) {
+                actualFormula = this._getUnsafeFormula(baseFormula);
+                modeLabel = "Unsafe";
+            }
+
             // Récupérer le bonus des traits pour cette statistique
             const traitBonus = this.actor.system.traitBonuses?.[stat] || 0;
             
             // Construire la formule finale avec le bonus des traits
-            let finalFormula = baseFormula;
-            let displayFormula = baseFormula;
+            let finalFormula = actualFormula;
+            let displayFormula = actualFormula;
             
             if (traitBonus !== 0) {
-                finalFormula = `${baseFormula}+${traitBonus}`;
-                displayFormula = `${baseFormula} + ${traitBonus > 0 ? '+' : ''}${traitBonus}`;
+                finalFormula = `${actualFormula}+${traitBonus}`;
+                displayFormula = `${actualFormula} + ${traitBonus > 0 ? '+' : ''}${traitBonus}`;
             }
 
             const roll = new Roll(finalFormula);
@@ -929,13 +981,14 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             
             const statName = this._getStatDisplayName(stat);
             const templateData = {
-                title: `${this.actor.name} - ${statName}`,
-                subtitle: traitBonus !== 0 ? `Lance ${displayFormula} (${baseFormula} + bonus des traits)` : `Lance ${displayFormula}`,
+                title: `${this.actor.name} - ${statName} (${modeLabel})`,
+                subtitle: traitBonus !== 0 ? `Lance ${displayFormula} (${actualFormula} + bonus des traits)` : `Lance ${displayFormula}`,
                 formula: finalFormula,
                 total: roll.total,
                 dice: roll.dice,
-                baseFormula: baseFormula,
-                traitBonus: traitBonus
+                baseFormula: actualFormula,
+                traitBonus: traitBonus,
+                mode: modeLabel
             };
 
             const html = await renderTemplate("systems/voidHorizon/templates/chat/roll.html", templateData);
@@ -947,7 +1000,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 sound: CONFIG.sounds.dice
             });
             
-            console.log(`Lancement de dés ${displayFormula} pour ${statName}: ${roll.total} (base: ${baseFormula}, bonus traits: ${traitBonus})`);
+            console.log(`Lancement de dés ${displayFormula} (${modeLabel}) pour ${statName}: ${roll.total} (base: ${actualFormula}, bonus traits: ${traitBonus})`);
         } catch (error) {
             console.error(`Erreur lors du lancement de dés pour ${stat}:`, error);
             ui.notifications.error(`Erreur lors du lancement de dés pour ${stat}`);
@@ -1079,11 +1132,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 sound: CONFIG.sounds.dice
             });
             
-                         console.log(`Lancement d'arme ${weapon.name}: ${displayFormula} = ${roll.total} (base: ${characteristic}, bonus traits: ${traitBonus}, bonus arme: ${weaponBonus})`);
-         } catch (error) {
-             console.error(`Erreur lors du lancement d'arme ${weaponType}:`, error);
-             ui.notifications.error(`Erreur lors du lancement d'arme ${weaponType}`);
-         }
+            console.log(`Lancement d'arme ${weapon.name}: ${displayFormula} = ${roll.total} (base: ${characteristic}, bonus traits: ${traitBonus}, bonus arme: ${weaponBonus})`);
+        } catch (error) {
+            console.error(`Erreur lors du lancement d'arme ${weaponType}:`, error);
+            ui.notifications.error(`Erreur lors du lancement d'arme ${weaponType}`);
+        }
      }
      
      /**
@@ -1426,11 +1479,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const arcaneValue = this.actor.system.arcane?.value || "1d4";
         const manaPerLevel = {
             "1d4": 2,   // Insensible
-            "1d6": 4,   // Eveillé
-            "1d8": 6,   // Novice
-            "1d10": 8,  // Initié
-            "1d12": 10, // Maître
-            "1d20": 12  // Archimage
+            "2d4": 4,   // Eveillé
+            "3d4": 6,   // Novice
+            "4d4": 8,   // Initié
+            "5d4": 10,  // Maître
+            "6d4": 12   // Archimage
         };
         return manaPerLevel[arcaneValue] || 2;
     }
@@ -2250,11 +2303,11 @@ Hooks.once("init", function() {
             const arcaneValue = actor.system.arcane?.value || "1d4";
             const manaPerLevel = {
                 "1d4": 2,   // Insensible
-                "1d6": 4,   // Eveillé
-                "1d8": 6,   // Novice
-                "1d10": 8,  // Initié
-                "1d12": 10, // Maître
-                "1d20": 12  // Archimage
+                "2d4": 4,   // Eveillé
+                "3d4": 6,   // Novice
+                "4d4": 8,   // Initié
+                "5d4": 10,  // Maître
+                "6d4": 12   // Archimage
             };
             return manaPerLevel[arcaneValue] || 2;
         });
@@ -2263,6 +2316,19 @@ Hooks.once("init", function() {
         Handlebars.registerHelper('get', function(obj, key) {
             if (!obj || typeof obj !== 'object') return 0;
             return obj[key] || 0;
+        });
+
+        // Helper pour obtenir la formule de dé en mode unsafe
+        Handlebars.registerHelper('getUnsafeFormula', function(safeValue) {
+            const safeToUnsafe = {
+                "1d4": "1d4",   // Degré 1
+                "2d4": "1d8",   // Degré 2
+                "3d4": "1d12",  // Degré 3
+                "4d4": "1d16",  // Degré 4
+                "5d4": "1d20",  // Degré 5
+                "6d4": "1d24"   // Degré 6
+            };
+            return safeToUnsafe[safeValue] || safeValue;
         });
 
     foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
