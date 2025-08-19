@@ -1872,8 +1872,15 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Vérifier que la mise à jour a bien fonctionné
             console.log('Acteur mis à jour, traits actuels:', this.actor.system.traits);
             
+            // Vérifier que la suppression est bien persistante
+            if (this.actor.system.traits[traitId]) {
+                console.error('Le trait est toujours présent après la mise à jour !');
+                ui.notifications.error('Erreur : le trait n\'a pas été supprimé');
+                return;
+            }
+            
             // Attendre un peu pour s'assurer que la mise à jour est persistante
-            await new Promise(resolve => setTimeout(resolve, 100));
+            await new Promise(resolve => setTimeout(resolve, 200));
             
             // Vérifier à nouveau les traits
             console.log('Vérification après délai - Traits:', this.actor.system.traits);
@@ -1890,7 +1897,13 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             console.log("Vérification finale - Traits restants:", this.actor.system.traits);
             console.log("Nombre de traits:", Object.keys(this.actor.system.traits || {}).length);
             
-            // Recharger la fiche pour afficher les changements
+            // Forcer une synchronisation complète avant le re-render
+            await this.actor.sheet.render(true);
+            
+            // Attendre encore un peu pour s'assurer que tout est synchronisé
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            // Maintenant recharger notre propre fiche
             this.render(true);
             
         } catch (error) {
