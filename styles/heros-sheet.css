@@ -162,11 +162,10 @@ img{
 }
 
 .health-column {
-    flex: 1;
+    flex: 0 0 250px;
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    max-width: 200px;
 }
 
 .additional-stats {
@@ -709,6 +708,7 @@ textarea:focus {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    flex: 1;
 }
 
 .edit-mode-button{
