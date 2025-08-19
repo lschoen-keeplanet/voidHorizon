@@ -212,6 +212,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         // Appliquer les bonus des traits
         this._applyTraitBonuses();
+        
+        // Recalculer les bonus des traits avant chaque jet de dé
+        this._recalculateTraitBonuses();
     }
 
     /**
@@ -780,23 +783,41 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      */
     async _onRollStat(event) {
         event.preventDefault();
-        const stat = event.currentTarget.dataset.stat;
-        const formula = this.actor.system[stat].value;
         
-        if (!formula) {
+        // Recalculer les bonus des traits avant le jet
+        this._recalculateTraitBonuses();
+        
+        const stat = event.currentTarget.dataset.stat;
+        const baseFormula = this.actor.system[stat].value;
+        
+        if (!baseFormula) {
             ui.notifications.warn(`Aucune formule de dé définie pour ${stat}`);
             return;
         }
 
-        const roll = new Roll(formula);
+        // Récupérer le bonus des traits pour cette statistique
+        const traitBonus = this.actor.system.traitBonuses?.[stat] || 0;
+        
+        // Construire la formule finale avec le bonus des traits
+        let finalFormula = baseFormula;
+        let displayFormula = baseFormula;
+        
+        if (traitBonus !== 0) {
+            finalFormula = `${baseFormula}+${traitBonus}`;
+            displayFormula = `${baseFormula} + ${traitBonus > 0 ? '+' : ''}${traitBonus}`;
+        }
+
+        const roll = new Roll(finalFormula);
         await roll.evaluate({async: true});
         
         const templateData = {
-            title: `${this.actor.name} - ${stat.charAt(0).toUpperCase() + stat.slice(1)}`,
-            subtitle: `Lance ${formula}`,
-            formula: formula,
+            title: `${this.actor.name} - ${this._getStatDisplayName(stat)}`,
+            subtitle: traitBonus !== 0 ? `Lance ${displayFormula} (${baseFormula} + bonus des traits)` : `Lance ${displayFormula}`,
+            formula: finalFormula,
             total: roll.total,
-            dice: roll.dice
+            dice: roll.dice,
+            baseFormula: baseFormula,
+            traitBonus: traitBonus
         };
 
         const html = await renderTemplate("systems/voidHorizon/templates/chat/roll.html", templateData);
@@ -807,6 +828,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             content: html,
             sound: CONFIG.sounds.dice
         });
+        
+        console.log(`Jet de ${stat}: ${displayFormula} = ${roll.total} (base: ${baseFormula}, bonus traits: ${traitBonus})`);
     }
 
     /**
@@ -816,26 +839,44 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      */
     async _onRollDice(event) {
         event.preventDefault();
+        
+        // Recalculer les bonus des traits avant le jet
+        this._recalculateTraitBonuses();
+        
         const button = event.currentTarget;
         const stat = button.dataset.stat;
-        const formula = this.actor.system[stat]?.value;
+        const baseFormula = this.actor.system[stat]?.value;
         
-        if (!formula) {
+        if (!baseFormula) {
             ui.notifications.warn(`Aucune formule de dé définie pour ${stat}`);
             return;
         }
 
         try {
-            const roll = new Roll(formula);
+            // Récupérer le bonus des traits pour cette statistique
+            const traitBonus = this.actor.system.traitBonuses?.[stat] || 0;
+            
+            // Construire la formule finale avec le bonus des traits
+            let finalFormula = baseFormula;
+            let displayFormula = baseFormula;
+            
+            if (traitBonus !== 0) {
+                finalFormula = `${baseFormula}+${traitBonus}`;
+                displayFormula = `${baseFormula} + ${traitBonus > 0 ? '+' : ''}${traitBonus}`;
+            }
+
+            const roll = new Roll(finalFormula);
             await roll.evaluate({async: true});
             
             const statName = this._getStatDisplayName(stat);
             const templateData = {
                 title: `${this.actor.name} - ${statName}`,
-                subtitle: `Lance ${formula}`,
-                formula: formula,
+                subtitle: traitBonus !== 0 ? `Lance ${displayFormula} (${baseFormula} + bonus des traits)` : `Lance ${displayFormula}`,
+                formula: finalFormula,
                 total: roll.total,
-                dice: roll.dice
+                dice: roll.dice,
+                baseFormula: baseFormula,
+                traitBonus: traitBonus
             };
 
             const html = await renderTemplate("systems/voidHorizon/templates/chat/roll.html", templateData);
@@ -847,7 +888,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 sound: CONFIG.sounds.dice
             });
             
-            console.log(`Lancement de dés ${formula} pour ${statName}: ${roll.total}`);
+            console.log(`Lancement de dés ${displayFormula} pour ${statName}: ${roll.total} (base: ${baseFormula}, bonus traits: ${traitBonus})`);
         } catch (error) {
             console.error(`Erreur lors du lancement de dés pour ${stat}:`, error);
             ui.notifications.error(`Erreur lors du lancement de dés pour ${stat}`);
@@ -877,6 +918,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      */
     async _onRollWeapon(event) {
         event.preventDefault();
+        
+        // Recalculer les bonus des traits avant le jet
+        this._recalculateTraitBonuses();
+        
         const button = event.currentTarget;
         const weaponType = button.dataset.weapon; // 'primary' ou 'secondary'
         
@@ -901,26 +946,44 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         try {
             // Déterminer la caractéristique à utiliser
-            let characteristic, characteristicName;
+            let characteristic, characteristicName, statName;
             if (weapon.type === 'strength') {
                 characteristic = this.actor.system.martialite.value;
                 characteristicName = 'Martialité';
+                statName = 'martialite';
             } else if (weapon.type === 'agility') {
                 characteristic = this.actor.system.acuite.value;
                 characteristicName = 'Acuité';
+                statName = 'acuite';
             } else {
                 ui.notifications.error(`Type d'arme invalide: ${weapon.type}`);
                 return;
             }
             
+            // Récupérer le bonus des traits pour cette caractéristique
+            const traitBonus = this.actor.system.traitBonuses?.[statName] || 0;
+            
             // Créer la formule de dé
             const weaponRank = weapon.rank || "0";
             const weaponBonus = parseInt(weapon.bonus) || 0;
             
-            // Construire la formule : caractéristique + bonus (le rang 0 n'ajoute rien)
+            // Construire la formule : caractéristique + bonus des traits + bonus de l'arme
             let formula = `${characteristic}`;
+            let displayFormula = `${characteristic}`;
+            let totalBonus = 0;
+            
+            // Ajouter le bonus des traits
+            if (traitBonus !== 0) {
+                formula += `+${traitBonus}`;
+                displayFormula += ` + ${traitBonus > 0 ? '+' : ''}${traitBonus}`;
+                totalBonus += traitBonus;
+            }
+            
+            // Ajouter le bonus de l'arme
             if (weaponBonus !== 0) {
                 formula += `+${weaponBonus}`;
+                displayFormula += ` + ${weaponBonus > 0 ? '+' : ''}${weaponBonus}`;
+                totalBonus += weaponBonus;
             }
             
             // Lancer les dés
@@ -928,23 +991,25 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             await roll.evaluate({async: true});
             
             // Préparer les données pour le template
-                         const templateData = {
-                 title: `${this.actor.name} - ${weapon.name}`,
-                 subtitle: `Attaque avec ${weapon.name} (${characteristicName} + ${weaponBonus !== 0 ? weaponBonus : ''})`,
-                 formula: formula,
-                 total: roll.total,
-                 dice: roll.dice,
-                 weapon: {
-                     name: weapon.name,
-                     type: weapon.type === 'strength' ? 'Force' : 'Agilité',
-                     rank: weaponRank,
-                     bonus: weaponBonus
-                 },
-                 characteristic: {
-                     name: characteristicName,
-                     value: characteristic
-                 }
-             };
+            const templateData = {
+                title: `${this.actor.name} - ${weapon.name}`,
+                subtitle: `Attaque avec ${weapon.name} (${characteristicName}${traitBonus !== 0 ? ` + ${traitBonus > 0 ? '+' : ''}${traitBonus} traits` : ''}${weaponBonus !== 0 ? ` + ${weaponBonus > 0 ? '+' : ''}${weaponBonus} arme` : ''})`,
+                formula: formula,
+                total: roll.total,
+                dice: roll.dice,
+                weapon: {
+                    name: weapon.name,
+                    type: weapon.type === 'strength' ? 'Force' : 'Agilité',
+                    rank: weaponRank,
+                    bonus: weaponBonus
+                },
+                characteristic: {
+                    name: characteristicName,
+                    value: characteristic
+                },
+                traitBonus: traitBonus,
+                totalBonus: totalBonus
+            };
             
             const html = await renderTemplate("systems/voidHorizon/templates/chat/weapon-roll.html", templateData);
             
@@ -955,7 +1020,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 sound: CONFIG.sounds.dice
             });
             
-                         console.log(`Lancement d'arme ${weapon.name}: ${formula} = ${roll.total}`);
+                         console.log(`Lancement d'arme ${weapon.name}: ${displayFormula} = ${roll.total} (base: ${characteristic}, bonus traits: ${traitBonus}, bonus arme: ${weaponBonus})`);
          } catch (error) {
              console.error(`Erreur lors du lancement d'arme ${weaponType}:`, error);
              ui.notifications.error(`Erreur lors du lancement d'arme ${weaponType}`);
@@ -1673,6 +1738,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Masquer le formulaire
             this.element.find('#trait-form-container').hide();
             
+            // Recalculer les bonus des traits
+            this._applyTraitBonuses();
+            
             // Recharger la fiche pour afficher les changements
             this.render(true);
             
@@ -1792,6 +1860,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Notification de succès
             ui.notifications.info(`Trait "${trait.name}" supprimé avec succès`);
             
+            // Recalculer les bonus des traits
+            this._applyTraitBonuses();
+            
             // Recharger la fiche
             this.render(true);
             
@@ -1844,6 +1915,27 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         this.actor.system.traitBonuses = bonuses;
         
         console.log('Bonus des traits appliqués:', bonuses);
+    }
+    
+    /**
+     * Recalcule les bonus des traits (appelé avant chaque jet de dé)
+     * @private
+     */
+    _recalculateTraitBonuses() {
+        // S'assurer que les bonus des traits sont à jour
+        if (!this.actor.system.traitBonuses) {
+            this._applyTraitBonuses();
+        }
+        
+        // Vérifier que les bonus sont cohérents avec les traits actuels
+        const currentTraits = this.actor.system.traits || {};
+        const currentBonusCount = Object.keys(currentTraits).length;
+        
+        // Si le nombre de traits a changé, recalculer
+        if (this._lastTraitCount !== currentBonusCount) {
+            this._applyTraitBonuses();
+            this._lastTraitCount = currentBonusCount;
+        }
     }
 }
 
