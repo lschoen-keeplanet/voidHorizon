@@ -120,6 +120,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             data.actor.system.weapons.secondary = { name: "", type: "strength", rank: "0", bonus: 0, description: "" };
         }
         
+        // Initialiser les données d'armure si elles n'existent pas
+        if (!data.actor.system.armor) {
+            data.actor.system.armor = { name: "", bonus: 0, description: "" };
+        }
+        
         // Ajouter les helpers pour le template
         data.helpers = {
             getSelectedText: (value, type) => {
@@ -461,8 +466,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         console.log("Value:", value);
         console.log("Current actor data:", this.actor.system);
 
-        // Si c'est un champ d'armure de base ou de constitution, utiliser le système de sauvegarde différée
-        if (name === "system.resources.armor.value" || name === "system.constitution.value") {
+        // Si c'est un champ d'armure de base, de constitution, ou d'armure d'équipement, utiliser le système de sauvegarde différée
+        if (name === "system.resources.armor.value" || name === "system.constitution.value" || name === "system.armor.bonus") {
             // Stocker le changement en mémoire sans sauvegarder
             if (!this._pendingWeaponChanges) {
                 this._pendingWeaponChanges = {};
@@ -486,6 +491,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 
                 // Mettre à jour l'état de santé
                 this._updateHealthStatus();
+            } else if (name === "system.armor.bonus") {
+                // Mettre à jour l'affichage local sans sauvegarder
+                this._updateLocalWeaponDisplay(name, value);
+                
+                // Mettre à jour l'affichage des boucliers
+                this._updateShieldsDisplay();
             }
             return;
         }
