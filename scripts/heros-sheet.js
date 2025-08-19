@@ -1324,6 +1324,13 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         if (targetContent.length > 0) {
             targetContent.addClass('active');
             console.log(`Contenu de l'onglet ${tabName} affiché`);
+            
+            // Log spécifique pour l'onglet traits
+            if (tabName === 'traits') {
+                const traitsList = targetContent.find('#traits-list');
+                console.log('Liste des traits trouvée:', traitsList.length > 0);
+                console.log('Contenu de la liste des traits:', traitsList.html());
+            }
         } else {
             console.error(`Contenu de l'onglet ${tabName} non trouvé`);
         }
@@ -1799,6 +1806,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      */
     _applyTraitBonuses() {
         const traits = this.actor.system.traits || {};
+        console.log('Traits disponibles:', traits);
+        console.log('Structure de system:', this.actor.system);
         
         // Calculer les bonus pour chaque caractéristique
         const bonuses = {
