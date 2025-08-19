@@ -596,7 +596,25 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             return;
         }
         
-        // Pour les autres champs, stocker le changement en mémoire sans sauvegarder
+        // Si c'est un changement de classe ou d'affinité, sauvegarder immédiatement sans feedback
+        if (field === "system.class.value" || field === "system.affinity.value") {
+            try {
+                await this.actor.update({ [field]: value });
+                console.log(`${field === "system.class.value" ? "Classe" : "Affinité"} sauvegardée immédiatement: ${value}`);
+            } catch (error) {
+                console.error(`Erreur lors de la sauvegarde de ${field}:`, error);
+                
+                // Restaurer la valeur précédente en cas d'erreur
+                if (field === "system.class.value") {
+                    select.value = this.actor.system.class?.value || "";
+                } else if (field === "system.affinity.value") {
+                    select.value = this.actor.system.affinity?.value || "aucune";
+                }
+            }
+            return;
+        }
+        
+        // Pour les autres champs (caractéristiques), stocker le changement en mémoire sans sauvegarder
         if (!this._pendingChanges) {
             this._pendingChanges = {};
         }
