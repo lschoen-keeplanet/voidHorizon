@@ -466,8 +466,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         console.log("Value:", value);
         console.log("Current actor data:", this.actor.system);
 
-        // Si c'est un champ d'armure de base, de constitution, ou d'armure d'équipement, utiliser le système de sauvegarde différée
-        if (name === "system.resources.armor.value" || name === "system.constitution.value" || name === "system.armor.bonus") {
+        // Si c'est un champ d'armure de base ou de constitution, utiliser le système de sauvegarde différée
+        if (name === "system.resources.armor.value" || name === "system.constitution.value") {
             // Stocker le changement en mémoire sans sauvegarder
             if (!this._pendingWeaponChanges) {
                 this._pendingWeaponChanges = {};
@@ -491,13 +491,13 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 
                 // Mettre à jour l'état de santé
                 this._updateHealthStatus();
-            } else if (name === "system.armor.bonus") {
-                // Mettre à jour l'affichage local sans sauvegarder
-                this._updateLocalWeaponDisplay(name, value);
-                
-                // Mettre à jour l'affichage des boucliers
-                this._updateShieldsDisplay();
             }
+            return;
+        }
+        
+        // Si c'est un champ d'armure d'équipement, l'ignorer complètement (géré par _onWeaponFieldChange)
+        if (name === "system.armor.bonus") {
+            console.log(`Champ d'armure d'équipement ${name} ignoré dans _onResourceChange (géré par _onWeaponFieldChange)`);
             return;
         }
 
