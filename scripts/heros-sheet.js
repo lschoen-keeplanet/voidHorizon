@@ -196,7 +196,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         html.find('.toggle-weapons-edit-mode').click(this._onToggleWeaponsEditMode.bind(this));
         
         // Gestion des onglets Équipement/Traits
-        html.find('.tab-button').click(this._onTabButtonClick.bind(this));
+        const tabButtons = html.find('.tab-button');
+        console.log(`Trouvé ${tabButtons.length} boutons d'onglets`);
+        tabButtons.click(this._onTabButtonClick.bind(this));
         
         // Initialiser l'état des cœurs et de la santé
         this._initializeHealthState();
@@ -1292,28 +1294,41 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      */
     _onTabButtonClick(event) {
         event.preventDefault();
+        console.log('Clic sur onglet détecté');
+        
         const button = event.currentTarget;
         const tabName = button.dataset.tab;
+        console.log('Nom de l\'onglet:', tabName);
         
         // Mettre à jour l'état actif des boutons
         this.element.find('.tab-button').removeClass('active');
         button.addClass('active');
+        console.log('Bouton actif mis à jour');
         
         // Masquer tous les contenus d'onglets
         this.element.find('.tab-content').removeClass('active');
+        console.log('Tous les contenus d\'onglets masqués');
         
         // Afficher le contenu de l'onglet sélectionné
-        this.element.find(`.tab-content[data-tab="${tabName}"]`).addClass('active');
+        const targetContent = this.element.find(`.tab-content[data-tab="${tabName}"]`);
+        if (targetContent.length > 0) {
+            targetContent.addClass('active');
+            console.log(`Contenu de l'onglet ${tabName} affiché`);
+        } else {
+            console.error(`Contenu de l'onglet ${tabName} non trouvé`);
+        }
         
         // Afficher/masquer le bouton d'édition selon l'onglet
         const editButton = this.element.find('#weapons-edit-button');
         if (tabName === 'equipment') {
             editButton.show();
+            console.log('Bouton d\'édition affiché');
         } else {
             editButton.hide();
+            console.log('Bouton d\'édition masqué');
         }
         
-        console.log(`Onglet ${tabName} activé`);
+        console.log(`Onglet ${tabName} activé avec succès`);
     }
 
     /**
