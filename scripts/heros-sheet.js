@@ -1691,7 +1691,15 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
       */
      _onToggleWeaponsEditMode(event) {
          event.preventDefault();
-         const weaponsSection = event.currentTarget.closest('.weapons-section');
+         // Trouver la section weapons-section qui est dans le même onglet que le bouton
+         const tabContent = event.currentTarget.closest('.tab-content[data-tab="equipment"]');
+         const weaponsSection = tabContent.querySelector('.weapons-section');
+         
+         if (!weaponsSection) {
+             console.error('Section weapons-section non trouvée');
+             return;
+         }
+         
          const isEditing = weaponsSection.classList.contains('editing');
          
          if (isEditing) {
