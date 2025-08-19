@@ -1121,6 +1121,27 @@ textarea:focus {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
+/* Message d'information des traits */
+.traits-info {
+    background: rgba(33, 150, 243, 0.1);
+    border: 1px solid #2196F3;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 20px;
+}
+
+.traits-info p {
+    margin: 0;
+    color: #1976D2;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.traits-info i {
+    margin-right: 8px;
+    color: #2196F3;
+}
+
 /* Formulaire de création de trait */
 .trait-form-container {
     margin-bottom: 20px;
@@ -1305,4 +1326,33 @@ textarea:focus {
     content: "Aucune description";
     color: #999;
     font-style: italic;
+}
+
+/* Style spécial pour le trait de test */
+.trait-test {
+    border: 2px dashed #4CAF50 !important;
+    background: rgba(76, 175, 80, 0.1) !important;
+    position: relative;
+}
+
+.trait-test::before {
+    content: "🧪 TRAIT DE TEST";
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background: #4CAF50;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.trait-test .trait-name h4 {
+    color: #4CAF50 !important;
+}
+
+.trait-test .trait-bonus-display {
+    background: linear-gradient(135deg, #4CAF50, #45a049) !important;
 }
