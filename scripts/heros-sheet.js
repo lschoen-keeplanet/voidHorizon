@@ -613,6 +613,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         html.find('.skill-delete').click(this._onDeleteSkillClick.bind(this));
         html.find('.skill-roll-btn').click(this._onSkillRollClick.bind(this));
         
+        // Gestion des boutons de lancer de dés de résistance
+        html.find('.resistance-roll-btn').click(this._onResistanceRollClick.bind(this));
+        
         // IMPORTANT: Calculer les bonus des traits AVANT d'initialiser l'état de santé
         this._applyTraitBonuses();
         
@@ -3576,6 +3579,144 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         }
         
         console.log(`${totalMana} points de mana créés et initialisés`);
+    }
+
+    /**
+     * Gère le clic sur les boutons de lancer de dé de résistance (Esquive/Blocage)
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onResistanceRollClick(event) {
+        event.preventDefault();
+        
+        const button = event.currentTarget;
+        const action = button.dataset.action; // 'dodge' ou 'block'
+        
+        console.log('=== LANCER DE DÉ DE RÉSISTANCE ===');
+        console.log('Action:', action);
+        
+        // Récupérer la résistance totale
+        const resistance = this._calculateTotalResistance();
+        
+        // Récupérer le bonus des boucliers d'équipement
+        let shieldBonus = 0;
+        if (this.actor.system.weapons?.primary?.type === 'shield') {
+            shieldBonus += parseInt(this.actor.system.weapons.primary.bonus) || 0;
+        }
+        if (this.actor.system.weapons?.secondary?.type === 'shield') {
+            shieldBonus += parseInt(this.actor.system.weapons.secondary.bonus) || 0;
+        }
+        
+        let diceFormula;
+        let rollMode;
+        let characteristicLabel;
+        
+        if (action === 'dodge') {
+            // Esquive : dé d'agilité (unsafe) + résistance + bonus bouclier
+            const agilityValue = this.actor.system.agilite?.value || "2d4";
+            const unsafeMap = {
+                "2d4": "1d12", "3d4": "1d16", "4d4": "1d20",
+                "5d4": "1d24", "6d4": "1d28", "7d4": "1d32"
+            };
+            diceFormula = unsafeMap[agilityValue] || agilityValue;
+            rollMode = 'Esquive';
+            characteristicLabel = 'Agilité';
+        } else if (action === 'block') {
+            // Blocage : dé de martialité (unsafe) + résistance + bonus bouclier
+            const martialiteValue = this.actor.system.martialite?.value || "2d4";
+            const unsafeMap = {
+                "2d4": "1d12", "3d4": "1d16", "4d4": "1d20",
+                "5d4": "1d24", "6d4": "1d28", "7d4": "1d32"
+            };
+            diceFormula = unsafeMap[martialiteValue] || martialiteValue;
+            rollMode = 'Blocage';
+            characteristicLabel = 'Martialité';
+        } else {
+            console.error('Action de résistance non reconnue:', action);
+            return;
+        }
+        
+        // Construire la formule finale
+        const finalFormula = `${diceFormula} + ${resistance} + ${shieldBonus}`;
+        
+        console.log('Formule finale:', finalFormula);
+        console.log('Mode de lancer:', rollMode);
+        console.log('Résistance:', resistance);
+        console.log('Bonus bouclier:', shieldBonus);
+        
+        try {
+            // Créer le jet de dé
+            const roll = new Roll(finalFormula);
+            await roll.evaluate();
+            
+            // Afficher le résultat
+            const messageData = {
+                user: game.user.id,
+                speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                content: `
+                    <div class="resistance-roll-result">
+                        <h3><i class="fas fa-shield-alt"></i> Jet de ${rollMode}</h3>
+                        <div class="roll-details">
+                            <p><strong>Caractéristique:</strong> ${characteristicLabel}</p>
+                            <p><strong>Formule:</strong> ${finalFormula}</p>
+                            <p><strong>Résultat:</strong> ${roll.total}</p>
+                            <p><strong>Détail:</strong> ${diceFormula} + ${resistance} résistance + ${shieldBonus} bouclier</p>
+                        </div>
+                    </div>
+                `,
+                roll: roll
+            };
+            
+            await ChatMessage.create(messageData);
+            
+        } catch (error) {
+            console.error('Erreur lors du lancement des dés de résistance:', error);
+        }
+    }
+
+    /**
+     * Calcule la résistance totale du personnage
+     * @returns {number} La valeur de résistance totale
+     * @private
+     */
+    _calculateTotalResistance() {
+        // Calculer l'armure totale
+        const baseArmor = parseInt(this.actor.system.resources?.armor?.value) || 0;
+        const traitBonus = parseInt(this.actor.system.traitBonuses?.armor) || 0;
+        const equipmentBonus = this._getArmorTypeBonus();
+        
+        // Calculer le bonus des boucliers d'armes
+        let shieldBonus = 0;
+        if (this.actor.system.weapons?.primary?.type === 'shield') {
+            shieldBonus += parseInt(this.actor.system.weapons.primary.bonus) || 0;
+        }
+        if (this.actor.system.weapons?.secondary?.type === 'shield') {
+            shieldBonus += parseInt(this.actor.system.weapons.secondary.bonus) || 0;
+        }
+        
+        const totalArmor = baseArmor + equipmentBonus + traitBonus + shieldBonus;
+        
+        // Calculer la constitution totale
+        const baseConstitution = parseInt(this.actor.system.constitution?.value) || 0;
+        const constitutionTraitBonus = parseInt(this.actor.system.traitBonuses?.constitution) || 0;
+        const totalConstitution = baseConstitution + constitutionTraitBonus;
+        
+        // Calculer le degré d'agilité (convertir la valeur de dés en nombre)
+        const agilityValue = this.actor.system.agilite?.value || "2d4";
+        const agilityDegreeMap = {
+            "2d4": 1,   // Challengé
+            "3d4": 2,   // Lourdeau
+            "4d4": 3,   // Bien
+            "5d4": 4,   // Rapide
+            "6d4": 5,   // Très rapide
+            "7d4": 6    // Très très rapide
+        };
+        const agilityDegree = agilityDegreeMap[agilityValue] || 1;
+        
+        // Appliquer la formule : 3 * (armure + bonus d'armure) + 2 * constitution + 2 * degré d'agilité
+        const resistance = (3 * totalArmor) + (2 * totalConstitution) + (2 * agilityDegree);
+        
+        return resistance;
     }
 }
 

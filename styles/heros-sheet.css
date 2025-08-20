@@ -134,6 +134,57 @@ img{
     font-weight: 600;
 }
 
+/* Styles pour les boutons de lancer de dés de résistance */
+.resistance-roll-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    justify-content: center;
+}
+
+.resistance-roll-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 100px;
+    justify-content: center;
+}
+
+.resistance-roll-btn.dodge {
+    background: linear-gradient(135deg, #4caf50, #45a049);
+    color: white;
+    box-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
+}
+
+.resistance-roll-btn.dodge:hover {
+    background: linear-gradient(135deg, #45a049, #3d8b40);
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.4);
+    transform: translateY(-1px);
+}
+
+.resistance-roll-btn.block {
+    background: linear-gradient(135deg, #2196f3, #1976d2);
+    color: white;
+    box-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);
+}
+
+.resistance-roll-btn.block:hover {
+    background: linear-gradient(135deg, #1976d2, #1565c0);
+    box-shadow: 0 4px 8px rgba(33, 150, 243, 0.4);
+    transform: translateY(-1px);
+}
+
+.resistance-roll-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
 .header-main {
     display: flex;
     align-items: flex-start;
@@ -2188,6 +2239,41 @@ textarea:focus {
     color: #28a745;
     font-weight: bold;
     font-size: 16px;
+}
+
+/* Styles pour les résultats de jets de résistance dans le chat */
+.resistance-roll-result {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+    color: white;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 8px 0;
+    box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+}
+
+.resistance-roll-result h3 {
+    margin: 0 0 12px 0;
+    color: white;
+    font-size: 1.2em;
+    text-align: center;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 8px;
+}
+
+.resistance-roll-result .roll-details {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    padding: 12px;
+}
+
+.resistance-roll-result .roll-details p {
+    margin: 6px 0;
+    font-size: 0.95em;
+}
+
+.resistance-roll-result .roll-details strong {
+    color: #ffeb3b;
+    font-weight: 600;
 }
 
 
