@@ -3612,7 +3612,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         let characteristicLabel;
         
         if (action === 'dodge') {
-            // Esquive : dé d'agilité (unsafe) + résistance + bonus bouclier
+            // Esquive : jet d'agilité (unsafe)
             const agilityValue = this.actor.system.agilite?.value || "2d4";
             const unsafeMap = {
                 "2d4": "1d12", "3d4": "1d16", "4d4": "1d20",
@@ -3622,7 +3622,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             rollMode = 'Esquive';
             characteristicLabel = 'Agilité';
         } else if (action === 'block') {
-            // Blocage : dé de martialité (unsafe) + résistance + bonus bouclier
+            // Blocage : jet de martialité (unsafe) + jet de qualité du bouclier
             const martialiteValue = this.actor.system.martialite?.value || "2d4";
             const unsafeMap = {
                 "2d4": "1d12", "3d4": "1d16", "4d4": "1d20",
@@ -3632,7 +3632,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             rollMode = 'Blocage';
             characteristicLabel = 'Martialité';
         } else if (action === 'parade') {
-            // Parade : dé de martialité (unsafe) + armure × 2
+            // Parade : jet de martialité (unsafe)
             const martialiteValue = this.actor.system.martialite?.value || "2d4";
             const unsafeMap = {
                 "2d4": "1d12", "3d4": "1d16", "4d4": "1d20",
@@ -3649,40 +3649,45 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Construire la formule finale selon l'action
         let finalFormula;
         if (action === 'parade') {
-            // Pour la parade : dé + armure × 2
-            const totalArmor = this._calculateTotalArmor();
-            const armorBonus = totalArmor * 2;
-            finalFormula = `${diceFormula} + ${armorBonus}`;
+            // Pour la parade : jet de martialité (unsafe)
+            finalFormula = diceFormula;
         } else if (action === 'block') {
-            // Pour le blocage : dé + armure × 2 + jet de qualité du bouclier
-            const totalArmor = this._calculateTotalArmor();
-            const armorBonus = totalArmor * 2;
-            finalFormula = `${diceFormula} + ${armorBonus} + ${shieldBonus}`;
+            // Pour le blocage : jet de martialité (unsafe) + jet de qualité du bouclier
+            finalFormula = `${diceFormula} + ${shieldBonus}`;
         } else {
-            // Pour esquive : dé + résistance + bonus bouclier
-            finalFormula = `${diceFormula} + ${resistance} + ${shieldBonus}`;
+            // Pour esquive : jet d'agilité (unsafe)
+            finalFormula = diceFormula;
         }
         
         console.log('Formule finale:', finalFormula);
         console.log('Mode de lancer:', rollMode);
         if (action === 'parade') {
-            const totalArmor = this._calculateTotalArmor();
-            console.log('Armure totale:', totalArmor);
-            console.log('Bonus armure (×2):', totalArmor * 2);
+            console.log('Parade: jet de martialité (unsafe)');
         } else if (action === 'block') {
-            const totalArmor = this._calculateTotalArmor();
-            console.log('Armure totale:', totalArmor);
-            console.log('Bonus armure (×2):', totalArmor * 2);
+            console.log('Blocage: jet de martialité (unsafe) + bonus bouclier');
             console.log('Bonus bouclier:', shieldBonus);
         } else {
-            console.log('Résistance:', resistance);
-            console.log('Bonus bouclier:', shieldBonus);
+            console.log('Esquive: jet d\'agilité (unsafe)');
         }
         
         try {
             // Créer le jet de dé
             const roll = new Roll(finalFormula);
             await roll.evaluate();
+            
+            // Détecter les succès/échecs critiques pour les jets Unsafe
+            let criticalMessage = '';
+            if (action === 'dodge' || action === 'block' || action === 'parade') {
+                // Tous ces jets utilisent des dés unsafe, donc on peut détecter les critiques
+                const diceRange = this._calculateDiceRange(diceFormula);
+                const baseResult = roll.dice[0]?.results[0]?.result || 0;
+                
+                if (baseResult === diceRange.min) {
+                    criticalMessage = '<p class="critical-failure">💥 <strong>ÉCHEC CRITIQUE!</strong></p>';
+                } else if (baseResult === diceRange.max) {
+                    criticalMessage = '<p class="critical-success">⭐ <strong>RÉUSSITE CRITIQUE!</strong></p>';
+                }
+            }
             
             // Afficher le résultat
             const messageData = {
@@ -3691,17 +3696,18 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 content: `
                     <div class="resistance-roll-result${action === 'parade' ? ' parade' : ''}">
                         <h3><i class="fas fa-${action === 'dodge' ? 'running' : action === 'block' ? 'shield-alt' : 'hand-paper'}"></i> Jet de ${rollMode}</h3>
-                                                    <div class="roll-details">
-                                <p><strong>Caractéristique:</strong> ${characteristicLabel}</p>
-                                <p><strong>Formule:</strong> ${finalFormula}</p>
-                                <p><strong>Résultat:</strong> ${roll.total}</p>
-                                ${action === 'parade' ? 
-                                    `<p><strong>Détail:</strong> ${diceFormula} + ${this._calculateTotalArmor() * 2} armure (×2)</p>` :
-                                    action === 'block' ?
-                                    `<p><strong>Détail:</strong> ${diceFormula} + ${this._calculateTotalArmor() * 2} armure (×2) + ${shieldBonus} bouclier</p>` :
-                                    `<p><strong>Détail:</strong> ${diceFormula} + ${resistance} résistance + ${shieldBonus} bouclier</p>`
-                                }
-                            </div>
+                        ${criticalMessage}
+                        <div class="roll-details">
+                            <p><strong>Caractéristique:</strong> ${characteristicLabel}</p>
+                            <p><strong>Formule:</strong> ${finalFormula}</p>
+                            <p><strong>Résultat:</strong> ${roll.total}</p>
+                            ${action === 'parade' ? 
+                                `<p><strong>Détail:</strong> Jet de martialité (unsafe)</p>` :
+                                action === 'block' ?
+                                `<p><strong>Détail:</strong> Jet de martialité (unsafe) + ${shieldBonus} bouclier</p>` :
+                                `<p><strong>Détail:</strong> Jet d'agilité (unsafe)</p>`
+                            }
+                        </div>
                     </div>
                 `,
                 roll: roll
