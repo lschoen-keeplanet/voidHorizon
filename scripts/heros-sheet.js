@@ -2739,12 +2739,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             
             await ChatMessage.create(messageData);
             
-            // Notification de succès
-            ui.notifications.info(`Jet de ${skill.name} lancé avec succès !`);
+            // Notification de succès - supprimée pour éviter les messages système
             
         } catch (error) {
             console.error('Erreur lors du lancement des dés:', error);
-            ui.notifications.error('Erreur lors du lancement des dés');
+            // Notification d'erreur supprimée pour éviter les messages système
         }
     }
 
@@ -3133,7 +3132,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             
         } catch (error) {
             console.error(`Erreur lors du lancement de dés pour ${stat}:`, error);
-            ui.notifications.error(`Erreur lors du lancement de dés pour ${stat}`);
+            // Notification d'erreur supprimée pour éviter les messages système
         }
     }
 
@@ -3170,7 +3169,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             
         } catch (error) {
             console.error(`Erreur lors du lancement de dés pour ${stat}:`, error);
-            ui.notifications.error(`Erreur lors du lancement de dés pour ${stat}`);
+            // Notification d'erreur supprimée pour éviter les messages système
         }
     }
 
@@ -3337,8 +3336,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Envoyer le message dans le chat
         ChatMessage.create(chatData);
         
-        // Notification rapide
-        ui.notifications.info(`${statName} (${modeLabel}): ${finalResult}`);
+        // Notification rapide supprimée pour éviter les messages système
     }
 
     /**
@@ -3356,8 +3354,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Recalculer les bonus des traits avant le jet
         this._recalculateTraitBonuses();
         
-        // Pour l'instant, juste un log
-        ui.notifications.info(`Lancement de dés pour arme ${weaponType} (fonctionnalité à implémenter)`);
+        // Pour l'instant, juste un log - notification supprimée pour éviter les messages système
     }
 
     /**
