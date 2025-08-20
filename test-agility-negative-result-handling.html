@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Gestion des Résultats Négatifs d'Agilité</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+        code { background: #f4f4f4; padding: 2px 4px; border-radius: 3px; }
+        .section { margin: 20px 0; padding: 15px; border-left: 4px solid #007cba; background: #f8f9fa; }
+        .example { background: #fff3cd; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .warning { background: #f8d7da; padding: 10px; border-radius: 5px; margin: 10px 0; border-left: 4px solid #dc3545; }
+    </style>
+</head>
+<body>
+    <h1>🎯 Test - Gestion des Résultats Négatifs d'Agilité</h1>
+    
+    <div class="section">
+        <h2>✅ Fonctionnalité implémentée</h2>
+        <p>Lors d'un lancer de dé d'Agilité, si le score final (après application du malus d'armure) devient négatif, il est automatiquement ramené à 1 au lieu de rester négatif.</p>
+    </div>
+
+    <div class="section">
+        <h2>🔍 Principe de fonctionnement</h2>
+        <p>Cette fonctionnalité s'applique <strong>uniquement</strong> aux jets d'Agilité et garantit qu'un personnage ne peut jamais obtenir un résultat négatif, même avec une armure très lourde.</p>
+        
+        <div class="example">
+            <h4>Exemple concret :</h4>
+            <p><strong>Caractéristique Agilité :</strong> 2d4 (Challengé)</p>
+            <p><strong>Armure :</strong> Blindée (-16 agilité)</p>
+            <ul>
+                <li><strong>Lancer des dés :</strong> 2d4 = 3</li>
+                <li><strong>Bonus de trait :</strong> +0</li>
+                <li><strong>Malus d'armure :</strong> -16</li>
+                <li><strong>Calcul :</strong> 3 + 0 + (-16) = -13</li>
+                <li><strong>Résultat final :</strong> 1 (ramené au minimum possible)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>⚠️ Important : Ce n'est PAS un échec critique</h2>
+        <div class="warning">
+            <p><strong>ATTENTION :</strong> Quand un résultat d'Agilité est ramené à 1, ce n'est <strong>PAS</strong> un échec critique !</p>
+            <p>C'est simplement le minimum possible que peut obtenir le personnage avec cette armure.</p>
+            <p>Les échecs critiques ne s'appliquent qu'aux jets "Unsafe" quand le résultat des dés est égal au minimum possible de la formule.</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🛠️ Modifications apportées</h2>
+        
+        <h3>1. Méthode <code>_rollDice()</code></h3>
+        <p><strong>Fichier :</strong> <code>scripts/heros-sheet.js</code></p>
+        <p>Ajout de la logique de ramener à 1 :</p>
+        <code>
+            // Pour les jets d'Agilité, si le résultat final devient négatif, le ramener à 1<br>
+            if (stat === 'agilite' && finalResult < 1) {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;console.log(`Jet d'Agilité: résultat final ${finalResult} ramené à 1 (minimum possible)`);<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;finalResult = 1;<br>
+            }
+        </code>
+
+        <h3>2. Affichage dans le chat</h3>
+        <p>Ajout d'un message informatif quand le résultat est ramené à 1 :</p>
+        <code>
+            ${stat === 'agilite' && (baseResult + traitBonus + rollData.agilityPenalty) < 1 ?<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;`<p><strong>Note:</strong> <span class="roll-note">Résultat ramené à 1 (minimum possible)</span></p>` : ''}
+        </code>
+
+        <h3>3. Style CSS</h3>
+        <p><strong>Fichier :</strong> <code>styles/heros-sheet.css</code></p>
+        <p>Ajout du style pour <code>.roll-note</code> :</p>
+        <code>
+            .roll-note {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;font-size: 14px;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;font-weight: bold;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;color: #ffc107;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;background: rgba(255, 193, 7, 0.1);<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;padding: 4px 8px;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;border-radius: 4px;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;border: 1px solid #ffc107;<br>
+            }
+        </code>
+    </div>
+
+    <div class="section">
+        <h2>🧮 Scénarios de test</h2>
+        
+        <h3>Scénario 1 : Armure légère (-4)</h3>
+        <p><strong>Agilité :</strong> 2d4 (Challengé)</p>
+        <ul>
+            <li><strong>Lancer :</strong> 2d4 = 2 (minimum possible)</li>
+            <li><strong>Résultat :</strong> 2 + (-4) = -2 → ramené à 1</li>
+            <li><strong>Affichage :</strong> Message "Résultat ramené à 1 (minimum possible)"</li>
+        </ul>
+
+        <h3>Scénario 2 : Armure lourde (-8)</h3>
+        <p><strong>Agilité :</strong> 3d4 (Lourdeau)</p>
+        <ul>
+            <li><strong>Lancer :</strong> 3d4 = 4</li>
+            <li><strong>Résultat :</strong> 4 + (-8) = -4 → ramené à 1</li>
+            <li><strong>Affichage :</strong> Message "Résultat ramené à 1 (minimum possible)"</li>
+        </ul>
+
+        <h3>Scénario 3 : Armure blindée (-16)</h3>
+        <p><strong>Agilité :</strong> 4d4 (Bien)</p>
+        <ul>
+            <li><strong>Lancer :</strong> 4d4 = 5</li>
+            <li><strong>Résultat :</strong> 5 + (-16) = -11 → ramené à 1</li>
+            <li><strong>Affichage :</strong> Message "Résultat ramené à 1 (minimum possible)"</li>
+        </ul>
+
+        <h3>Scénario 4 : Pas de malus</h3>
+        <p><strong>Agilité :</strong> 2d4 (Challengé)</p>
+        <ul>
+            <li><strong>Lancer :</strong> 2d4 = 3</li>
+            <li><strong>Résultat :</strong> 3 + 0 = 3 (normal)</li>
+            <li><strong>Affichage :</strong> Aucun message spécial</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>🧪 Tests à effectuer</h2>
+        <ol>
+            <li><strong>Jet d'Agilité avec armure légère :</strong> Vérifier que les résultats négatifs sont ramenés à 1</li>
+            <li><strong>Jet d'Agilité avec armure lourde :</strong> Vérifier que les résultats négatifs sont ramenés à 1</li>
+            <li><strong>Jet d'Agilité avec armure blindée :</strong> Vérifier que les résultats négatifs sont ramenés à 1</li>
+            <li><strong>Message informatif :</strong> Vérifier l'affichage du message "Résultat ramené à 1 (minimum possible)"</li>
+            <li><strong>Autres caractéristiques :</strong> Vérifier que cette logique ne s'applique qu'à l'Agilité</li>
+            <li><strong>Pas de malus :</strong> Vérifier qu'aucun message spécial n'apparaît sans malus</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <h2>📁 Fichiers modifiés</h2>
+        <ul>
+            <li><strong><code>scripts/heros-sheet.js</code></strong> : 
+                <ul>
+                    <li>Modification de <code>_rollDice()</code> pour ramener à 1</li>
+                    <li>Modification de <code>_displayRollResult()</code> pour afficher le message informatif</li>
+                </ul>
+            </li>
+            <li><strong><code>styles/heros-sheet.css</code></strong> : Ajout du style <code>.roll-note</code></li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>🎉 Résultat attendu</h2>
+        <p>Les jets d'Agilité ne peuvent plus donner de résultats négatifs. Si le malus d'armure rend le résultat négatif, il est automatiquement ramené à 1 avec un message informatif clair. Cette fonctionnalité ne s'applique qu'à l'Agilité et n'interfère pas avec le système d'échecs critiques.</p>
+    </div>
+
+    <script>
+        console.log("Test de gestion des résultats négatifs d'Agilité - VoidHorizon");
+    </script>
+</body>
+</html>

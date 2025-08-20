@@ -2698,7 +2698,13 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         // Calculer le résultat final avec bonus et malus
         const baseResult = roll.total;
-        const finalResult = baseResult + traitBonus + agilityPenalty;
+        let finalResult = baseResult + traitBonus + agilityPenalty;
+        
+        // Pour les jets d'Agilité, si le résultat final devient négatif, le ramener à 1
+        if (stat === 'agilite' && finalResult < 1) {
+            console.log(`Jet d'Agilité: résultat final ${finalResult} ramené à 1 (minimum possible)`);
+            finalResult = 1;
+        }
         
         console.log(`Lancer de ${diceFormula} pour ${stat} (${isUnsafe ? 'Unsafe' : 'Safe'}): ${baseResult} + bonus trait ${traitBonus} + malus agilité ${agilityPenalty} = ${finalResult}`);
         
@@ -2779,6 +2785,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                                     <p><strong>Résultat des dés:</strong> <span class="roll-base">${baseResult}</span></p>
                                     ${traitBonus > 0 ? `<p><strong>Bonus de trait:</strong> <span class="roll-bonus">+${traitBonus}</span></p>` : ''}
                                     ${rollData.agilityPenalty < 0 ? `<p><strong>Malus d'armure:</strong> <span class="roll-penalty">${rollData.agilityPenalty}</span></p>` : ''}
+                                    ${stat === 'agilite' && (baseResult + traitBonus + rollData.agilityPenalty) < 1 ? `<p><strong>Note:</strong> <span class="roll-note">Résultat ramené à 1 (minimum possible)</span></p>` : ''}
                                     <p><strong>Résultat final:</strong> <span class="roll-total">${finalResult}</span></p>
                                 </div>
                                 <div class="roll-dice">
