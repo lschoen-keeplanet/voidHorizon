@@ -180,16 +180,91 @@ img{
     transform: translateY(-1px);
 }
 
+/* Styles pour les boutons de parade */
 .resistance-roll-btn.parade {
-    background: linear-gradient(135deg, #ff9800, #f57c00);
-    color: white;
-    box-shadow: 0 2px 4px rgba(255, 152, 0, 0.3);
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #8b4513;
+    border: 2px solid #daa520;
+    box-shadow: 0 4px 8px rgba(255, 215, 0, 0.3);
 }
 
 .resistance-roll-btn.parade:hover {
-    background: linear-gradient(135deg, #f57c00, #ef6c00);
-    box-shadow: 0 4px 8px rgba(255, 152, 0, 0.4);
-    transform: translateY(-1px);
+    background: linear-gradient(135deg, #ffed4e, #fff8dc);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(255, 215, 0, 0.4);
+}
+
+/* Styles pour les bonus de protection */
+.protection-bonuses {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.protection-bonuses h4 {
+    margin: 0 0 10px 0;
+    color: #e0e0e0;
+    font-size: 14px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 5px;
+}
+
+.protection-bonus-row {
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+}
+
+.protection-bonus {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: 60px;
+}
+
+.bonus-label {
+    font-size: 11px;
+    color: #b0b0b0;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.bonus-value {
+    font-size: 16px;
+    font-weight: bold;
+    color: #4CAF50;
+    background: rgba(76, 175, 80, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    min-width: 30px;
+    text-align: center;
+}
+
+/* Styles pour l'affichage des bonus de protection dans les traits */
+.trait-protection-bonuses {
+    margin-top: 8px;
+    padding: 6px 8px;
+    background: rgba(76, 175, 80, 0.05);
+    border-radius: 6px;
+    border: 1px solid rgba(76, 175, 80, 0.2);
+}
+
+.trait-protection-bonuses .protection-bonus {
+    display: inline-block;
+    font-size: 11px;
+    color: #4CAF50;
+    background: rgba(76, 175, 80, 0.1);
+    padding: 2px 6px;
+    margin: 2px 4px 2px 0;
+    border-radius: 4px;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    font-weight: 500;
 }
 
 .resistance-roll-btn:active {

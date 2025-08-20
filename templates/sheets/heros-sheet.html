@@ -586,6 +586,20 @@
                                                     <label>Valeur du bonus:</label>
                                                     <input type="number" id="trait-bonus-value" placeholder="+1" min="-5" max="10" data-no-save="true" />
                                                 </div>
+                                                
+                                                <!-- Nouveaux champs pour les bonus de protection -->
+                                                <div class="trait-field">
+                                                    <label>Bonus d'Esquive:</label>
+                                                    <input type="number" id="trait-bonus-esquive" placeholder="+0" min="0" max="10" data-no-save="true" />
+                                                </div>
+                                                <div class="trait-field">
+                                                    <label>Bonus de Blocage:</label>
+                                                    <input type="number" id="trait-bonus-blocage" placeholder="+0" min="0" max="10" data-no-save="true" />
+                                                </div>
+                                                <div class="trait-field">
+                                                    <label>Bonus de Parade:</label>
+                                                    <input type="number" id="trait-bonus-parade" placeholder="+0" min="0" max="10" data-no-save="true" />
+                                                </div>
                                             </div>
                                             <div class="trait-form-actions">
                                                 <button type="button" class="trait-save-btn" id="trait-save-btn">
@@ -608,6 +622,13 @@
                                                     <span class="trait-bonus-display">
                                                         {{#if trait.bonusValue}}+{{/if}}{{trait.bonusValue}} {{trait.bonusTarget}}
                                                     </span>
+                                                    {{#if (or trait.bonusEsquive trait.bonusBlocage trait.bonusParade)}}
+                                                    <div class="trait-protection-bonuses">
+                                                        {{#if trait.bonusEsquive}}<span class="protection-bonus">Esquive: +{{trait.bonusEsquive}}</span>{{/if}}
+                                                        {{#if trait.bonusBlocage}}<span class="protection-bonus">Blocage: +{{trait.bonusBlocage}}</span>{{/if}}
+                                                        {{#if trait.bonusParade}}<span class="protection-bonus">Parade: +{{trait.bonusParade}}</span>{{/if}}
+                                                    </div>
+                                                    {{/if}}
                                                 </div>
                                                 <div class="trait-controls">
                                                     <button type="button" class="trait-control trait-edit" title="Modifier" data-trait-id="{{traitId}}">
@@ -818,7 +839,7 @@
                         
                         <!-- Section Résistance -->
                         <div class="stat">
-                            <label>Résistance</label>
+                            <label>Classe d'armure</label>
                             <div class="stat-value resistance-display">
                                 <span class="resistance-value">{{getTotalResistance actor}}</span>
                                 <div class="resistance-breakdown">
@@ -856,16 +877,36 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            <!-- Affichage des bonus de protection -->
+                            <div class="protection-bonuses">
+                                <h4>Bonus de Protection</h4>
+                                <div class="protection-bonus-row">
+                                    <div class="protection-bonus">
+                                        <span class="bonus-label">Esquive:</span>
+                                        <span class="bonus-value">{{#if (gt actor.system.traitBonuses.bonusEsquive 0)}}+{{/if}}{{actor.system.traitBonuses.bonusEsquive}}</span>
+                                    </div>
+                                    <div class="protection-bonus">
+                                        <span class="bonus-label">Blocage:</span>
+                                        <span class="bonus-value">{{#if (gt actor.system.traitBonuses.bonusBlocage 0)}}+{{/if}}{{actor.system.traitBonuses.bonusBlocage}}</span>
+                                    </div>
+                                    <div class="protection-bonus">
+                                        <span class="bonus-label">Parade:</span>
+                                        <span class="bonus-value">{{#if (gt actor.system.traitBonuses.bonusParade 0)}}+{{/if}}{{actor.system.traitBonuses.bonusParade}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
                             <div class="resistance-roll-buttons">
-                                <button type="button" class="resistance-roll-btn dodge" data-action="dodge" title="Lancer un dé d'esquive (dé d'agilité unsafe + résistance + bonus bouclier)">
+                                <button type="button" class="resistance-roll-btn dodge" data-action="dodge" title="Lancer un dé d'esquive (jet d'agilité unsafe + bonus d'esquive)">
                                     <i class="fas fa-running"></i> Esquive
                                 </button>
                                 {{#if (or (eq actor.system.weapons.primary.type "shield") (eq actor.system.weapons.secondary.type "shield"))}}
-                                <button type="button" class="resistance-roll-btn block" data-action="block" title="Lancer un dé de blocage (dé de martialité unsafe + jet de qualité du bouclier + bonus du bouclier)">
+                                <button type="button" class="resistance-roll-btn block" data-action="block" title="Lancer un dé de blocage (jet de martialité unsafe + bonus de blocage + jet de qualité du bouclier + bonus du bouclier)">
                                     <i class="fas fa-shield-alt"></i> Blocage
                                 </button>
                                 {{else}}
-                                <button type="button" class="resistance-roll-btn parade" data-action="parade" title="Lancer un dé de parade (dé de martialité unsafe + armure × 2)">
+                                <button type="button" class="resistance-roll-btn parade" data-action="parade" title="Lancer un dé de parade (jet de martialité unsafe + bonus de parade)">
                                     <i class="fas fa-hand-paper"></i> Parade
                                 </button>
                                 {{/if}}

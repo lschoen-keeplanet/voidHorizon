@@ -62,6 +62,18 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         if (!data.actor.system.traitBonuses) {
             data.actor.system.traitBonuses = {};
         }
+        
+        // Initialiser les nouveaux bonus de protection s'ils n'existent pas
+        if (!data.actor.system.traitBonuses.bonusEsquive) {
+            data.actor.system.traitBonuses.bonusEsquive = 0;
+        }
+        if (!data.actor.system.traitBonuses.bonusBlocage) {
+            data.actor.system.traitBonuses.bonusBlocage = 0;
+        }
+        if (!data.actor.system.traitBonuses.bonusParade) {
+            data.actor.system.traitBonuses.bonusParade = 0;
+        }
+        
         // Initialiser le mana avec la valeur maximale basée sur l'Arcane si c'est la première fois
         if (data.actor.system.mana.value === 0 && data.actor.system.mana.max === 0) {
             const arcaneValue = data.actor.system.arcane?.value || "2d4";
@@ -1696,8 +1708,29 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             pimpance: this._calculateTraitBonus('pimpance'),
             acuite: this._calculateTraitBonus('acuite'),
             arcane: this._calculateTraitBonus('arcane'),
-            agilite: this._calculateTraitBonus('agilite')
+            agilite: this._calculateTraitBonus('agilite'),
+            armor: this._calculateTraitBonus('armor'),
+            constitution: this._calculateTraitBonus('constitution')
         };
+        
+        // Calculer les bonus de protection (Esquive, Blocage, Parade)
+        let totalBonusEsquive = 0;
+        let totalBonusBlocage = 0;
+        let totalBonusParade = 0;
+        
+        for (const traitId in traits) {
+            const trait = traits[traitId];
+            if (!trait || trait === null) continue;
+            
+            totalBonusEsquive += trait.bonusEsquive || 0;
+            totalBonusBlocage += trait.bonusBlocage || 0;
+            totalBonusParade += trait.bonusParade || 0;
+        }
+        
+        // Ajouter les bonus de protection au total
+        bonuses.bonusEsquive = totalBonusEsquive;
+        bonuses.bonusBlocage = totalBonusBlocage;
+        bonuses.bonusParade = totalBonusParade;
         
         // Stocker les bonus dans l'acteur pour utilisation ultérieure (en mémoire seulement)
         this.actor.system.traitBonuses = bonuses;
@@ -2091,6 +2124,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         this.element.find('#trait-description-input').val('');
         this.element.find('#trait-bonus-target').val('');
         this.element.find('#trait-bonus-value').val('');
+        this.element.find('#trait-bonus-esquive').val('0');
+        this.element.find('#trait-bonus-blocage').val('0');
+        this.element.find('#trait-bonus-parade').val('0');
         
         // Focus sur le premier champ
         this.element.find('#trait-name-input').focus();
@@ -2108,6 +2144,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const description = this.element.find('#trait-description-input').val().trim();
         const bonusTarget = this.element.find('#trait-bonus-target').val();
         const bonusValue = parseInt(this.element.find('#trait-bonus-value').val()) || 0;
+        
+        // Récupérer les nouveaux bonus de protection
+        const bonusEsquive = parseInt(this.element.find('#trait-bonus-esquive').val()) || 0;
+        const bonusBlocage = parseInt(this.element.find('#trait-bonus-blocage').val()) || 0;
+        const bonusParade = parseInt(this.element.find('#trait-bonus-parade').val()) || 0;
         
         // Validation
         if (!name) {
@@ -2131,7 +2172,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                     name: name,
                     description: description,
                     bonusTarget: bonusTarget,
-                    bonusValue: bonusValue
+                    bonusValue: bonusValue,
+                    bonusEsquive: bonusEsquive,
+                    bonusBlocage: bonusBlocage,
+                    bonusParade: bonusParade
                 };
                 
                 await this.actor.update({
@@ -2151,7 +2195,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                     name: name,
                     description: description,
                     bonusTarget: bonusTarget,
-                    bonusValue: bonusValue
+                    bonusValue: bonusValue,
+                    bonusEsquive: bonusEsquive,
+                    bonusBlocage: bonusBlocage,
+                    bonusParade: bonusParade
                 };
                 
                 await this.actor.update({
@@ -2198,6 +2245,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         this.element.find('#trait-description-input').val('');
         this.element.find('#trait-bonus-target').val('');
         this.element.find('#trait-bonus-value').val('');
+        this.element.find('#trait-bonus-esquive').val('0');
+        this.element.find('#trait-bonus-blocage').val('0');
+        this.element.find('#trait-bonus-parade').val('0');
         
         // Réinitialiser le bouton de sauvegarde
         const saveButton = this.element.find('#trait-save-btn');
@@ -2232,6 +2282,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         this.element.find('#trait-description-input').val(trait.description);
         this.element.find('#trait-bonus-target').val(trait.bonusTarget);
         this.element.find('#trait-bonus-value').val(trait.bonusValue);
+        
+        // Remplir les nouveaux champs de bonus de protection
+        this.element.find('#trait-bonus-esquive').val(trait.bonusEsquive || 0);
+        this.element.find('#trait-bonus-blocage').val(trait.bonusBlocage || 0);
+        this.element.find('#trait-bonus-parade').val(trait.bonusParade || 0);
         
         // Changer le titre et le bouton de sauvegarde
         formContainer.find('h4').text('Modifier le trait');
@@ -3612,6 +3667,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             }
         }
         
+        // Récupérer les bonus de protection des traits
+        const esquiveBonus = parseInt(this.actor.system.traitBonuses?.bonusEsquive) || 0;
+        const blocageBonus = parseInt(this.actor.system.traitBonuses?.bonusBlocage) || 0;
+        const paradeBonus = parseInt(this.actor.system.traitBonuses?.bonusParade) || 0;
+        
         let diceFormula;
         let rollMode;
         let characteristicLabel;
@@ -3654,30 +3714,39 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Construire la formule finale selon l'action
         let finalFormula;
         if (action === 'parade') {
-            // Pour la parade : jet de martialité (unsafe)
-            finalFormula = diceFormula;
+            // Pour la parade : jet de martialité (unsafe) + bonus de parade
+            finalFormula = paradeBonus > 0 ? `${diceFormula} + ${paradeBonus}` : diceFormula;
         } else if (action === 'block') {
-            // Pour le blocage : jet de martialité (unsafe) + jet de qualité du bouclier + bonus du bouclier
-            if (shieldQualityDice) {
-                finalFormula = `${diceFormula} + ${shieldQualityDice} + ${shieldBonus}`;
-            } else {
-                finalFormula = `${diceFormula} + ${shieldBonus}`;
+            // Pour le blocage : jet de martialité (unsafe) + bonus de blocage + jet de qualité du bouclier + bonus du bouclier
+            let blockFormula = diceFormula;
+            if (blocageBonus > 0) {
+                blockFormula += ` + ${blocageBonus}`;
             }
+            if (shieldQualityDice) {
+                blockFormula += ` + ${shieldQualityDice}`;
+            }
+            if (shieldBonus > 0) {
+                blockFormula += ` + ${shieldBonus}`;
+            }
+            finalFormula = blockFormula;
         } else {
-            // Pour esquive : jet d'agilité (unsafe)
-            finalFormula = diceFormula;
+            // Pour esquive : jet d'agilité (unsafe) + bonus d'esquive
+            finalFormula = esquiveBonus > 0 ? `${diceFormula} + ${esquiveBonus}` : diceFormula;
         }
         
         console.log('Formule finale:', finalFormula);
         console.log('Mode de lancer:', rollMode);
         if (action === 'parade') {
-            console.log('Parade: jet de martialité (unsafe)');
+            console.log('Parade: jet de martialité (unsafe) + bonus de parade');
+            console.log('Bonus de parade:', paradeBonus);
         } else if (action === 'block') {
-            console.log('Blocage: jet de martialité (unsafe) + jet de qualité du bouclier + bonus du bouclier');
+            console.log('Blocage: jet de martialité (unsafe) + bonus de blocage + jet de qualité du bouclier + bonus du bouclier');
+            console.log('Bonus de blocage:', blocageBonus);
             console.log('Bonus bouclier:', shieldBonus);
             console.log('Dé de qualité du bouclier:', shieldQualityDice);
         } else {
-            console.log('Esquive: jet d\'agilité (unsafe)');
+            console.log('Esquive: jet d\'agilité (unsafe) + bonus d\'esquive');
+            console.log('Bonus d\'esquive:', esquiveBonus);
         }
         
         try {
@@ -3712,10 +3781,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                             <p><strong>Formule:</strong> ${finalFormula}</p>
                             <p><strong>Résultat:</strong> ${roll.total}</p>
                             ${action === 'parade' ? 
-                                `<p><strong>Détail:</strong> Jet de martialité (unsafe)</p>` :
+                                `<p><strong>Détail:</strong> Jet de martialité (unsafe)${paradeBonus > 0 ? ` + ${paradeBonus} bonus parade` : ''}</p>` :
                                 action === 'block' ?
-                                `<p><strong>Détail:</strong> Jet de martialité (unsafe) + jet de qualité du bouclier + ${shieldBonus} bonus bouclier</p>` :
-                                `<p><strong>Détail:</strong> Jet d'agilité (unsafe)</p>`
+                                `<p><strong>Détail:</strong> Jet de martialité (unsafe)${blocageBonus > 0 ? ` + ${blocageBonus} bonus blocage` : ''} + jet de qualité du bouclier${shieldBonus > 0 ? ` + ${shieldBonus} bonus bouclier` : ''}</p>` :
+                                `<p><strong>Détail:</strong> Jet d'agilité (unsafe)${esquiveBonus > 0 ? ` + ${esquiveBonus} bonus esquive` : ''}</p>`
                             }
                         </div>
                     </div>
