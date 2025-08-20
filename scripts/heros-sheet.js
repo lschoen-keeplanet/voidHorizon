@@ -543,6 +543,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     _updateHeartsDisplay() {
+        // IMPORTANT: Mettre à jour l'affichage des valeurs totales AVANT de vérifier le nombre de cœurs
+        this._updateConstitutionTotalDisplay();
+        
         const totalConstitution = this._getTotalConstitution();
         const blessure = this.actor.system.resources?.blessure?.value || 0;
         const hearts = this.element.find('.heart-wrapper');
@@ -555,6 +558,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Si le nombre de cœurs ne correspond pas à la constitution totale, forcer le re-render
         if (hearts.length !== totalConstitution) {
             console.log(`Nombre de cœurs incorrect (${hearts.length} vs ${totalConstitution}), re-render nécessaire`);
+            // Forcer la mise à jour des données en mémoire avant le re-render
+            this._applyTraitBonuses();
             this.render(true);
             return;
         }
@@ -588,6 +593,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     _updateShieldsDisplay() {
         console.log("=== Debug Shields Display ===");
         
+        // IMPORTANT: Mettre à jour l'affichage des valeurs totales AVANT de vérifier le nombre de boucliers
+        this._updateArmorTotalDisplay();
+        
         // Appliquer les bonus des boucliers avant de calculer l'armure totale
         this._applyShieldBonuses();
         
@@ -602,6 +610,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Si le nombre de boucliers ne correspond pas à l'armure totale, forcer le re-render
         if (shields.length !== totalArmor) {
             console.log(`Nombre de boucliers incorrect (${shields.length} vs ${totalArmor}), re-render nécessaire`);
+            // Forcer la mise à jour des données en mémoire avant le re-render
+            this._applyTraitBonuses();
             this.render(true);
             return;
         }
@@ -813,11 +823,15 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             if (['martialite', 'pimpance', 'acuite', 'arcane'].includes(statName)) {
                 console.log(`Caractéristique ${statName} mise à jour, recalcul des bonus des traits...`);
                 
-                // Recalculer les bonus des traits
+                // IMPORTANT: Forcer la mise à jour des helpers Handlebars
                 this._applyTraitBonuses();
                 
                 // Mettre à jour l'affichage des valeurs totales
                 this._updateTotalValuesDisplay();
+                
+                // Forcer la mise à jour des cœurs et boucliers
+                this._updateHeartsDisplay();
+                this._updateShieldsDisplay();
             }
         }
     }
@@ -835,6 +849,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         if (!this.actor.system.resources) this.actor.system.resources = {};
         if (!this.actor.system.resources.armor) this.actor.system.resources.armor = {};
         this.actor.system.resources.armor.value = value;
+        
+        // IMPORTANT: Forcer la mise à jour des helpers Handlebars
+        this._applyTraitBonuses();
         
         // Mettre à jour l'affichage des valeurs totales d'armure
         this._updateArmorTotalDisplay();
@@ -855,6 +872,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Mettre à jour les données en mémoire pour que les calculs incluent les bonus
         if (!this.actor.system.constitution) this.actor.system.constitution = {};
         this.actor.system.constitution.value = value;
+        
+        // IMPORTANT: Forcer la mise à jour des helpers Handlebars
+        this._applyTraitBonuses();
         
         // Mettre à jour l'affichage des valeurs totales de constitution
         this._updateConstitutionTotalDisplay();
@@ -1138,6 +1158,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      * @private
      */
     _updateHeartsDisplay() {
+        // IMPORTANT: Mettre à jour l'affichage des valeurs totales AVANT de vérifier le nombre de cœurs
+        this._updateConstitutionTotalDisplay();
+        
         const totalConstitution = this._getTotalConstitution();
         const blessure = this.actor.system.resources?.blessure?.value || 0;
         const hearts = this.element.find('.heart-wrapper');
@@ -1150,6 +1173,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Si le nombre de cœurs ne correspond pas à la constitution totale, forcer le re-render
         if (hearts.length !== totalConstitution) {
             console.log(`Nombre de cœurs incorrect (${hearts.length} vs ${totalConstitution}), re-render nécessaire`);
+            // Forcer la mise à jour des données en mémoire avant le re-render
+            this._applyTraitBonuses();
             this.render(true);
             return;
         }
