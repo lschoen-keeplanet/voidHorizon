@@ -80,8 +80,8 @@
                                             <option value="7d4">Légende</option>
                                     {{/select}}
                                 </select>
-                                        <div class="read-mode">{{helpers.getSelectedText actor.system.martialite.value
-                                            "martialite"}}</div>
+                                                                        <div class="read-mode">{{helpers.getSelectedText system.martialite.value
+                                    "martialite"}}</div>
                             </div>
                                     <div class="roll-buttons">
                                         <button type="button" class="roll-dice-btn safe" data-stat="martialite" data-unsafe="false"
@@ -120,7 +120,7 @@
                                         <option value="7d4">Très très rapide</option>
                                     {{/select}}
                                 </select>
-                                <div class="read-mode">{{helpers.getSelectedText actor.system.agilite.value
+                                <div class="read-mode">{{helpers.getSelectedText system.agilite.value
                                     "agilite"}}</div>
                             </div>
                             <div class="roll-buttons">
@@ -172,7 +172,7 @@
                                             <option value="7d4">Fulgurant</option>
                                     {{/select}}
                                 </select>
-                                        <div class="read-mode">{{helpers.getSelectedText actor.system.acuite.value
+                                        <div class="read-mode">{{helpers.getSelectedText system.acuite.value
                                             "acuite"}}</div>
                             </div>
                                     <div class="roll-buttons">
@@ -212,7 +212,7 @@
                                             <option value="7d4">Ramirez</option>
                                     {{/select}}
                                 </select>
-                                        <div class="read-mode">{{helpers.getSelectedText actor.system.pimpance.value
+                                        <div class="read-mode">{{helpers.getSelectedText system.pimpance.value
                                             "pimpance"}}</div>
                             </div>
                                     <div class="roll-buttons">
@@ -252,7 +252,7 @@
                                             <option value="7d4">Archimage</option>
                                     {{/select}}
                                 </select>
-                                        <div class="read-mode">{{helpers.getSelectedText actor.system.arcane.value
+                                        <div class="read-mode">{{helpers.getSelectedText system.arcane.value
                                             "arcane"}}</div>
                             </div>
                                     <div class="roll-buttons">
@@ -826,8 +826,8 @@
             <div class="mana-container">
                 {{#each (times (getTotalMana actor))}}
                 <div class="mana-wrapper">
-                    <button type="button" class="mana-button {{#if (gte this (add (get actor.system.mana.value 0) 1))}}active{{else}}depleted{{/if}}" 
-                        data-mana-index="{{this}}" data-active="{{#if (gte this (add (get actor.system.mana.value 0) 1))}}true{{else}}false{{/if}}">
+                                                    <button type="button" class="mana-button {{#if (gte this (add (get system.mana.value 0) 1))}}active{{else}}depleted{{/if}}"
+                                    data-mana-index="{{this}}" data-active="{{#if (gte this (add (get system.mana.value 0) 1))}}true{{else}}false{{/if}}">
                         <i class="fas fa-gem"></i>
                     </button>
                 </div>

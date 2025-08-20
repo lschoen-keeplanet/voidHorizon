@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Correction de l'erreur TypeError sur ouverture de fiche</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        code { background-color: #f8f9fa; padding: 2px 4px; border-radius: 3px; }
+        pre { background-color: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Test - Correction de l'erreur TypeError sur ouverture de fiche</h1>
+    
+    <div class="test-section info">
+        <h2>Problème identifié</h2>
+        <p><strong>Erreur :</strong> <code>TypeError: Cannot read properties of undefined (reading 'agilite')</code></p>
+        <p><strong>Cause :</strong> Les helpers Handlebars <code>getSafeRange</code> et <code>getUnsafeRange</code> étaient appelés pendant le rendu initial du template, mais l'objet <code>actor</code> n'avait pas encore toutes ses propriétés initialisées.</p>
+    </div>
+
+    <div class="test-section success">
+        <h2>Solution appliquée</h2>
+        <p>Ajout de vérifications de sécurité dans les helpers Handlebars :</p>
+        
+        <h3>1. Correction de <code>getSafeRange</code></h3>
+        <pre><code>// Avant (problématique)
+if (actor && actor.system.agilite && actor.system.agilite.value === safeValue) {
+
+// Après (sécurisé)
+if (actor && actor.system && actor.system.agilite && actor.system.agilite.value === safeValue) {</code></pre>
+
+        <h3>2. Correction de <code>getUnsafeRange</code></h3>
+        <pre><code>// Avant (problématique)
+if (actor && actor.system.agilite && actor.system.agilite.value === safeValue) {
+
+// Après (sécurisé)
+if (actor && actor.system && actor.system.agilite && actor.system.agilite.value === safeValue) {</code></pre>
+
+        <h3>3. Correction de <code>getAgilityPenalty</code></h3>
+        <pre><code>// Ajout d'une vérification de sécurité
+getAgilityPenalty: (actor) => {
+    if (!actor || !actor.system) return 0;
+    const armorType = actor.system.armor?.type || 'tissu';
+    // ... reste du code
+}</code></pre>
+
+        <h3>4. Correction des accès directs dans le template HTML</h3>
+        <p>Remplacement de tous les accès directs <code>actor.system.X.value</code> par <code>system.X.value</code> :</p>
+        <ul>
+            <li><code>actor.system.agilite.value</code> → <code>system.agilite.value</code></li>
+            <li><code>actor.system.acuite.value</code> → <code>system.acuite.value</code></li>
+            <li><code>actor.system.martialite.value</code> → <code>system.martialite.value</code></li>
+            <li><code>actor.system.pimpance.value</code> → <code>system.pimpance.value</code></li>
+            <li><code>actor.system.arcane.value</code> → <code>system.arcane.value</code></li>
+            <li><code>actor.system.mana.value</code> → <code>system.mana.value</code></li>
+        </ul>
+    </div>
+
+    <div class="test-section info">
+        <h2>Fichiers modifiés</h2>
+        <ul>
+            <li><strong>scripts/heros-sheet.js</strong> - Ajout de vérifications de sécurité dans les helpers</li>
+            <li><strong>templates/sheets/heros-sheet.html</strong> - Remplacement des accès directs par des références sécurisées</li>
+        </ul>
+    </div>
+
+    <div class="test-section success">
+        <h2>Instructions de test</h2>
+        <ol>
+            <li>Ouvrir Foundry VTT</li>
+            <li>Ouvrir une fiche de personnage</li>
+            <li>Vérifier qu'aucune erreur n'apparaît dans la console</li>
+            <li>Vérifier que tous les éléments de la fiche s'affichent correctement</li>
+            <li>Vérifier que les plages de dés (Safe/Unsafe) s'affichent correctement</li>
+            <li>Vérifier que le malus d'agilité dû à l'armure s'affiche correctement</li>
+        </ol>
+    </div>
+
+    <div class="test-section info">
+        <h2>Résultat attendu</h2>
+        <p>La fiche de personnage devrait s'ouvrir sans erreur et tous les éléments devraient s'afficher correctement, y compris :</p>
+        <ul>
+            <li>Les caractéristiques et leurs valeurs</li>
+            <li>Les plages de dés Safe/Unsafe</li>
+            <li>Le malus d'agilité dû à l'armure</li>
+            <li>Les boutons de lancement de dés</li>
+        </ul>
+    </div>
+
+    <div class="test-section info">
+        <h2>Notes techniques</h2>
+        <p>Cette correction garantit que les helpers Handlebars peuvent être appelés de manière sécurisée même pendant l'initialisation de la fiche, en vérifiant l'existence de toutes les propriétés nécessaires avant d'y accéder.</p>
+        <p>L'utilisation de <code>system.X.value</code> au lieu de <code>actor.system.X.value</code> dans le template est plus sûre car <code>system</code> est directement préparé dans la méthode <code>getData()</code> et contient des valeurs par défaut.</p>
+    </div>
+</body>
+</html>

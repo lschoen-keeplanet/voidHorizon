@@ -211,7 +211,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 if (!range) return "?";
                 
                 // Si c'est pour l'agilité et qu'il y a un malus d'armure, l'appliquer
-                if (actor && actor.system.agilite && actor.system.agilite.value === safeValue) {
+                if (actor && actor.system && actor.system.agilite && actor.system.agilite.value === safeValue) {
                     const agilityPenalty = getAgilityPenalty(actor);
                     if (agilityPenalty < 0) {
                         const adjustedMin = Math.max(1, range.min + agilityPenalty);
@@ -237,7 +237,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 if (!range) return "?";
                 
                 // Si c'est pour l'agilité et qu'il y a un malus d'armure, l'appliquer
-                if (actor && actor.system.agilite && actor.system.agilite.value === safeValue) {
+                if (actor && actor.system && actor.system.agilite && actor.system.agilite.value === safeValue) {
                     const agilityPenalty = getAgilityPenalty(actor);
                     if (agilityPenalty < 0) {
                         const adjustedMin = Math.max(1, range.min + agilityPenalty);
@@ -250,6 +250,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             },
             // Helper pour obtenir le malus d'agilité basé sur le type d'armure
             getAgilityPenalty: (actor) => {
+                if (!actor || !actor.system) return 0;
                 const armorType = actor.system.armor?.type || 'tissu';
                 const penaltyMap = {
                     'tissu': 0,      // Pas de malus
