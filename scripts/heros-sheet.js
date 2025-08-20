@@ -465,7 +465,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             this._updateManaDisplay();
             this._updateHealthStatus();
             this._updateAgilityPenaltyDisplay();
-            console.log("Recalcul de tous les éléments de santé terminé après délai");
+            this._updateAllDiceRanges();
+            console.log("Recalcul de tous les éléments de santé et des ranges terminé après délai");
         }, 500);
     }
 
@@ -1337,6 +1338,102 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         }
     }
     
+    /**
+     * Met à jour tous les ranges de dés avec leurs bonus actuels
+     * @private
+     */
+    _updateAllDiceRanges() {
+        // Mettre à jour les ranges pour toutes les caractéristiques
+        const statBlocks = this.element.find('.stat-block');
+        
+        statBlocks.each((index, block) => {
+            const $block = $(block);
+            const safeRange = $block.find('.safe-range');
+            const unsafeRange = $block.find('.unsafe-range');
+            
+            if (safeRange.length > 0 && unsafeRange.length > 0) {
+                // Déterminer quelle caractéristique est affichée dans ce bloc
+                let statName = null;
+                let statValue = null;
+                
+                if ($block.find('label[data-stat="martialite"]').length > 0) {
+                    statName = 'martialite';
+                    statValue = this.actor.system.martialite?.value;
+                } else if ($block.find('label[data-stat="agilite"]').length > 0) {
+                    statName = 'agilite';
+                    statValue = this.actor.system.agilite?.value;
+                } else if ($block.find('label[data-stat="acuite"]').length > 0) {
+                    statName = 'acuite';
+                    statValue = this.actor.system.acuite?.value;
+                } else if ($block.find('label[data-stat="pimpance"]').length > 0) {
+                    statName = 'pimpance';
+                    statValue = this.actor.system.pimpance?.value;
+                } else if ($block.find('label[data-stat="arcane"]').length > 0) {
+                    statName = 'arcane';
+                    statValue = this.actor.system.arcane?.value;
+                }
+                
+                if (statName && statValue) {
+                    // Calculer le bonus total pour cette caractéristique
+                    let totalBonus = 0;
+                    
+                    // Bonus de trait
+                    if (this.actor.system.traitBonuses && this.actor.system.traitBonuses[statName]) {
+                        totalBonus += this.actor.system.traitBonuses[statName];
+                    }
+                    
+                    // Malus d'agilité dû à l'armure (seulement pour l'agilité)
+                    if (statName === 'agilite') {
+                        const armorType = this.actor.system.armor?.type;
+                        if (armorType) {
+                            const armorPenalties = {
+                                'light': 0,
+                                'medium': -2,
+                                'heavy': -4
+                            };
+                            const armorPenalty = armorPenalties[armorType] || 0;
+                            totalBonus += armorPenalty;
+                        }
+                    }
+                    
+                    // Calculer les nouvelles plages avec le bonus
+                    const rangeMap = {
+                        "2d4": { min: 2, max: 8 },
+                        "3d4": { min: 3, max: 12 },
+                        "4d4": { min: 4, max: 16 },
+                        "5d4": { min: 5, max: 20 },
+                        "6d4": { min: 6, max: 24 },
+                        "7d4": { min: 7, max: 28 }
+                    };
+                    
+                    const unsafeRangeMap = {
+                        "2d4": { min: 1, max: 12 },
+                        "3d4": { min: 1, max: 16 },
+                        "4d4": { min: 1, max: 20 },
+                        "5d4": { min: 1, max: 24 },
+                        "6d4": { min: 1, max: 28 },
+                        "7d4": { min: 1, max: 32 }
+                    };
+                    
+                    const safeRangeData = rangeMap[statValue];
+                    const unsafeRangeData = unsafeRangeMap[statValue];
+                    
+                    if (safeRangeData && unsafeRangeData) {
+                        // Appliquer le bonus aux ranges
+                        const safeMin = Math.max(1, safeRangeData.min + totalBonus);
+                        const safeMax = Math.max(1, safeRangeData.max + totalBonus);
+                        const unsafeMin = Math.max(1, unsafeRangeData.min + totalBonus);
+                        const unsafeMax = Math.max(1, unsafeRangeData.max + totalBonus);
+                        
+                        // Mettre à jour l'affichage
+                        safeRange.html(`<i class="fas fa-shield-alt"></i> ${safeMin}-${safeMax}`);
+                        unsafeRange.html(`<i class="fas fa-skull-crossbones"></i> ${unsafeMin}-${unsafeMax}`);
+                    }
+                }
+            }
+        });
+    }
+
     /**
      * Calcule le bonus des boucliers d'armes
      * @returns {number} - Bonus total des boucliers
