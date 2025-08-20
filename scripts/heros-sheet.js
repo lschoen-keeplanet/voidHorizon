@@ -255,16 +255,16 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Recalculer les bonus des traits avant chaque jet de dé
         this._recalculateTraitBonuses();
         
-        // Attendre 2 secondes puis recalculer tous les éléments de santé pour s'assurer que l'affichage est à jour
+        // Attendre 0.5 secondes puis recalculer tous les éléments de santé pour s'assurer que l'affichage est à jour
         setTimeout(() => {
-            console.log("Délai de 2 secondes écoulé, recalcul de tous les éléments de santé...");
+            console.log("Délai de 0.5 secondes écoulé, recalcul de tous les éléments de santé...");
             this._applyTraitBonuses();
             this._updateShieldsDisplay();
             this._updateHeartsDisplay();
             this._updateManaDisplay();
             this._updateHealthStatus();
             console.log("Recalcul de tous les éléments de santé terminé après délai");
-        }, 2000);
+        }, 500);
     }
 
     /**
@@ -2115,8 +2115,25 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Recalculer les bonus des traits avant le jet
         this._recalculateTraitBonuses();
         
-        // Pour l'instant, juste un log
-        ui.notifications.info(`Lancement de dés pour ${stat} (fonctionnalité à implémenter)`);
+        try {
+            // Obtenir la valeur de la caractéristique
+            const statValue = this.actor.system[stat]?.value || "1d4";
+            console.log(`Valeur de ${stat}: ${statValue}`);
+            
+            // Lancer en mode Safe par défaut
+            const diceFormula = statValue;
+            console.log(`Formule de dés (Safe): ${diceFormula}`);
+            
+            // Lancer les dés
+            const roll = await this._rollDice(diceFormula, stat, false);
+            
+            // Afficher le résultat
+            this._displayRollResult(roll, stat, false);
+            
+        } catch (error) {
+            console.error(`Erreur lors du lancement de dés pour ${stat}:`, error);
+            ui.notifications.error(`Erreur lors du lancement de dés pour ${stat}`);
+        }
     }
 
     /**
@@ -2135,8 +2152,122 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Recalculer les bonus des traits avant le jet
         this._recalculateTraitBonuses();
         
-        // Pour l'instant, juste un log
-        ui.notifications.info(`Lancement de dés ${stat} en mode ${isUnsafe ? 'Unsafe' : 'Safe'} (fonctionnalité à implémenter)`);
+        try {
+            // Obtenir la valeur de la caractéristique
+            const statValue = this.actor.system[stat]?.value || "1d4";
+            console.log(`Valeur de ${stat}: ${statValue}`);
+            
+            // Calculer la formule de dés selon le mode
+            const diceFormula = this._calculateDiceFormula(statValue, isUnsafe);
+            console.log(`Formule de dés: ${diceFormula}`);
+            
+            // Lancer les dés
+            const roll = await this._rollDice(diceFormula, stat, isUnsafe);
+            
+            // Afficher le résultat
+            this._displayRollResult(roll, stat, isUnsafe);
+            
+        } catch (error) {
+            console.error(`Erreur lors du lancement de dés pour ${stat}:`, error);
+            ui.notifications.error(`Erreur lors du lancement de dés pour ${stat}`);
+        }
+    }
+
+    /**
+     * Calcule la formule de dés selon le mode Safe/Unsafe
+     * @param {string} statValue - La valeur de la caractéristique (ex: "3d4")
+     * @param {boolean} isUnsafe - Si c'est en mode unsafe
+     * @returns {string} - La formule de dés à lancer
+     * @private
+     */
+    _calculateDiceFormula(statValue, isUnsafe) {
+        console.log(`Calcul formule dés: ${statValue}, unsafe: ${isUnsafe}`);
+        
+        if (!isUnsafe) {
+            // Mode Safe: retourner la valeur telle quelle (ex: "3d4")
+            console.log(`Mode Safe: formule = ${statValue}`);
+            return statValue;
+        } else {
+            // Mode Unsafe: convertir selon la table de conversion
+            const safeToUnsafe = {
+                "1d4": "1d4",   // Degré 1
+                "2d4": "1d8",   // Degré 2
+                "3d4": "1d12",  // Degré 3
+                "4d4": "1d16",  // Degré 4
+                "5d4": "1d20",  // Degré 5
+                "6d4": "1d24"   // Degré 6
+            };
+            const unsafeFormula = safeToUnsafe[statValue] || statValue;
+            console.log(`Mode Unsafe: ${statValue} -> ${unsafeFormula}`);
+            return unsafeFormula;
+        }
+    }
+    
+    /**
+     * Lance les dés avec la formule donnée
+     * @param {string} diceFormula - La formule de dés (ex: "3d4" ou "1d12")
+     * @param {string} stat - Le nom de la caractéristique
+     * @param {boolean} isUnsafe - Si c'est en mode unsafe
+     * @returns {Promise<Roll>} - Le résultat du lancer
+     * @private
+     */
+    async _rollDice(diceFormula, stat, isUnsafe) {
+        // Créer un objet Roll avec la formule
+        const roll = new Roll(diceFormula);
+        
+        // Lancer les dés
+        await roll.evaluate({async: true});
+        
+        console.log(`Lancer de ${diceFormula} pour ${stat} (${isUnsafe ? 'Unsafe' : 'Safe'}): ${roll.total}`);
+        
+        return roll;
+    }
+    
+    /**
+     * Affiche le résultat du lancer de dés
+     * @param {Roll} roll - Le résultat du lancer
+     * @param {string} stat - Le nom de la caractéristique
+     * @param {boolean} isUnsafe - Si c'est en mode unsafe
+     * @private
+     */
+    _displayRollResult(roll, stat, isUnsafe) {
+        const statLabel = this._getStatLabel(stat, this.actor.system[stat]?.value || "1d4");
+        const modeLabel = isUnsafe ? "Unsafe" : "Safe";
+        const formula = roll.formula;
+        const total = roll.total;
+        
+        // Créer un message de chat avec le résultat
+        const chatData = {
+            user: game.user.id,
+            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+            content: `
+                <div class="voidhorizon-roll-result">
+                    <h3>🎲 Test de ${statLabel} (${modeLabel})</h3>
+                    <div class="roll-details">
+                        <p><strong>Caractéristique:</strong> ${statLabel}</p>
+                        <p><strong>Mode:</strong> ${modeLabel}</p>
+                        <p><strong>Formule:</strong> ${formula}</p>
+                        <p><strong>Résultat:</strong> <span class="roll-total">${total}</span></p>
+                    </div>
+                    <div class="roll-dice">
+                        ${roll.dice.map(die => `
+                            <div class="die-result">
+                                <span class="die-formula">${die.formula}</span>: 
+                                <span class="die-values">[${die.results.map(r => r.result).join(', ')}]</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `,
+            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            roll: roll
+        };
+        
+        // Envoyer le message dans le chat
+        ChatMessage.create(chatData);
+        
+        // Notification rapide
+        ui.notifications.info(`${statLabel} (${modeLabel}): ${total}`);
     }
 
     /**
