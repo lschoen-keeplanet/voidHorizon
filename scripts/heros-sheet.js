@@ -1111,6 +1111,869 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         return { armorBonus: totalArmorBonus };
     }
+
+    /**
+     * Gère le clic sur un cœur de constitution
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onHeartClick(event) {
+        event.preventDefault();
+        const button = event.currentTarget;
+        const heartIndex = parseInt(button.dataset.heartIndex);
+        const isAlive = button.dataset.alive === "true";
+        const heartWrapper = button.closest('.heart-wrapper');
+        
+        // Mettre à jour la valeur de blessure
+        const currentValue = this.actor.system.resources.blessure?.value || 0;
+        const newValue = isAlive ? currentValue + 1 : currentValue - 1;
+        
+        try {
+            // Mettre à jour l'acteur avec la nouvelle valeur
+            const updateData = {
+                'system.resources.blessure.value': newValue
+            };
+            
+            console.log("Mise à jour des points de vie:", updateData);
+            await this.actor.update(updateData);
+            
+            // Mettre à jour l'affichage des boutons
+            this._updateHeartDisplay(heartWrapper, isAlive);
+            
+            // Mettre à jour l'état de santé
+            this._updateHealthStatus();
+            
+            // Forcer la mise à jour de l'affichage
+            this.render(true);
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour des points de vie:", error);
+        }
+    }
+
+    /**
+     * Met à jour l'affichage des boutons d'un cœur
+     * @param {HTMLElement} heartWrapper - Le wrapper du cœur
+     * @param {boolean} isAlive - Si le cœur est vivant
+     * @private
+     */
+    _updateHeartDisplay(heartWrapper, isAlive) {
+        const aliveButton = heartWrapper.querySelector('.alive');
+        const deadButton = heartWrapper.querySelector('.dead');
+        
+        if (isAlive) {
+            aliveButton.classList.add('hidden');
+            deadButton.classList.remove('hidden');
+        } else {
+            aliveButton.classList.remove('hidden');
+            deadButton.classList.add('hidden');
+        }
+    }
+
+    /**
+     * Gère le clic sur un bouclier d'armure
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onShieldClick(event) {
+        event.preventDefault();
+        const button = event.currentTarget;
+        const shieldIndex = parseInt(button.dataset.shieldIndex);
+        const isActive = button.dataset.active === "true";
+        const shieldWrapper = button.closest('.shield-wrapper');
+        
+        console.log(`Clic sur bouclier ${shieldIndex}, actif: ${isActive}`);
+        
+        // Vérification de sécurité
+        if (!shieldWrapper) {
+            console.error("Wrapper d'armure non trouvé");
+            return;
+        }
+        
+        // Mettre à jour la valeur de dégâts d'armure
+        const currentDamage = this.actor.system.resources.armorDamage?.value || 0;
+        const newDamage = isActive ? currentDamage + 1 : currentDamage - 1;
+        
+        console.log(`Dégâts d'armure: ${currentDamage} -> ${newDamage}`);
+        
+        try {
+            // Mettre à jour l'acteur avec la nouvelle valeur de dégâts d'armure
+            const updateData = {
+                'system.resources.armorDamage.value': newDamage
+            };
+            
+            console.log("Mise à jour des boucliers:", updateData);
+            await this.actor.update(updateData);
+            
+            // Mettre à jour l'affichage des boutons
+            this._updateShieldDisplay(shieldWrapper, isActive);
+            
+            console.log("Bouclier mis à jour avec succès");
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour des boucliers:", error);
+        }
+    }
+
+    /**
+     * Met à jour l'affichage des boutons d'un bouclier
+     * @param {HTMLElement} shieldWrapper - Le wrapper du bouclier
+     * @param {boolean} isActive - Si le bouclier est actif
+     * @private
+     */
+    _updateShieldDisplay(shieldWrapper, isActive) {
+        const activeButton = shieldWrapper.querySelector('.active');
+        const brokenButton = shieldWrapper.querySelector('.broken');
+        
+        console.log("Mise à jour de l'affichage du bouclier:", { activeButton, brokenButton, isActive });
+        
+        // Vérification de sécurité
+        if (!activeButton || !brokenButton) {
+            console.error("Boutons d'armure non trouvés:", { activeButton, brokenButton });
+            return;
+        }
+        
+        if (isActive) {
+            // Le bouclier était actif, on le casse
+            activeButton.classList.add('hidden');
+            brokenButton.classList.remove('hidden');
+            console.log("Bouclier marqué comme cassé");
+        } else {
+            // Le bouclier était cassé, on le répare
+            activeButton.classList.remove('hidden');
+            brokenButton.classList.add('hidden');
+            console.log("Bouclier marqué comme actif");
+        }
+    }
+
+    /**
+     * Gère le clic sur un point de mana
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onManaClick(event) {
+        event.preventDefault();
+        const button = event.currentTarget;
+        const manaIndex = parseInt(button.dataset.manaIndex);
+        const isActive = button.dataset.active === "true";
+        
+        console.log(`Clic sur point de mana ${manaIndex}, actif: ${isActive}`);
+        
+        // Mettre à jour la valeur de mana actuel
+        const currentMana = this.actor.system.mana?.value || 0;
+        const newMana = isActive ? currentMana - 1 : currentMana + 1;
+        
+        // S'assurer que le mana ne descend pas en dessous de 0
+        const finalMana = Math.max(0, newMana);
+        
+        console.log(`Mana: ${currentMana} -> ${finalMana}`);
+        
+        try {
+            // Mettre à jour l'acteur avec la nouvelle valeur de mana
+            const updateData = {
+                'system.mana.value': finalMana
+            };
+            
+            console.log("Mise à jour du mana:", updateData);
+            await this.actor.update(updateData);
+            
+            // Mettre à jour l'affichage des points de mana
+            this._updateManaDisplay();
+            
+            console.log("Mana mis à jour avec succès");
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour du mana:", error);
+        }
+    }
+
+    /**
+     * Gère le clic sur le bouton de création de trait
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    _onCreateTraitClick(event) {
+        event.preventDefault();
+        const formContainer = this.element.find('#trait-form-container');
+        formContainer.show();
+        
+        // Vider les champs du formulaire
+        this.element.find('#trait-name-input').val('');
+        this.element.find('#trait-description-input').val('');
+        this.element.find('#trait-bonus-target').val('');
+        this.element.find('#trait-bonus-value').val('');
+        
+        // Focus sur le premier champ
+        this.element.find('#trait-name-input').focus();
+    }
+
+    /**
+     * Gère le clic sur le bouton de sauvegarde de trait
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onSaveTraitClick(event) {
+        event.preventDefault();
+        
+        const name = this.element.find('#trait-name-input').val().trim();
+        const description = this.element.find('#trait-description-input').val().trim();
+        const bonusTarget = this.element.find('#trait-bonus-target').val();
+        const bonusValue = parseInt(this.element.find('#trait-bonus-value').val()) || 0;
+        
+        // Validation
+        if (!name) {
+            ui.notifications.warn('Le nom du trait est requis');
+            return;
+        }
+        
+        if (!bonusTarget) {
+            ui.notifications.warn('Veuillez sélectionner une caractéristique pour le bonus');
+            return;
+        }
+        
+        try {
+            const saveButton = this.element.find('#trait-save-btn');
+            const isEditing = saveButton.attr('data-edit-trait-id');
+            
+            if (isEditing) {
+                // Mode édition - mettre à jour le trait existant
+                const traitId = isEditing;
+                const traitData = {
+                    name: name,
+                    description: description,
+                    bonusTarget: bonusTarget,
+                    bonusValue: bonusValue
+                };
+                
+                await this.actor.update({
+                    [`system.traits.${traitId}`]: traitData
+                });
+                
+                ui.notifications.info(`Trait "${name}" modifié avec succès`);
+                
+                // Réinitialiser le bouton
+                saveButton.removeAttr('data-edit-trait-id').text('Sauvegarder');
+                
+            } else {
+                // Mode création - créer un nouveau trait
+                const traitId = `trait_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                
+                const traitData = {
+                    name: name,
+                    description: description,
+                    bonusTarget: bonusTarget,
+                    bonusValue: bonusValue
+                };
+                
+                await this.actor.update({
+                    [`system.traits.${traitId}`]: traitData
+                });
+                
+                ui.notifications.info(`Trait "${name}" créé avec succès`);
+            }
+            
+            // Masquer le formulaire
+            this.element.find('#trait-form-container').hide();
+            
+            // Recalculer les bonus des traits
+            this._applyTraitBonuses();
+            
+            // Mettre à jour l'affichage des cœurs, boucliers et mana
+            this._updateHealthStatus();
+            this._updateShieldsDisplay();
+            this._updateHeartsDisplay();
+            this._updateManaDisplay();
+            
+            // Recharger la fiche pour afficher les changements
+            this.render(true);
+            
+        } catch (error) {
+            console.error('Erreur lors de la sauvegarde du trait:', error);
+            ui.notifications.error('Erreur lors de la sauvegarde du trait');
+        }
+    }
+
+    /**
+     * Gère le clic sur le bouton d'annulation de création de trait
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    _onCancelTraitClick(event) {
+        event.preventDefault();
+        
+        // Masquer le formulaire
+        this.element.find('#trait-form-container').hide();
+        
+        // Réinitialiser le formulaire
+        this.element.find('#trait-name-input').val('');
+        this.element.find('#trait-description-input').val('');
+        this.element.find('#trait-bonus-target').val('');
+        this.element.find('#trait-bonus-value').val('');
+        
+        // Réinitialiser le bouton de sauvegarde
+        const saveButton = this.element.find('#trait-save-btn');
+        saveButton.removeAttr('data-edit-trait-id').text('Sauvegarder');
+        
+        // Réinitialiser le titre
+        this.element.find('#trait-form-container h4').text('Nouveau trait');
+    }
+
+    /**
+     * Gère le clic sur le bouton d'édition de trait
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    _onEditTraitClick(event) {
+        event.preventDefault();
+        const button = $(event.currentTarget);
+        const traitId = button.data('trait-id');
+        const trait = this.actor.system.traits?.[traitId];
+        
+        if (!trait) {
+            ui.notifications.error('Trait non trouvé');
+            return;
+        }
+        
+        // Afficher le formulaire avec les données du trait
+        const formContainer = this.element.find('#trait-form-container');
+        formContainer.show();
+        
+        // Remplir les champs avec les données existantes
+        this.element.find('#trait-name-input').val(trait.name);
+        this.element.find('#trait-description-input').val(trait.description);
+        this.element.find('#trait-bonus-target').val(trait.bonusTarget);
+        this.element.find('#trait-bonus-value').val(trait.bonusValue);
+        
+        // Changer le titre et le bouton de sauvegarde
+        formContainer.find('h4').text('Modifier le trait');
+        formContainer.find('#trait-save-btn').text('Modifier').attr('data-edit-trait-id', traitId);
+        
+        // Focus sur le premier champ
+        this.element.find('#trait-name-input').focus();
+    }
+
+    /**
+     * Gère le clic sur le bouton de suppression de trait
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onDeleteTraitClick(event) {
+        event.preventDefault();
+        const button = $(event.currentTarget);
+        const traitId = button.data('trait-id');
+        
+        console.log('=== SUPPRESSION DE TRAIT ===');
+        console.log('Trait ID:', traitId);
+        console.log('Traits actuels:', this.actor.system.traits);
+        
+        const trait = this.actor.system.traits?.[traitId];
+        
+        // Si le trait est null, c'est qu'il a déjà été supprimé
+        if (trait === null) {
+            console.log('Trait déjà supprimé (null), masqué par CSS');
+            ui.notifications.info('Trait déjà supprimé');
+            return;
+        }
+        
+        if (!trait) {
+            console.error('Trait non trouvé pour ID:', traitId);
+            ui.notifications.error('Trait non trouvé');
+            return;
+        }
+        
+        console.log('Trait à supprimer:', trait);
+        
+        // Demander confirmation
+        const confirmed = await new Promise((resolve) => {
+            new Dialog({
+                title: 'Confirmer la suppression',
+                content: `<p>Êtes-vous sûr de vouloir supprimer le trait "${trait.name}" ?</p>`,
+                buttons: {
+                    yes: {
+                        icon: '<i class="fas fa-check"></i>',
+                        label: 'Oui',
+                        callback: () => resolve(true)
+                    },
+                    no: {
+                        icon: '<i class="fas fa-times"></i>',
+                        label: 'Non',
+                        callback: () => resolve(false)
+                    }
+                },
+                default: 'no'
+            }).render(true);
+        });
+        
+        if (!confirmed) return;
+        
+        try {
+            // Mettre le trait à null au lieu de le supprimer complètement
+            const currentTraits = { ...this.actor.system.traits };
+            currentTraits[traitId] = null; // Explicitement mettre le trait à null
+            
+            console.log('Suppression du trait:', traitId);
+            console.log('Traits restants:', currentTraits);
+            
+            // Vérifier que la mise à null locale a bien fonctionné
+            if (currentTraits[traitId] !== null) {
+                console.error('Erreur : le trait n\'a pas été mis à null dans la copie locale !');
+                ui.notifications.error('Erreur interne lors de la suppression du trait');
+                return;
+            }
+            
+            // Mettre à jour l'acteur avec les traits (le trait supprimé est maintenant null)
+            const updateData = {
+                'system.traits': currentTraits
+            };
+            
+            console.log('Données de mise à jour:', updateData);
+            
+            // Mettre à jour l'acteur avec les traits restants
+            await this.actor.update(updateData);
+            console.log('Mise à jour réussie');
+            
+            // Synchronisation des données
+            await this.actor.sheet.render(true);
+            
+            // Vérifier que la mise à null est bien persistante
+            if (this.actor.system.traits[traitId] !== null) {
+                console.log('Le trait n\'a pas été mis à null après la mise à jour !');
+            } else {
+                console.log('Le trait a été mis à null avec succès, il sera masqué par CSS');
+            }
+            
+            // Notification de succès
+            ui.notifications.info(`Trait "${trait.name}" supprimé avec succès`);
+            
+            // Recalculer les bonus des traits
+            this._applyTraitBonuses();
+            
+            // Mettre à jour l'affichage des cœurs, boucliers et mana
+            this._updateHealthStatus();
+            this._updateShieldsDisplay();
+            this._updateHeartsDisplay();
+            this._updateManaDisplay();
+            
+            // Recharger la fiche pour afficher les changements
+            this.render(true);
+            
+        } catch (error) {
+            console.error('Erreur lors de la suppression du trait:', error);
+            ui.notifications.error('Erreur lors de la suppression du trait');
+        }
+    }
+
+    /**
+     * Gère les changements de type d'équipement (pour les boucliers)
+     * @param {Event} event - L'événement de changement
+     * @private
+     */
+    async _onWeaponTypeChange(event) {
+        event.preventDefault();
+        const select = event.target;
+        const value = select.value;
+        const field = select.name;
+        
+        console.log(`Type d'équipement changé: ${field} = ${value}`);
+        
+        // Appliquer les bonus des boucliers immédiatement pour l'affichage
+        this._applyShieldBonuses();
+    }
+
+    /**
+     * Gère les changements d'armes et d'armure (sans sauvegarde automatique)
+     * @param {Event} event - L'événement de changement
+     * @private
+     */
+    _onWeaponFieldChange(event) {
+        event.preventDefault();
+        const input = event.target;
+        const field = input.name;
+        const value = input.value;
+        
+        console.log(`Changement d'équipement: ${field} = ${value}`);
+        
+        // Si c'est un changement de type d'armure, mettre à jour l'affichage des boucliers
+        if (field === 'system.armor.type') {
+            // Répliquer en mémoire pour un rendu immédiat cohérent
+            if (!this.actor.system.armor) this.actor.system.armor = {};
+            this.actor.system.armor.type = value;
+            this._updateShieldsDisplay();
+        }
+    }
+
+    /**
+     * Gère le basculement entre les modes édition et lecture des armes
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    _onToggleWeaponsEditMode(event) {
+        event.preventDefault();
+        // Trouver la section weapons-section qui est dans le même onglet que le bouton
+        const tabContent = event.currentTarget.closest('.tab-content[data-tab="equipment"]');
+        const weaponsSection = tabContent.querySelector('.weapons-section');
+        
+        if (!weaponsSection) {
+            console.error('Section weapons-section non trouvée');
+            return;
+        }
+        
+        const isEditing = weaponsSection.classList.contains('editing');
+        
+        if (isEditing) {
+            // Mode sauvegarde - sauvegarder tous les changements d'armes
+            weaponsSection.classList.remove('editing');
+            weaponsSection.classList.add('read-only');
+            event.currentTarget.querySelector('i').classList.remove('fa-save');
+            event.currentTarget.querySelector('i').classList.add('fa-edit');
+        } else {
+            // Mode édition - initialiser les changements en attente
+            weaponsSection.classList.remove('read-only');
+            weaponsSection.classList.add('editing');
+            event.currentTarget.querySelector('i').classList.remove('fa-edit');
+            event.currentTarget.querySelector('i').classList.add('fa-save');
+        }
+    }
+
+    /**
+     * Gère le clic sur les boutons d'onglets (Équipement/Traits)
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    _onTabButtonClick(event) {
+        event.preventDefault();
+        console.log('Clic sur onglet détecté');
+        
+        const button = $(event.currentTarget); // Convertir en objet jQuery
+        const tabName = button.data('tab');
+        console.log('Nom de l\'onglet:', tabName);
+        
+        // Mettre à jour l'état actif des boutons
+        this.element.find('.tab-button').removeClass('active');
+        button.addClass('active');
+        console.log('Bouton actif mis à jour');
+        
+        // Masquer tous les contenus d'onglets
+        this.element.find('.tab-content').removeClass('active');
+        console.log('Tous les contenus d\'onglets masqués');
+        
+        // Afficher le contenu de l'onglet sélectionné
+        const targetContent = this.element.find(`.tab-content[data-tab="${tabName}"]`);
+        if (targetContent.length > 0) {
+            targetContent.addClass('active');
+            console.log(`Contenu de l'onglet ${tabName} affiché`);
+            
+            // Log spécifique pour l'onglet traits
+            if (tabName === 'traits') {
+                const traitsList = targetContent.find('#traits-list');
+                console.log('Liste des traits trouvée:', traitsList.length > 0);
+                console.log('Contenu de la liste des traits:', traitsList.html());
+            }
+        } else {
+            console.error(`Contenu de l'onglet ${tabName} non trouvé`);
+        }
+        
+        // Afficher/masquer le bouton d'édition selon l'onglet
+        const editButton = this.element.find('#weapons-edit-button');
+        if (tabName === 'equipment') {
+            editButton.show();
+            console.log('Bouton d\'édition affiché');
+        } else {
+            editButton.hide();
+            console.log('Bouton d\'édition masqué');
+        }
+        
+        console.log(`Onglet ${tabName} activé avec succès`);
+    }
+
+    /**
+     * Reattache les événements des boucliers après un re-render
+     * @private
+     */
+    _reattachShieldEvents() {
+        const shieldButtons = this.element.find('.armor-container .shield-button');
+        console.log(`Reattachement des événements pour ${shieldButtons.length} boutons de bouclier`);
+        
+        shieldButtons.each((index, button) => {
+            // Supprimer les anciens événements
+            $(button).off('click');
+            
+            // Attacher le nouvel événement
+            $(button).on('click', this._onShieldClick.bind(this));
+        });
+    }
+
+    /**
+     * Gère le basculement entre les modes édition et lecture
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    _onToggleEditMode(event) {
+        event.preventDefault();
+        const form = event.currentTarget.closest('form');
+        const isEditing = form.classList.contains('editing');
+        
+        if (isEditing) {
+            // Mode sauvegarde - sauvegarder tous les changements
+            form.classList.remove('editing');
+            form.classList.add('read-only');
+            event.currentTarget.querySelector('i').classList.remove('fa-save');
+            event.currentTarget.querySelector('i').classList.add('fa-edit');
+            event.currentTarget.querySelector('.button-text').textContent = 'Éditer';
+        } else {
+            // Mode édition - initialiser les changements en attente
+            form.classList.remove('read-only');
+            form.classList.add('editing');
+            event.currentTarget.querySelector('i').classList.remove('fa-edit');
+            event.currentTarget.querySelector('i').classList.add('fa-save');
+            event.currentTarget.querySelector('.button-text').textContent = 'Sauvegarder';
+        }
+    }
+
+    /**
+     * Gère les changements de rang
+     * @param {Event} event - L'événement de changement
+     * @private
+     */
+    async _onRankChange(event) {
+        event.preventDefault();
+        const input = event.target;
+        const value = input.value;
+        
+        try {
+            await this.actor.update({
+                "system.rank.value": value
+            });
+            console.log(`Mise à jour réussie du rang: ${value}`);
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour du rang:", error);
+            // Restaurer la valeur précédente en cas d'erreur
+            input.value = this.actor.system.rank.value;
+        }
+    }
+
+    /**
+     * Gère les changements de sélection (classe, affinité, caractéristiques)
+     * @param {Event} event - L'événement de changement
+     * @private
+     */
+    async _onSelectChange(event) {
+        event.preventDefault();
+        const select = event.target;
+        
+        // Ignorer les champs marqués comme ne devant pas être sauvegardés automatiquement
+        if (select.hasAttribute('data-no-save')) {
+            console.log(`Champ ${select.name} ignoré (data-no-save)`);
+            return;
+        }
+        
+        const field = select.name;
+        const value = select.value;
+        
+        // Si c'est un changement de faction, sauvegarder immédiatement
+        if (field === "system.faction.value") {
+            try {
+                await this.actor.update({ [field]: value });
+                console.log(`Faction sauvegardée immédiatement: ${value}`);
+                
+                // Mettre à jour l'affichage du blason de faction
+                this._updateFactionCrest(value);
+                
+                // Notification de succès
+                ui.notifications.info("Faction mise à jour avec succès");
+                
+            } catch (error) {
+                console.error("Erreur lors de la sauvegarde de la faction:", error);
+                ui.notifications.error("Erreur lors de la mise à jour de la faction");
+                
+                // Restaurer la valeur précédente en cas d'erreur
+                select.value = this.actor.system.faction?.value || "caradoc";
+            }
+            return;
+        }
+        
+        // Si c'est un changement de classe ou d'affinité, sauvegarder immédiatement sans feedback
+        if (field === "system.class.value" || field === "system.affinity.value") {
+            try {
+                await this.actor.update({ [field]: value });
+                console.log(`${field === "system.class.value" ? "Classe" : "Affinité"} sauvegardée immédiatement: ${value}`);
+            } catch (error) {
+                console.error(`Erreur lors de la sauvegarde de ${field}:`, error);
+                
+                // Restaurer la valeur précédente en cas d'erreur
+                if (field === "system.class.value") {
+                    select.value = this.actor.system.class?.value || "";
+                } else if (field === "system.affinity.value") {
+                    select.value = this.actor.system.affinity?.value || "aucune";
+                }
+            }
+            return;
+        }
+        
+        // Pour les autres champs (caractéristiques), stocker le changement en mémoire sans sauvegarder
+        console.log(`Changement en attente pour ${field}: ${value}`);
+        
+        // Mettre à jour l'affichage local sans sauvegarder
+        this._updateLocalDisplay(field, value);
+    }
+
+    /**
+     * Gère les changements de texte
+     * @param {Event} event - L'événement de changement
+     * @private
+     */
+    async _onTextChange(event) {
+        event.preventDefault();
+        const input = event.target;
+        
+        // Ignorer les champs marqués comme ne devant pas être sauvegardés automatiquement
+        if (input.hasAttribute('data-no-save')) {
+            console.log(`Champ texte ${input.name} ignoré (data-no-save)`);
+            return;
+        }
+        
+        const field = input.name;
+        
+        // Si c'est un champ d'arme, utiliser le système de sauvegarde différée
+        if (field.includes('system.weapons.')) {
+            console.log(`Changement d'arme en attente pour ${field}: ${input.value}`);
+            return;
+        }
+        
+        // Pour les autres champs texte, sauvegarder immédiatement
+        const updateData = {};
+        updateData[field] = input.value;
+        
+        try {
+            await this.actor.update(updateData);
+            console.log(`Mise à jour réussie pour ${field}: ${input.value}`);
+            // Forcer la mise à jour de l'affichage
+            this.render(true);
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour:", error);
+            // Restaurer la valeur précédente en cas d'erreur
+            if (field.includes('system.')) {
+                const fieldParts = field.split('.');
+                if (fieldParts.length >= 3) {
+                    input.value = this.actor.system[fieldParts[1]]?.[fieldParts[2]]?.value || '';
+                }
+            }
+        }
+    }
+
+    /**
+     * Gère les lancers de dés pour les statistiques
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onRollStat(event) {
+        event.preventDefault();
+        const stat = event.currentTarget.dataset.stat;
+        console.log(`Lancement de dés pour ${stat}`);
+        
+        // Recalculer les bonus des traits avant le jet
+        this._recalculateTraitBonuses();
+        
+        // Pour l'instant, juste un log
+        ui.notifications.info(`Lancement de dés pour ${stat} (fonctionnalité à implémenter)`);
+    }
+
+    /**
+     * Gère les lancers de dés avec les boutons Safe/Unsafe
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onRollDice(event) {
+        event.preventDefault();
+        const button = event.currentTarget;
+        const stat = button.dataset.stat;
+        const isUnsafe = button.dataset.unsafe === "true";
+        
+        console.log(`Lancement de dés ${stat} (${isUnsafe ? 'Unsafe' : 'Safe'})`);
+        
+        // Recalculer les bonus des traits avant le jet
+        this._recalculateTraitBonuses();
+        
+        // Pour l'instant, juste un log
+        ui.notifications.info(`Lancement de dés ${stat} en mode ${isUnsafe ? 'Unsafe' : 'Safe'} (fonctionnalité à implémenter)`);
+    }
+
+    /**
+     * Gère les lancers de dés pour les armes
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onRollWeapon(event) {
+        event.preventDefault();
+        const button = event.currentTarget;
+        const weaponType = button.dataset.weapon;
+        
+        console.log(`Lancement de dés pour arme ${weaponType}`);
+        
+        // Recalculer les bonus des traits avant le jet
+        this._recalculateTraitBonuses();
+        
+        // Pour l'instant, juste un log
+        ui.notifications.info(`Lancement de dés pour arme ${weaponType} (fonctionnalité à implémenter)`);
+    }
+
+    /**
+     * Met à jour l'affichage du blason de faction
+     * @param {string} factionValue - La nouvelle valeur de faction
+     * @private
+     */
+    _updateFactionCrest(factionValue) {
+        const crestImg = this.element.find('.faction-crest img');
+        if (crestImg.length > 0) {
+            const newSrc = `systems/voidHorizon/assets/crests/${factionValue}.png`;
+            crestImg.attr('src', newSrc);
+            crestImg.attr('alt', `Blason ${factionValue}`);
+            console.log(`Blason de faction mis à jour: ${newSrc}`);
+        }
+    }
+
+    /**
+     * Retourne le label d'affichage pour une statistique
+     * @param {string} statName - Le nom de la statistique
+     * @param {string} value - La valeur de la statistique
+     * @returns {string} - Le label d'affichage
+     * @private
+     */
+    _getStatLabel(statName, value) {
+        const mappings = {
+            'martialite': {
+                "1d4": "Incompétent",
+                "2d4": "Combatif",
+                "3d4": "Soldat",
+                "4d4": "Expérimenté",
+                "5d4": "Vétéran",
+                "6d4": "Légende"
+            },
+            'pimpance': {
+                "1d4": "Tâche",
+                "2d4": "Pas top",
+                "3d4": "Honnête",
+                "4d4": "Beau",
+                "5d4": "Splendide",
+                "6d4": "Ramirez"
+            },
+            'acuite': {
+                "1d4": "Aveugle",
+                "2d4": "Distrait",
+                "3d4": "Alerte",
+                "4d4": "Vif",
+                "5d4": "Clairvoyant",
+                "6d4": "Fulgurant"
+            },
+            'arcane': {
+                "1d4": "Insensible",
+                "2d4": "Eveillé",
+                "3d4": "Novice",
+                "4d4": "Initié",
+                "5d4": "Maître",
+                "6d4": "Archimage"
+            }
+        };
+        
+        return mappings[statName]?.[value] || value;
+    }
 }
 
 // Enregistrer la classe de la fiche
