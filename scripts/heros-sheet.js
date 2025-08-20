@@ -13,8 +13,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     /** @override */
     async getData() {
         const data = await super.getData();
-        console.log('Actor data:', this.actor);
-        console.log('System data:', this.actor.system);
+        // Données de l'acteur et du système
         data.dtypes = ["String", "Number", "Boolean"];
 
         // Préparation des données pour le template
@@ -128,7 +127,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Ajouter les helpers pour le template
         data.helpers = {
             getSelectedText: (value, type) => {
-                console.log(`Helper getSelectedText appelé avec value: ${value}, type: ${type}`);
+                // Helper getSelectedText appelé
                 const mappings = {
                     martialite: {
                         "1d4": "Incompétent",
@@ -164,7 +163,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                     }
                 };
                 const result = mappings[type]?.[value] || value;
-                console.log(`Helper getSelectedText retourne: ${result}`);
+                // Helper getSelectedText retourne le résultat
                 return result;
             },
             // Helper pour obtenir la formule de dé en mode unsafe
@@ -237,7 +236,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         // Gestion des onglets Équipement/Traits
         const tabButtons = html.find('.tab-button');
-        console.log(`Trouvé ${tabButtons.length} boutons d'onglets`);
+        // Boutons d'onglets trouvés
         tabButtons.click(this._onTabButtonClick.bind(this));
         
         // Gestion des traits
@@ -284,7 +283,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const totalConstitution = this._getTotalConstitution(); // Utiliser la constitution totale avec bonus
         const heartsContainer = this.element.find('.hearts-container');
         
-        console.log(`Initialisation des cœurs: constitution totale: ${totalConstitution}, blessures: ${blessure}`);
+        // Initialisation des cœurs
         
         // Vider le conteneur des cœurs
         heartsContainer.empty();
@@ -320,16 +319,16 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 // Ce cœur est "mort" (blessé)
                 aliveButton.classList.add('hidden');
                 deadButton.classList.remove('hidden');
-                console.log(`Cœur ${heartIndex} initialisé comme mort`);
+                // Cœur initialisé comme mort
             } else {
                 // Ce cœur est "vivant" (non blessé)
                 aliveButton.classList.remove('hidden');
                 deadButton.classList.add('hidden');
-                console.log(`Cœur ${heartIndex} initialisé comme vivant`);
+                // Cœur initialisé comme vivant
             }
         });
         
-        console.log(`${totalConstitution} cœurs créés et initialisés`);
+        // Cœurs créés et initialisés
     }
 
     /**
@@ -338,69 +337,21 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      */
     _initializeShields() {
         const armorDamage = this.actor.system.resources?.armorDamage?.value || 0;
-        const totalArmor = this._getTotalArmor(); // Utiliser l'armure totale avec bonus
-        const shieldsContainer = this.element.find('.shields-container');
         
-        console.log(`=== Debug Initialize Shields ===`);
-        console.log(`Armure de base: ${this.actor.system.resources?.armor?.value || 0}`);
-        console.log(`Bonus des traits: ${this.actor.system.traitBonuses?.armor || 0}`);
-        console.log(`Bonus d'équipement: ${this._getArmorTypeBonus()}`);
-        console.log(`Bonus des boucliers: ${this._getShieldBonus()}`);
-        console.log(`Armure totale calculée: ${totalArmor}`);
-        console.log(`Dégâts d'armure: ${armorDamage}`);
-        console.log(`TraitBonuses object:`, this.actor.system.traitBonuses);
-        console.log(`=== Fin Debug Initialize Shields ===`);
-        
-        // Vider le conteneur des boucliers
-        shieldsContainer.empty();
-        
-        // Créer le bon nombre de boucliers basé sur l'armure totale
-        for (let i = 0; i < totalArmor; i++) {
-            const shieldWrapper = $(`
-                <div class="shield-wrapper" data-shield-index="${i}">
-                    <button class="shield-button active" data-shield-index="${i}" data-active="true">
-                        <i class="fas fa-shield-alt"></i>
-                    </button>
-                    <button class="shield-button broken hidden" data-shield-index="${i}" data-active="false">
-                        <i class="fas fa-shield-alt"></i>
-                    </button>
-                </div>
-            `);
-            
-            // Attacher l'événement de clic
-            shieldWrapper.find('.shield-button').click(this._onShieldClick.bind(this));
-            
-            // Ajouter au conteneur
-            shieldsContainer.append(shieldWrapper);
+        // S'assurer que les bonus des traits sont calculés
+        if (!this.actor.system.traitBonuses) {
+            console.log("Bonus des traits non calculés, calcul en cours...");
+            this._applyTraitBonuses();
         }
         
-        // Maintenant mettre à jour l'affichage des boucliers existants
-        const shields = this.element.find('.shield-wrapper');
-        shields.each((index, wrapper) => {
-            const shieldIndex = index;
-            const activeButton = wrapper.querySelector('.active');
-            const brokenButton = wrapper.querySelector('.broken');
-            
-            // Vérification de sécurité
-            if (!activeButton || !brokenButton) {
-                console.error("Boutons d'armure non trouvés lors de l'initialisation:", { activeButton, brokenButton });
-                return;
-            }
-            
-            if (shieldIndex < armorDamage) {
-                // Ce bouclier est cassé
-                activeButton.classList.add('hidden');
-                brokenButton.classList.remove('hidden');
-                console.log(`Bouclier ${shieldIndex} initialisé comme cassé`);
-            } else {
-                // Ce bouclier est actif
-                activeButton.classList.remove('hidden');
-                brokenButton.classList.add('hidden');
-                console.log(`Bouclier ${shieldIndex} initialisé comme actif`);
-            }
-        });
+        const totalArmor = this._getTotalArmor(); // Utiliser l'armure totale avec bonus
         
-        console.log(`${totalArmor} boucliers créés et initialisés`);
+        // Debug: Initialisation des boucliers
+        console.log(`ARMURE: base=${this.actor.system.resources?.armor?.value || 0}, traits=${this.actor.system.traitBonuses?.armor || 0}, équipement=${this._getArmorTypeBonus()}, boucliers=${this._getShieldBonus()}, TOTAL=${totalArmor}, dégâts=${armorDamage}`);
+        
+        // Les boucliers sont déjà générés par le template HTML
+        // On doit juste mettre à jour leur état
+        this._updateShieldsDisplay();
     }
 
     /**
@@ -639,8 +590,6 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      * @private
      */
     _updateShieldsDisplay() {
-        console.log("=== Debug Shields Display ===");
-        
         // Ne pas appeler _applyTraitBonuses ici pour éviter la boucle infinie
         // Les bonus des traits sont déjà calculés et stockés dans this.actor.system.traitBonuses
         
@@ -648,9 +597,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const armorDamage = parseInt(this.actor.system.resources?.armorDamage?.value) || 0;
         const shields = this.element.find('.shield-wrapper');
         
-        console.log("Valeur d'armure totale (base + bonus):", totalArmor);
-        console.log("Dégâts d'armure:", armorDamage);
-        console.log("Boucliers trouvés:", shields.length);
+        console.log(`Boucliers: total=${totalArmor}, dégâts=${armorDamage}, trouvés=${shields.length}`);
         
         // Si le nombre de boucliers ne correspond pas à l'armure totale, forcer le re-render
         if (shields.length !== totalArmor) {
@@ -676,16 +623,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 // Ce bouclier est cassé
                 activeButton.classList.add('hidden');
                 brokenButton.classList.remove('hidden');
-                console.log(`Bouclier ${shieldIndex} affiché comme cassé`);
             } else {
                 // Ce bouclier est actif
                 activeButton.classList.remove('hidden');
                 brokenButton.classList.add('hidden');
-                console.log(`Bouclier ${shieldIndex} affiché comme actif`);
             }
         });
-        
-        console.log("=== Fin Debug Shields Display ===");
     }
 
     /**
@@ -1032,7 +975,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         // Armure totale = base + équipement + traits + boucliers
         const totalArmor = baseArmor + equipmentBonus + traitBonus + shieldBonus;
-        console.log(`Calcul armure totale: base(${baseArmor}) + équipement(${equipmentBonus}) + traits(${traitBonus}) + boucliers(${shieldBonus}) = ${totalArmor}`);
+        
+        // Debug temporaire pour tester le calcul
+        console.log(`CALCUL ARMURE: base=${baseArmor}, équipement=${equipmentBonus}, traits=${traitBonus}, boucliers=${shieldBonus}, TOTAL=${totalArmor}`);
         
         return totalArmor;
     }
@@ -1165,19 +1110,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      * @private
      */
     _updateHealthStatus() {
-        console.log("=== Debug Health Status ===");
-        
         const totalConstitution = this._getTotalConstitution();
         const blessure = this.actor.system.resources.blessure?.value || 0;
         const totalArmor = this._getTotalArmor();
         const armorDamage = this.actor.system.resources.armorDamage?.value || 0;
         const remainingHearts = totalConstitution - blessure;
-        
-        console.log("Constitution totale (base + bonus):", totalConstitution);
-        console.log("Blessures:", blessure);
-        console.log("Armure totale (base + bonus):", totalArmor);
-        console.log("Dégâts d'armure:", armorDamage);
-        console.log("Points de vie restants:", remainingHearts);
         
         let status = "Incapacité";
         let statusClass = "status-critical";
@@ -1193,8 +1130,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             statusClass = "status-danger";
         }
         
-        console.log("État calculé:", status);
-        console.log("=== Fin Debug Health Status ===");
+        // État de santé calculé
         
         // Mettre à jour le contenu HTML directement
         const statusHtml = `
