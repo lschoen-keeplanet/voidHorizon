@@ -39,14 +39,14 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         }
         // Initialiser le mana avec la valeur maximale basée sur l'Arcane si c'est la première fois
         if (data.actor.system.mana.value === 0 && data.actor.system.mana.max === 0) {
-            const arcaneValue = data.actor.system.arcane?.value || "1d4";
+            const arcaneValue = data.actor.system.arcane?.value || "2d4";
             const manaPerLevel = {
-                "1d4": 2,   // Insensible
-                "2d4": 4,   // Eveillé
-                "3d4": 6,   // Novice
-                "4d4": 8,   // Initié
-                "5d4": 10,  // Maître
-                "6d4": 12   // Archimage
+                "2d4": 2,   // Insensible
+                "3d4": 4,   // Eveillé
+                "4d4": 6,   // Novice
+                "5d4": 8,   // Initié
+                "6d4": 10,  // Maître
+                "7d4": 12   // Archimage
             };
             const maxMana = manaPerLevel[arcaneValue] || 2;
             data.actor.system.mana.value = maxMana;
@@ -57,19 +57,19 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         data.system = {
             ...data.system,
             acuite: {
-                value: data.actor.system.acuite?.value || "1d4",
+                value: data.actor.system.acuite?.value || "2d4",
                 label: "acuité"
             },
             pimpance: {
-                value: data.actor.system.pimpance?.value || "1d4",
+                value: data.actor.system.pimpance?.value || "2d4",
                 label: "Pimpance"
             },
             martialite: {
-                value: data.actor.system.martialite?.value || "1d4",
+                value: data.actor.system.martialite?.value || "2d4",
                 label: "Martialité"
             },
             arcane: {
-                value: data.actor.system.arcane?.value || "1d4",
+                value: data.actor.system.arcane?.value || "2d4",
                 label: "Arcane"
             },
             constitution: {
@@ -95,10 +95,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         };
         
         // S'assurer que les données sont aussi disponibles directement dans data.actor.system
-        if (!data.actor.system.acuite) data.actor.system.acuite = { value: "1d4" };
-        if (!data.actor.system.pimpance) data.actor.system.pimpance = { value: "1d4" };
-        if (!data.actor.system.martialite) data.actor.system.martialite = { value: "1d4" };
-        if (!data.actor.system.arcane) data.actor.system.arcane = { value: "1d4" };
+        if (!data.actor.system.acuite) data.actor.system.acuite = { value: "2d4" };
+        if (!data.actor.system.pimpance) data.actor.system.pimpance = { value: "2d4" };
+        if (!data.actor.system.martialite) data.actor.system.martialite = { value: "2d4" };
+        if (!data.actor.system.arcane) data.actor.system.arcane = { value: "2d4" };
         if (!data.actor.system.constitution) data.actor.system.constitution = { value: 4 };
         if (!data.actor.system.class) data.actor.system.class = { value: "" };
         if (!data.actor.system.faction) data.actor.system.faction = { value: "caradoc" };
@@ -130,36 +130,36 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 // Helper getSelectedText appelé
                 const mappings = {
                     martialite: {
-                        "1d4": "Incompétent",
-                        "2d4": "Combatif",
-                        "3d4": "Soldat",
-                        "4d4": "Expérimenté",
-                        "5d4": "Vétéran",
-                        "6d4": "Légende"
+                        "2d4": "Incompétent",
+                        "3d4": "Combatif",
+                        "4d4": "Soldat",
+                        "5d4": "Expérimenté",
+                        "6d4": "Vétéran",
+                        "7d4": "Légende"
                     },
                     pimpance: {
-                        "1d4": "Tâche",
-                        "2d4": "Pas top",
-                        "3d4": "Honnête",
-                        "4d4": "Beau",
-                        "5d4": "Splendide",
-                        "6d4": "Ramirez"
+                        "2d4": "Tâche",
+                        "3d4": "Pas top",
+                        "4d4": "Honnête",
+                        "5d4": "Beau",
+                        "6d4": "Splendide",
+                        "7d4": "Ramirez"
                     },
                     acuite: {
-                        "1d4": "Aveugle",
-                        "2d4": "Distrait",
-                        "3d4": "Alerte",
-                        "4d4": "Vif",
-                        "5d4": "Clairvoyant",
-                        "6d4": "Fulgurant"
+                        "2d4": "Aveugle",
+                        "3d4": "Distrait",
+                        "4d4": "Alerte",
+                        "5d4": "Vif",
+                        "6d4": "Clairvoyant",
+                        "7d4": "Fulgurant"
                     },
                     arcane: {
-                        "1d4": "Insensible",
-                        "2d4": "Eveillé",
-                        "3d4": "Novice",
-                        "4d4": "Initié",
-                        "5d4": "Maître",
-                        "6d4": "Archimage"
+                        "2d4": "Insensible",
+                        "3d4": "Eveillé",
+                        "4d4": "Novice",
+                        "5d4": "Initié",
+                        "6d4": "Maître",
+                        "7d4": "Archimage"
                     }
                 };
                 const result = mappings[type]?.[value] || value;
@@ -169,12 +169,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Helper pour obtenir la formule de dé en mode unsafe
             getUnsafeFormula: (safeValue) => {
                 const safeToUnsafe = {
-                    "1d4": "1d4",   // Degré 1
-                    "2d4": "1d8",   // Degré 2
-                    "3d4": "1d12",  // Degré 3
-                    "4d4": "1d16",  // Degré 4
-                    "5d4": "1d20",  // Degré 5
-                    "6d4": "1d24"   // Degré 6
+                    "2d4": "1d8",   // Degré 1
+                    "3d4": "1d12",  // Degré 2
+                    "4d4": "1d16",  // Degré 3
+                    "5d4": "1d20",  // Degré 4
+                    "6d4": "1d24",  // Degré 5
+                    "7d4": "1d28"   // Degré 6
                 };
                 return safeToUnsafe[safeValue] || safeValue;
             }
@@ -757,12 +757,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         if (field === "system.arcane.value") {
             // Calculer le nouveau mana maximum basé sur la nouvelle valeur d'Arcane
             const manaPerLevel = {
-                "1d4": 2,   // Insensible
-                "2d4": 4,   // Eveillé
-                "3d4": 6,   // Novice
-                "4d4": 8,   // Initié
-                "5d4": 10,  // Maître
-                "6d4": 12   // Archimage
+                "2d4": 2,   // Insensible
+                "3d4": 4,   // Eveillé
+                "4d4": 6,   // Novice
+                "5d4": 8,   // Initié
+                "6d4": 10,  // Maître
+                "7d4": 12   // Archimage
             };
             const newMaxMana = manaPerLevel[value] || 2;
             
@@ -909,36 +909,36 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     _getStatLabel(statName, value) {
         const mappings = {
             'martialite': {
-                "1d4": "Incompétent",
-                "2d4": "Combatif",
-                "3d4": "Soldat",
-                "4d4": "Expérimenté",
-                "5d4": "Vétéran",
-                "6d4": "Légende"
+                "2d4": "Incompétent",
+                "3d4": "Combatif",
+                "4d4": "Soldat",
+                "5d4": "Expérimenté",
+                "6d4": "Vétéran",
+                "7d4": "Légende"
             },
             'pimpance': {
-                "1d4": "Tâche",
-                "2d4": "Pas top",
-                "3d4": "Honnête",
-                "4d4": "Beau",
-                "5d4": "Splendide",
-                "6d4": "Ramirez"
+                "2d4": "Tâche",
+                "3d4": "Pas top",
+                "4d4": "Honnête",
+                "5d4": "Beau",
+                "6d4": "Splendide",
+                "7d4": "Ramirez"
             },
             'acuite': {
-                "1d4": "Aveugle",
-                "2d4": "Distrait",
-                "3d4": "Alerte",
-                "4d4": "Vif",
-                "5d4": "Clairvoyant",
-                "6d4": "Fulgurant"
+                "2d4": "Aveugle",
+                "3d4": "Distrait",
+                "4d4": "Alerte",
+                "5d4": "Vif",
+                "6d4": "Clairvoyant",
+                "7d4": "Fulgurant"
             },
             'arcane': {
-                "1d4": "Insensible",
-                "2d4": "Eveillé",
-                "3d4": "Novice",
-                "4d4": "Initié",
-                "5d4": "Maître",
-                "6d4": "Archimage"
+                "2d4": "Insensible",
+                "3d4": "Eveillé",
+                "4d4": "Novice",
+                "5d4": "Initié",
+                "6d4": "Maître",
+                "7d4": "Archimage"
             }
         };
         
@@ -1233,14 +1233,14 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      * @private
      */
     _getTotalMana() {
-        const arcaneValue = this.actor.system.arcane?.value || "1d4";
+        const arcaneValue = this.actor.system.arcane?.value || "2d4";
         const manaPerLevel = {
-            "1d4": 2,   // Insensible
-            "2d4": 4,   // Eveillé
-            "3d4": 6,   // Novice
-            "4d4": 8,   // Initié
-            "5d4": 10,  // Maître
-            "6d4": 12   // Archimage
+            "2d4": 2,   // Insensible
+            "3d4": 4,   // Eveillé
+            "4d4": 6,   // Novice
+            "5d4": 8,   // Initié
+            "6d4": 10,  // Maître
+            "7d4": 12   // Archimage
         };
         return manaPerLevel[arcaneValue] || 2;
     }
@@ -2015,12 +2015,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         if (field === "system.arcane.value") {
             // Calculer le nouveau mana maximum basé sur la nouvelle valeur d'Arcane
             const manaPerLevel = {
-                "1d4": 2,   // Insensible
-                "2d4": 4,   // Eveillé
-                "3d4": 6,   // Novice
-                "4d4": 8,   // Initié
-                "5d4": 10,  // Maître
-                "6d4": 12   // Archimage
+                "2d4": 2,   // Insensible
+                "3d4": 4,   // Eveillé
+                "4d4": 6,   // Novice
+                "5d4": 8,   // Initié
+                "6d4": 10,  // Maître
+                "7d4": 12   // Archimage
             };
             const newMaxMana = manaPerLevel[value] || 2;
             
@@ -2190,12 +2190,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                     } else {
                         // Mode Unsafe: convertir selon la table de conversion et ajouter 1d4
                         const safeToUnsafe = {
-                            "1d4": "1d4",   // Degré 1
-                            "2d4": "1d8",   // Degré 2
-                            "3d4": "1d12",  // Degré 3
-                            "4d4": "1d16",  // Degré 4
-                            "5d4": "1d20",  // Degré 5
-                            "6d4": "1d24"   // Degré 6
+                            "2d4": "1d8",   // Degré 1
+                            "3d4": "1d12",  // Degré 2
+                            "4d4": "1d16",  // Degré 3
+                            "5d4": "1d20",  // Degré 4
+                            "6d4": "1d24",  // Degré 5
+                            "7d4": "1d28"   // Degré 6
                         };
                         const unsafeFormula = safeToUnsafe[statValue] || statValue;
                         const finalFormula = `${unsafeFormula} + 1d4`;
@@ -2315,36 +2315,36 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     _getStatLabel(statName, value) {
         const mappings = {
             'martialite': {
-                "1d4": "Incompétent",
-                "2d4": "Combatif",
-                "3d4": "Soldat",
-                "4d4": "Expérimenté",
-                "5d4": "Vétéran",
-                "6d4": "Légende"
+                "2d4": "Incompétent",
+                "3d4": "Combatif",
+                "4d4": "Soldat",
+                "5d4": "Expérimenté",
+                "6d4": "Vétéran",
+                "7d4": "Légende"
             },
             'pimpance': {
-                "1d4": "Tâche",
-                "2d4": "Pas top",
-                "3d4": "Honnête",
-                "4d4": "Beau",
-                "5d4": "Splendide",
-                "6d4": "Ramirez"
+                "2d4": "Tâche",
+                "3d4": "Pas top",
+                "4d4": "Honnête",
+                "5d4": "Beau",
+                "6d4": "Splendide",
+                "7d4": "Ramirez"
             },
             'acuite': {
-                "1d4": "Aveugle",
-                "2d4": "Distrait",
-                "3d4": "Alerte",
-                "4d4": "Vif",
-                "5d4": "Clairvoyant",
-                "6d4": "Fulgurant"
+                "2d4": "Aveugle",
+                "3d4": "Distrait",
+                "4d4": "Alerte",
+                "5d4": "Vif",
+                "6d4": "Clairvoyant",
+                "7d4": "Fulgurant"
             },
             'arcane': {
-                "1d4": "Insensible",
-                "2d4": "Eveillé",
-                "3d4": "Novice",
-                "4d4": "Initié",
-                "5d4": "Maître",
-                "6d4": "Archimage"
+                "2d4": "Insensible",
+                "3d4": "Eveillé",
+                "4d4": "Novice",
+                "5d4": "Initié",
+                "6d4": "Maître",
+                "7d4": "Archimage"
             }
         };
         
@@ -2563,14 +2563,14 @@ Hooks.once("init", function() {
 
         // Helper pour calculer le mana total basé sur le degré d'Arcane
         Handlebars.registerHelper('getTotalMana', function(actor) {
-            const arcaneValue = actor.system.arcane?.value || "1d4";
+            const arcaneValue = actor.system.arcane?.value || "2d4";
             const manaPerLevel = {
-                "1d4": 2,   // Insensible
-                "2d4": 4,   // Eveillé
-                "3d4": 6,   // Novice
-                "4d4": 8,   // Initié
-                "5d4": 10,  // Maître
-                "6d4": 12   // Archimage
+                "2d4": 2,   // Insensible
+                "3d4": 4,   // Eveillé
+                "4d4": 6,   // Novice
+                "5d4": 8,   // Initié
+                "6d4": 10,  // Maître
+                "7d4": 12   // Archimage
             };
             return manaPerLevel[arcaneValue] || 2;
         });
@@ -2584,12 +2584,12 @@ Hooks.once("init", function() {
         // Helper pour obtenir la formule de dé en mode unsafe
         Handlebars.registerHelper('getUnsafeFormula', function(safeValue) {
             const safeToUnsafe = {
-                "1d4": "1d4",   // Degré 1
-                "2d4": "1d8",   // Degré 2
-                "3d4": "1d12",  // Degré 3
-                "4d4": "1d16",  // Degré 4
-                "5d4": "1d20",  // Degré 5
-                "6d4": "1d24"   // Degré 6
+                "2d4": "1d8",   // Degré 1
+                "3d4": "1d12",  // Degré 2
+                "4d4": "1d16",  // Degré 3
+                "5d4": "1d20",  // Degré 4
+                "6d4": "1d24",  // Degré 5
+                "7d4": "1d28"   // Degré 6
             };
             return safeToUnsafe[safeValue] || safeValue;
         });
