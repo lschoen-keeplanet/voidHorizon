@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Malus d'Agilité dû à l'Armure</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        .code { background: #f4f4f4; padding: 10px; border-radius: 3px; font-family: monospace; }
+        .important { background: #fff3cd; border: 1px solid #ffeaa7; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🎯 Test - Malus d'Agilité dû à l'Armure</h1>
+    
+    <div class="section">
+        <h2>✅ Modifications Apportées</h2>
+        
+        <h3>1. Nouvelle Variable Système</h3>
+        <p>Ajout de <code>armorAgilityPenalty</code> dans <code>template.json</code> :</p>
+        <div class="code">
+            "armorAgilityPenalty": {
+                "value": 0,
+                "label": "Malus d'agilité dû à l'armure"
+            }
+        </div>
+        
+        <h3>2. Initialisation Automatique</h3>
+        <p>La variable est automatiquement initialisée dans <code>getData()</code> et mise à jour quand le type d'armure change.</p>
+        
+        <h3>3. Intégration dans les Jets d'Agilité</h3>
+        <p>Le malus est automatiquement appliqué aux jets d'agilité dans la méthode <code>_rollDice()</code>.</p>
+        
+        <h3>4. Affichage dans les Résultats</h3>
+        <p>Le malus apparaît dans les messages de chat des jets d'agilité avec un style distinctif (rouge).</p>
+        
+        <h3>5. Affichage sous la Caractéristique</h3>
+        <p>Le malus est affiché en temps réel sous la caractéristique Agilité dans la fiche.</p>
+    </div>
+    
+    <div class="section">
+        <h2>🔧 Fonctionnement</h2>
+        
+        <h3>Calcul Automatique</h3>
+        <ul>
+            <li><strong>Tissu :</strong> 0 (pas de malus)</li>
+            <li><strong>Légère :</strong> -4</li>
+            <li><strong>Lourde :</strong> -8</li>
+            <li><strong>Blindée :</strong> -16</li>
+        </ul>
+        
+        <h3>Application dans les Jets</h3>
+        <p>Quand vous lancez un jet d'agilité :</p>
+        <ol>
+            <li>Les dés sont lancés (ex: 3d4 = 8)</li>
+            <li>Les bonus de traits sont ajoutés (ex: +2)</li>
+            <li>Le malus d'armure est appliqué (ex: -4)</li>
+            <li>Résultat final : 8 + 2 - 4 = 6</li>
+        </ol>
+    </div>
+    
+    <div class="section">
+        <h2>🎨 Styles CSS</h2>
+        <p>Ajout du style <code>.roll-penalty</code> pour afficher le malus en rouge dans les résultats de jets.</p>
+    </div>
+    
+    <div class="important">
+        <h3>⚠️ Points Importants</h3>
+        <ul>
+            <li>Le malus est automatiquement calculé et appliqué</li>
+            <li>Il n'affecte que les jets d'agilité</li>
+            <li>La variable est persistante et mise à jour en temps réel</li>
+            <li>L'affichage est cohérent avec le reste de l'interface</li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2>🧪 Comment Tester</h2>
+        <ol>
+            <li>Ouvrez une fiche de personnage</li>
+            <li>Changez le type d'armure (Tissu → Légère → Lourde → Blindée)</li>
+            <li>Vérifiez que le malus s'affiche sous la caractéristique Agilité</li>
+            <li>Lancez un jet d'agilité (Safe ou Unsafe)</li>
+            <li>Vérifiez que le malus apparaît dans le message de chat</li>
+            <li>Vérifiez que le résultat final inclut le malus</li>
+        </ol>
+    </div>
+</body>
+</html>

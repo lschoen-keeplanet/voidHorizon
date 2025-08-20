@@ -143,9 +143,9 @@
                             </div>
                             <!-- Affichage du malus d'agilité dû à l'armure -->
                             <div class="agility-penalty-display">
-                                {{#if (gt (helpers.getAgilityPenalty actor) 0)}}
+                                {{#if (gt actor.system.armorAgilityPenalty.value 0)}}
                                     <span class="penalty-info">
-                                        <i class="fas fa-exclamation-triangle"></i> Malus d'armure: {{helpers.getAgilityPenalty actor}}
+                                        <i class="fas fa-exclamation-triangle"></i> Malus d'armure: {{actor.system.armorAgilityPenalty.value}}
                                     </span>
                                 {{else}}
                                     <span class="penalty-info no-penalty">
@@ -197,46 +197,6 @@
                         
                         <div class="stat-block">
                             <div class="stat-header">
-                                        <img src="systems/voidHorizon/assets/icons/arcane.png" class="stat-icon"
-                                            alt="Arcane">
-                                <label class="rollable" data-stat="arcane">Arcane</label>
-                            </div>
-                            <div class="stat-controls">
-                                <select name="system.arcane.value" class="edit-mode">
-                                    {{#select system.arcane.value}}
-                                    <option value="2d4">Insensible</option>
-                                            <option value="3d4">Eveillé</option>
-                                            <option value="4d4">Novice</option>
-                                            <option value="5d4">Initié</option>
-                                            <option value="6d4">Maître</option>
-                                            <option value="7d4">Archimage</option>
-                                    {{/select}}
-                                </select>
-                                        <div class="read-mode">{{helpers.getSelectedText actor.system.arcane.value
-                                            "arcane"}}</div>
-                            </div>
-                                    <div class="roll-buttons">
-                                        <button type="button" class="roll-dice-btn safe" data-stat="arcane" data-unsafe="false"
-                                            title="Lancer les dés d'Arcane (Mode Safe - {{system.arcane.value}})">
-                                            <i class="fas fa-shield-alt"></i> Safe
-                                        </button>
-                                        <button type="button" class="roll-dice-btn unsafe" data-stat="arcane" data-unsafe="true"
-                                            title="Lancer les dés d'Arcane (Mode Unsafe - {{helpers.getUnsafeFormula system.arcane.value}})">
-                                            <i class="fas fa-skull-crossbones"></i> Unsafe
-                            </button>
-                                    </div>
-                                    <div class="dice-ranges">
-                                        <span class="range-info safe-range">
-                                            <i class="fas fa-shield-alt"></i> {{helpers.getSafeRange system.arcane.value}}
-                                        </span>
-                                        <span class="range-info unsafe-range">
-                                            <i class="fas fa-skull-crossbones"></i> {{helpers.getUnsafeRange system.arcane.value}}
-                                        </span>
-                                    </div>
-                        </div>
-                        
-                        <div class="stat-block">
-                            <div class="stat-header">
                                         <img src="systems/voidHorizon/assets/icons/pimpance.png" class="stat-icon"
                                             alt="Pimpance">
                                 <label class="rollable" data-stat="pimpance">Pimpance</label>
@@ -271,6 +231,46 @@
                                         </span>
                                         <span class="range-info unsafe-range">
                                             <i class="fas fa-skull-crossbones"></i> {{helpers.getUnsafeRange system.pimpance.value}}
+                                        </span>
+                                    </div>
+                        </div>
+                        
+                        <div class="stat-block">
+                            <div class="stat-header">
+                                        <img src="systems/voidHorizon/assets/icons/arcane.png" class="stat-icon"
+                                            alt="Arcane">
+                                <label class="rollable" data-stat="arcane">Arcane</label>
+                            </div>
+                            <div class="stat-controls">
+                                <select name="system.arcane.value" class="edit-mode">
+                                    {{#select system.arcane.value}}
+                                    <option value="2d4">Insensible</option>
+                                            <option value="3d4">Eveillé</option>
+                                            <option value="4d4">Novice</option>
+                                            <option value="5d4">Initié</option>
+                                            <option value="6d4">Maître</option>
+                                            <option value="7d4">Archimage</option>
+                                    {{/select}}
+                                </select>
+                                        <div class="read-mode">{{helpers.getSelectedText actor.system.arcane.value
+                                            "arcane"}}</div>
+                            </div>
+                                    <div class="roll-buttons">
+                                        <button type="button" class="roll-dice-btn safe" data-stat="arcane" data-unsafe="false"
+                                            title="Lancer les dés d'Arcane (Mode Safe - {{system.arcane.value}})">
+                                            <i class="fas fa-shield-alt"></i> Safe
+                                        </button>
+                                        <button type="button" class="roll-dice-btn unsafe" data-stat="arcane" data-unsafe="true"
+                                            title="Lancer les dés d'Arcane (Mode Unsafe - {{helpers.getUnsafeFormula system.arcane.value}})">
+                                            <i class="fas fa-skull-crossbones"></i> Unsafe
+                            </button>
+                                    </div>
+                                    <div class="dice-ranges">
+                                        <span class="range-info safe-range">
+                                            <i class="fas fa-shield-alt"></i> {{helpers.getSafeRange system.arcane.value}}
+                                        </span>
+                                        <span class="range-info unsafe-range">
+                                            <i class="fas fa-skull-crossbones"></i> {{helpers.getUnsafeRange system.arcane.value}}
                                         </span>
                                     </div>
                         </div>

@@ -33,6 +33,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             data.actor.system.resources.armorDamage = { value: 0 };
         }
         
+        // S'assurer que le malus d'agilité dû à l'armure existe
+        if (!data.actor.system.armorAgilityPenalty) {
+            data.actor.system.armorAgilityPenalty = { value: 0 };
+        }
+        
         // S'assurer que le mana existe et est initialisé avec la valeur maximale
         if (!data.actor.system.mana) {
             data.actor.system.mana = { value: 0, max: 0 };
@@ -1068,7 +1073,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     /**
-     * Calcule le malus d'agilité basé sur le type d'armure
+     * Calcule le malus d'agilité basé sur le type d'armure et le met à jour dans le système
      * @returns {number} - Malus d'agilité (négatif)
      * @private
      */
@@ -1080,7 +1085,16 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             'lourde': -8,    // Malus de 8
             'blindee': -16   // Malus de 16
         };
-        return penaltyMap[armorType] || 0;
+        const penalty = penaltyMap[armorType] || 0;
+        
+        // Mettre à jour la variable système si elle a changé
+        if (this.actor.system.armorAgilityPenalty?.value !== penalty) {
+            this.actor.update({
+                'system.armorAgilityPenalty.value': penalty
+            });
+        }
+        
+        return penalty;
     }
     
     /**
@@ -2546,16 +2560,23 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Récupérer le bonus de trait pour cette caractéristique
         const traitBonus = this.actor.system.traitBonuses?.[stat] || 0;
         
-        // Calculer le résultat final avec bonus
-        const baseResult = roll.total;
-        const finalResult = baseResult + traitBonus;
+        // Appliquer le malus d'agilité si c'est un jet d'agilité
+        let agilityPenalty = 0;
+        if (stat === 'agilite') {
+            agilityPenalty = this._getAgilityPenalty();
+        }
         
-        console.log(`Lancer de ${diceFormula} pour ${stat} (${isUnsafe ? 'Unsafe' : 'Safe'}): ${baseResult} + bonus trait ${traitBonus} = ${finalResult}`);
+        // Calculer le résultat final avec bonus et malus
+        const baseResult = roll.total;
+        const finalResult = baseResult + traitBonus + agilityPenalty;
+        
+        console.log(`Lancer de ${diceFormula} pour ${stat} (${isUnsafe ? 'Unsafe' : 'Safe'}): ${baseResult} + bonus trait ${traitBonus} + malus agilité ${agilityPenalty} = ${finalResult}`);
         
         return {
             roll: roll,
             baseResult: baseResult,
             traitBonus: traitBonus,
+            agilityPenalty: agilityPenalty,
             finalResult: finalResult
         };
     }
@@ -2627,6 +2648,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                                     <p><strong>Formule:</strong> ${formula}</p>
                                     <p><strong>Résultat des dés:</strong> <span class="roll-base">${baseResult}</span></p>
                                     ${traitBonus > 0 ? `<p><strong>Bonus de trait:</strong> <span class="roll-bonus">+${traitBonus}</span></p>` : ''}
+                                    ${rollData.agilityPenalty < 0 ? `<p><strong>Malus d'armure:</strong> <span class="roll-penalty">${rollData.agilityPenalty}</span></p>` : ''}
                                     <p><strong>Résultat final:</strong> <span class="roll-total">${finalResult}</span></p>
                                 </div>
                                 <div class="roll-dice">

@@ -115,6 +115,10 @@
                     "name": "",
                     "type": "tissu",
                     "description": ""
+                },
+                "armorAgilityPenalty": {
+                    "value": 0,
+                    "label": "Malus d'agilité dû à l'armure"
                 }
                 }
             }
