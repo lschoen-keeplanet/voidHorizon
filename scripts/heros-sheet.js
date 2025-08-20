@@ -2110,14 +2110,14 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     async _onRollStat(event) {
         event.preventDefault();
         const stat = event.currentTarget.dataset.stat;
-        console.log(`Lancement de dés pour ${stat}`);
+        console.log(`Lancement de dés pour ${stat} (mode Safe par défaut)`);
         
         // Recalculer les bonus des traits avant le jet
         this._recalculateTraitBonuses();
         
         try {
             // Obtenir la valeur de la caractéristique
-            const statValue = this.actor.system[stat]?.value || "1d4";
+            const statValue = this.actor.system[stat]?.value || "2d4";
             console.log(`Valeur de ${stat}: ${statValue}`);
             
             // Lancer en mode Safe par défaut
@@ -2125,10 +2125,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             console.log(`Formule de dés (Safe): ${diceFormula}`);
             
             // Lancer les dés
-            const roll = await this._rollDice(diceFormula, stat, false);
+            const rollData = await this._rollDice(diceFormula, stat, false);
             
             // Afficher le résultat
-            this._displayRollResult(roll, stat, false);
+            this._displayRollResult(rollData, stat, false);
             
         } catch (error) {
             console.error(`Erreur lors du lancement de dés pour ${stat}:`, error);
@@ -2204,11 +2204,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 }
     
     /**
-     * Lance les dés avec la formule donnée
+     * Lance les dés avec la formule donnée et applique les bonus de traits
      * @param {string} diceFormula - La formule de dés (ex: "3d4" ou "1d12")
      * @param {string} stat - Le nom de la caractéristique
      * @param {boolean} isUnsafe - Si c'est en mode unsafe
-     * @returns {Promise<Roll>} - Le résultat du lancer
+     * @returns {Promise<Object>} - Le résultat du lancer avec bonus
      * @private
      */
     async _rollDice(diceFormula, stat, isUnsafe) {
@@ -2218,23 +2218,37 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Lancer les dés
         await roll.evaluate({async: true});
         
-        console.log(`Lancer de ${diceFormula} pour ${stat} (${isUnsafe ? 'Unsafe' : 'Safe'}): ${roll.total}`);
+        // Récupérer le bonus de trait pour cette caractéristique
+        const traitBonus = this.actor.system.traitBonuses?.[stat] || 0;
         
-        return roll;
+        // Calculer le résultat final avec bonus
+        const baseResult = roll.total;
+        const finalResult = baseResult + traitBonus;
+        
+        console.log(`Lancer de ${diceFormula} pour ${stat} (${isUnsafe ? 'Unsafe' : 'Safe'}): ${baseResult} + bonus trait ${traitBonus} = ${finalResult}`);
+        
+        return {
+            roll: roll,
+            baseResult: baseResult,
+            traitBonus: traitBonus,
+            finalResult: finalResult
+        };
     }
     
     /**
      * Affiche le résultat du lancer de dés
-     * @param {Roll} roll - Le résultat du lancer
+     * @param {Object} rollData - Le résultat du lancer avec bonus
      * @param {string} stat - Le nom de la caractéristique
      * @param {boolean} isUnsafe - Si c'est en mode unsafe
      * @private
      */
-    _displayRollResult(roll, stat, isUnsafe) {
-        const statLabel = this._getStatLabel(stat, this.actor.system[stat]?.value || "1d4");
+    _displayRollResult(rollData, stat, isUnsafe) {
+        const statLabel = this._getStatLabel(stat, this.actor.system[stat]?.value || "2d4");
         const modeLabel = isUnsafe ? "Unsafe" : "Safe";
-        const formula = roll.formula;
-        const total = roll.total;
+        const formula = rollData.roll.formula;
+        const baseResult = rollData.baseResult;
+        const traitBonus = rollData.traitBonus;
+        const finalResult = rollData.finalResult;
         
         // Créer un message de chat avec le résultat
         const chatData = {
@@ -2247,10 +2261,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                         <p><strong>Caractéristique:</strong> ${statLabel}</p>
                         <p><strong>Mode:</strong> ${modeLabel}</p>
                         <p><strong>Formule:</strong> ${formula}</p>
-                        <p><strong>Résultat:</strong> <span class="roll-total">${total}</span></p>
+                        <p><strong>Résultat des dés:</strong> <span class="roll-base">${baseResult}</span></p>
+                        ${traitBonus > 0 ? `<p><strong>Bonus de trait:</strong> <span class="roll-bonus">+${traitBonus}</span></p>` : ''}
+                        <p><strong>Résultat final:</strong> <span class="roll-total">${finalResult}</span></p>
                     </div>
                     <div class="roll-dice">
-                        ${roll.dice.map(die => `
+                        ${rollData.roll.dice.map(die => `
                             <div class="die-result">
                                 <span class="die-formula">${die.formula}</span>: 
                                 <span class="die-values">[${die.results.map(r => r.result).join(', ')}]</span>
@@ -2260,14 +2276,14 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 </div>
             `,
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-            roll: roll
+            roll: rollData.roll
         };
         
         // Envoyer le message dans le chat
         ChatMessage.create(chatData);
         
         // Notification rapide
-        ui.notifications.info(`${statLabel} (${modeLabel}): ${total}`);
+        ui.notifications.info(`${statLabel} (${modeLabel}): ${finalResult}`);
     }
 
     /**
