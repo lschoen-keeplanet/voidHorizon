@@ -63,16 +63,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             data.actor.system.traitBonuses = {};
         }
         
-        // Initialiser les nouveaux bonus de protection s'ils n'existent pas
-        if (!data.actor.system.traitBonuses.bonusEsquive) {
-            data.actor.system.traitBonuses.bonusEsquive = 0;
-        }
-        if (!data.actor.system.traitBonuses.bonusBlocage) {
-            data.actor.system.traitBonuses.bonusBlocage = 0;
-        }
-        if (!data.actor.system.traitBonuses.bonusParade) {
-            data.actor.system.traitBonuses.bonusParade = 0;
-        }
+
         
         // Initialiser le mana avec la valeur maximale basée sur l'Arcane si c'est la première fois
         if (data.actor.system.mana.value === 0 && data.actor.system.mana.max === 0) {
@@ -1722,9 +1713,14 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             const trait = traits[traitId];
             if (!trait || trait === null) continue;
             
-            totalBonusEsquive += trait.bonusEsquive || 0;
-            totalBonusBlocage += trait.bonusBlocage || 0;
-            totalBonusParade += trait.bonusParade || 0;
+            // Si le trait a un bonusTarget qui correspond à une protection
+            if (trait.bonusTarget === 'bonusEsquive') {
+                totalBonusEsquive += trait.bonusValue || 0;
+            } else if (trait.bonusTarget === 'bonusBlocage') {
+                totalBonusBlocage += trait.bonusValue || 0;
+            } else if (trait.bonusTarget === 'bonusParade') {
+                totalBonusParade += trait.bonusValue || 0;
+            }
         }
         
         // Ajouter les bonus de protection au total
@@ -2124,9 +2120,6 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         this.element.find('#trait-description-input').val('');
         this.element.find('#trait-bonus-target').val('');
         this.element.find('#trait-bonus-value').val('');
-        this.element.find('#trait-bonus-esquive').val('0');
-        this.element.find('#trait-bonus-blocage').val('0');
-        this.element.find('#trait-bonus-parade').val('0');
         
         // Focus sur le premier champ
         this.element.find('#trait-name-input').focus();
@@ -2145,10 +2138,15 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const bonusTarget = this.element.find('#trait-bonus-target').val();
         const bonusValue = parseInt(this.element.find('#trait-bonus-value').val()) || 0;
         
-        // Récupérer les nouveaux bonus de protection
-        const bonusEsquive = parseInt(this.element.find('#trait-bonus-esquive').val()) || 0;
-        const bonusBlocage = parseInt(this.element.find('#trait-bonus-blocage').val()) || 0;
-        const bonusParade = parseInt(this.element.find('#trait-bonus-parade').val()) || 0;
+        // Create trait data object
+        const traitData = {
+            name: name,
+            description: description,
+            bonusTarget: bonusTarget,
+            bonusValue: bonusValue
+        };
+        
+
         
         // Validation
         if (!name) {
@@ -2157,7 +2155,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         }
         
         if (!bonusTarget) {
-            ui.notifications.warn('Veuillez sélectionner une caractéristique pour le bonus');
+            ui.notifications.warn('Veuillez sélectionner une cible pour le bonus');
             return;
         }
         
@@ -2172,10 +2170,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                     name: name,
                     description: description,
                     bonusTarget: bonusTarget,
-                    bonusValue: bonusValue,
-                    bonusEsquive: bonusEsquive,
-                    bonusBlocage: bonusBlocage,
-                    bonusParade: bonusParade
+                    bonusValue: bonusValue
                 };
                 
                 await this.actor.update({
@@ -2195,10 +2190,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                     name: name,
                     description: description,
                     bonusTarget: bonusTarget,
-                    bonusValue: bonusValue,
-                    bonusEsquive: bonusEsquive,
-                    bonusBlocage: bonusBlocage,
-                    bonusParade: bonusParade
+                    bonusValue: bonusValue
                 };
                 
                 await this.actor.update({
@@ -2245,9 +2237,6 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         this.element.find('#trait-description-input').val('');
         this.element.find('#trait-bonus-target').val('');
         this.element.find('#trait-bonus-value').val('');
-        this.element.find('#trait-bonus-esquive').val('0');
-        this.element.find('#trait-bonus-blocage').val('0');
-        this.element.find('#trait-bonus-parade').val('0');
         
         // Réinitialiser le bouton de sauvegarde
         const saveButton = this.element.find('#trait-save-btn');
@@ -2283,10 +2272,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         this.element.find('#trait-bonus-target').val(trait.bonusTarget);
         this.element.find('#trait-bonus-value').val(trait.bonusValue);
         
-        // Remplir les nouveaux champs de bonus de protection
-        this.element.find('#trait-bonus-esquive').val(trait.bonusEsquive || 0);
-        this.element.find('#trait-bonus-blocage').val(trait.bonusBlocage || 0);
-        this.element.find('#trait-bonus-parade').val(trait.bonusParade || 0);
+
         
         // Changer le titre et le bouton de sauvegarde
         formContainer.find('h4').text('Modifier le trait');

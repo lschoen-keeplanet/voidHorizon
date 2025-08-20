@@ -572,7 +572,7 @@
                                                 <div class="trait-field">
                                                     <label>Bonus sur:</label>
                                                     <select id="trait-bonus-target" data-no-save="true">
-                                                        <option value="">Sélectionner une caractéristique</option>
+                                                        <option value="">Aucun</option>
                                                         <option value="martialite">Martialité</option>
                                                         <option value="pimpance">Pimpance</option>
                                                         <option value="acuite">Acuité</option>
@@ -580,25 +580,14 @@
                                                         <option value="agilite">Agilité</option>
                                                         <option value="armor">Armure</option>
                                                         <option value="constitution">Constitution</option>
+                                                        <option value="bonusEsquive">Esquive</option>
+                                                        <option value="bonusBlocage">Blocage</option>
+                                                        <option value="bonusParade">Parade</option>
                                                     </select>
                                                 </div>
                                                 <div class="trait-field">
                                                     <label>Valeur du bonus:</label>
-                                                    <input type="number" id="trait-bonus-value" placeholder="+1" min="-5" max="10" data-no-save="true" />
-                                                </div>
-                                                
-                                                <!-- Nouveaux champs pour les bonus de protection -->
-                                                <div class="trait-field">
-                                                    <label>Bonus d'Esquive:</label>
-                                                    <input type="number" id="trait-bonus-esquive" placeholder="+0" min="0" max="10" data-no-save="true" />
-                                                </div>
-                                                <div class="trait-field">
-                                                    <label>Bonus de Blocage:</label>
-                                                    <input type="number" id="trait-bonus-blocage" placeholder="+0" min="0" max="10" data-no-save="true" />
-                                                </div>
-                                                <div class="trait-field">
-                                                    <label>Bonus de Parade:</label>
-                                                    <input type="number" id="trait-bonus-parade" placeholder="+0" min="0" max="10" data-no-save="true" />
+                                                    <input type="number" id="trait-bonus-value" placeholder="+0" min="0" max="10" data-no-save="true" />
                                                 </div>
                                             </div>
                                             <div class="trait-form-actions">
@@ -619,16 +608,9 @@
                                             <div class="trait-header">
                                                 <div class="trait-name">
                                                     <h4>{{trait.name}}</h4>
-                                                    <span class="trait-bonus-display">
-                                                        {{#if trait.bonusValue}}+{{/if}}{{trait.bonusValue}} {{trait.bonusTarget}}
-                                                    </span>
-                                                    {{#if (or trait.bonusEsquive trait.bonusBlocage trait.bonusParade)}}
-                                                    <div class="trait-protection-bonuses">
-                                                        {{#if trait.bonusEsquive}}<span class="protection-bonus">Esquive: +{{trait.bonusEsquive}}</span>{{/if}}
-                                                        {{#if trait.bonusBlocage}}<span class="protection-bonus">Blocage: +{{trait.bonusBlocage}}</span>{{/if}}
-                                                        {{#if trait.bonusParade}}<span class="protection-bonus">Parade: +{{trait.bonusParade}}</span>{{/if}}
-                                                    </div>
-                                                    {{/if}}
+                                                                    <span class="trait-bonus-display">
+                    {{#if trait.bonusValue}}+{{/if}}{{trait.bonusValue}} {{trait.bonusTarget}}
+                </span>
                                                 </div>
                                                 <div class="trait-controls">
                                                     <button type="button" class="trait-control trait-edit" title="Modifier" data-trait-id="{{traitId}}">
