@@ -560,27 +560,19 @@
                                 </div>
                                 <div class="armor-source">
                                     <span class="source-label">Équipement:</span>
-                                    <span class="source-value">{{#if (eq actor.system.armor.type "legere")}}+1{{else if (eq actor.system.armor.type "lourde")}}+2{{else if (eq actor.system.armor.type "blindee")}}+4{{else}}+0{{/if}}</span>
+                                    <span class="source-value">{{#if (eq actor.system.armor.type 'tissu')}}+0{{else if (eq actor.system.armor.type 'legere')}}+1{{else if (eq actor.system.armor.type 'lourde')}}+2{{else if (eq actor.system.armor.type 'blindee')}}+4{{else}}+0{{/if}}</span>
                                 </div>
                                 <div class="armor-source">
                                     <span class="source-label">Traits:</span>
-                                    <span class="source-value">{{#if (gt (get actor.system.traitBonuses.armor 0) 0)}}+{{/if}}{{get actor.system.traitBonuses.armor 0}}</span>
+                                    <span class="source-value">{{#if (gt actor.system.traitBonuses.armor 0)}}+{{/if}}{{actor.system.traitBonuses.armor}}</span>
                                 </div>
                                 <div class="armor-source">
                                     <span class="source-label">Boucliers:</span>
-                                    <span class="source-value">{{#if (or (eq actor.system.weapons.primary.type "shield") (eq actor.system.weapons.secondary.type "shield"))}}
-                                        {{#if (eq actor.system.weapons.primary.type "shield")}}
-                                            {{#if (gt actor.system.weapons.primary.bonus 0)}}+{{/if}}{{actor.system.weapons.primary.bonus}}
-                                        {{/if}}
-                                        {{#if (and (eq actor.system.weapons.primary.type "shield") (eq actor.system.weapons.secondary.type "shield"))}} + {{/if}}
-                                        {{#if (eq actor.system.weapons.secondary.type "shield")}}
-                                            {{#if (gt actor.system.weapons.secondary.bonus 0)}}+{{/if}}{{actor.system.weapons.secondary.bonus}}
-                                        {{/if}}
-                                    {{else}}+0{{/if}}</span>
+                                    <span class="source-value">{{#if (eq actor.system.weapons.primary.type 'shield')}}{{#if (gt actor.system.weapons.primary.bonus 0)}}+{{/if}}{{actor.system.weapons.primary.bonus}}{{/if}}{{#if (eq actor.system.weapons.secondary.type 'shield')}}{{#if (gt actor.system.weapons.secondary.bonus 0)}}+{{/if}}{{actor.system.weapons.secondary.bonus}}{{/if}}</span>
                                 </div>
-                                <div class="armor-total">
-                                    <span class="total-label">Total:</span>
-                                    <span class="total-value">{{getTotalArmor actor}}</span>
+                                <div class="armor-source total">
+                                    <span class="source-label">Total:</span>
+                                    <span class="source-value">{{getTotalArmor actor}}</span>
                                 </div>
                             </div>
                         </div>
@@ -598,7 +590,7 @@
                                 </div>
                                 <div class="armor-source">
                                     <span class="source-label">Traits:</span>
-                                    <span class="source-value">{{#if (gt (get actor.system.traitBonuses.constitution 0) 0)}}+{{/if}}{{get actor.system.traitBonuses.constitution 0}}</span>
+                                    <span class="source-value">{{#if (gt actor.system.traitBonuses.constitution 0)}}+{{/if}}{{actor.system.traitBonuses.constitution}}</span>
                                 </div>
                                 <div class="armor-source">
                                     <span class="source-label">Équipement:</span>
