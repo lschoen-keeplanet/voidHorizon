@@ -254,6 +254,14 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         // Recalculer les bonus des traits avant chaque jet de dé
         this._recalculateTraitBonuses();
+        
+        // Attendre 2 secondes puis recalculer les boucliers pour s'assurer que l'affichage est à jour
+        setTimeout(() => {
+            console.log("Délai de 2 secondes écoulé, recalcul des boucliers...");
+            this._applyTraitBonuses();
+            this._updateShieldsDisplay();
+            console.log("Recalcul des boucliers terminé après délai");
+        }, 2000);
     }
 
     /**
