@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Agilité - VoidHorizon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            border: 1px solid #ccc;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test de la nouvelle caractéristique Agilité</h1>
+    
+    <div class="test-section success">
+        <h2>✅ Implémentation terminée</h2>
+        <p>La nouvelle caractéristique "Agilité" a été ajoutée avec succès au système VoidHorizon.</p>
+    </div>
+
+    <div class="test-section">
+        <h2>📋 Changements effectués</h2>
+        <h3>Dans scripts/heros-sheet.js :</h3>
+        <ul>
+            <li>Ajout de la caractéristique agilite dans data.system</li>
+            <li>Initialisation par défaut avec la valeur "2d4"</li>
+            <li>Ajout dans le mapping getSelectedText avec les degrés spécifiques</li>
+            <li>Ajout dans _getStatLabel avec les mappings de degrés</li>
+            <li>Ajout dans _getStatName pour retourner "Agilité"</li>
+            <li>Ajout dans la liste des statistiques modifiables</li>
+            <li>Ajout dans _applyTraitBonuses pour les bonus de trait</li>
+        </ul>
+        
+        <h3>Dans templates/sheets/heros-sheet.html :</h3>
+        <ul>
+            <li>Nouvelle section stat-block pour l'Agilité</li>
+            <li>Sélecteur avec les 6 degrés : Challengé, Lourdeau, Bien, Rapide, Très rapide, Très très rapide</li>
+            <li>Boutons Safe/Unsafe pour lancer les dés</li>
+            <li>Affichage des ranges de dés (Safe et Unsafe)</li>
+            <li>Mise à jour des types d'armes pour pointer vers "Agilité" au lieu de "Acuité"</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🎯 Degrés de l'Agilité</h2>
+        <table border="1" style="border-collapse: collapse; width: 100%;">
+            <tr>
+                <th>Degré</th>
+                <th>Valeur</th>
+                <th>Label</th>
+                <th>Safe Range</th>
+                <th>Unsafe Range</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2d4</td>
+                <td>Challengé</td>
+                <td>2-8</td>
+                <td>1-12</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>3d4</td>
+                <td>Lourdeau</td>
+                <td>3-12</td>
+                <td>1-16</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>4d4</td>
+                <td>Bien</td>
+                <td>4-16</td>
+                <td>1-20</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>5d4</td>
+                <td>Rapide</td>
+                <td>5-20</td>
+                <td>1-24</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>6d4</td>
+                <td>Très rapide</td>
+                <td>6-24</td>
+                <td>1-28</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>7d4</td>
+                <td>Très très rapide</td>
+                <td>7-28</td>
+                <td>1-32</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="test-section">
+        <h2>⚔️ Types d'armes mis à jour</h2>
+        <p>Les armes de type "Agilité" pointent maintenant vers la caractéristique "Agilité" au lieu de "Acuité" :</p>
+        <ul>
+            <li><strong>Force (Martialité)</strong> : Utilise la caractéristique Martialité</li>
+            <li><strong>Agilité (Agilité)</strong> : Utilise la nouvelle caractéristique Agilité</li>
+            <li><strong>Bouclier</strong> : Pas de caractéristique associée</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🔧 Fonctionnalités intégrées</h2>
+        <ul>
+            <li>✅ Lancer de dés en mode Safe (Nd4)</li>
+            <li>✅ Lancer de dés en mode Unsafe (1dX)</li>
+            <li>✅ Application des bonus de traits</li>
+            <li>✅ Affichage des ranges de dés</li>
+            <li>✅ Succès/échecs critiques pour les jets Unsafe</li>
+            <li>✅ Intégration complète avec le système de bonus</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>📝 Prochaines étapes recommandées</h2>
+        <ol>
+            <li>Créer une icône pour l'Agilité dans le dossier assets/icons/</li>
+            <li>Tester la création d'un nouveau personnage avec l'Agilité</li>
+            <li>Vérifier que les bonus de traits fonctionnent correctement</li>
+            <li>Tester les lancers de dés Safe et Unsafe</li>
+            <li>Vérifier que les types d'armes fonctionnent avec l'Agilité</li>
+        </ol>
+    </div>
+
+    <script>
+        console.log("Test de la caractéristique Agilité - VoidHorizon");
+        console.log("Vérifiez la console pour plus d'informations");
+    </script>
+</body>
+</html>

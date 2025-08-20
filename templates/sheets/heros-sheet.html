@@ -222,6 +222,47 @@
                                         </span>
                                     </div>
                         </div>
+                        
+                        <div class="stat-block">
+                            <div class="stat-header">
+                                <img src="systems/voidHorizon/assets/icons/agilite.png" class="stat-icon"
+                                    alt="Agilité">
+                                <label class="rollable" data-stat="agilite">Agilité</label>
+                            </div>
+                            <div class="stat-controls">
+                                <select name="system.agilite.value" class="edit-mode">
+                                    {{#select system.agilite.value}}
+                                        <option value="2d4">Challengé</option>
+                                        <option value="3d4">Lourdeau</option>
+                                        <option value="4d4">Bien</option>
+                                        <option value="5d4">Rapide</option>
+                                        <option value="6d4">Très rapide</option>
+                                        <option value="7d4">Très très rapide</option>
+                                    {{/select}}
+                                </select>
+                                <div class="read-mode">{{helpers.getSelectedText actor.system.agilite.value
+                                    "agilite"}}</div>
+                            </div>
+                            <div class="roll-buttons">
+                                <button type="button" class="roll-dice-btn safe" data-stat="agilite" data-unsafe="false"
+                                    title="Lancer les dés d'Agilité (Mode Safe - {{system.agilite.value}})">
+                                    <i class="fas fa-shield-alt"></i> Safe
+                                </button>
+                                <button type="button" class="roll-dice-btn unsafe" data-stat="agilite" data-unsafe="true"
+                                    title="Lancer les dés d'Agilité (Mode Unsafe - {{helpers.getUnsafeFormula system.agilite.value}})">
+                                    <i class="fas fa-skull-crossbones"></i> Unsafe
+                                </button>
+                            </div>
+                            <div class="dice-ranges">
+                                <span class="range-info safe-range">
+                                    <i class="fas fa-shield-alt"></i> {{helpers.getSafeRange system.agilite.value}}
+                                </span>
+                                <span class="range-info unsafe-range">
+                                    <i class="fas fa-skull-crossbones"></i> {{helpers.getUnsafeRange system.agilite.value}}
+                                </span>
+                            </div>
+                        </div>
+                        
                         <div class="edit-mode-button">
                                     <button type="button" class="toggle-edit-mode"
                                         title="Cliquer pour éditer, cliquer à nouveau pour sauvegarder">
@@ -267,7 +308,7 @@
                                                                 actor.system.weapons.primary.type}}>Force (Martialité)
                                                             </option>
                                                             <option value="agility" {{selected "agility"
-                                                                actor.system.weapons.primary.type}}>Agilité (Acuité)
+                                                                actor.system.weapons.primary.type}}>Agilité (Agilité)
                                                             </option>
                                                             <option value="shield" {{selected "shield"
                                                                 actor.system.weapons.primary.type}}>Bouclier</option>
@@ -275,7 +316,7 @@
                                                         <div class="read-mode">{{#if (eq
                                                             actor.system.weapons.primary.type "strength")}}Force
                                                             (Martialité){{else if (eq actor.system.weapons.primary.type
-                                                            "agility")}}Agilité (Acuité){{else if (eq
+                                                            "agility")}}Agilité (Agilité){{else if (eq
                                                             actor.system.weapons.primary.type
                                                             "shield")}}Bouclier{{else}}Non défini{{/if}}</div>
                                                     </div>
@@ -353,7 +394,7 @@
                                                                 actor.system.weapons.secondary.type}}>Force (Martialité)
                                                             </option>
                                                             <option value="agility" {{selected "agility"
-                                                                actor.system.weapons.secondary.type}}>Agilité (Acuité)
+                                                                actor.system.weapons.secondary.type}}>Agilité (Agilité)
                                                             </option>
                                                             <option value="shield" {{selected "shield"
                                                                 actor.system.weapons.secondary.type}}>Bouclier</option>
@@ -362,7 +403,7 @@
                                                             actor.system.weapons.secondary.type "strength")}}Force
                                                             (Martialité){{else if (eq
                                                             actor.system.weapons.secondary.type "agility")}}Agilité
-                                                            (Acuité){{else if (eq actor.system.weapons.secondary.type
+                                                            (Agilité){{else if (eq actor.system.weapons.secondary.type
                                                             "shield")}}Bouclier{{else}}Non défini{{/if}}</div>
                                                     </div>
                                                     <div class="weapon-field">

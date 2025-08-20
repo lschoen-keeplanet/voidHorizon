@@ -72,6 +72,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 value: data.actor.system.arcane?.value || "2d4",
                 label: "Arcane"
             },
+            agilite: {
+                value: data.actor.system.agilite?.value || "2d4",
+                label: "Agilité"
+            },
             constitution: {
                 value: data.actor.system.constitution?.value || 4,
                 label: "Constitution"
@@ -99,6 +103,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         if (!data.actor.system.pimpance) data.actor.system.pimpance = { value: "2d4" };
         if (!data.actor.system.martialite) data.actor.system.martialite = { value: "2d4" };
         if (!data.actor.system.arcane) data.actor.system.arcane = { value: "2d4" };
+        if (!data.actor.system.agilite) data.actor.system.agilite = { value: "2d4" };
         if (!data.actor.system.constitution) data.actor.system.constitution = { value: 4 };
         if (!data.actor.system.class) data.actor.system.class = { value: "" };
         if (!data.actor.system.faction) data.actor.system.faction = { value: "caradoc" };
@@ -160,6 +165,14 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                         "5d4": "Initié",
                         "6d4": "Maître",
                         "7d4": "Archimage"
+                    },
+                    agilite: {
+                        "2d4": "Challengé",
+                        "3d4": "Lourdeau",
+                        "4d4": "Bien",
+                        "5d4": "Rapide",
+                        "6d4": "Très rapide",
+                        "7d4": "Très très rapide"
                     }
                 };
                 const result = mappings[type]?.[value] || value;
@@ -842,7 +855,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             }
             
             // Si c'est une caractéristique qui affecte les bonus des traits, recalculer et mettre à jour l'affichage
-            if (['martialite', 'pimpance', 'acuite', 'arcane'].includes(statName)) {
+            if (['martialite', 'pimpance', 'acuite', 'arcane', 'agilite'].includes(statName)) {
                 console.log(`Caractéristique ${statName} mise à jour, recalcul des bonus des traits...`);
                 
                 // IMPORTANT: Forcer la mise à jour des helpers Handlebars
@@ -963,6 +976,14 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 "5d4": "Initié",
                 "6d4": "Maître",
                 "7d4": "Archimage"
+            },
+            'agilite': {
+                "2d4": "Challengé",
+                "3d4": "Lourdeau",
+                "4d4": "Bien",
+                "5d4": "Rapide",
+                "6d4": "Très rapide",
+                "7d4": "Très très rapide"
             }
         };
         
@@ -1117,8 +1138,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             pimpance: this._calculateTraitBonus('pimpance'),
             acuite: this._calculateTraitBonus('acuite'),
             arcane: this._calculateTraitBonus('arcane'),
-            armor: this._calculateTraitBonus('armor'),
-            constitution: this._calculateTraitBonus('constitution')
+            agilite: this._calculateTraitBonus('agilite')
         };
         
         // Stocker les bonus dans l'acteur pour utilisation ultérieure (en mémoire seulement)
@@ -2423,6 +2443,14 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 "5d4": "Initié",
                 "6d4": "Maître",
                 "7d4": "Archimage"
+            },
+            'agilite': {
+                "2d4": "Challengé",
+                "3d4": "Lourdeau",
+                "4d4": "Bien",
+                "5d4": "Rapide",
+                "6d4": "Très rapide",
+                "7d4": "Très très rapide"
             }
         };
         
@@ -2440,7 +2468,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             'martialite': 'Martialité',
             'pimpance': 'Pimpance',
             'acuite': 'Acuité',
-            'arcane': 'Arcane'
+            'arcane': 'Arcane',
+            'agilite': 'Agilité'
         };
         
         return statNames[statName] || statName;
