@@ -2312,32 +2312,32 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             console.log(`DEBUG - criticalMessage final:`, criticalMessage);
         }
         
-        // Créer un message de chat avec le résultat
-        const chatData = {
-            user: game.user.id,
-            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-            content: `
-                <div class="voidhorizon-roll-result">
-                    <h3>🎲 Test de ${statName} (${modeLabel})</h3>
-                    ${criticalMessage}
-                    <div class="roll-details">
-                        <p><strong>Degré de maîtrise:</strong> ${statLabel}</p>
-                        <p><strong>Mode:</strong> ${modeLabel}</p>
-                        <p><strong>Formule:</strong> ${formula}</p>
-                        <p><strong>Résultat des dés:</strong> <span class="roll-base">${baseResult}</span></p>
-                        ${traitBonus > 0 ? `<p><strong>Bonus de trait:</strong> <span class="roll-bonus">+${traitBonus}</span></p>` : ''}
-                        <p><strong>Résultat final:</strong> <span class="roll-total">${finalResult}</span></p>
-                    </div>
-                    <div class="roll-dice">
-                        ${rollData.roll.dice.map(die => `
-                            <div class="die-result">
-                                <span class="die-formula">${die.formula}</span>: 
-                                <span class="die-values">[${die.results.map(r => r.result).join(', ')}]</span>
+                            // Créer un message de chat avec le résultat
+                    const chatData = {
+                        user: game.user.id,
+                        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                        content: `
+                            <div class="voidhorizon-roll-result">
+                                <h3>🎲 Test de ${statName}</h3>
+                                ${criticalMessage}
+                                <div class="roll-details">
+                                    <p><strong>Degré de maîtrise:</strong> ${statLabel}</p>
+                                    <p><strong>Mode:</strong> ${modeLabel}</p>
+                                    <p><strong>Formule:</strong> ${formula}</p>
+                                    <p><strong>Résultat des dés:</strong> <span class="roll-base">${baseResult}</span></p>
+                                    ${traitBonus > 0 ? `<p><strong>Bonus de trait:</strong> <span class="roll-bonus">+${traitBonus}</span></p>` : ''}
+                                    <p><strong>Résultat final:</strong> <span class="roll-total">${finalResult}</span></p>
+                                </div>
+                                <div class="roll-dice">
+                                    ${rollData.roll.dice.map(die => `
+                                        <div class="die-result">
+                                            <span class="die-formula">${die.formula}</span>:
+                                            <span class="die-values">[${die.results.map(r => r.result).join(', ')}]</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
                             </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `,
+                        `,
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             roll: rollData.roll
         };
