@@ -1608,6 +1608,134 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 }
             }
         });
+        
+        // Mettre à jour les ranges d'attaques d'armes
+        this._updateWeaponDiceRanges();
+    }
+
+    /**
+     * Met à jour les ranges d'attaques d'armes
+     * @private
+     */
+    _updateWeaponDiceRanges() {
+        // Mettre à jour les ranges pour les armes principales et secondaires
+        const weaponSlots = this.element.find('.weapon-slot:not(.armor-slot)');
+        
+        weaponSlots.each((index, slot) => {
+            const $slot = $(slot);
+            const weaponType = $slot.find('select[name*=".type"]').val() || 
+                              $slot.find('.read-mode').text().match(/\((.*?)\)/)?.[1]?.toLowerCase();
+            
+            if (weaponType && weaponType !== 'bouclier' && weaponType !== 'shield') {
+                // Déterminer quelle caractéristique est utilisée
+                let statName = null;
+                let statValue = null;
+                
+                if (weaponType.includes('martialité') || weaponType.includes('force')) {
+                    statName = 'martialite';
+                    statValue = this.actor.system.martialite?.value;
+                } else if (weaponType.includes('agilité') || weaponType.includes('agility')) {
+                    statName = 'agilite';
+                    statValue = this.actor.system.agilite?.value;
+                } else if (weaponType.includes('acuité') || weaponType.includes('acuite')) {
+                    statName = 'acuite';
+                    statValue = this.actor.system.acuite?.value;
+                }
+                
+                if (statName && statValue) {
+                    // Récupérer les informations de l'arme
+                    const isPrimary = $slot.hasClass('primary-weapon');
+                    const weaponKey = isPrimary ? 'primary' : 'secondary';
+                    const weapon = this.actor.system.weapons?.[weaponKey];
+                    
+                    if (weapon) {
+                        // Calculer le bonus total pour cette caractéristique
+                        let totalBonus = 0;
+                        
+                        // Bonus de trait
+                        if (this.actor.system.traitBonuses && this.actor.system.traitBonuses[statName]) {
+                            totalBonus += this.actor.system.traitBonuses[statName];
+                        }
+                        
+                        // Malus d'agilité dû à l'armure (seulement pour l'agilité)
+                        if (statName === 'agilite') {
+                            const armorType = this.actor.system.armor?.type;
+                            if (armorType) {
+                                const armorPenalties = {
+                                    'tissu': 0,
+                                    'legere': -4,
+                                    'lourde': -8,
+                                    'blindee': -16
+                                };
+                                const armorPenalty = armorPenalties[armorType] || 0;
+                                totalBonus += armorPenalty;
+                            }
+                        }
+                        
+                        // Bonus de l'arme
+                        const weaponBonus = parseInt(weapon.bonus) || 0;
+                        
+                        // Récupérer les dés de qualité
+                        const weaponQualityDice = this._getWeaponQualityDice(weapon.rank);
+                        const qualityRange = this._calculateDiceRange(weaponQualityDice);
+                        
+                        // Calculer les ranges de base pour la caractéristique
+                        const rangeMap = {
+                            "2d4": { min: 2, max: 8 },
+                            "3d4": { min: 3, max: 12 },
+                            "4d4": { min: 4, max: 16 },
+                            "5d4": { min: 5, max: 20 },
+                            "6d4": { min: 6, max: 24 },
+                            "7d4": { min: 7, max: 28 }
+                        };
+                        
+                        const unsafeRangeMap = {
+                            "2d4": { min: 1, max: 12 },
+                            "3d4": { min: 1, max: 16 },
+                            "4d4": { min: 1, max: 20 },
+                            "5d4": { min: 1, max: 24 },
+                            "6d4": { min: 1, max: 28 },
+                            "7d4": { min: 1, max: 32 }
+                        };
+                        
+                        const safeRangeData = rangeMap[statValue];
+                        const unsafeRangeData = unsafeRangeMap[statValue];
+                        
+                        if (safeRangeData && unsafeRangeData) {
+                            // Calculer les ranges finaux avec tous les bonus
+                            const safeMin = Math.max(1, safeRangeData.min + totalBonus + qualityRange.min + weaponBonus);
+                            const safeMax = Math.max(1, safeRangeData.max + totalBonus + qualityRange.max + weaponBonus);
+                            const unsafeMin = Math.max(1, unsafeRangeData.min + totalBonus + qualityRange.min + weaponBonus);
+                            const unsafeMax = Math.max(1, unsafeRangeData.max + totalBonus + qualityRange.max + weaponBonus);
+                            
+                            // Mettre à jour l'affichage des ranges
+                            const safeRange = $slot.find('.weapon-safe-range .range-value');
+                            const unsafeRange = $slot.find('.weapon-unsafe-range .range-value');
+                            const bonusDisplay = $slot.find('.weapon-bonus-display');
+                            
+                            if (safeRange.length > 0) {
+                                safeRange.text(`${safeMin}-${safeMax}`);
+                            }
+                            
+                            if (unsafeRange.length > 0) {
+                                unsafeRange.text(`${unsafeMin}-${unsafeMax}`);
+                            }
+                            
+                            // Afficher le bonus total de la caractéristique
+                            if (bonusDisplay.length > 0) {
+                                if (totalBonus > 0) {
+                                    bonusDisplay.html(`+${totalBonus}`);
+                                } else if (totalBonus < 0) {
+                                    bonusDisplay.html(`${totalBonus}`);
+                                } else {
+                                    bonusDisplay.html('+0');
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -2211,6 +2339,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             this._updateShieldsDisplay();
             this._updateHeartsDisplay();
             this._updateManaDisplay();
+            
+            // Mettre à jour les ranges d'attaques d'armes
+            this._updateWeaponDiceRanges();
             
             // Recharger la fiche pour afficher les changements
             this.render(true);
@@ -2844,6 +2975,16 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             
             // Mettre à jour l'affichage des boucliers
             this._updateShieldsDisplay();
+            
+            // Mettre à jour les ranges d'attaques d'armes
+            this._updateWeaponDiceRanges();
+        }
+        
+        // Si c'est un changement de caractéristique, de rang d'arme, ou de bonus d'arme, mettre à jour les ranges
+        if (field.includes('system.weapons.') && (field.includes('.rank') || field.includes('.bonus')) ||
+            field.includes('system.martialite.value') || field.includes('system.agilite.value') || field.includes('system.acuite.value')) {
+            // Mettre à jour les ranges d'attaques d'armes
+            this._updateWeaponDiceRanges();
         }
     }
 

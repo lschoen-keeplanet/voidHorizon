@@ -1261,10 +1261,75 @@ textarea:focus {
     background: linear-gradient(135deg, #600000, #400000);
 }
 
+/* Styles pour les ranges d'attaques d'armes */
+.weapon-dice-ranges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    font-size: 0.9em;
+    justify-content: center;
+}
+
+.weapon-dice-ranges .range-info {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 4px 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 60px;
+    justify-content: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.weapon-dice-ranges .weapon-safe-range {
+    border-color: #4CAF50;
+    color: #2E7D32;
+}
+
+.weapon-dice-ranges .weapon-unsafe-range {
+    border-color: #800000;
+    color: #600000;
+}
+
+.weapon-dice-ranges .weapon-bonus-display {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #8B4513;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.85em;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    border: 1px solid #DAA520;
+    min-width: 40px;
+    text-align: center;
+}
+
+.weapon-dice-ranges .weapon-bonus-display:empty {
+    display: none;
+}
+
+.weapon-dice-ranges .range-value {
+    font-weight: bold;
+    min-width: 40px;
+    text-align: center;
+}
+
 /* Responsive design pour les armes */
 @media (max-width: 768px) {
     .weapons-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .weapon-dice-ranges {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .weapon-dice-ranges .range-info {
+        min-width: 80px;
     }
 }
 

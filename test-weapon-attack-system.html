@@ -131,6 +131,14 @@
             <li><strong>Disposition :</strong> Côte à côte avec espacement égal</li>
             <li><strong>Masquage automatique :</strong> Pour les boucliers</li>
         </ul>
+        
+        <h3>Ranges d'Attaques :</h3>
+        <ul>
+            <li><strong>Range Safe :</strong> 🛡️ Affichage des valeurs min-max avec bonus appliqués</li>
+            <li><strong>Range Unsafe :</strong> 💀 Affichage des valeurs min-max transformées avec bonus appliqués</li>
+            <li><strong>Bonus Central :</strong> 🟡 Affichage du bonus total de la caractéristique (traits + malus armure)</li>
+            <li><strong>Mise à jour automatique :</strong> Lors des changements d'armes, caractéristiques ou traits</li>
+        </ul>
     </div>
 
     <div class="feature">
@@ -163,30 +171,37 @@
         <p><strong>Exemple concret :</strong> Si Martialité 4d4 avec +3 bonus trait et -1 malus agilité :</p>
         <p>Safe : 4d4 + 3 - 1 + 1d8 + 2</p>
         <p>Unsafe : 1d20 + 3 - 1 + 1d8 + 2</p>
+        
+        <h4>🎯 Calcul des Ranges Affichés :</h4>
+        <p><strong>Range Safe :</strong> (4-16) + 3 - 1 + (1-8) + 2 = <strong>9-28</strong></p>
+        <p><strong>Range Unsafe :</strong> (1-20) + 3 - 1 + (1-8) + 2 = <strong>6-32</strong></p>
+        <p><strong>Bonus Central :</strong> +3 (trait) - 1 (armure) = <strong>+2</strong></p>
     </div>
 
     <div class="success">
         <h2>🎉 Système Complet !</h2>
-        <p>Le système d'attaque d'armes est maintenant <strong>PARFAITEMENT</strong> fonctionnel avec :</p>
+        <p>Le système d'attaque d'armes est maintenant <strong>ULTRA-PARFAIT</strong> avec :</p>
         <ul>
             <li>✅ Modes Safe et Unsafe avec transformation des dés</li>
             <li>✅ Détection des coups critiques basée sur les dés transformés</li>
             <li>✅ <strong>INTÉGRATION COMPLÈTE des bonus de traits et malus d'agilité</strong></li>
-            <li>✅ Interface utilisateur intuitive</li>
+            <li>✅ <strong>RANGES D'ATTAQUES VISUELS avec calculs automatiques</strong></li>
+            <li>✅ Interface utilisateur intuitive et informative</li>
             <li>✅ Gestion des boucliers</li>
             <li>✅ Messages de chat ultra-détaillés avec décomposition complète</li>
             <li>✅ Formules d'attaque parfaitement cohérentes avec le système de jeu</li>
+            <li>✅ <strong>Mise à jour en temps réel des ranges lors des changements</strong></li>
         </ul>
-        <p><strong>🎉 LE COOKIE EST MÉRITÉ ! 🍪</strong></p>
-        <p><strong>🎯 TOUS les systèmes sont maintenant parfaitement intégrés et cohérents !</strong></p>
+        <p><strong>🎉 LE COOKIE EST ENCORE PLUS MÉRITÉ ! 🍪✨</strong></p>
+        <p><strong>🎯 TOUS les systèmes sont maintenant parfaitement intégrés, cohérents ET visuels !</strong></p>
     </div>
 
     <div class="info">
         <h2>📋 Fichiers Modifiés</h2>
         <ul>
-            <li><code>templates/sheets/heros-sheet.html</code> - Boutons Safe/Unsafe et correction des rangs</li>
-            <li><code>styles/heros-sheet.css</code> - Styles pour les nouveaux boutons</li>
-            <li><code>scripts/heros-sheet.js</code> - Logique d'attaque avec modes et coups critiques</li>
+            <li><code>templates/sheets/heros-sheet.html</code> - Boutons Safe/Unsafe, correction des rangs ET ajout des ranges d'attaques</li>
+            <li><code>styles/heros-sheet.css</code> - Styles pour les nouveaux boutons ET styles des ranges d'attaques</li>
+            <li><code>scripts/heros-sheet.js</code> - Logique d'attaque avec modes, coups critiques ET calculs automatiques des ranges</li>
         </ul>
     </div>
 </body>
