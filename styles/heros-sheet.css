@@ -347,6 +347,41 @@ img{
     box-shadow: 0 4px 8px rgba(244, 67, 54, 0.4);
 }
 
+/* Affichage des ranges de dés */
+.dice-ranges {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 5px;
+    font-size: 0.8em;
+}
+
+.range-info {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 6px;
+    border-radius: 3px;
+    font-weight: 500;
+    color: #666;
+}
+
+.range-info.safe-range {
+    background: rgba(76, 175, 80, 0.1);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    color: #2e7d32;
+}
+
+.range-info.unsafe-range {
+    background: rgba(244, 67, 54, 0.1);
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    color: #c62828;
+}
+
+.range-info i {
+    font-size: 0.9em;
+}
+
 .stat-controls {
     display: flex;
     justify-content: center;

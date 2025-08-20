@@ -2243,6 +2243,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      * @private
      */
     _displayRollResult(rollData, stat, isUnsafe) {
+        const statName = this._getStatName(stat);
         const statLabel = this._getStatLabel(stat, this.actor.system[stat]?.value || "2d4");
         const modeLabel = isUnsafe ? "Unsafe" : "Safe";
         const formula = rollData.roll.formula;
@@ -2256,9 +2257,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             speaker: ChatMessage.getSpeaker({ actor: this.actor }),
             content: `
                 <div class="voidhorizon-roll-result">
-                    <h3>🎲 Test de ${statLabel} (${modeLabel})</h3>
+                    <h3>🎲 Test de ${statName} (${modeLabel})</h3>
                     <div class="roll-details">
-                        <p><strong>Caractéristique:</strong> ${statLabel}</p>
+                        <p><strong>Degré de maîtrise:</strong> ${statLabel}</p>
                         <p><strong>Mode:</strong> ${modeLabel}</p>
                         <p><strong>Formule:</strong> ${formula}</p>
                         <p><strong>Résultat des dés:</strong> <span class="roll-base">${baseResult}</span></p>
@@ -2283,7 +2284,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         ChatMessage.create(chatData);
         
         // Notification rapide
-        ui.notifications.info(`${statLabel} (${modeLabel}): ${finalResult}`);
+        ui.notifications.info(`${statName} (${modeLabel}): ${finalResult}`);
     }
 
     /**
@@ -2364,6 +2365,23 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         };
         
         return mappings[statName]?.[value] || value;
+    }
+
+    /**
+     * Retourne le nom de la caractéristique
+     * @param {string} statName - Le nom de la statistique
+     * @returns {string} - Le nom de la caractéristique
+     * @private
+     */
+    _getStatName(statName) {
+        const statNames = {
+            'martialite': 'Martialité',
+            'pimpance': 'Pimpance',
+            'acuite': 'Acuité',
+            'arcane': 'Arcane'
+        };
+        
+        return statNames[statName] || statName;
     }
 
     /**
@@ -2607,6 +2625,32 @@ Hooks.once("init", function() {
                 "7d4": "1d32"   // Degré 6: 7d4 max=28, donc 1d28+4=1d32
             };
             return safeToUnsafe[safeValue] || safeValue;
+        });
+
+        // Helper pour obtenir la range des dés en mode Safe
+        Handlebars.registerHelper('getSafeRange', function(safeValue) {
+            const rangeMap = {
+                "2d4": "2-8",   // 2d4: min=2, max=8
+                "3d4": "3-12",  // 3d4: min=3, max=12
+                "4d4": "4-16",  // 4d4: min=4, max=16
+                "5d4": "5-20",  // 5d4: min=5, max=20
+                "6d4": "6-24",  // 6d4: min=6, max=24
+                "7d4": "7-28"   // 7d4: min=7, max=28
+            };
+            return rangeMap[safeValue] || "?";
+        });
+
+        // Helper pour obtenir la range des dés en mode Unsafe
+        Handlebars.registerHelper('getUnsafeRange', function(safeValue) {
+            const rangeMap = {
+                "2d4": "1-12",  // 1d12: min=1, max=12
+                "3d4": "1-16",  // 1d16: min=1, max=16
+                "4d4": "1-20",  // 1d20: min=1, max=20
+                "5d4": "1-24",  // 1d24: min=1, max=24
+                "6d4": "1-28",  // 1d28: min=1, max=28
+                "7d4": "1-32"   // 1d32: min=1, max=32
+            };
+            return rangeMap[safeValue] || "?";
         });
 
     foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
