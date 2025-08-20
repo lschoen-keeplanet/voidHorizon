@@ -233,7 +233,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 }
                 
                 // Malus d'agilité dû à l'armure (seulement pour l'agilité)
-                if (actor && actor.system && actor.system.agilite && actor.system.agilite.value === safeValue) {
+                if (statName === 'agilite') {
                     try {
                         if (actor.system.armor && actor.system.armor.type) {
                             const penaltyMap = {
@@ -299,7 +299,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 }
                 
                 // Malus d'agilité dû à l'armure (seulement pour l'agilité)
-                if (actor && actor.system && actor.system.agilite && actor.system.agilite.value === safeValue) {
+                if (statName === 'agilite') {
                     try {
                         if (actor.system.armor && actor.system.armor.type) {
                             const penaltyMap = {
