@@ -505,17 +505,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 // Mettre à jour l'affichage local sans sauvegarder
                 this._updateLocalArmorDisplay(value);
                 
-                // Mettre à jour l'affichage des boucliers
-                this._updateShieldsDisplay();
+                // Note: _updateShieldsDisplay() est appelé par _updateLocalArmorDisplay()
             } else if (name === "system.constitution.value") {
                 // Mettre à jour l'affichage local sans sauvegarder
                 this._updateLocalConstitutionDisplay(value);
                 
-                // Mettre à jour l'affichage des cœurs
-                this._updateHeartsDisplay();
-                
-                // Mettre à jour l'état de santé
-                this._updateHealthStatus();
+                // Note: _updateHeartsDisplay() et _updateHealthStatus() sont appelés par _updateLocalConstitutionDisplay()
             }
             return;
         }
@@ -533,22 +528,41 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
 
     _updateHeartsDisplay() {
         const totalConstitution = this._getTotalConstitution();
-        const blessure = this.actor.system.resources.blessure?.value || 0;
+        const blessure = this.actor.system.resources?.blessure?.value || 0;
         const hearts = this.element.find('.heart-wrapper');
         
+        console.log(`=== Debug Hearts Display ===`);
+        console.log(`Constitution totale (base + bonus): ${totalConstitution}`);
+        console.log(`Blessures actuelles: ${blessure}`);
+        console.log(`Cœurs trouvés: ${hearts.length}`);
+        
+        // Si le nombre de cœurs ne correspond pas à la constitution totale, forcer le re-render
+        if (hearts.length !== totalConstitution) {
+            console.log(`Nombre de cœurs incorrect (${hearts.length} vs ${totalConstitution}), re-render nécessaire`);
+            this.render(true);
+            return;
+        }
+        
+        // Mettre à jour l'affichage des cœurs existants
         hearts.each((index, wrapper) => {
             const heartIndex = index;
             const aliveButton = wrapper.querySelector('.alive');
             const deadButton = wrapper.querySelector('.dead');
             
             if (heartIndex < blessure) {
+                // Ce cœur est "mort" (blessé)
                 aliveButton.classList.add('hidden');
                 deadButton.classList.remove('hidden');
+                console.log(`Cœur ${heartIndex} affiché comme mort`);
             } else {
+                // Ce cœur est "vivant" (non blessé)
                 aliveButton.classList.remove('hidden');
                 deadButton.classList.add('hidden');
+                console.log(`Cœur ${heartIndex} affiché comme vivant`);
             }
         });
+        
+        console.log(`=== Fin Debug Hearts Display ===`);
     }
 
     /**
@@ -562,20 +576,44 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         this._applyShieldBonuses();
         
         const totalArmor = this._getTotalArmor();
-        const armorDamage = parseInt(this.actor.system.resources.armorDamage?.value) || 0;
+        const armorDamage = parseInt(this.actor.system.resources?.armorDamage?.value) || 0;
+        const shields = this.element.find('.shield-wrapper');
         
         console.log("Valeur d'armure totale (base + bonus):", totalArmor);
         console.log("Dégâts d'armure:", armorDamage);
+        console.log("Boucliers trouvés:", shields.length);
         
-        // Au lieu de recréer les boucliers, on force le re-render du template
-        // car les boucliers sont générés par Handlebars
-        console.log("Forcer le re-render pour mettre à jour les boucliers");
-        this.render(true);
+        // Si le nombre de boucliers ne correspond pas à l'armure totale, forcer le re-render
+        if (shields.length !== totalArmor) {
+            console.log(`Nombre de boucliers incorrect (${shields.length} vs ${totalArmor}), re-render nécessaire`);
+            this.render(true);
+            return;
+        }
         
-        // Après le re-render, reattacher les événements
-        setTimeout(() => {
-            this._reattachShieldEvents();
-        }, 100);
+        // Mettre à jour l'affichage des boucliers existants
+        shields.each((index, wrapper) => {
+            const shieldIndex = index;
+            const activeButton = wrapper.querySelector('.active');
+            const brokenButton = wrapper.querySelector('.broken');
+            
+            // Vérification de sécurité
+            if (!activeButton || !brokenButton) {
+                console.error("Boutons d'armure non trouvés:", { activeButton, brokenButton });
+                return;
+            }
+            
+            if (shieldIndex < armorDamage) {
+                // Ce bouclier est cassé
+                activeButton.classList.add('hidden');
+                brokenButton.classList.remove('hidden');
+                console.log(`Bouclier ${shieldIndex} affiché comme cassé`);
+            } else {
+                // Ce bouclier est actif
+                activeButton.classList.remove('hidden');
+                brokenButton.classList.add('hidden');
+                console.log(`Bouclier ${shieldIndex} affiché comme actif`);
+            }
+        });
         
         console.log("=== Fin Debug Shields Display ===");
     }
@@ -759,8 +797,15 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      */
     _updateLocalArmorDisplay(value) {
         // Mettre à jour l'affichage local de l'armure
-        // Cette méthode peut être étendue si nécessaire pour mettre à jour d'autres éléments d'affichage
         console.log(`Affichage local de l'armure mis à jour: ${value}`);
+        
+        // Mettre à jour les données en mémoire pour que les calculs incluent les bonus
+        if (!this.actor.system.resources) this.actor.system.resources = {};
+        if (!this.actor.system.resources.armor) this.actor.system.resources.armor = {};
+        this.actor.system.resources.armor.value = value;
+        
+        // Forcer la mise à jour de l'affichage des boucliers
+        this._updateShieldsDisplay();
     }
 
     /**
@@ -771,6 +816,16 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     _updateLocalConstitutionDisplay(value) {
         // Mettre à jour l'affichage local de la constitution
         console.log(`Affichage local de la constitution mis à jour: ${value}`);
+        
+        // Mettre à jour les données en mémoire pour que les calculs incluent les bonus
+        if (!this.actor.system.constitution) this.actor.system.constitution = {};
+        this.actor.system.constitution.value = value;
+        
+        // Forcer la mise à jour de l'affichage des cœurs
+        this._updateHeartsDisplay();
+        
+        // Mettre à jour l'état de santé
+        this._updateHealthStatus();
     }
 
     /**
@@ -1046,22 +1101,41 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      */
     _updateHeartsDisplay() {
         const totalConstitution = this._getTotalConstitution();
-        const blessure = this.actor.system.resources.blessure?.value || 0;
+        const blessure = this.actor.system.resources?.blessure?.value || 0;
         const hearts = this.element.find('.heart-wrapper');
         
+        console.log(`=== Debug Hearts Display ===`);
+        console.log(`Constitution totale (base + bonus): ${totalConstitution}`);
+        console.log(`Blessures actuelles: ${blessure}`);
+        console.log(`Cœurs trouvés: ${hearts.length}`);
+        
+        // Si le nombre de cœurs ne correspond pas à la constitution totale, forcer le re-render
+        if (hearts.length !== totalConstitution) {
+            console.log(`Nombre de cœurs incorrect (${hearts.length} vs ${totalConstitution}), re-render nécessaire`);
+            this.render(true);
+            return;
+        }
+        
+        // Mettre à jour l'affichage des cœurs existants
         hearts.each((index, wrapper) => {
             const heartIndex = index;
             const aliveButton = wrapper.querySelector('.alive');
             const deadButton = wrapper.querySelector('.dead');
             
             if (heartIndex < blessure) {
+                // Ce cœur est "mort" (blessé)
                 aliveButton.classList.add('hidden');
                 deadButton.classList.remove('hidden');
+                console.log(`Cœur ${heartIndex} affiché comme mort`);
             } else {
+                // Ce cœur est "vivant" (non blessé)
                 aliveButton.classList.remove('hidden');
                 deadButton.classList.add('hidden');
+                console.log(`Cœur ${heartIndex} affiché comme vivant`);
             }
         });
+        
+        console.log(`=== Fin Debug Hearts Display ===`);
     }
 
     /**
