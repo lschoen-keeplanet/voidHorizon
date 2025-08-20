@@ -1828,6 +1828,29 @@ textarea:focus {
     display: none !important;
 }
 
+/* Masquer les compétences null ou vides */
+.skill:has(.skill-name h4:empty),
+.skill:has(.skill-name h4:contains("null")),
+.skill:has(.skill-name h4:contains("undefined")) {
+    display: none !important;
+}
+
+/* Alternative plus robuste pour les navigateurs qui ne supportent pas :has() */
+.skill[data-skill-id] .skill-name h4:empty,
+.skill[data-skill-id] .skill-name h4:contains("null"),
+.skill[data-skill-id] .skill-name h4:contains("undefined") {
+    display: none !important;
+}
+
+/* Masquer complètement les compétences dont le nom est vide ou null */
+.skill:has(.skill-name h4:empty) {
+    display: none !important;
+}
+
+.skill:has(.skill-name h4:contains("null")) {
+    display: none !important;
+}
+
 /* Styles pour les points de mana */
 .mana-section {
     margin-top: 20px;

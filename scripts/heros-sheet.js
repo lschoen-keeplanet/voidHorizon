@@ -2542,8 +2542,17 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         console.log('=== SUPPRESSION DE COMPÉTENCE ===');
         console.log('Compétence ID:', skillId);
+        console.log('Compétences actuelles:', this.actor.system.skills);
         
         const skill = this.actor.system.skills?.[skillId];
+        
+        // Si la compétence est null, c'est qu'elle a déjà été supprimée
+        if (skill === null) {
+            console.log('Compétence déjà supprimée (null), masquée par CSS');
+            ui.notifications.info('Compétence déjà supprimée');
+            return;
+        }
+        
         if (!skill) {
             console.error('Compétence non trouvée pour ID:', skillId);
             ui.notifications.error('Compétence non trouvée');
@@ -2576,20 +2585,40 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         if (!confirmed) return;
         
         try {
-            // Supprimer la compétence
+            // Mettre la compétence à null au lieu de la supprimer complètement
             const currentSkills = { ...this.actor.system.skills };
-            delete currentSkills[skillId];
+            currentSkills[skillId] = null; // Explicitement mettre la compétence à null
             
             console.log('Suppression de la compétence:', skillId);
             console.log('Compétences restantes:', currentSkills);
             
-            // Mettre à jour l'acteur
+            // Vérifier que la mise à null locale a bien fonctionné
+            if (currentSkills[skillId] !== null) {
+                console.error('Erreur : la compétence n\'a pas été mise à null dans la copie locale !');
+                ui.notifications.error('Erreur interne lors de la suppression de la compétence');
+                return;
+            }
+            
+            // Mettre à jour l'acteur avec les compétences (la compétence supprimée est maintenant null)
             const updateData = {
                 'system.skills': currentSkills
             };
             
+            console.log('Données de mise à jour:', updateData);
+            
+            // Mettre à jour l'acteur avec les compétences restantes
             await this.actor.update(updateData);
-            console.log('Compétence supprimée avec succès');
+            console.log('Mise à jour réussie');
+            
+            // Synchronisation des données
+            await this.actor.sheet.render(true);
+            
+            // Vérifier que la mise à null est bien persistante
+            if (this.actor.system.skills[skillId] !== null) {
+                console.log('La compétence n\'a pas été mise à null après la mise à jour !');
+            } else {
+                console.log('La compétence a été mise à null avec succès, elle sera masquée par CSS');
+            }
             
             // Notification de succès
             ui.notifications.info(`Compétence "${skill.name}" supprimée avec succès`);

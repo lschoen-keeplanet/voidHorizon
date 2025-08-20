@@ -697,34 +697,34 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Liste des compétences existantes -->
-                                    <div class="skills-list" id="skills-list">
-                                        {{#each actor.system.skills as |skill skillId|}}
-                                        {{#if skill}}
-                                        <div class="skill" data-skill-id="{{skillId}}">
-                                            <div class="skill-header">
-                                                <div class="skill-name">
-                                                    <h4>{{skill.name}}</h4>
-                                                    <span class="skill-mastery-display">
-                                                        {{skill.mastery}} ({{#if (eq skill.mastery "2d4")}}Novice{{else if (eq skill.mastery "3d4")}}Compagnon{{else if (eq skill.mastery "4d4")}}Maître{{else}}{{skill.mastery}}{{/if}})
-                                                    </span>
-                                                </div>
-                                                <div class="skill-controls">
-                                                    <button type="button" class="skill-control skill-edit" title="Modifier" data-skill-id="{{skillId}}">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-                                                    <button type="button" class="skill-control skill-delete" title="Supprimer" data-skill-id="{{skillId}}">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="skill-description">
-                                                {{skill.description}}
-                                            </div>
-                                        </div>
-                                        {{/if}}
-                                        {{/each}}
-                                    </div>
+                                                                         <!-- Liste des compétences existantes -->
+                                     <div class="skills-list" id="skills-list">
+                                         {{#each actor.system.skills as |skill skillId|}}
+                                         {{#if (and skill (ne skill null))}}
+                                         <div class="skill" data-skill-id="{{skillId}}">
+                                             <div class="skill-header">
+                                                 <div class="skill-name">
+                                                     <h4>{{skill.name}}</h4>
+                                                     <span class="skill-mastery-display">
+                                                         {{skill.mastery}} ({{#if (eq skill.mastery "2d4")}}Novice{{else if (eq skill.mastery "3d4")}}Compagnon{{else if (eq skill.mastery "4d4")}}Maître{{else}}{{skill.mastery}}{{/if}})
+                                                     </span>
+                                                 </div>
+                                                 <div class="skill-controls">
+                                                     <button type="button" class="skill-control skill-edit" title="Modifier" data-skill-id="{{skillId}}">
+                                                         <i class="fas fa-edit"></i>
+                                                     </button>
+                                                     <button type="button" class="skill-control skill-delete" title="Supprimer" data-skill-id="{{skillId}}">
+                                                         <i class="fas fa-trash"></i>
+                                                     </button>
+                                                 </div>
+                                             </div>
+                                             <div class="skill-description">
+                                                 {{skill.description}}
+                                             </div>
+                                         </div>
+                                         {{/if}}
+                                         {{/each}}
+                                     </div>
                                 </div>
                             </div>
                         </div>
