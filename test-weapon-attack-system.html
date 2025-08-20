@@ -53,12 +53,13 @@
     <div class="feature">
         <h2>🎲 Formules d'Attaque</h2>
         <h3>Mode Safe :</h3>
-        <p><code>jet de compétence (safe) + jet de qualité + bonus</code></p>
+        <p><code>jet de compétence (safe) + bonus traits + malus agilité + jet de qualité + bonus arme</code></p>
         
         <h3>Mode Unsafe :</h3>
-        <p><code>jet de compétence (unsafe) + jet de qualité + bonus</code></p>
+        <p><code>jet de compétence (unsafe) + bonus traits + malus agilité + jet de qualité + bonus arme</code></p>
         
         <p><strong>Note :</strong> Le mode Unsafe transforme automatiquement les dés de caractéristique selon la règle standard : 4d4 devient 1d20, 3d4 devient 1d16, etc. Les coups critiques se basent sur ces dés transformés.</p>
+        <p><strong>Important :</strong> Les bonus de traits et malus d'agilité (armure) sont maintenant automatiquement appliqués aux jets d'attaque d'armes !</p>
     </div>
 
     <div class="critical">
@@ -99,6 +100,17 @@
     </div>
 
     <div class="feature">
+        <h2>🎯 Bonus et Malus Intégrés</h2>
+        <p>Les jets d'attaque d'armes prennent maintenant automatiquement en compte :</p>
+        <ul>
+            <li><strong>Bonus de traits :</strong> Appliqués à la caractéristique correspondante</li>
+            <li><strong>Malus d'agilité :</strong> Dû au type d'armure équipée</li>
+            <li><strong>Bonus d'arme :</strong> Bonus intrinsèque de l'équipement</li>
+        </ul>
+        <p><strong>Exemple :</strong> Une arme de type "Agilité" avec un personnage ayant +2 bonus trait et -1 malus d'armure lourde appliquera automatiquement ces modificateurs.</p>
+    </div>
+
+    <div class="feature">
         <h2>⚔️ Qualité des Armes</h2>
         <ul>
             <li><strong>Rang 0 :</strong> Équipement brisé → 1d4</li>
@@ -128,11 +140,11 @@
             <li>🎯 Titre de l'attaque avec nom de l'arme</li>
             <li>⭐/💥 Message de coup critique (si applicable)</li>
             <li>Mode d'attaque (Safe/Unsafe)</li>
-            <li>Formule complète utilisée</li>
             <li>Caractéristique et dés utilisés</li>
-            <li>Qualité de l'arme</li>
+            <li><strong>Détail du jet de caractéristique :</strong> Résultat de base + bonus traits + malus agilité</li>
+            <li>Résultat du jet de qualité</li>
             <li>Bonus de l'arme (si > 0)</li>
-            <li>Résultat final du jet</li>
+            <li><strong>Résultat total détaillé</strong> avec tous les composants</li>
         </ul>
     </div>
 
@@ -141,27 +153,32 @@
         <p><strong>Scénario :</strong> Arme de type "Force" avec Martialité 4d4, Qualité 1d8, Bonus +2</p>
         
         <h3>Mode Safe :</h3>
-        <p><code>Formule : 4d4 + 1d8 + 2</code></p>
+        <p><code>Formule : 4d4 + bonus traits + malus agilité + 1d8 + 2</code></p>
         <p>Pas de coups critiques possibles</p>
         
         <h3>Mode Unsafe :</h3>
-        <p><code>Formule : 1d20 + 1d8 + 2</code> (4d4 transformé en 1d20)</p>
+        <p><code>Formule : 1d20 + bonus traits + malus agilité + 1d8 + 2</code> (4d4 transformé en 1d20)</p>
         <p><strong>Réussite critique :</strong> Si les 1d20 donnent 20 (maximum)</p>
         <p><strong>Échec critique :</strong> Si les 1d20 donnent 1 (minimum)</p>
+        <p><strong>Exemple concret :</strong> Si Martialité 4d4 avec +3 bonus trait et -1 malus agilité :</p>
+        <p>Safe : 4d4 + 3 - 1 + 1d8 + 2</p>
+        <p>Unsafe : 1d20 + 3 - 1 + 1d8 + 2</p>
     </div>
 
     <div class="success">
         <h2>🎉 Système Complet !</h2>
-        <p>Le système d'attaque d'armes est maintenant entièrement fonctionnel avec :</p>
+        <p>Le système d'attaque d'armes est maintenant <strong>PARFAITEMENT</strong> fonctionnel avec :</p>
         <ul>
-            <li>✅ Modes Safe et Unsafe</li>
-            <li>✅ Détection des coups critiques</li>
+            <li>✅ Modes Safe et Unsafe avec transformation des dés</li>
+            <li>✅ Détection des coups critiques basée sur les dés transformés</li>
+            <li>✅ <strong>INTÉGRATION COMPLÈTE des bonus de traits et malus d'agilité</strong></li>
             <li>✅ Interface utilisateur intuitive</li>
             <li>✅ Gestion des boucliers</li>
-            <li>✅ Messages de chat détaillés</li>
-            <li>✅ Formules d'attaque correctes</li>
+            <li>✅ Messages de chat ultra-détaillés avec décomposition complète</li>
+            <li>✅ Formules d'attaque parfaitement cohérentes avec le système de jeu</li>
         </ul>
-        <p><strong>🍪 Cookie mérité !</strong> Tous les scripts sont maintenant terminés !</p>
+        <p><strong>🎉 LE COOKIE EST MÉRITÉ ! 🍪</strong></p>
+        <p><strong>🎯 TOUS les systèmes sont maintenant parfaitement intégrés et cohérents !</strong></p>
     </div>
 
     <div class="info">

@@ -3435,41 +3435,46 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Récupérer le bonus de l'arme
             const weaponBonus = parseInt(weapon.bonus) || 0;
             
-            // Construire la formule selon le mode
-            let finalFormula;
+            // Construire la formule selon le mode et déterminer les dés à utiliser
+            let characteristicDiceToRoll;
             let modeLabel;
             let diceForCritical; // Pour la détection des critiques
             
             if (rollMode === "safe") {
-                // Mode Safe : caractéristique (safe) + qualité + bonus
-                finalFormula = `${characteristicDice} + ${weaponQualityDice}${weaponBonus > 0 ? ` + ${weaponBonus}` : ''}`;
+                // Mode Safe : utiliser les dés de base
+                characteristicDiceToRoll = characteristicDice;
                 modeLabel = "Safe";
                 diceForCritical = characteristicDice; // Utiliser les dés de base pour les critiques
             } else {
-                // Mode Unsafe : caractéristique (unsafe) + qualité + bonus
-                const unsafeCharacteristicDice = this._calculateDiceFormula(characteristicDice, true);
-                finalFormula = `${unsafeCharacteristicDice} + ${weaponQualityDice}${weaponBonus > 0 ? ` + ${weaponBonus}` : ''}`;
+                // Mode Unsafe : transformer les dés
+                characteristicDiceToRoll = this._calculateDiceFormula(characteristicDice, true);
                 modeLabel = "Unsafe";
-                diceForCritical = unsafeCharacteristicDice; // Utiliser les dés unsafe pour les critiques
+                diceForCritical = characteristicDiceToRoll; // Utiliser les dés unsafe pour les critiques
             }
             
-            console.log(`Formule d'attaque (${modeLabel}): ${finalFormula}`);
-            console.log(`Dés de caractéristique: ${rollMode === "safe" ? characteristicDice : diceForCritical} (${rollMode === "unsafe" ? "transformation unsafe" : "dés de base"})`);
+            console.log(`Formule d'attaque (${modeLabel}): ${characteristicDiceToRoll} + ${weaponQualityDice} + bonus traits + malus agilité + ${weaponBonus > 0 ? weaponBonus : 0}`);
+            console.log(`Dés de caractéristique: ${rollMode === "safe" ? characteristicDice : characteristicDiceToRoll} (${rollMode === "unsafe" ? "transformation unsafe" : "dés de base"})`);
             
-            // Créer le jet de dés
-            const roll = new Roll(finalFormula);
-            const result = await roll.evaluate({async: true});
+            // Lancer les dés de caractéristique avec bonus et malus
+            const statName = this._getStatNameForWeaponType(weapon.type);
+            const characteristicRollData = await this._rollDice(characteristicDiceToRoll, statName, rollMode === "unsafe");
+            
+            // Lancer les dés de qualité de l'arme
+            const qualityRoll = new Roll(weaponQualityDice);
+            await qualityRoll.evaluate({async: true});
+            
+            // Calculer le résultat total
+            const totalResult = characteristicRollData.finalResult + qualityRoll.total + weaponBonus;
             
             // Détecter les succès/échecs critiques pour les jets Unsafe
             let criticalMessage = '';
             if (rollMode === "unsafe") {
                 const diceRange = this._calculateDiceRange(diceForCritical);
-                const baseResult = result.total - weaponBonus; // Retirer le bonus pour vérifier les dés de base
                 
-                if (baseResult === diceRange.min) {
+                if (characteristicRollData.baseResult === diceRange.min) {
                     criticalMessage = '<p class="critical-failure">💥 <strong>ÉCHEC CRITIQUE!</strong></p>';
                     console.log('DEBUG - ÉCHEC CRITIQUE détecté!');
-                } else if (baseResult === diceRange.max) {
+                } else if (characteristicRollData.baseResult === diceRange.max) {
                     criticalMessage = '<p class="critical-success">⭐ <strong>RÉUSSITE CRITIQUE!</strong></p>';
                     console.log('DEBUG - RÉUSSITE CRITIQUE détectée!');
                 }
@@ -3482,18 +3487,17 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Créer le message de chat
             await ChatMessage.create({
                 speaker: speaker,
-                roll: roll,
                 type: CONST.CHAT_MESSAGE_TYPES.ROLL,
                 content: `
                     <div class="chat-message">
                         <h4>🎯 Attaque d'arme - ${weapon.name || "Arme"}</h4>
                         ${criticalMessage}
                         <p><strong>Mode:</strong> ${modeLabel}</p>
-                        <p><strong>Formule:</strong> ${finalFormula}</p>
-                        <p><strong>Caractéristique:</strong> ${characteristicName} (${rollMode === "safe" ? characteristicDice : diceForCritical})</p>
-                        <p><strong>Qualité:</strong> ${weaponQualityDice}</p>
+                        <p><strong>Caractéristique:</strong> ${characteristicName} (${rollMode === "safe" ? characteristicDice : characteristicDiceToRoll})</p>
+                        <p><strong>Résultat caractéristique:</strong> ${characteristicRollData.baseResult} + bonus traits ${characteristicRollData.traitBonus} + malus agilité ${characteristicRollData.agilityPenalty} = <strong>${characteristicRollData.finalResult}</strong></p>
+                        <p><strong>Qualité:</strong> ${weaponQualityDice} = <strong>${qualityRoll.total}</strong></p>
                         ${weaponBonus > 0 ? `<p><strong>Bonus d'arme:</strong> +${weaponBonus}</p>` : ''}
-                        <p><strong>Résultat:</strong> ${result.total}</p>
+                        <p><strong>Résultat total:</strong> ${characteristicRollData.finalResult} + ${qualityRoll.total} + ${weaponBonus} = <strong>${totalResult}</strong></p>
                     </div>
                 `,
                 rollMode: chatRollMode
@@ -3502,6 +3506,21 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         } catch (error) {
             console.error("Erreur lors du jet d'arme:", error);
         }
+    }
+
+    /**
+     * Retourne le nom de la statistique correspondant au type d'arme
+     * @param {string} weaponType - Le type d'arme (strength, agility, acuite)
+     * @returns {string} - Le nom de la statistique
+     * @private
+     */
+    _getStatNameForWeaponType(weaponType) {
+        const statMapping = {
+            "strength": "martialite",
+            "agility": "agilite",
+            "acuite": "acuite"
+        };
+        return statMapping[weaponType] || "martialite";
     }
 
     /**
