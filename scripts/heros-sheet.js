@@ -229,7 +229,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                  // Gestion des changements de type d'équipement (pour les boucliers)
          html.find('select[name^="system.weapons."][name$=".type"]').change(this._onWeaponTypeChange.bind(this));
          
-         // Gestion des changements d'armes et d'armure (sans sauvegarde automatique)
+         // Gestion des changements d'armes et d'armure (avec sauvegarde automatique)
          html.find('input[name^="system.weapons."], select[name^="system.weapons."], textarea[name^="system.weapons."], input[name^="system.armor."], textarea[name^="system.armor."]').change(this._onWeaponFieldChange.bind(this));
          
          // Gestion du mode édition/lecture des armes
@@ -246,6 +246,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         html.find('#trait-cancel-btn').click(this._onCancelTraitClick.bind(this));
         html.find('.trait-edit').click(this._onEditTraitClick.bind(this));
         html.find('.trait-delete').click(this._onDeleteTraitClick.bind(this));
+        
+        // Gestion du bouton de sauvegarde général
+        html.find('#save-all-btn').click(this._saveAllPendingChanges.bind(this));
         
         // IMPORTANT: Calculer les bonus des traits AVANT d'initialiser l'état de santé
         this._applyTraitBonuses();
@@ -532,7 +535,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     /**
-     * Gère les changements de valeurs numériques
+     * Gère les changements de valeurs numériques (ressources, caractéristiques)
      * @param {Event} event - L'événement de changement
      * @private
      */
@@ -554,31 +557,27 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         console.log("Value:", value);
         console.log("Current actor data:", this.actor.system);
 
-        // Si c'est un champ d'armure de base ou de constitution, utiliser le système de sauvegarde différée
+        // Si c'est un champ d'armure de base ou de constitution, stocker en mémoire
         if (name === "system.resources.armor.value" || name === "system.constitution.value") {
-            // Stocker le changement en mémoire sans sauvegarder
-            if (!this._pendingWeaponChanges) {
-                this._pendingWeaponChanges = {};
+            // Initialiser le stockage des changements en attente si nécessaire
+            if (!this._pendingChanges) {
+                this._pendingChanges = {};
             }
-            this._pendingWeaponChanges[name] = value;
             
-            console.log(`Changement en attente pour ${name}: ${value}`);
+            // Stocker le changement en mémoire
+            this._pendingChanges[name] = value;
+            console.log(`Changement stocké en mémoire pour ${name}: ${value}`);
             
+            // Mettre à jour l'affichage local
             if (name === "system.resources.armor.value") {
-                // Répliquer en mémoire pour un rendu immédiat cohérent
-                if (!this.actor.system.resources) this.actor.system.resources = {};
-                if (!this.actor.system.resources.armor) this.actor.system.resources.armor = {};
-                this.actor.system.resources.armor.value = value;
-                // Mettre à jour l'affichage local sans sauvegarder
                 this._updateLocalArmorDisplay(value);
-                
-                // Note: _updateShieldsDisplay() est appelé par _updateLocalArmorDisplay()
             } else if (name === "system.constitution.value") {
-                // Mettre à jour l'affichage local sans sauvegarder
                 this._updateLocalConstitutionDisplay(value);
-                
-                // Note: _updateHeartsDisplay() et _updateHealthStatus() sont appelés par _updateLocalConstitutionDisplay()
             }
+            
+            // Notification d'information
+            ui.notifications.info("Changement enregistré en mémoire. Utilisez le bouton de sauvegarde pour valider.");
+            
             return;
         }
         
@@ -705,44 +704,42 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         const field = input.name;
         
-        // Si c'est un champ d'arme, utiliser le système de sauvegarde différée
+        // Si c'est un champ d'arme, stocker en mémoire
         if (field.includes('system.weapons.')) {
-            // Stocker le changement en mémoire sans sauvegarder
+            // Initialiser le stockage des changements d'armes en attente si nécessaire
             if (!this._pendingWeaponChanges) {
                 this._pendingWeaponChanges = {};
             }
+            
+            // Stocker le changement en mémoire
             this._pendingWeaponChanges[field] = input.value;
+            console.log(`Champ d'arme stocké en mémoire pour ${field}: ${input.value}`);
             
-            console.log(`Changement d'arme en attente pour ${field}: ${input.value}`);
-            
-            // Mettre à jour l'affichage local sans sauvegarder
+            // Mettre à jour l'affichage local
             this._updateLocalWeaponDisplay(field, input.value);
+            
+            // Notification d'information
+            ui.notifications.info("Changement d'arme enregistré en mémoire. Utilisez le bouton de sauvegarde pour valider.");
+            
             return;
         }
         
-        // Pour les autres champs texte, sauvegarder immédiatement
-        const updateData = {};
-        updateData[field] = input.value;
-        
-        try {
-            await this.actor.update(updateData);
-            console.log(`Mise à jour réussie pour ${field}: ${input.value}`);
-            // Forcer la mise à jour de l'affichage
-            this.render(true);
-        } catch (error) {
-            console.error("Erreur lors de la mise à jour:", error);
-            // Restaurer la valeur précédente en cas d'erreur
-            if (field.includes('system.')) {
-                const fieldParts = field.split('.');
-                if (fieldParts.length >= 3) {
-                    input.value = this.actor.system[fieldParts[1]]?.[fieldParts[2]]?.value || '';
-                }
-            }
+        // Pour les autres champs texte, stocker en mémoire
+        // Initialiser le stockage des changements en attente si nécessaire
+        if (!this._pendingChanges) {
+            this._pendingChanges = {};
         }
+        
+        // Stocker le changement en mémoire
+        this._pendingChanges[field] = input.value;
+        console.log(`Champ texte stocké en mémoire pour ${field}: ${input.value}`);
+        
+        // Notification d'information
+        ui.notifications.info("Changement enregistré en mémoire. Utilisez le bouton de sauvegarde pour valider.");
     }
 
     /**
-     * Gère les changements de sélection (classe, affinité, caractéristiques)
+     * Gère les changements de valeurs de sélection
      * @param {Event} event - L'événement de changement
      * @private
      */
@@ -759,91 +756,22 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const field = select.name;
         const value = select.value;
         
-        // Si c'est un changement de faction, sauvegarder immédiatement
-        if (field === "system.faction.value") {
-            try {
-                await this.actor.update({ [field]: value });
-                console.log(`Faction sauvegardée immédiatement: ${value}`);
-                
-                // Mettre à jour l'affichage du blason de faction
-                this._updateFactionCrest(value);
-                
-                // Notification de succès
-                ui.notifications.info("Faction mise à jour avec succès");
-                
-            } catch (error) {
-                console.error("Erreur lors de la sauvegarde de la faction:", error);
-                ui.notifications.error("Erreur lors de la mise à jour de la faction");
-                
-                // Restaurer la valeur précédente en cas d'erreur
-                select.value = this.actor.system.faction?.value || "caradoc";
-            }
-            return;
-        }
-        
-        // Si c'est un changement de classe ou d'affinité, sauvegarder immédiatement sans feedback
-        if (field === "system.class.value" || field === "system.affinity.value") {
-            try {
-                await this.actor.update({ [field]: value });
-                console.log(`${field === "system.class.value" ? "Classe" : "Affinité"} sauvegardée immédiatement: ${value}`);
-            } catch (error) {
-                console.error(`Erreur lors de la sauvegarde de ${field}:`, error);
-                
-                // Restaurer la valeur précédente en cas d'erreur
-                if (field === "system.class.value") {
-                    select.value = this.actor.system.class?.value || "";
-                } else if (field === "system.affinity.value") {
-                    select.value = this.actor.system.affinity?.value || "aucune";
-                }
-            }
-            return;
-        }
-        
-        // Si c'est un changement d'Arcane, mettre à jour seulement l'affichage du mana localement
-        if (field === "system.arcane.value") {
-            // Calculer le nouveau mana maximum basé sur la nouvelle valeur d'Arcane
-            const manaPerLevel = {
-                "1d4": 2,   // Insensible
-                "2d4": 4,   // Eveillé
-                "3d4": 6,   // Novice
-                "4d4": 8,   // Initié
-                "5d4": 10,  // Maître
-                "6d4": 12   // Archimage
-            };
-            const newMaxMana = manaPerLevel[value] || 2;
-            
-            // Mettre à jour seulement l'affichage local, pas la sauvegarde
-            this.actor.system.mana.max = newMaxMana;
-            this.actor.system.mana.value = newMaxMana;
-            
-            // Mettre à jour l'affichage du mana
-            this._updateManaDisplay();
-            
-            // Mettre à jour l'affichage des valeurs totales de mana
-            this._updateManaTotalDisplay();
-            
-            console.log(`Arcane et mana mis à jour localement: ${value} -> ${newMaxMana} points de mana`);
-            
-            // Ajouter les changements de mana aux changements en attente
-            if (!this._pendingChanges) {
-                this._pendingChanges = {};
-            }
-            this._pendingChanges['system.mana.max'] = newMaxMana;
-            this._pendingChanges['system.mana.value'] = newMaxMana;
-            
-            // Continuer vers le traitement standard (stockage en mémoire sans sauvegarde)
-        }
-        
-        // Pour les autres champs (caractéristiques), stocker le changement en mémoire sans sauvegarder
+        // Initialiser le stockage des changements en attente si nécessaire
         if (!this._pendingChanges) {
             this._pendingChanges = {};
         }
+        
+        // Stocker le changement en mémoire
         this._pendingChanges[field] = value;
+        console.log(`Changement de sélection stocké en mémoire pour ${field}: ${value}`);
         
-        console.log(`Changement en attente pour ${field}: ${value}`);
+        // Mettre à jour l'affichage si nécessaire
+        if (field === "system.faction.value") {
+            this._updateFactionCrest(value);
+        }
         
-        // Mettre à jour l'affichage local sans sauvegarder
-        this._updateLocalDisplay(field, value);
+        // Notification d'information
+        ui.notifications.info("Changement enregistré en mémoire. Utilisez le bouton de sauvegarde pour valider.");
     }
 
     /**
@@ -1821,11 +1749,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     /**
-     * Gère les changements d'armes et d'armure (sans sauvegarde automatique)
+     * Gère les changements d'armes et d'armure (avec sauvegarde automatique)
      * @param {Event} event - L'événement de changement
      * @private
      */
-    _onWeaponFieldChange(event) {
+    async _onWeaponFieldChange(event) {
         event.preventDefault();
         const input = event.target;
         const field = input.name;
@@ -1833,27 +1761,29 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         console.log(`Changement d'équipement: ${field} = ${value}`);
         
-        // Si c'est un changement de type d'armure, mettre à jour l'affichage des boucliers et des valeurs totales
-        if (field === 'system.armor.type') {
-            // Répliquer en mémoire pour un rendu immédiat cohérent
-            if (!this.actor.system.armor) this.actor.system.armor = {};
-            this.actor.system.armor.type = value;
-            
+        // Initialiser le stockage des changements d'armes en attente si nécessaire
+        if (!this._pendingWeaponChanges) {
+            this._pendingWeaponChanges = {};
+        }
+        
+        // Stocker le changement en mémoire
+        this._pendingWeaponChanges[field] = value;
+        console.log(`Changement d'équipement stocké en mémoire pour ${field}: ${value}`);
+        
+        // Mettre à jour l'affichage local si nécessaire
+        if (field === 'system.armor.type' || field.includes('system.weapons.') && field.endsWith('.type')) {
             // Mettre à jour l'affichage des valeurs totales d'armure
             this._updateArmorTotalDisplay();
             
             // Mettre à jour l'affichage des boucliers
+            this._updateShieldsDisplay();
+        } else if (field.includes('system.weapons.') && field.endsWith('.bonus')) {
+            this._updateArmorTotalDisplay();
             this._updateShieldsDisplay();
         }
         
-        // Si c'est un changement de type d'arme (pour les boucliers), mettre à jour l'affichage
-        if (field.includes('system.weapons.') && field.endsWith('.type')) {
-            // Mettre à jour l'affichage des valeurs totales d'armure
-            this._updateArmorTotalDisplay();
-            
-            // Mettre à jour l'affichage des boucliers
-            this._updateShieldsDisplay();
-        }
+        // Notification d'information
+        ui.notifications.info("Changement d'équipement enregistré en mémoire. Utilisez le bouton de sauvegarde pour valider.");
     }
 
     /**
@@ -1872,20 +1802,66 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             return;
         }
         
-        const isEditing = weaponsSection.classList.contains('editing');
+        // Sauvegarder tous les changements en attente avant de basculer
+        this._saveAllPendingChanges();
         
-        if (isEditing) {
-            // Mode sauvegarde - sauvegarder tous les changements d'armes
-            weaponsSection.classList.remove('editing');
-            weaponsSection.classList.add('read-only');
-            event.currentTarget.querySelector('i').classList.remove('fa-save');
-            event.currentTarget.querySelector('i').classList.add('fa-edit');
+        // Basculer le mode d'édition
+        const isEditMode = weaponsSection.classList.contains('edit-mode');
+        
+        if (isEditMode) {
+            // Passer en mode lecture
+            weaponsSection.classList.remove('edit-mode');
+            event.currentTarget.innerHTML = '<i class="fas fa-edit"></i> Éditer';
+            event.currentTarget.title = 'Cliquer pour éditer';
         } else {
-            // Mode édition - initialiser les changements en attente
-            weaponsSection.classList.remove('read-only');
-            weaponsSection.classList.add('editing');
-            event.currentTarget.querySelector('i').classList.remove('fa-edit');
-            event.currentTarget.querySelector('i').classList.add('fa-save');
+            // Passer en mode édition
+            weaponsSection.classList.add('edit-mode');
+            event.currentTarget.innerHTML = '<i class="fas fa-save"></i> Sauvegarder';
+            event.currentTarget.title = 'Cliquer pour sauvegarder';
+        }
+    }
+
+    /**
+     * Sauvegarde tous les changements en attente
+     * @private
+     */
+    async _saveAllPendingChanges() {
+        const updates = {};
+        let hasChanges = false;
+        
+        // Collecter tous les changements en attente
+        if (this._pendingChanges && Object.keys(this._pendingChanges).length > 0) {
+            Object.assign(updates, this._pendingChanges);
+            hasChanges = true;
+            console.log('Changements en attente:', this._pendingChanges);
+        }
+        
+        if (this._pendingWeaponChanges && Object.keys(this._pendingWeaponChanges).length > 0) {
+            Object.assign(updates, this._pendingWeaponChanges);
+            hasChanges = true;
+            console.log('Changements d\'armes en attente:', this._pendingWeaponChanges);
+        }
+        
+        if (!hasChanges) {
+            console.log('Aucun changement en attente à sauvegarder');
+            return;
+        }
+        
+        try {
+            // Sauvegarder tous les changements en une seule fois
+            await this.actor.update(updates);
+            console.log('Tous les changements sauvegardés avec succès:', updates);
+            
+            // Vider les changements en attente
+            this._pendingChanges = {};
+            this._pendingWeaponChanges = {};
+            
+            // Notification de succès
+            ui.notifications.info("Tous les changements ont été sauvegardés avec succès");
+            
+        } catch (error) {
+            console.error('Erreur lors de la sauvegarde des changements:', error);
+            ui.notifications.error("Erreur lors de la sauvegarde des changements");
         }
     }
 
@@ -1995,12 +1971,16 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const value = input.value;
         
         try {
-            await this.actor.update({
-                "system.rank.value": value
-            });
-            console.log(`Mise à jour réussie du rang: ${value}`);
+            await this.actor.update({ 'system.rank.value': value });
+            console.log(`Rang mis à jour: ${value}`);
+            
+            // Mettre à jour l'affichage local
+            this._updateLocalDisplay('system.rank.value', value);
+            
         } catch (error) {
             console.error("Erreur lors de la mise à jour du rang:", error);
+            ui.notifications.error("Erreur lors de la mise à jour du rang");
+            
             // Restaurer la valeur précédente en cas d'erreur
             input.value = this.actor.system.rank.value;
         }
@@ -2024,91 +2004,22 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const field = select.name;
         const value = select.value;
         
-        // Si c'est un changement de faction, sauvegarder immédiatement
-        if (field === "system.faction.value") {
-            try {
-                await this.actor.update({ [field]: value });
-                console.log(`Faction sauvegardée immédiatement: ${value}`);
-                
-                // Mettre à jour l'affichage du blason de faction
-                this._updateFactionCrest(value);
-                
-                // Notification de succès
-                ui.notifications.info("Faction mise à jour avec succès");
-                
-            } catch (error) {
-                console.error("Erreur lors de la sauvegarde de la faction:", error);
-                ui.notifications.error("Erreur lors de la mise à jour de la faction");
-                
-                // Restaurer la valeur précédente en cas d'erreur
-                select.value = this.actor.system.faction?.value || "caradoc";
-            }
-            return;
-        }
-        
-        // Si c'est un changement de classe ou d'affinité, sauvegarder immédiatement sans feedback
-        if (field === "system.class.value" || field === "system.affinity.value") {
-            try {
-                await this.actor.update({ [field]: value });
-                console.log(`${field === "system.class.value" ? "Classe" : "Affinité"} sauvegardée immédiatement: ${value}`);
-            } catch (error) {
-                console.error(`Erreur lors de la sauvegarde de ${field}:`, error);
-                
-                // Restaurer la valeur précédente en cas d'erreur
-                if (field === "system.class.value") {
-                    select.value = this.actor.system.class?.value || "";
-                } else if (field === "system.affinity.value") {
-                    select.value = this.actor.system.affinity?.value || "aucune";
-                }
-            }
-            return;
-        }
-        
-        // Si c'est un changement d'Arcane, mettre à jour seulement l'affichage du mana localement
-        if (field === "system.arcane.value") {
-            // Calculer le nouveau mana maximum basé sur la nouvelle valeur d'Arcane
-            const manaPerLevel = {
-                "1d4": 2,   // Insensible
-                "2d4": 4,   // Eveillé
-                "3d4": 6,   // Novice
-                "4d4": 8,   // Initié
-                "5d4": 10,  // Maître
-                "6d4": 12   // Archimage
-            };
-            const newMaxMana = manaPerLevel[value] || 2;
-            
-            // Mettre à jour seulement l'affichage local, pas la sauvegarde
-            this.actor.system.mana.max = newMaxMana;
-            this.actor.system.mana.value = newMaxMana;
-            
-            // Mettre à jour l'affichage du mana
-            this._updateManaDisplay();
-            
-            // Mettre à jour l'affichage des valeurs totales de mana
-            this._updateManaTotalDisplay();
-            
-            console.log(`Arcane et mana mis à jour localement: ${value} -> ${newMaxMana} points de mana`);
-            
-            // Ajouter les changements de mana aux changements en attente
-            if (!this._pendingChanges) {
-                this._pendingChanges = {};
-            }
-            this._pendingChanges['system.mana.max'] = newMaxMana;
-            this._pendingChanges['system.mana.value'] = newMaxMana;
-            
-            // Continuer vers le traitement standard (stockage en mémoire sans sauvegarde)
-        }
-        
-        // Pour les autres champs (caractéristiques), stocker le changement en mémoire sans sauvegarder
+        // Initialiser le stockage des changements en attente si nécessaire
         if (!this._pendingChanges) {
             this._pendingChanges = {};
         }
+        
+        // Stocker le changement en mémoire
         this._pendingChanges[field] = value;
+        console.log(`Changement de sélection stocké en mémoire pour ${field}: ${value}`);
         
-        console.log(`Changement en attente pour ${field}: ${value}`);
+        // Mettre à jour l'affichage si nécessaire
+        if (field === "system.faction.value") {
+            this._updateFactionCrest(value);
+        }
         
-        // Mettre à jour l'affichage local sans sauvegarder
-        this._updateLocalDisplay(field, value);
+        // Notification d'information
+        ui.notifications.info("Changement enregistré en mémoire. Utilisez le bouton de sauvegarde pour valider.");
     }
 
     /**
@@ -2128,31 +2039,38 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         const field = input.name;
         
-        // Si c'est un champ d'arme, utiliser le système de sauvegarde différée
+        // Si c'est un champ d'arme, stocker en mémoire
         if (field.includes('system.weapons.')) {
-            console.log(`Changement d'arme en attente pour ${field}: ${input.value}`);
+            // Initialiser le stockage des changements d'armes en attente si nécessaire
+            if (!this._pendingWeaponChanges) {
+                this._pendingWeaponChanges = {};
+            }
+            
+            // Stocker le changement en mémoire
+            this._pendingWeaponChanges[field] = input.value;
+            console.log(`Champ d'arme stocké en mémoire pour ${field}: ${input.value}`);
+            
+            // Mettre à jour l'affichage local
+            this._updateLocalWeaponDisplay(field, input.value);
+            
+            // Notification d'information
+            ui.notifications.info("Changement d'arme enregistré en mémoire. Utilisez le bouton de sauvegarde pour valider.");
+            
             return;
         }
         
-        // Pour les autres champs texte, sauvegarder immédiatement
-        const updateData = {};
-        updateData[field] = input.value;
-        
-        try {
-            await this.actor.update(updateData);
-            console.log(`Mise à jour réussie pour ${field}: ${input.value}`);
-            // Forcer la mise à jour de l'affichage
-            this.render(true);
-        } catch (error) {
-            console.error("Erreur lors de la mise à jour:", error);
-            // Restaurer la valeur précédente en cas d'erreur
-            if (field.includes('system.')) {
-                const fieldParts = field.split('.');
-                if (fieldParts.length >= 3) {
-                    input.value = this.actor.system[fieldParts[1]]?.[fieldParts[2]]?.value || '';
-                }
-            }
+        // Pour les autres champs texte, stocker en mémoire
+        // Initialiser le stockage des changements en attente si nécessaire
+        if (!this._pendingChanges) {
+            this._pendingChanges = {};
         }
+        
+        // Stocker le changement en mémoire
+        this._pendingChanges[field] = input.value;
+        console.log(`Champ texte stocké en mémoire pour ${field}: ${input.value}`);
+        
+        // Notification d'information
+        ui.notifications.info("Changement enregistré en mémoire. Utilisez le bouton de sauvegarde pour valider.");
     }
 
     /**
@@ -2405,6 +2323,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         console.log(`${totalMana} points de mana créés et initialisés`);
     }
+
+
 }
 
 // Enregistrer la classe de la fiche
