@@ -294,6 +294,13 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         html.find('.trait-edit').click(this._onEditTraitClick.bind(this));
         html.find('.trait-delete').click(this._onDeleteTraitClick.bind(this));
         
+        // Gestion des compétences
+        html.find('#create-skill-btn').click(this._onCreateSkillClick.bind(this));
+        html.find('#skill-save-btn').click(this._onSaveSkillClick.bind(this));
+        html.find('#skill-cancel-btn').click(this._onCancelSkillClick.bind(this));
+        html.find('.skill-edit').click(this._onEditSkillClick.bind(this));
+        html.find('.skill-delete').click(this._onDeleteSkillClick.bind(this));
+        
         // IMPORTANT: Calculer les bonus des traits AVANT d'initialiser l'état de santé
         this._applyTraitBonuses();
         
@@ -1818,6 +1825,253 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         } catch (error) {
             console.error('Erreur lors de la suppression du trait:', error);
             ui.notifications.error('Erreur lors de la suppression du trait');
+        }
+    }
+
+    /**
+     * Gère le clic sur le bouton de création de compétence
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    _onCreateSkillClick(event) {
+        event.preventDefault();
+        console.log('=== CRÉATION DE COMPÉTENCE ===');
+        
+        // Masquer le formulaire des traits s'il est ouvert
+        this.element.find('#trait-form-container').hide();
+        
+        // Afficher le formulaire de création de compétence
+        const formContainer = this.element.find('#skill-form-container');
+        formContainer.show();
+        
+        // Réinitialiser le formulaire
+        this.element.find('#skill-name-input').val('');
+        this.element.find('#skill-description-input').val('');
+        this.element.find('#skill-characteristic-input').val('');
+        this.element.find('#skill-mastery-input').val('2d4');
+        
+        // Changer le titre et le bouton de sauvegarde
+        formContainer.find('h4').text('Nouvelle compétence');
+        formContainer.find('#skill-save-btn').text('Sauvegarder').removeAttr('data-edit-skill-id');
+        
+        // Focus sur le premier champ
+        this.element.find('#skill-name-input').focus();
+    }
+
+    /**
+     * Gère le clic sur le bouton de sauvegarde de compétence
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onSaveSkillClick(event) {
+        event.preventDefault();
+        console.log('=== SAUVEGARDE DE COMPÉTENCE ===');
+        
+        // Récupérer les valeurs du formulaire
+        const name = this.element.find('#skill-name-input').val().trim();
+        const description = this.element.find('#skill-description-input').val().trim();
+        const characteristic = this.element.find('#skill-characteristic-input').val();
+        const mastery = this.element.find('#skill-mastery-input').val();
+        const isEdit = this.element.find('#skill-save-btn').attr('data-edit-skill-id');
+        
+        // Validation des champs
+        if (!name) {
+            ui.notifications.error('Le nom de la compétence est requis');
+            this.element.find('#skill-name-input').focus();
+            return;
+        }
+        
+        if (!characteristic) {
+            ui.notifications.error('La caractéristique associée est requise');
+            this.element.find('#skill-characteristic-input').focus();
+            return;
+        }
+        
+        try {
+            // Préparer les données de la compétence
+            const skillData = {
+                name: name,
+                description: description,
+                characteristic: characteristic,
+                mastery: mastery
+            };
+            
+            console.log('Données de la compétence:', skillData);
+            
+            // Initialiser les compétences si elles n'existent pas
+            if (!this.actor.system.skills) {
+                this.actor.system.skills = {};
+            }
+            
+            let skillId;
+            if (isEdit) {
+                // Mode édition : mettre à jour la compétence existante
+                skillId = isEdit;
+                this.actor.system.skills[skillId] = skillData;
+                console.log('Compétence mise à jour:', skillId);
+            } else {
+                // Mode création : générer un nouvel ID
+                skillId = `skill_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                this.actor.system.skills[skillId] = skillData;
+                console.log('Nouvelle compétence créée:', skillId);
+            }
+            
+            // Mettre à jour l'acteur
+            const updateData = {
+                [`system.skills.${skillId}`]: skillData
+            };
+            
+            await this.actor.update(updateData);
+            console.log('Compétence sauvegardée avec succès');
+            
+            // Masquer le formulaire
+            this.element.find('#skill-form-container').hide();
+            
+            // Notification de succès
+            const action = isEdit ? 'modifiée' : 'créée';
+            ui.notifications.info(`Compétence "${name}" ${action} avec succès`);
+            
+            // Recharger la fiche pour afficher les changements
+            this.render(true);
+            
+        } catch (error) {
+            console.error('Erreur lors de la sauvegarde de la compétence:', error);
+            ui.notifications.error('Erreur lors de la sauvegarde de la compétence');
+        }
+    }
+
+    /**
+     * Gère le clic sur le bouton d'annulation de compétence
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    _onCancelSkillClick(event) {
+        event.preventDefault();
+        console.log('=== ANNULATION DE COMPÉTENCE ===');
+        
+        // Masquer le formulaire
+        this.element.find('#skill-form-container').hide();
+        
+        // Réinitialiser le formulaire
+        this.element.find('#skill-name-input').val('');
+        this.element.find('#skill-description-input').val('');
+        this.element.find('#skill-characteristic-input').val('');
+        this.element.find('#skill-mastery-input').val('2d4');
+    }
+
+    /**
+     * Gère le clic sur le bouton d'édition de compétence
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    _onEditSkillClick(event) {
+        event.preventDefault();
+        const button = $(event.currentTarget);
+        const skillId = button.data('skill-id');
+        
+        console.log('=== ÉDITION DE COMPÉTENCE ===');
+        console.log('Compétence ID:', skillId);
+        
+        const skill = this.actor.system.skills?.[skillId];
+        if (!skill) {
+            console.error('Compétence non trouvée pour ID:', skillId);
+            ui.notifications.error('Compétence non trouvée');
+            return;
+        }
+        
+        console.log('Compétence à éditer:', skill);
+        
+        // Masquer le formulaire des traits s'il est ouvert
+        this.element.find('#trait-form-container').hide();
+        
+        // Afficher le formulaire avec les données de la compétence
+        const formContainer = this.element.find('#skill-form-container');
+        formContainer.show();
+        
+        // Remplir les champs avec les données existantes
+        this.element.find('#skill-name-input').val(skill.name);
+        this.element.find('#skill-description-input').val(skill.description);
+        this.element.find('#skill-characteristic-input').val(skill.characteristic);
+        this.element.find('#skill-mastery-input').val(skill.mastery);
+        
+        // Changer le titre et le bouton de sauvegarde
+        formContainer.find('h4').text('Modifier la compétence');
+        formContainer.find('#skill-save-btn').text('Modifier').attr('data-edit-skill-id', skillId);
+        
+        // Focus sur le premier champ
+        this.element.find('#skill-name-input').focus();
+    }
+
+    /**
+     * Gère le clic sur le bouton de suppression de compétence
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onDeleteSkillClick(event) {
+        event.preventDefault();
+        const button = $(event.currentTarget);
+        const skillId = button.data('skill-id');
+        
+        console.log('=== SUPPRESSION DE COMPÉTENCE ===');
+        console.log('Compétence ID:', skillId);
+        
+        const skill = this.actor.system.skills?.[skillId];
+        if (!skill) {
+            console.error('Compétence non trouvée pour ID:', skillId);
+            ui.notifications.error('Compétence non trouvée');
+            return;
+        }
+        
+        console.log('Compétence à supprimer:', skill);
+        
+        // Demander confirmation
+        const confirmed = await new Promise((resolve) => {
+            new Dialog({
+                title: 'Confirmer la suppression',
+                content: `<p>Êtes-vous sûr de vouloir supprimer la compétence "${skill.name}" ?</p>`,
+                buttons: {
+                    yes: {
+                        icon: '<i class="fas fa-check"></i>',
+                        label: 'Oui',
+                        callback: () => resolve(true)
+                    },
+                    no: {
+                        icon: '<i class="fas fa-times"></i>',
+                        label: 'Non',
+                        callback: () => resolve(false)
+                    }
+                },
+                default: 'no'
+            }).render(true);
+        });
+        
+        if (!confirmed) return;
+        
+        try {
+            // Supprimer la compétence
+            const currentSkills = { ...this.actor.system.skills };
+            delete currentSkills[skillId];
+            
+            console.log('Suppression de la compétence:', skillId);
+            console.log('Compétences restantes:', currentSkills);
+            
+            // Mettre à jour l'acteur
+            const updateData = {
+                'system.skills': currentSkills
+            };
+            
+            await this.actor.update(updateData);
+            console.log('Compétence supprimée avec succès');
+            
+            // Notification de succès
+            ui.notifications.info(`Compétence "${skill.name}" supprimée avec succès`);
+            
+            // Recharger la fiche pour afficher les changements
+            this.render(true);
+            
+        } catch (error) {
+            console.error('Erreur lors de la suppression de la compétence:', error);
+            ui.notifications.error('Erreur lors de la suppression de la compétence');
         }
     }
 

@@ -105,42 +105,54 @@
                         
                         <div class="stat-block">
                             <div class="stat-header">
-                                        <img src="systems/voidHorizon/assets/icons/pimpance.png" class="stat-icon"
-                                            alt="Pimpance">
-                                <label class="rollable" data-stat="pimpance">Pimpance</label>
+                                <img src="systems/voidHorizon/assets/icons/agilite.png" class="stat-icon"
+                                    alt="Agilité">
+                                <label class="rollable" data-stat="agilite">Agilité</label>
                             </div>
                             <div class="stat-controls">
-                                <select name="system.pimpance.value" class="edit-mode">
-                                    {{#select system.pimpance.value}}
-                                    <option value="2d4">Tâche</option>
-                                            <option value="3d4">Pas top</option>
-                                            <option value="4d4">Honnête</option>
-                                            <option value="5d4">Beau</option>
-                                            <option value="6d4">Splendide</option>
-                                            <option value="7d4">Ramirez</option>
+                                <select name="system.agilite.value" class="edit-mode">
+                                    {{#select system.agilite.value}}
+                                        <option value="2d4">Challengé</option>
+                                        <option value="3d4">Lourdeau</option>
+                                        <option value="4d4">Bien</option>
+                                        <option value="5d4">Rapide</option>
+                                        <option value="6d4">Très rapide</option>
+                                        <option value="7d4">Très très rapide</option>
                                     {{/select}}
                                 </select>
-                                        <div class="read-mode">{{helpers.getSelectedText actor.system.pimpance.value
-                                            "pimpance"}}</div>
+                                <div class="read-mode">{{helpers.getSelectedText actor.system.agilite.value
+                                    "agilite"}}</div>
                             </div>
-                                    <div class="roll-buttons">
-                                        <button type="button" class="roll-dice-btn safe" data-stat="pimpance" data-unsafe="false"
-                                            title="Lancer les dés de Pimpance (Mode Safe - {{system.pimpance.value}})">
-                                            <i class="fas fa-shield-alt"></i> Safe
-                                        </button>
-                                        <button type="button" class="roll-dice-btn unsafe" data-stat="pimpance" data-unsafe="true"
-                                            title="Lancer les dés de Pimpance (Mode Unsafe - {{helpers.getUnsafeFormula system.pimpance.value}})">
-                                            <i class="fas fa-skull-crossbones"></i> Unsafe
-                            </button>
-                                    </div>
-                                    <div class="dice-ranges">
-                                        <span class="range-info safe-range">
-                                            <i class="fas fa-shield-alt"></i> {{helpers.getSafeRange system.pimpance.value}}
-                                        </span>
-                                        <span class="range-info unsafe-range">
-                                            <i class="fas fa-skull-crossbones"></i> {{helpers.getUnsafeRange system.pimpance.value}}
-                                        </span>
-                                    </div>
+                            <div class="roll-buttons">
+                                <button type="button" class="roll-dice-btn safe" data-stat="agilite" data-unsafe="false"
+                                    title="Lancer les dés d'Agilité (Mode Safe - {{system.agilite.value}})">
+                                    <i class="fas fa-shield-alt"></i> Safe
+                                </button>
+                                <button type="button" class="roll-dice-btn unsafe" data-stat="agilite" data-unsafe="true"
+                                    title="Lancer les dés d'Agilité (Mode Unsafe - {{helpers.getUnsafeFormula system.agilite.value}})">
+                                    <i class="fas fa-skull-crossbones"></i> Unsafe
+                                </button>
+                            </div>
+                            <div class="dice-ranges">
+                                <span class="range-info safe-range">
+                                    <i class="fas fa-shield-alt"></i> {{helpers.getSafeRange system.agilite.value}}
+                                </span>
+                                <span class="range-info unsafe-range">
+                                    <i class="fas fa-skull-crossbones"></i> {{helpers.getUnsafeRange system.agilite.value}}
+                                </span>
+                            </div>
+                            <!-- Affichage du malus d'agilité dû à l'armure -->
+                            <div class="agility-penalty-display">
+                                {{#if (gt (helpers.getAgilityPenalty actor) 0)}}
+                                    <span class="penalty-info">
+                                        <i class="fas fa-exclamation-triangle"></i> Malus d'armure: {{helpers.getAgilityPenalty actor}}
+                                    </span>
+                                {{else}}
+                                    <span class="penalty-info no-penalty">
+                                        <i class="fas fa-check-circle"></i> Aucun malus d'armure
+                                    </span>
+                                {{/if}}
+                            </div>
                         </div>
                         
                         <div class="stat-block">
@@ -225,54 +237,42 @@
                         
                         <div class="stat-block">
                             <div class="stat-header">
-                                <img src="systems/voidHorizon/assets/icons/agilite.png" class="stat-icon"
-                                    alt="Agilité">
-                                <label class="rollable" data-stat="agilite">Agilité</label>
+                                        <img src="systems/voidHorizon/assets/icons/pimpance.png" class="stat-icon"
+                                            alt="Pimpance">
+                                <label class="rollable" data-stat="pimpance">Pimpance</label>
                             </div>
                             <div class="stat-controls">
-                                <select name="system.agilite.value" class="edit-mode">
-                                    {{#select system.agilite.value}}
-                                        <option value="2d4">Challengé</option>
-                                        <option value="3d4">Lourdeau</option>
-                                        <option value="4d4">Bien</option>
-                                        <option value="5d4">Rapide</option>
-                                        <option value="6d4">Très rapide</option>
-                                        <option value="7d4">Très très rapide</option>
+                                <select name="system.pimpance.value" class="edit-mode">
+                                    {{#select system.pimpance.value}}
+                                    <option value="2d4">Tâche</option>
+                                            <option value="3d4">Pas top</option>
+                                            <option value="4d4">Honnête</option>
+                                            <option value="5d4">Beau</option>
+                                            <option value="6d4">Splendide</option>
+                                            <option value="7d4">Ramirez</option>
                                     {{/select}}
                                 </select>
-                                <div class="read-mode">{{helpers.getSelectedText actor.system.agilite.value
-                                    "agilite"}}</div>
+                                        <div class="read-mode">{{helpers.getSelectedText actor.system.pimpance.value
+                                            "pimpance"}}</div>
                             </div>
-                            <div class="roll-buttons">
-                                <button type="button" class="roll-dice-btn safe" data-stat="agilite" data-unsafe="false"
-                                    title="Lancer les dés d'Agilité (Mode Safe - {{system.agilite.value}})">
-                                    <i class="fas fa-shield-alt"></i> Safe
-                                </button>
-                                <button type="button" class="roll-dice-btn unsafe" data-stat="agilite" data-unsafe="true"
-                                    title="Lancer les dés d'Agilité (Mode Unsafe - {{helpers.getUnsafeFormula system.agilite.value}})">
-                                    <i class="fas fa-skull-crossbones"></i> Unsafe
-                                </button>
-                            </div>
-                            <div class="dice-ranges">
-                                <span class="range-info safe-range">
-                                    <i class="fas fa-shield-alt"></i> {{helpers.getSafeRange system.agilite.value}}
-                                </span>
-                                <span class="range-info unsafe-range">
-                                    <i class="fas fa-skull-crossbones"></i> {{helpers.getUnsafeRange system.agilite.value}}
-                                </span>
-                            </div>
-                            <!-- Affichage du malus d'agilité dû à l'armure -->
-                            <div class="agility-penalty-display">
-                                {{#if (gt (helpers.getAgilityPenalty actor) 0)}}
-                                    <span class="penalty-info">
-                                        <i class="fas fa-exclamation-triangle"></i> Malus d'armure: {{helpers.getAgilityPenalty actor}}
-                                    </span>
-                                {{else}}
-                                    <span class="penalty-info no-penalty">
-                                        <i class="fas fa-check-circle"></i> Aucun malus d'armure
-                                    </span>
-                                {{/if}}
-                            </div>
+                                    <div class="roll-buttons">
+                                        <button type="button" class="roll-dice-btn safe" data-stat="pimpance" data-unsafe="false"
+                                            title="Lancer les dés de Pimpance (Mode Safe - {{system.pimpance.value}})">
+                                            <i class="fas fa-shield-alt"></i> Safe
+                                        </button>
+                                        <button type="button" class="roll-dice-btn unsafe" data-stat="pimpance" data-unsafe="true"
+                                            title="Lancer les dés de Pimpance (Mode Unsafe - {{helpers.getUnsafeFormula system.pimpance.value}})">
+                                            <i class="fas fa-skull-crossbones"></i> Unsafe
+                            </button>
+                                    </div>
+                                    <div class="dice-ranges">
+                                        <span class="range-info safe-range">
+                                            <i class="fas fa-shield-alt"></i> {{helpers.getSafeRange system.pimpance.value}}
+                                        </span>
+                                        <span class="range-info unsafe-range">
+                                            <i class="fas fa-skull-crossbones"></i> {{helpers.getUnsafeRange system.pimpance.value}}
+                                        </span>
+                                    </div>
                         </div>
                         
                         <div class="edit-mode-button">
@@ -293,6 +293,9 @@
                                         </button>
                                         <button type="button" class="tab-button" data-tab="traits">
                                             <h2>Traits</h2>
+                                        </button>
+                                        <button type="button" class="tab-button" data-tab="skills">
+                                            <h2>Compétences</h2>
                                         </button>
                                     </div>
                                 </div>
@@ -605,6 +608,99 @@
                                                 {{trait.description}}
                                             </div>
                                         </div>
+                                        {{/each}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Contenu de l'onglet Compétences -->
+                            <div class="tab-content" data-tab="skills">
+                                <div class="skills-section">
+                                    <div class="skills-header">
+                                        <h3>Compétences du personnage</h3>
+                                        <button type="button" class="create-skill-btn" id="create-skill-btn">
+                                            <i class="fas fa-plus"></i> Ajouter une compétence
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Message d'information -->
+                                    <div class="skills-info">
+                                        <p><i class="fas fa-info-circle"></i> Les compétences représentent les domaines d'expertise de votre personnage. Cliquez sur "Ajouter une compétence" pour commencer.</p>
+                                    </div>
+                                    
+                                    <!-- Formulaire de création de compétence (caché par défaut) -->
+                                    <div class="skill-form-container" id="skill-form-container" style="display: none;">
+                                        <div class="skill-form">
+                                            <h4>Nouvelle compétence</h4>
+                                            <div class="skill-form-fields">
+                                                <div class="skill-field">
+                                                    <label>Nom de la compétence:</label>
+                                                    <input type="text" id="skill-name-input" placeholder="Nom de la compétence" data-no-save="true" />
+                                                </div>
+                                                <div class="skill-field">
+                                                    <label>Description:</label>
+                                                    <textarea id="skill-description-input" placeholder="Description de la compétence" rows="3" data-no-save="true"></textarea>
+                                                </div>
+                                                <div class="skill-field">
+                                                    <label>Caractéristique associée:</label>
+                                                    <select id="skill-characteristic-input" data-no-save="true">
+                                                        <option value="">Sélectionner une caractéristique</option>
+                                                        <option value="martialite">Martialité</option>
+                                                        <option value="pimpance">Pimpance</option>
+                                                        <option value="acuite">Acuité</option>
+                                                        <option value="arcane">Arcane</option>
+                                                        <option value="agilite">Agilité</option>
+                                                    </select>
+                                                </div>
+                                                <div class="skill-field">
+                                                    <label>Niveau de maîtrise:</label>
+                                                    <select id="skill-mastery-input" data-no-save="true">
+                                                        <option value="2d4">Challengé (2d4)</option>
+                                                        <option value="3d4">Lourdeau (3d4)</option>
+                                                        <option value="4d4">Bien (4d4)</option>
+                                                        <option value="5d4">Rapide (5d4)</option>
+                                                        <option value="6d4">Très rapide (6d4)</option>
+                                                        <option value="7d4">Très très rapide (7d4)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="skill-form-actions">
+                                                <button type="button" class="skill-save-btn" id="skill-save-btn">
+                                                    <i class="fas fa-save"></i> Sauvegarder
+                                                </button>
+                                                <button type="button" class="skill-cancel-btn" id="skill-cancel-btn">
+                                                    <i class="fas fa-times"></i> Annuler
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Liste des compétences existantes -->
+                                    <div class="skills-list" id="skills-list">
+                                        {{#each actor.system.skills as |skill skillId|}}
+                                        {{#if skill}}
+                                        <div class="skill" data-skill-id="{{skillId}}">
+                                            <div class="skill-header">
+                                                <div class="skill-name">
+                                                    <h4>{{skill.name}}</h4>
+                                                    <span class="skill-mastery-display">
+                                                        {{skill.mastery}} ({{helpers.getSelectedText skill.mastery skill.characteristic}})
+                                                    </span>
+                                                </div>
+                                                <div class="skill-controls">
+                                                    <button type="button" class="skill-control skill-edit" title="Modifier" data-skill-id="{{skillId}}">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button type="button" class="skill-control skill-delete" title="Supprimer" data-skill-id="{{skillId}}">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="skill-description">
+                                                {{skill.description}}
+                                            </div>
+                                        </div>
+                                        {{/if}}
                                         {{/each}}
                                     </div>
                                 </div>

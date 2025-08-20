@@ -107,6 +107,10 @@
                         "type": "Object",
                         "default": {}
                     },
+                    "skills": {
+                        "type": "Object",
+                        "default": {}
+                    },
                                     "armor": {
                     "name": "",
                     "type": "tissu",

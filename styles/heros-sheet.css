@@ -1529,9 +1529,259 @@ textarea:focus {
     color: #4CAF50 !important;
 }
 
-.trait-test .trait-bonus-display {
-    background: linear-gradient(135deg, #4CAF50, #45a049) !important;
-}
+ .trait-test .trait-bonus-display {
+     background: linear-gradient(135deg, #4CAF50, #45a049) !important;
+ }
+
+ /* Styles pour l'onglet Compétences */
+ .skills-section {
+     background: rgba(255, 255, 255, 0.9);
+     border: 2px solid #800000;
+     border-radius: 8px;
+     padding: 20px;
+ }
+
+ .skills-header {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     margin-bottom: 20px;
+     border-bottom: 2px solid #800000;
+     padding-bottom: 10px;
+ }
+
+ .skills-header h3 {
+     margin: 0;
+     color: #800000;
+     font-size: 18px;
+     font-weight: bold;
+ }
+
+ .create-skill-btn {
+     background: linear-gradient(135deg, #9C27B0, #7B1FA2);
+     color: white;
+     border: none;
+     border-radius: 6px;
+     padding: 8px 16px;
+     cursor: pointer;
+     font-size: 14px;
+     font-weight: bold;
+     transition: all 0.2s ease;
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+ }
+
+ .create-skill-btn:hover {
+     background: linear-gradient(135deg, #7B1FA2, #6A1B9A);
+     transform: translateY(-1px);
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+ }
+
+ /* Message d'information des compétences */
+ .skills-info {
+     background: rgba(156, 39, 176, 0.1);
+     border: 1px solid #9C27B0;
+     border-radius: 6px;
+     padding: 12px;
+     margin-bottom: 20px;
+ }
+
+ .skills-info p {
+     margin: 0;
+     color: #7B1FA2;
+     font-size: 14px;
+     line-height: 1.4;
+ }
+
+ .skills-info i {
+     margin-right: 8px;
+     color: #9C27B0;
+ }
+
+ /* Formulaire de création de compétence */
+ .skill-form-container {
+     margin-bottom: 20px;
+     padding: 20px;
+     background: rgba(255, 255, 255, 0.95);
+     border: 2px solid #9C27B0;
+     border-radius: 8px;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ }
+
+ .skill-form h4 {
+     margin: 0 0 15px 0;
+     color: #9C27B0;
+     font-size: 16px;
+     font-weight: bold;
+     text-align: center;
+ }
+
+ .skill-form-fields {
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     gap: 15px;
+     margin-bottom: 20px;
+ }
+
+ .skill-field {
+     display: flex;
+     flex-direction: column;
+     gap: 5px;
+ }
+
+ .skill-field:nth-child(2) {
+     grid-column: 1 / -1;
+ }
+
+ .skill-field label {
+     font-weight: bold;
+     color: #333;
+     font-size: 14px;
+ }
+
+ .skill-field input,
+ .skill-field select,
+ .skill-field textarea {
+     padding: 8px;
+     border: 1px solid #ddd;
+     border-radius: 4px;
+     font-size: 14px;
+     transition: border-color 0.2s ease;
+ }
+
+ .skill-field input:focus,
+ .skill-field select:focus,
+ .skill-field textarea:focus {
+     border-color: #9C27B0;
+     outline: none;
+     box-shadow: 0 0 3px rgba(156, 39, 176, 0.3);
+ }
+
+ .skill-field textarea {
+     resize: vertical;
+     min-height: 60px;
+ }
+
+ .skill-form-actions {
+     display: flex;
+     gap: 10px;
+     justify-content: center;
+ }
+
+ .skill-save-btn,
+ .skill-cancel-btn {
+     padding: 8px 16px;
+     border: none;
+     border-radius: 4px;
+     cursor: pointer;
+     font-size: 14px;
+     font-weight: bold;
+     transition: all 0.2s ease;
+     display: flex;
+     align-items: center;
+     gap: 5px;
+ }
+
+ .skill-save-btn {
+     background: linear-gradient(135deg, #9C27B0, #7B1FA2);
+     color: white;
+ }
+
+ .skill-save-btn:hover {
+     background: linear-gradient(135deg, #7B1FA2, #6A1B9A);
+     transform: translateY(-1px);
+ }
+
+ .skill-cancel-btn {
+     background: linear-gradient(135deg, #f44336, #d32f2f);
+     color: white;
+ }
+
+ .skill-cancel-btn:hover {
+     background: linear-gradient(135deg, #d32f2f, #b71c1c);
+     transform: translateY(-1px);
+ }
+
+ /* Liste des compétences existantes */
+ .skills-list {
+     display: flex;
+     flex-direction: column;
+     gap: 15px;
+ }
+
+ .skill {
+     background: rgba(255, 255, 255, 0.8);
+     border: 1px solid #ddd;
+     border-radius: 6px;
+     padding: 15px;
+     transition: all 0.2s ease;
+ }
+
+ .skill:hover {
+     border-color: #9C27B0;
+     box-shadow: 0 2px 8px rgba(156, 39, 176, 0.1);
+ }
+
+ .skill-header {
+     display: flex;
+     justify-content: space-between;
+     align-items: flex-start;
+     margin-bottom: 10px;
+ }
+
+ .skill-name {
+     flex: 1;
+ }
+
+ .skill-name h4 {
+     margin: 0 0 5px 0;
+     color: #9C27B0;
+     font-size: 16px;
+     font-weight: bold;
+ }
+
+ .skill-mastery-display {
+     display: inline-block;
+     background: linear-gradient(135deg, #9C27B0, #7B1FA2);
+     color: white;
+     padding: 2px 8px;
+     border-radius: 12px;
+     font-size: 12px;
+     font-weight: bold;
+     text-transform: capitalize;
+ }
+
+ .skill-controls {
+     display: flex;
+     gap: 8px;
+ }
+
+ .skill-control {
+     background: none;
+     border: none;
+     color: #9C27B0;
+     font-size: 14px;
+     padding: 4px 8px;
+     border-radius: 4px;
+     transition: all 0.2s ease;
+     cursor: pointer;
+ }
+
+ .skill-control:hover {
+     background: rgba(156, 39, 176, 0.1);
+     transform: scale(1.1);
+ }
+
+ .skill-description {
+     color: #333;
+     font-size: 14px;
+     line-height: 1.4;
+ }
+
+ .skill-description:empty::before {
+     content: "Aucune description";
+     color: #999;
+     font-style: italic;
+ }
 
 /* Masquer les traits null ou vides */
 .trait:has(.trait-name h4:empty),
