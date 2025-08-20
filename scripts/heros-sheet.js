@@ -2697,11 +2697,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         let rollMode;
         
         if (isUnsafe) {
-            // Mode Unsafe : caractéristique (safe) + bonus + maîtrise
-            diceFormula = characteristicValue;
-            rollMode = 'Safe';
-        } else {
-            // Mode Safe : caractéristique (unsafe) + bonus + maîtrise
+            // Mode Unsafe : caractéristique (unsafe) + bonus + maîtrise
             // Convertir la valeur safe en unsafe
             const unsafeMap = {
                 "2d4": "1d12",
@@ -2713,6 +2709,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             };
             diceFormula = unsafeMap[characteristicValue] || characteristicValue;
             rollMode = 'Unsafe';
+        } else {
+            // Mode Safe : caractéristique (safe) + bonus + maîtrise
+            diceFormula = characteristicValue;
+            rollMode = 'Safe';
         }
         
         // Ajouter le bonus et la maîtrise à la formule
