@@ -2260,6 +2260,25 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     }
     
     /**
+     * Calcule les valeurs min/max d'une formule de dés
+     * @param {string} diceFormula - La formule de dés (ex: "3d4" ou "1d12")
+     * @returns {Object} - {min: number, max: number}
+     * @private
+     */
+    _calculateDiceRange(diceFormula) {
+        const match = diceFormula.match(/(\d+)d(\d+)/);
+        if (!match) return { min: 0, max: 0 };
+        
+        const numDice = parseInt(match[1]);
+        const dieSize = parseInt(match[2]);
+        
+        return {
+            min: numDice,
+            max: numDice * dieSize
+        };
+    }
+
+    /**
      * Affiche le résultat du lancer de dés
      * @param {Object} rollData - Le résultat du lancer avec bonus
      * @param {string} stat - Le nom de la caractéristique
@@ -2275,6 +2294,17 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const traitBonus = rollData.traitBonus;
         const finalResult = rollData.finalResult;
         
+        // Détecter les succès/échecs critiques pour les jets Unsafe
+        let criticalMessage = '';
+        if (isUnsafe) {
+            const diceRange = this._calculateDiceRange(formula);
+            if (baseResult === diceRange.min) {
+                criticalMessage = '<p class="critical-failure">💥 <strong>ÉCHEC CRITIQUE!</strong></p>';
+            } else if (baseResult === diceRange.max) {
+                criticalMessage = '<p class="critical-success">⭐ <strong>RÉUSSITE CRITIQUE!</strong></p>';
+            }
+        }
+        
         // Créer un message de chat avec le résultat
         const chatData = {
             user: game.user.id,
@@ -2282,6 +2312,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             content: `
                 <div class="voidhorizon-roll-result">
                     <h3>🎲 Test de ${statName} (${modeLabel})</h3>
+                    ${criticalMessage}
                     <div class="roll-details">
                         <p><strong>Degré de maîtrise:</strong> ${statLabel}</p>
                         <p><strong>Mode:</strong> ${modeLabel}</p>
