@@ -3438,18 +3438,23 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Construire la formule selon le mode
             let finalFormula;
             let modeLabel;
+            let diceForCritical; // Pour la détection des critiques
             
             if (rollMode === "safe") {
                 // Mode Safe : caractéristique (safe) + qualité + bonus
                 finalFormula = `${characteristicDice} + ${weaponQualityDice}${weaponBonus > 0 ? ` + ${weaponBonus}` : ''}`;
                 modeLabel = "Safe";
+                diceForCritical = characteristicDice; // Utiliser les dés de base pour les critiques
             } else {
                 // Mode Unsafe : caractéristique (unsafe) + qualité + bonus
-                finalFormula = `${characteristicDice} + ${weaponQualityDice}${weaponBonus > 0 ? ` + ${weaponBonus}` : ''}`;
+                const unsafeCharacteristicDice = this._calculateDiceFormula(characteristicDice, true);
+                finalFormula = `${unsafeCharacteristicDice} + ${weaponQualityDice}${weaponBonus > 0 ? ` + ${weaponBonus}` : ''}`;
                 modeLabel = "Unsafe";
+                diceForCritical = unsafeCharacteristicDice; // Utiliser les dés unsafe pour les critiques
             }
             
             console.log(`Formule d'attaque (${modeLabel}): ${finalFormula}`);
+            console.log(`Dés de caractéristique: ${rollMode === "safe" ? characteristicDice : diceForCritical} (${rollMode === "unsafe" ? "transformation unsafe" : "dés de base"})`);
             
             // Créer le jet de dés
             const roll = new Roll(finalFormula);
@@ -3458,7 +3463,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Détecter les succès/échecs critiques pour les jets Unsafe
             let criticalMessage = '';
             if (rollMode === "unsafe") {
-                const diceRange = this._calculateDiceRange(characteristicDice);
+                const diceRange = this._calculateDiceRange(diceForCritical);
                 const baseResult = result.total - weaponBonus; // Retirer le bonus pour vérifier les dés de base
                 
                 if (baseResult === diceRange.min) {
@@ -3485,7 +3490,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                         ${criticalMessage}
                         <p><strong>Mode:</strong> ${modeLabel}</p>
                         <p><strong>Formule:</strong> ${finalFormula}</p>
-                        <p><strong>Caractéristique:</strong> ${characteristicName} (${characteristicDice})</p>
+                        <p><strong>Caractéristique:</strong> ${characteristicName} (${rollMode === "safe" ? characteristicDice : diceForCritical})</p>
                         <p><strong>Qualité:</strong> ${weaponQualityDice}</p>
                         ${weaponBonus > 0 ? `<p><strong>Bonus d'arme:</strong> +${weaponBonus}</p>` : ''}
                         <p><strong>Résultat:</strong> ${result.total}</p>

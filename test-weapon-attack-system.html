@@ -58,20 +58,20 @@
         <h3>Mode Unsafe :</h3>
         <p><code>jet de compétence (unsafe) + jet de qualité + bonus</code></p>
         
-        <p><strong>Note :</strong> Les deux modes utilisent la même formule de base, mais le mode Unsafe peut déclencher des coups critiques.</p>
+        <p><strong>Note :</strong> Le mode Unsafe transforme automatiquement les dés de caractéristique selon la règle standard : 4d4 devient 1d20, 3d4 devient 1d16, etc. Les coups critiques se basent sur ces dés transformés.</p>
     </div>
 
     <div class="critical">
         <h2>⭐ Système de Coups Critiques (Mode Unsafe uniquement)</h2>
         <h3>Réussite Critique :</h3>
-        <p>Quand le résultat des dés de caractéristique est égal au <strong>maximum possible</strong> de la formule.</p>
-        <p><strong>Exemple :</strong> Pour 4d4 (max 16), si le résultat des dés est 16 → ⭐ RÉUSSITE CRITIQUE!</p>
+        <p>Quand le résultat des dés de caractéristique <strong>transformed</strong> est égal au <strong>maximum possible</strong> de la formule unsafe.</p>
+        <p><strong>Exemple :</strong> Pour 4d4 → 1d20 (max 20), si le résultat des 1d20 est 20 → ⭐ RÉUSSITE CRITIQUE!</p>
         
         <h3>Échec Critique :</h3>
-        <p>Quand le résultat des dés de caractéristique est égal au <strong>minimum possible</strong> de la formule.</p>
-        <p><strong>Exemple :</strong> Pour 4d4 (min 4), si le résultat des dés est 4 → 💥 ÉCHEC CRITIQUE!</p>
+        <p>Quand le résultat des dés de caractéristique <strong>transformed</strong> est égal au <strong>minimum possible</strong> de la formule unsafe.</p>
+        <p><strong>Exemple :</strong> Pour 4d4 → 1d20 (min 1), si le résultat des 1d20 est 1 → 💥 ÉCHEC CRITIQUE!</p>
         
-        <p><strong>Important :</strong> Les coups critiques ne s'appliquent qu'aux dés de caractéristique, pas aux dés de qualité ou aux bonus.</p>
+        <p><strong>Important :</strong> Les coups critiques se basent sur les dés de caractéristique transformés (unsafe), pas sur les dés de base ou les dés de qualité.</p>
     </div>
 
     <div class="feature">
@@ -82,6 +82,20 @@
             <li><strong>Acuité (acuite) →</strong> Acuité</li>
             <li><strong>Bouclier (shield) →</strong> Pas de bouton d'attaque</li>
         </ul>
+    </div>
+
+    <div class="feature">
+        <h2>🔄 Transformation des Dés (Mode Unsafe)</h2>
+        <p>En mode Unsafe, les dés de caractéristique sont automatiquement transformés :</p>
+        <ul>
+            <li><strong>2d4 → 1d12</strong> (Degré 1)</li>
+            <li><strong>3d4 → 1d16</strong> (Degré 2)</li>
+            <li><strong>4d4 → 1d20</strong> (Degré 3)</li>
+            <li><strong>5d4 → 1d24</strong> (Degré 4)</li>
+            <li><strong>6d4 → 1d28</strong> (Degré 5)</li>
+            <li><strong>7d4 → 1d32</strong> (Degré 6)</li>
+        </ul>
+        <p><strong>Note :</strong> Cette transformation suit la même règle que les jets de caractéristique unsafe.</p>
     </div>
 
     <div class="feature">
@@ -131,9 +145,9 @@
         <p>Pas de coups critiques possibles</p>
         
         <h3>Mode Unsafe :</h3>
-        <p><code>Formule : 4d4 + 1d8 + 2</code></p>
-        <p><strong>Réussite critique :</strong> Si les 4d4 donnent 16 (maximum)</p>
-        <p><strong>Échec critique :</strong> Si les 4d4 donnent 4 (minimum)</p>
+        <p><code>Formule : 1d20 + 1d8 + 2</code> (4d4 transformé en 1d20)</p>
+        <p><strong>Réussite critique :</strong> Si les 1d20 donnent 20 (maximum)</p>
+        <p><strong>Échec critique :</strong> Si les 1d20 donnent 1 (minimum)</p>
     </div>
 
     <div class="success">
