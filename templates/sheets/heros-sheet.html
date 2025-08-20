@@ -80,8 +80,7 @@
                                             <option value="7d4">Légende</option>
                                     {{/select}}
                                 </select>
-                                                                                                        <div class="read-mode">{{helpers.getSelectedText system.martialite.value
-                                    "martialite"}}</div>
+                                                                                                                                                                                                                 <div class="read-mode">{{#if (eq system.martialite.value "2d4")}}Incompétent{{else if (eq system.martialite.value "3d4")}}Combatif{{else if (eq system.martialite.value "4d4")}}Soldat{{else if (eq system.martialite.value "5d4")}}Expérimenté{{else if (eq system.martialite.value "6d4")}}Vétéran{{else if (eq system.martialite.value "7d4")}}Légende{{else}}{{system.martialite.value}}{{/if}}</div>
                             </div>
                             
 
@@ -92,20 +91,20 @@
                                             <i class="fas fa-shield-alt"></i> Safe
                                         </button>
                                         <button type="button" class="roll-dice-btn unsafe" data-stat="martialite" data-unsafe="true"
-                                            title="Lancer les dés de Martialité (Mode Unsafe - {{helpers.getUnsafeFormula system.martialite.value}})">
+                                                                                         title="Lancer les dés de Martialité (Mode Unsafe - {{#if (eq system.martialite.value "2d4")}}1d12{{else if (eq system.martialite.value "3d4")}}1d16{{else if (eq system.martialite.value "4d4")}}1d20{{else if (eq system.martialite.value "5d4")}}1d24{{else if (eq system.martialite.value "6d4")}}1d28{{else if (eq system.martialite.value "7d4")}}1d32{{else}}{{system.martialite.value}}{{/if}})">
                                             <i class="fas fa-skull-crossbones"></i> Unsafe
                             </button>
                                     </div>
                                     <div class="dice-ranges">
-                                        <span class="range-info safe-range">
-                                            <i class="fas fa-shield-alt"></i> {{helpers.getSafeRange system.martialite.value actor}}
-                                        </span>
-                                        <span class="range-info bonus-display">
-                                            {{helpers.getTotalBonus 'martialite' actor}}
-                                        </span>
-                                        <span class="range-info unsafe-range">
-                                            <i class="fas fa-skull-crossbones"></i> {{helpers.getUnsafeRange system.martialite.value actor}}
-                                        </span>
+                                                                                 <span class="range-info safe-range">
+                                             <i class="fas fa-shield-alt"></i> {{#if (eq system.martialite.value "2d4")}}2-8{{else if (eq system.martialite.value "3d4")}}3-12{{else if (eq system.martialite.value "4d4")}}4-16{{else if (eq system.martialite.value "5d4")}}5-20{{else if (eq system.martialite.value "6d4")}}6-24{{else if (eq system.martialite.value "7d4")}}7-28{{else}}?-?{{/if}}
+                                         </span>
+                                         <span class="range-info bonus-display">
+                                             +0
+                                         </span>
+                                         <span class="range-info unsafe-range">
+                                             <i class="fas fa-skull-crossbones"></i> {{#if (eq system.martialite.value "2d4")}}1-12{{else if (eq system.martialite.value "3d4")}}1-16{{else if (eq system.martialite.value "4d4")}}1-20{{else if (eq system.martialite.value "5d4")}}1-24{{else if (eq system.martialite.value "6d4")}}1-28{{else if (eq system.martialite.value "7d4")}}1-32{{else}}?-?{{/if}}
+                                         </span>
                                     </div>
                         </div>
                         
@@ -126,8 +125,7 @@
                                         <option value="7d4">Très très rapide</option>
                                     {{/select}}
                                 </select>
-                                <div class="read-mode">{{helpers.getSelectedText system.agilite.value
-                                    "agilite"}}</div>
+                                                                 <div class="read-mode">{{#if (eq system.agilite.value "2d4")}}Challengé{{else if (eq system.agilite.value "3d4")}}Lourdeau{{else if (eq system.agilite.value "4d4")}}Bien{{else if (eq system.agilite.value "5d4")}}Rapide{{else if (eq system.agilite.value "6d4")}}Très rapide{{else if (eq system.agilite.value "7d4")}}Très très rapide{{else}}{{system.agilite.value}}{{/if}}</div>
                             </div>
                             
 
@@ -138,33 +136,33 @@
                                     <i class="fas fa-shield-alt"></i> Safe
                                 </button>
                                 <button type="button" class="roll-dice-btn unsafe" data-stat="agilite" data-unsafe="true"
-                                    title="Lancer les dés d'Agilité (Mode Unsafe - {{helpers.getUnsafeFormula system.agilite.value}})">
+                                    title="Lancer les dés d'Agilité (Mode Unsafe - {{#if (eq system.agilite.value "2d4")}}1d12{{else if (eq system.agilite.value "3d4")}}1d16{{else if (eq system.agilite.value "4d4")}}1d20{{else if (eq system.agilite.value "5d4")}}1d24{{else if (eq system.agilite.value "6d4")}}1d28{{else if (eq system.agilite.value "7d4")}}1d32{{else}}{{system.agilite.value}}{{/if}})">
                                     <i class="fas fa-skull-crossbones"></i> Unsafe
                                 </button>
                             </div>
-                            <div class="dice-ranges">
-                                <span class="range-info safe-range">
-                                    <i class="fas fa-shield-alt"></i> {{helpers.getSafeRange system.agilite.value actor}}
-                                </span>
-                                <span class="range-info bonus-display">
-                                    {{helpers.getTotalBonus 'agilite' actor}}
-                                </span>
-                                <span class="range-info unsafe-range">
-                                    <i class="fas fa-skull-crossbones"></i> {{helpers.getUnsafeRange system.agilite.value actor}}
-                                </span>
-                            </div>
+                                                         <div class="dice-ranges">
+                                 <span class="range-info safe-range">
+                                     <i class="fas fa-shield-alt"></i> {{#if (eq system.agilite.value "2d4")}}2-8{{else if (eq system.agilite.value "3d4")}}3-12{{else if (eq system.agilite.value "4d4")}}4-16{{else if (eq system.agilite.value "5d4")}}5-20{{else if (eq system.agilite.value "6d4")}}6-24{{else if (eq system.agilite.value "7d4")}}7-28{{else}}?-?{{/if}}
+                                 </span>
+                                 <span class="range-info bonus-display">
+                                     +0
+                                 </span>
+                                 <span class="range-info unsafe-range">
+                                     <i class="fas fa-skull-crossbones"></i> {{#if (eq system.agilite.value "2d4")}}1-12{{else if (eq system.agilite.value "3d4")}}1-16{{else if (eq system.agilite.value "4d4")}}1-20{{else if (eq system.agilite.value "5d4")}}1-24{{else if (eq system.agilite.value "6d4")}}1-28{{else if (eq system.agilite.value "7d4")}}1-32{{else}}?-?{{/if}}
+                                 </span>
+                             </div>
                             <!-- Affichage du malus d'agilité dû à l'armure -->
-                            <div class="agility-penalty-display">
-                                {{#if (lt (helpers.getAgilityPenalty actor) 0)}}
-                                    <span class="penalty-info">
-                                        <i class="fas fa-exclamation-triangle"></i> Malus d'armure: {{helpers.getAgilityPenalty actor}}
-                                    </span>
-                                {{else}}
-                                    <span class="penalty-info no-penalty">
-                                        <i class="fas fa-check-circle"></i> Aucun malus d'armure
-                                    </span>
-                                {{/if}}
-                            </div>
+                                                         <div class="agility-penalty-display">
+                                 {{#if (eq actor.system.armor.type "tissu")}}
+                                     <span class="penalty-info no-penalty">
+                                         <i class="fas fa-check-circle"></i> Aucun malus d'armure
+                                     </span>
+                                 {{else}}
+                                     <span class="penalty-info">
+                                         <i class="fas fa-exclamation-triangle"></i> Malus d'armure: {{#if (eq actor.system.armor.type "legere")}}-4{{else if (eq actor.system.armor.type "lourde")}}-8{{else if (eq actor.system.armor.type "blindee")}}-16{{else}}0{{/if}}
+                                     </span>
+                                 {{/if}}
+                             </div>
                         </div>
                         
                         <div class="stat-block">
@@ -184,8 +182,7 @@
                                             <option value="7d4">Fulgurant</option>
                                     {{/select}}
                                 </select>
-                                                                                <div class="read-mode">{{helpers.getSelectedText system.acuite.value
-                                            "acuite"}}</div>
+                                                                                                                                                                 <div class="read-mode">{{#if (eq system.acuite.value "2d4")}}Aveugle{{else if (eq system.acuite.value "3d4")}}Distrait{{else if (eq system.acuite.value "4d4")}}Alerte{{else if (eq system.acuite.value "5d4")}}Vif{{else if (eq system.acuite.value "6d4")}}Clairvoyant{{else if (eq system.acuite.value "7d4")}}Fulgurant{{else}}{{system.acuite.value}}{{/if}}</div>
                                     </div>
                                     
                                     
@@ -196,21 +193,21 @@
                                             <i class="fas fa-shield-alt"></i> Safe
                                         </button>
                                         <button type="button" class="roll-dice-btn unsafe" data-stat="acuite" data-unsafe="true"
-                                            title="Lancer les dés d'Acuité (Mode Unsafe - {{helpers.getUnsafeFormula system.acuite.value}})">
+                                                                                         title="Lancer les dés d'Acuité (Mode Unsafe - {{#if (eq system.acuite.value "2d4")}}1d12{{else if (eq system.acuite.value "3d4")}}1d16{{else if (eq system.acuite.value "4d4")}}1d20{{else if (eq system.acuite.value "5d4")}}1d24{{else if (eq system.acuite.value "6d4")}}1d28{{else if (eq system.acuite.value "7d4")}}1d32{{else}}{{system.acuite.value}}{{/if}})">
                                             <i class="fas fa-skull-crossbones"></i> Unsafe
                             </button>
                                     </div>
-                                    <div class="dice-ranges">
-                                        <span class="range-info safe-range">
-                                            <i class="fas fa-shield-alt"></i> {{helpers.getSafeRange system.acuite.value actor}}
-                                        </span>
-                                        <span class="range-info bonus-display">
-                                            {{helpers.getTotalBonus 'acuite' actor}}
-                                        </span>
-                                        <span class="range-info unsafe-range">
-                                            <i class="fas fa-skull-crossbones"></i> {{helpers.getUnsafeRange system.acuite.value actor}}
-                                        </span>
-                                    </div>
+                                                                         <div class="dice-ranges">
+                                         <span class="range-info safe-range">
+                                             <i class="fas fa-shield-alt"></i> {{#if (eq system.acuite.value "2d4")}}2-8{{else if (eq system.acuite.value "3d4")}}3-12{{else if (eq system.acuite.value "4d4")}}4-16{{else if (eq system.acuite.value "5d4")}}5-20{{else if (eq system.acuite.value "6d4")}}6-24{{else if (eq system.acuite.value "7d4")}}7-28{{else}}?-?{{/if}}
+                                         </span>
+                                         <span class="range-info bonus-display">
+                                             +0
+                                         </span>
+                                         <span class="range-info unsafe-range">
+                                             <i class="fas fa-skull-crossbones"></i> {{#if (eq system.acuite.value "2d4")}}1-12{{else if (eq system.acuite.value "3d4")}}1-16{{else if (eq system.acuite.value "4d4")}}1-20{{else if (eq system.acuite.value "5d4")}}1-24{{else if (eq system.acuite.value "6d4")}}1-28{{else if (eq system.acuite.value "7d4")}}1-32{{else}}?-?{{/if}}
+                                         </span>
+                                     </div>
                         </div>
                         
                         <div class="stat-block">
@@ -230,8 +227,7 @@
                                             <option value="7d4">Ramirez</option>
                                     {{/select}}
                                 </select>
-                                                                                <div class="read-mode">{{helpers.getSelectedText system.pimpance.value
-                                            "pimpance"}}</div>
+                                                                                                                                                                 <div class="read-mode">{{#if (eq system.pimpance.value "2d4")}}Tâche{{else if (eq system.pimpance.value "3d4")}}Pas top{{else if (eq system.pimpance.value "4d4")}}Honnête{{else if (eq system.pimpance.value "5d4")}}Beau{{else if (eq system.pimpance.value "6d4")}}Splendide{{else if (eq system.pimpance.value "7d4")}}Ramirez{{else}}{{system.pimpance.value}}{{/if}}</div>
                                     </div>
                                     
                                     
@@ -242,21 +238,21 @@
                                             <i class="fas fa-shield-alt"></i> Safe
                                         </button>
                                         <button type="button" class="roll-dice-btn unsafe" data-stat="pimpance" data-unsafe="true"
-                                            title="Lancer les dés de Pimpance (Mode Unsafe - {{helpers.getUnsafeFormula system.pimpance.value}})">
+                                                                                         title="Lancer les dés de Pimpance (Mode Unsafe - {{#if (eq system.pimpance.value "2d4")}}1d12{{else if (eq system.pimpance.value "3d4")}}1d16{{else if (eq system.pimpance.value "4d4")}}1d20{{else if (eq system.pimpance.value "5d4")}}1d24{{else if (eq system.pimpance.value "6d4")}}1d28{{else if (eq system.pimpance.value "7d4")}}1d32{{else}}{{system.pimpance.value}}{{/if}})">
                                             <i class="fas fa-skull-crossbones"></i> Unsafe
                             </button>
                                     </div>
-                                    <div class="dice-ranges">
-                                        <span class="range-info safe-range">
-                                            <i class="fas fa-shield-alt"></i> {{helpers.getSafeRange system.pimpance.value actor}}
-                                        </span>
-                                        <span class="range-info bonus-display">
-                                            {{helpers.getTotalBonus 'pimpance' actor}}
-                                        </span>
-                                        <span class="range-info unsafe-range">
-                                            <i class="fas fa-skull-crossbones"></i> {{helpers.getUnsafeRange system.pimpance.value actor}}
-                                        </span>
-                                    </div>
+                                                                         <div class="dice-ranges">
+                                         <span class="range-info safe-range">
+                                             <i class="fas fa-shield-alt"></i> {{#if (eq system.pimpance.value "2d4")}}2-8{{else if (eq system.pimpance.value "3d4")}}3-12{{else if (eq system.pimpance.value "4d4")}}4-16{{else if (eq system.pimpance.value "5d4")}}5-20{{else if (eq system.pimpance.value "6d4")}}6-24{{else if (eq system.pimpance.value "7d4")}}7-28{{else}}?-?{{/if}}
+                                         </span>
+                                         <span class="range-info bonus-display">
+                                             +0
+                                         </span>
+                                         <span class="range-info unsafe-range">
+                                             <i class="fas fa-skull-crossbones"></i> {{#if (eq system.pimpance.value "2d4")}}1-12{{else if (eq system.acuite.value "3d4")}}1-16{{else if (eq system.pimpance.value "4d4")}}1-20{{else if (eq system.pimpance.value "5d4")}}1-24{{else if (eq system.pimpance.value "6d4")}}1-28{{else if (eq system.pimpance.value "7d4")}}1-32{{else}}?-?{{/if}}
+                                         </span>
+                                     </div>
                         </div>
                         
                         <div class="stat-block">
@@ -276,8 +272,7 @@
                                             <option value="7d4">Archimage</option>
                                     {{/select}}
                                 </select>
-                                                                                <div class="read-mode">{{helpers.getSelectedText system.arcane.value
-                                            "arcane"}}</div>
+                                                                                                                                                                 <div class="read-mode">{{#if (eq system.arcane.value "2d4")}}Insensible{{else if (eq system.arcane.value "3d4")}}Eveillé{{else if (eq system.arcane.value "4d4")}}Novice{{else if (eq system.arcane.value "5d4")}}Initié{{else if (eq system.arcane.value "6d4")}}Maître{{else if (eq system.arcane.value "7d4")}}Archimage{{else}}{{system.arcane.value}}{{/if}}</div>
                                     </div>
                                     
                                     
@@ -288,21 +283,21 @@
                                             <i class="fas fa-shield-alt"></i> Safe
                                         </button>
                                         <button type="button" class="roll-dice-btn unsafe" data-stat="arcane" data-unsafe="true"
-                                            title="Lancer les dés d'Arcane (Mode Unsafe - {{helpers.getUnsafeFormula system.arcane.value}})">
+                                                                                         title="Lancer les dés d'Arcane (Mode Unsafe - {{#if (eq system.arcane.value "2d4")}}1d12{{else if (eq system.arcane.value "3d4")}}1d16{{else if (eq system.arcane.value "4d4")}}1d20{{else if (eq system.arcane.value "5d4")}}1d24{{else if (eq system.arcane.value "6d4")}}1d28{{else if (eq system.arcane.value "7d4")}}1d32{{else}}{{system.arcane.value}}{{/if}})">
                                             <i class="fas fa-skull-crossbones"></i> Unsafe
                             </button>
                                     </div>
-                                    <div class="dice-ranges">
-                                        <span class="range-info safe-range">
-                                            <i class="fas fa-shield-alt"></i> {{helpers.getSafeRange system.arcane.value actor}}
-                                        </span>
-                                        <span class="range-info bonus-display">
-                                            {{helpers.getTotalBonus 'arcane' actor}}
-                                        </span>
-                                        <span class="range-info unsafe-range">
-                                            <i class="fas fa-skull-crossbones"></i> {{helpers.getUnsafeRange system.arcane.value actor}}
-                                        </span>
-                                    </div>
+                                                                         <div class="dice-ranges">
+                                         <span class="range-info safe-range">
+                                             <i class="fas fa-shield-alt"></i> {{#if (eq system.arcane.value "2d4")}}2-8{{else if (eq system.arcane.value "3d4")}}3-12{{else if (eq system.arcane.value "4d4")}}4-16{{else if (eq system.arcane.value "5d4")}}5-20{{else if (eq system.arcane.value "6d4")}}6-24{{else if (eq system.arcane.value "7d4")}}7-28{{else}}?-?{{/if}}
+                                         </span>
+                                         <span class="range-info bonus-display">
+                                             +0
+                                         </span>
+                                         <span class="range-info unsafe-range">
+                                             <i class="fas fa-skull-crossbones"></i> {{#if (eq system.arcane.value "2d4")}}1-12{{else if (eq system.arcane.value "3d4")}}1-16{{else if (eq system.arcane.value "4d4")}}1-20{{else if (eq system.arcane.value "5d4")}}1-24{{else if (eq system.arcane.value "6d4")}}1-28{{else if (eq system.arcane.value "7d4")}}1-32{{else}}?-?{{/if}}
+                                         </span>
+                                     </div>
                         </div>
                         
                         <div class="edit-mode-button">
@@ -711,7 +706,7 @@
                                                 <div class="skill-name">
                                                     <h4>{{skill.name}}</h4>
                                                     <span class="skill-mastery-display">
-                                                        {{skill.mastery}} ({{helpers.getSelectedText skill.mastery "skill"}})
+                                                        {{skill.mastery}} ({{#if (eq skill.mastery "2d4")}}Novice{{else if (eq skill.mastery "3d4")}}Compagnon{{else if (eq skill.mastery "4d4")}}Maître{{else}}{{skill.mastery}}{{/if}})
                                                     </span>
                                                 </div>
                                                 <div class="skill-controls">
