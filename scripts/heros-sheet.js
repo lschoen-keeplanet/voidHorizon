@@ -3600,11 +3600,16 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         // Récupérer le bonus des boucliers d'équipement
         let shieldBonus = 0;
+        let shieldQualityDice = null;
         if (this.actor.system.weapons?.primary?.type === 'shield') {
             shieldBonus += parseInt(this.actor.system.weapons.primary.bonus) || 0;
+            shieldQualityDice = this._getShieldQualityDice(this.actor.system.weapons.primary.rank);
         }
         if (this.actor.system.weapons?.secondary?.type === 'shield') {
             shieldBonus += parseInt(this.actor.system.weapons.secondary.bonus) || 0;
+            if (!shieldQualityDice) {
+                shieldQualityDice = this._getShieldQualityDice(this.actor.system.weapons.secondary.rank);
+            }
         }
         
         let diceFormula;
@@ -3622,7 +3627,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             rollMode = 'Esquive';
             characteristicLabel = 'Agilité';
         } else if (action === 'block') {
-            // Blocage : jet de martialité (unsafe) + jet de qualité du bouclier
+            // Blocage : jet de martialité (unsafe) + jet de qualité du bouclier + bonus du bouclier
             const martialiteValue = this.actor.system.martialite?.value || "2d4";
             const unsafeMap = {
                 "2d4": "1d12", "3d4": "1d16", "4d4": "1d20",
@@ -3652,8 +3657,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Pour la parade : jet de martialité (unsafe)
             finalFormula = diceFormula;
         } else if (action === 'block') {
-            // Pour le blocage : jet de martialité (unsafe) + jet de qualité du bouclier
-            finalFormula = `${diceFormula} + ${shieldBonus}`;
+            // Pour le blocage : jet de martialité (unsafe) + jet de qualité du bouclier + bonus du bouclier
+            if (shieldQualityDice) {
+                finalFormula = `${diceFormula} + ${shieldQualityDice} + ${shieldBonus}`;
+            } else {
+                finalFormula = `${diceFormula} + ${shieldBonus}`;
+            }
         } else {
             // Pour esquive : jet d'agilité (unsafe)
             finalFormula = diceFormula;
@@ -3664,8 +3673,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         if (action === 'parade') {
             console.log('Parade: jet de martialité (unsafe)');
         } else if (action === 'block') {
-            console.log('Blocage: jet de martialité (unsafe) + bonus bouclier');
+            console.log('Blocage: jet de martialité (unsafe) + jet de qualité du bouclier + bonus du bouclier');
             console.log('Bonus bouclier:', shieldBonus);
+            console.log('Dé de qualité du bouclier:', shieldQualityDice);
         } else {
             console.log('Esquive: jet d\'agilité (unsafe)');
         }
@@ -3704,7 +3714,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                             ${action === 'parade' ? 
                                 `<p><strong>Détail:</strong> Jet de martialité (unsafe)</p>` :
                                 action === 'block' ?
-                                `<p><strong>Détail:</strong> Jet de martialité (unsafe) + ${shieldBonus} bouclier</p>` :
+                                `<p><strong>Détail:</strong> Jet de martialité (unsafe) + jet de qualité du bouclier + ${shieldBonus} bonus bouclier</p>` :
                                 `<p><strong>Détail:</strong> Jet d'agilité (unsafe)</p>`
                             }
                         </div>
@@ -3726,7 +3736,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      * @private
      */
     _calculateTotalResistance() {
-        // Nouvelle formule : Résistance = Constitution * 2 + degré d'agilité - malus d'agilité * 2 + degré de martialité - malus de martialité + type d'armure
+        // Nouvelle formule : Résistance = Constitution * 2 + degré d'agilité - malus d'agilité + degré de martialité - malus de martialité + type d'armure
         
         // Calculer la constitution totale
         const baseConstitution = parseInt(this.actor.system.constitution?.value) || 0;
@@ -3779,8 +3789,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         };
         const armorTypeBonus = armorTypeBonusMap[armorType] || 0;
         
-        // Appliquer la nouvelle formule : Constitution * 2 + degré d'agilité - malus d'agilité * 2 + degré de martialité - malus de martialité + type d'armure
-        const resistance = (totalConstitution * 2) + agiliteDegree - (agilityPenalty * 2) + martialiteDegree - martialitePenalty + armorTypeBonus;
+        // Appliquer la nouvelle formule : Constitution * 2 + degré d'agilité - malus d'agilité + degré de martialité - malus de martialité + type d'armure
+        const resistance = (totalConstitution * 2) + agiliteDegree - agilityPenalty + martialiteDegree - martialitePenalty + armorTypeBonus;
         
         return Math.max(0, resistance); // Éviter les valeurs négatives
     }
@@ -3808,6 +3818,24 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const totalArmor = baseArmor + equipmentBonus + traitBonus + shieldBonus;
         
         return totalArmor;
+    }
+
+    /**
+     * Obtient le dé de qualité d'un bouclier basé sur son rang
+     * @param {string} rank - Le rang du bouclier
+     * @returns {string} La formule de dé correspondante
+     * @private
+     */
+    _getShieldQualityDice(rank) {
+        const qualityDiceMap = {
+            "0": "1d4",   // Équipement brisé
+            "1": "1d6",   // Équipement commun
+            "2": "1d8",   // Équipement de qualité
+            "3": "1d10",  // Équipement rare
+            "4": "1d12",  // Équipement épique
+            "5": "1d20"   // Équipement mythique
+        };
+        return qualityDiceMap[rank] || "1d4";
     }
 }
 
@@ -3930,7 +3958,7 @@ Hooks.once("init", function() {
 
         // Helper pour calculer la résistance du personnage
         Handlebars.registerHelper('getTotalResistance', function(actor) {
-            // Nouvelle formule : Résistance = Constitution * 2 + degré d'agilité - malus d'agilité * 2 + degré de martialité - malus de martialité + type d'armure
+            // Nouvelle formule : Résistance = Constitution * 2 + degré d'agilité - malus d'agilité + degré de martialité - malus de martialité + type d'armure
             
             // Calculer la constitution totale
             const baseConstitution = parseInt(actor.system.constitution?.value) || 0;
@@ -3983,8 +4011,8 @@ Hooks.once("init", function() {
             };
             const armorTypeBonus = armorTypeBonusMap[armorType] || 0;
             
-            // Appliquer la nouvelle formule : Constitution * 2 + degré d'agilité - malus d'agilité * 2 + degré de martialité - malus de martialité + type d'armure
-            const resistance = (totalConstitution * 2) + agiliteDegree - (agilityPenalty * 2) + martialiteDegree - martialitePenalty + armorTypeBonus;
+            // Appliquer la nouvelle formule : Constitution * 2 + degré d'agilité - malus d'agilité + degré de martialité - malus de martialité + type d'armure
+            const resistance = (totalConstitution * 2) + agiliteDegree - agilityPenalty + martialiteDegree - martialitePenalty + armorTypeBonus;
             
             return Math.max(0, resistance); // Éviter les valeurs négatives
         });
