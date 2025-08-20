@@ -214,6 +214,17 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                     "7d4": "1-32"   // 1d32: min=1, max=32
                 };
                 return rangeMap[safeValue] || "?";
+            },
+            // Helper pour obtenir le malus d'agilité basé sur le type d'armure
+            getAgilityPenalty: (actor) => {
+                const armorType = actor.system.armor?.type || 'tissu';
+                const penaltyMap = {
+                    'tissu': 0,      // Pas de malus
+                    'legere': -4,    // Malus de 4
+                    'lourde': -8,    // Malus de 8
+                    'blindee': -16   // Malus de 16
+                };
+                return penaltyMap[armorType] || 0;
             }
         };
         
@@ -1047,6 +1058,22 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             'blindee': 4
         };
         return bonusMap[armorType] || 0;
+    }
+
+    /**
+     * Calcule le malus d'agilité basé sur le type d'armure
+     * @returns {number} - Malus d'agilité (négatif)
+     * @private
+     */
+    _getAgilityPenalty() {
+        const armorType = this.actor.system.armor?.type || 'tissu';
+        const penaltyMap = {
+            'tissu': 0,      // Pas de malus
+            'legere': -4,    // Malus de 4
+            'lourde': -8,    // Malus de 8
+            'blindee': -16   // Malus de 16
+        };
+        return penaltyMap[armorType] || 0;
     }
     
     /**
@@ -2683,6 +2710,18 @@ Hooks.once("init", function() {
                  'blindee': 4
              };
              return bonusMap[armorType] || 0;
+         }
+
+         // Fonction helper pour calculer le malus d'agilité basé sur le type d'armure
+         function getAgilityPenalty(actor) {
+             const armorType = actor.system.armor?.type || 'tissu';
+             const penaltyMap = {
+                 'tissu': 0,      // Pas de malus
+                 'legere': -4,    // Malus de 4
+                 'lourde': -8,    // Malus de 8
+                 'blindee': -16   // Malus de 16
+             };
+             return penaltyMap[armorType] || 0;
          }
 
         // Helper pour calculer le mana total basé sur le degré d'Arcane

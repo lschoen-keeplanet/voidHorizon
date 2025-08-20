@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implémentation du système de malus d'agilité - VoidHorizon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .implementation-section {
+            border: 1px solid #ddd;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .info {
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+            color: #0c5460;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-color: #ffeaa7;
+            color: #856404;
+        }
+        .code-block {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        .penalty-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .penalty-table th, .penalty-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        .penalty-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .penalty-table .tissu { background-color: #e8f5e8; }
+        .penalty-table .legere { background-color: #fff3cd; }
+        .penalty-table .lourde { background-color: #ffeaa7; }
+        .penalty-table .blindee { background-color: #ffcdd2; }
+        .feature-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .feature-list li:before {
+            content: "✅ ";
+            margin-right: 10px;
+        }
+        .feature-list li.missing:before {
+            content: "⚠️ ";
+        }
+    </style>
+</head>
+<body>
+    <h1>🎯 Implémentation du système de malus d'agilité pour les armures</h1>
+    
+    <div class="implementation-section success">
+        <h2>✅ Implémentation terminée</h2>
+        <p>Le système de malus d'agilité basé sur le type d'armure a été implémenté avec succès dans VoidHorizon.</p>
+    </div>
+
+    <div class="implementation-section info">
+        <h2>📋 Vue d'ensemble du système</h2>
+        <p>Chaque type d'armure impose maintenant un malus d'agilité qui affecte les jets de dés et les actions nécessitant de l'agilité :</p>
+        
+        <table class="penalty-table">
+            <thead>
+                <tr>
+                    <th>Type d'armure</th>
+                    <th>Bonus d'armure</th>
+                    <th>Malus d'agilité</th>
+                    <th>Impact</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="tissu">
+                    <td><strong>Tissu</strong></td>
+                    <td>+0</td>
+                    <td>+0</td>
+                    <td>Aucun impact sur l'agilité</td>
+                </tr>
+                <tr class="legere">
+                    <td><strong>Légère</strong></td>
+                    <td>+1</td>
+                    <td>-4</td>
+                    <td>Malus modéré</td>
+                </tr>
+                <tr class="lourde">
+                    <td><strong>Lourde</strong></td>
+                    <td>+2</td>
+                    <td>-8</td>
+                    <td>Malus important</td>
+                </tr>
+                <tr class="blindee">
+                    <td><strong>Blindée</strong></td>
+                    <td>+4</td>
+                    <td>-16</td>
+                    <td>Malus très important</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="implementation-section">
+        <h2>🔧 Modifications techniques effectuées</h2>
+        
+        <h3>1. Scripts JavaScript (scripts/heros-sheet.js)</h3>
+        <ul class="feature-list">
+            <li>Ajout de la méthode <code>_getAgilityPenalty()</code> pour calculer le malus d'agilité</li>
+            <li>Mise à jour de la fonction helper <code>getAgilityPenalty()</code> pour les templates Handlebars</li>
+            <li>Intégration du helper dans la méthode <code>getData()</code> pour l'accessibilité des templates</li>
+        </ul>
+
+        <h3>2. Template HTML (templates/sheets/heros-sheet.html)</h3>
+        <ul class="feature-list">
+            <li>Mise à jour des options de sélection d'armure pour afficher les malus d'agilité</li>
+            <li>Ajout de l'affichage du malus d'agilité sous la caractéristique Agilité</li>
+            <li>Intégration d'Agilité dans le formulaire de création de traits</li>
+        </ul>
+
+        <h3>3. Styles CSS (styles/heros-sheet.css)</h3>
+        <ul class="feature-list">
+            <li>Ajout des styles pour l'affichage du malus d'agilité</li>
+            <li>Styles différenciés pour les malus (orange) et l'absence de malus (vert)</li>
+            <li>Intégration visuelle cohérente avec le design existant</li>
+        </ul>
+    </div>
+
+    <div class="implementation-section">
+        <h2>🎨 Interface utilisateur</h2>
+        
+        <h3>Affichage des malus dans la sélection d'armure</h3>
+        <div class="code-block">
+            <strong>Avant :</strong> Tissu (+0 armure)
+            <strong>Après :</strong> Tissu (+0 armure, +0 agilité)
+        </div>
+
+        <h3>Affichage du malus actuel sous l'Agilité</h3>
+        <div class="code-block">
+            <!-- Affichage du malus d'agilité dû à l'armure -->
+            <div class="agility-penalty-display">
+                <span class="penalty-info">
+                    <i class="fas fa-exclamation-triangle"></i> Malus d'armure: -8
+                </span>
+            </div>
+        </div>
+
+        <h3>Styles visuels</h3>
+        <ul class="feature-list">
+            <li><strong>Malus actif :</strong> Fond orange clair, bordure orange, icône triangle d'avertissement</li>
+            <li><strong>Aucun malus :</strong> Fond vert clair, bordure verte, icône coche verte</li>
+            <li>Positionnement centré sous les boutons de dés pour une visibilité optimale</li>
+        </ul>
+    </div>
+
+    <div class="implementation-section">
+        <h2>⚙️ Fonctionnalités techniques</h2>
+        
+        <h3>Calcul automatique des malus</h3>
+        <div class="code-block">
+            _getAgilityPenalty() {
+                const armorType = this.actor.system.armor?.type || 'tissu';
+                const penaltyMap = {
+                    'tissu': 0,      // Pas de malus
+                    'legere': -4,    // Malus de 4
+                    'lourde': -8,    // Malus de 8
+                    'blindee': -16   // Malus de 16
+                };
+                return penaltyMap[armorType] || 0;
+            }
+        </div>
+
+        <h3>Helper Handlebars pour les templates</h3>
+        <div class="code-block">
+            getAgilityPenalty: (actor) => {
+                const armorType = actor.system.armor?.type || 'tissu';
+                const penaltyMap = {
+                    'tissu': 0,      // Pas de malus
+                    'legere': -4,    // Malus de 4
+                    'lourde': -8,    // Malus de 8
+                    'blindee': -16   // Malus de 16
+                };
+                return penaltyMap[armorType] || 0;
+            }
+        </div>
+
+        <h3>Intégration avec le système de traits</h3>
+        <ul class="feature-list">
+            <li>Agilité ajoutée comme cible possible pour les bonus de traits</li>
+            <li>Recalcul automatique des bonus lors des changements d'armure</li>
+            <li>Affichage en temps réel des malus d'armure</li>
+        </ul>
+    </div>
+
+    <div class="implementation-section warning">
+        <h2>⚠️ Points d'attention</h2>
+        <ul class="feature-list">
+            <li class="missing">Le malus d'agilité n'est actuellement qu'informatif - il n'est pas encore appliqué aux jets de dés</li>
+            <li class="missing">Il faudra implémenter la logique pour soustraire le malus des jets d'agilité</li>
+            <li class="missing">Considérer l'ajout d'options pour désactiver le malus dans certaines situations</li>
+        </ul>
+    </div>
+
+    <div class="implementation-section">
+        <h2>🚀 Prochaines étapes recommandées</h2>
+        <ol>
+            <li><strong>Application des malus aux jets de dés :</strong> Modifier la logique de lancement de dés pour soustraire le malus d'agilité</li>
+            <li><strong>Tests complets :</strong> Vérifier que les malus s'affichent correctement pour tous les types d'armure</li>
+            <li><strong>Documentation utilisateur :</strong> Expliquer aux joueurs l'impact des armures sur l'agilité</li>
+            <li><strong>Équilibrage :</strong> Ajuster les valeurs de malus si nécessaire selon le gameplay</li>
+            <li><strong>Exceptions :</strong> Considérer des cas spéciaux (traits, sorts, etc.) qui pourraient annuler les malus</li>
+        </ol>
+    </div>
+
+    <div class="implementation-section info">
+        <h2>📝 Notes de développement</h2>
+        <ul>
+            <li><strong>Architecture :</strong> Le système suit le pattern existant avec des helpers Handlebars et des méthodes de classe</li>
+            <li><strong>Performance :</strong> Les malus sont calculés à la demande et mis en cache dans l'interface</li>
+            <li><strong>Maintenabilité :</strong> Les valeurs de malus sont centralisées dans des maps pour faciliter les modifications</li>
+            <li><strong>Extensibilité :</strong> Le système peut facilement être étendu pour d'autres types d'équipement</li>
+        </ul>
+    </div>
+
+    <script>
+        console.log("Système de malus d'agilité - VoidHorizon");
+        console.log("Vérifiez la console pour plus d'informations");
+    </script>
+</body>
+</html>
