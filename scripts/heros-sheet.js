@@ -16,6 +16,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Données de l'acteur et du système
         data.dtypes = ["String", "Number", "Boolean"];
 
+        // Vérification de sécurité pour s'assurer que les helpers sont toujours disponibles
+        if (!data.helpers) {
+            data.helpers = {};
+        }
+
         // Préparation des données pour le template
         this._prepareItems(data);
         
@@ -150,6 +155,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         }
         
         // Ajouter les helpers pour le template
+        // Vérification de sécurité pour s'assurer que data.helpers existe
+        if (!data.helpers) {
+            data.helpers = {};
+        }
+        
         data.helpers = {
             getSelectedText: (value, type) => {
                 try {
@@ -423,6 +433,113 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         };
         
         data.isReadOnly = true; // Ajout d'un flag pour indiquer que nous sommes en mode lecture
+        
+        // Vérification finale de sécurité pour s'assurer que tous les helpers sont disponibles
+        if (!data.helpers.getSelectedText) {
+            console.warn("Helper getSelectedText manquant, création d'urgence");
+            data.helpers.getSelectedText = (value, type) => {
+                try {
+                    const mappings = {
+                        martialite: { "2d4": "Incompétent", "3d4": "Combatif", "4d4": "Soldat", "5d4": "Expérimenté", "6d4": "Vétéran", "7d4": "Légende" },
+                        pimpance: { "2d4": "Tâche", "3d4": "Pas top", "4d4": "Honnête", "5d4": "Beau", "6d4": "Splendide", "7d4": "Ramirez" },
+                        acuite: { "2d4": "Aveugle", "3d4": "Distrait", "4d4": "Alerte", "5d4": "Vif", "6d4": "Clairvoyant", "7d4": "Fulgurant" },
+                        arcane: { "2d4": "Insensible", "3d4": "Eveillé", "4d4": "Novice", "5d4": "Initié", "6d4": "Maître", "7d4": "Archimage" },
+                        agilite: { "2d4": "Challengé", "3d4": "Lourdeau", "4d4": "Bien", "5d4": "Rapide", "6d4": "Très rapide", "7d4": "Très très rapide" },
+                        skill: { "2d4": "Novice", "3d4": "Compagnon", "4d4": "Maître" }
+                    };
+                    return mappings[type]?.[value] || value || "?";
+                } catch (error) {
+                    console.warn("Erreur dans getSelectedText d'urgence:", error);
+                    return value || "?";
+                }
+            };
+        }
+        
+        if (!data.helpers.getTotalBonus) {
+            console.warn("Helper getTotalBonus manquant, création d'urgence");
+            data.helpers.getTotalBonus = (statName, actor) => {
+                try {
+                    if (!actor || !actor.system) return "+0";
+                    let totalBonus = 0;
+                    if (actor.system.traitBonuses && actor.system.traitBonuses[statName]) {
+                        totalBonus += actor.system.traitBonuses[statName] || 0;
+                    }
+                    if (statName === 'agilite' && actor.system.armor && actor.system.armor.type) {
+                        const penaltyMap = { 'tissu': 0, 'legere': -4, 'lourde': -8, 'blindee': -16 };
+                        totalBonus += penaltyMap[actor.system.armor.type] || 0;
+                    }
+                    if (totalBonus > 0) return `+${totalBonus}`;
+                    if (totalBonus < 0) return `${totalBonus}`;
+                    return "+0";
+                } catch (error) {
+                    console.warn("Erreur dans getTotalBonus d'urgence:", error);
+                    return "+0";
+                }
+            };
+        }
+        
+        if (!data.helpers.getSafeRange) {
+            console.warn("Helper getSafeRange manquant, création d'urgence");
+            data.helpers.getSafeRange = (safeValue, actor) => {
+                try {
+                    if (!safeValue) return "?";
+                    const rangeMap = { "2d4": { min: 2, max: 8 }, "3d4": { min: 3, max: 12 }, "4d4": { min: 4, max: 16 }, "5d4": { min: 5, max: 20 }, "6d4": { min: 6, max: 24 }, "7d4": { min: 7, max: 28 } };
+                    const range = rangeMap[safeValue];
+                    if (!range) return "?";
+                    return `${range.min}-${range.max}`;
+                } catch (error) {
+                    console.warn("Erreur dans getSafeRange d'urgence:", error);
+                    return "?";
+                }
+            };
+        }
+        
+        if (!data.helpers.getUnsafeRange) {
+            console.warn("Helper getUnsafeRange manquant, création d'urgence");
+            data.helpers.getUnsafeRange = (safeValue, actor) => {
+                try {
+                    if (!safeValue) return "?";
+                    const rangeMap = { "2d4": { min: 1, max: 12 }, "3d4": { min: 1, max: 16 }, "4d4": { min: 1, max: 20 }, "5d4": { min: 1, max: 24 }, "6d4": { min: 1, max: 28 }, "7d4": { min: 1, max: 32 } };
+                    const range = rangeMap[safeValue];
+                    if (!range) return "?";
+                    return `${range.min}-${range.max}`;
+                } catch (error) {
+                    console.warn("Erreur dans getUnsafeRange d'urgence:", error);
+                    return "?";
+                }
+            };
+        }
+        
+        if (!data.helpers.getUnsafeFormula) {
+            console.warn("Helper getUnsafeFormula manquant, création d'urgence");
+            data.helpers.getUnsafeFormula = (safeValue) => {
+                try {
+                    const safeToUnsafe = {
+                        "2d4": "1d12", "3d4": "1d16", "4d4": "1d20", "5d4": "1d24", "6d4": "1d28", "7d4": "1d32"
+                    };
+                    return safeToUnsafe[safeValue] || safeValue;
+                } catch (error) {
+                    console.warn("Erreur dans getUnsafeFormula d'urgence:", error);
+                    return safeValue || "?";
+                }
+            };
+        }
+        
+        if (!data.helpers.getAgilityPenalty) {
+            console.warn("Helper getAgilityPenalty manquant, création d'urgence");
+            data.helpers.getAgilityPenalty = (actor) => {
+                try {
+                    if (!actor || !actor.system) return 0;
+                    const armorType = actor.system.armor?.type || 'tissu';
+                    const penaltyMap = { 'tissu': 0, 'legere': -4, 'lourde': -8, 'blindee': -16 };
+                    return penaltyMap[armorType] || 0;
+                } catch (error) {
+                    console.warn("Erreur dans getAgilityPenalty d'urgence:", error);
+                    return 0;
+                }
+            };
+        }
+        
         return data;
     }
 
