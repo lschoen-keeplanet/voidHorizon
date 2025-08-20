@@ -2262,9 +2262,18 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const traitBonus = this.actor.system.traitBonuses?.armor || 0;
         const equipmentBonus = this._getArmorTypeBonus();
         
-        // Harmonisation: Armure = base + équipement + traits (sans bonus des boucliers d'armes)
-        const totalArmor = baseArmor + equipmentBonus + traitBonus;
-        console.log(`Calcul armure totale: base(${baseArmor}) + équipement(${equipmentBonus}) + traits(${traitBonus}) = ${totalArmor}`);
+        // Calculer le bonus des boucliers d'armes
+        let shieldBonus = 0;
+        if (this.actor.system.weapons?.primary?.type === 'shield') {
+            shieldBonus += parseInt(this.actor.system.weapons.primary.bonus) || 0;
+        }
+        if (this.actor.system.weapons?.secondary?.type === 'shield') {
+            shieldBonus += parseInt(this.actor.system.weapons.secondary.bonus) || 0;
+        }
+        
+        // Armure totale = base + équipement + traits + boucliers
+        const totalArmor = baseArmor + equipmentBonus + traitBonus + shieldBonus;
+        console.log(`Calcul armure totale: base(${baseArmor}) + équipement(${equipmentBonus}) + traits(${traitBonus}) + boucliers(${shieldBonus}) = ${totalArmor}`);
         
         return totalArmor;
     }
@@ -2359,8 +2368,17 @@ Hooks.once("init", function() {
             const traitBonus = parseInt(actor.system.traitBonuses?.armor) || 0;
             const equipmentBonus = getArmorTypeBonus(actor);
             
-            // Harmonisation: Armure = base + équipement + traits (sans bonus de boucliers d'armes)
-            return baseArmor + equipmentBonus + traitBonus;
+            // Calculer le bonus des boucliers d'armes
+            let shieldBonus = 0;
+            if (actor.system.weapons?.primary?.type === 'shield') {
+                shieldBonus += parseInt(actor.system.weapons.primary.bonus) || 0;
+            }
+            if (actor.system.weapons?.secondary?.type === 'shield') {
+                shieldBonus += parseInt(actor.system.weapons.secondary.bonus) || 0;
+            }
+            
+            // Armure totale = base + équipement + traits + boucliers
+            return baseArmor + equipmentBonus + traitBonus + shieldBonus;
         });
 
          // Fonction helper pour calculer le bonus d'armure basé sur le type
