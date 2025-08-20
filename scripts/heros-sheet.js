@@ -42,6 +42,21 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         if (!data.actor.system.mana) {
             data.actor.system.mana = { value: 0, max: 0 };
         }
+        
+        // S'assurer que les compétences existent
+        if (!data.actor.system.skills) {
+            data.actor.system.skills = {};
+        }
+        
+        // S'assurer que les traits existent
+        if (!data.actor.system.traits) {
+            data.actor.system.traits = {};
+        }
+        
+        // S'assurer que les bonus de traits existent
+        if (!data.actor.system.traitBonuses) {
+            data.actor.system.traitBonuses = {};
+        }
         // Initialiser le mana avec la valeur maximale basée sur l'Arcane si c'est la première fois
         if (data.actor.system.mana.value === 0 && data.actor.system.mana.max === 0) {
             const arcaneValue = data.actor.system.arcane?.value || "2d4";
@@ -137,52 +152,69 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Ajouter les helpers pour le template
         data.helpers = {
             getSelectedText: (value, type) => {
-                // Helper getSelectedText appelé
-                const mappings = {
-                    martialite: {
-                        "2d4": "Incompétent",
-                        "3d4": "Combatif",
-                        "4d4": "Soldat",
-                        "5d4": "Expérimenté",
-                        "6d4": "Vétéran",
-                        "7d4": "Légende"
-                    },
-                    pimpance: {
-                        "2d4": "Tâche",
-                        "3d4": "Pas top",
-                        "4d4": "Honnête",
-                        "5d4": "Beau",
-                        "6d4": "Splendide",
-                        "7d4": "Ramirez"
-                    },
-                    acuite: {
-                        "2d4": "Aveugle",
-                        "3d4": "Distrait",
-                        "4d4": "Alerte",
-                        "5d4": "Vif",
-                        "6d4": "Clairvoyant",
-                        "7d4": "Fulgurant"
-                    },
-                    arcane: {
-                        "2d4": "Insensible",
-                        "3d4": "Eveillé",
-                        "4d4": "Novice",
-                        "5d4": "Initié",
-                        "6d4": "Maître",
-                        "7d4": "Archimage"
-                    },
-                    agilite: {
-                        "2d4": "Challengé",
-                        "3d4": "Lourdeau",
-                        "4d4": "Bien",
-                        "5d4": "Rapide",
-                        "6d4": "Très rapide",
-                        "7d4": "Très très rapide"
+                try {
+                    // Helper getSelectedText appelé
+                    const mappings = {
+                        martialite: {
+                            "2d4": "Incompétent",
+                            "3d4": "Combatif",
+                            "4d4": "Soldat",
+                            "5d4": "Expérimenté",
+                            "6d4": "Vétéran",
+                            "7d4": "Légende"
+                        },
+                        pimpance: {
+                            "2d4": "Tâche",
+                            "3d4": "Pas top",
+                            "4d4": "Honnête",
+                            "5d4": "Beau",
+                            "6d4": "Splendide",
+                            "7d4": "Ramirez"
+                        },
+                        acuite: {
+                            "2d4": "Aveugle",
+                            "3d4": "Distrait",
+                            "4d4": "Alerte",
+                            "5d4": "Vif",
+                            "6d4": "Clairvoyant",
+                            "7d4": "Fulgurant"
+                        },
+                        arcane: {
+                            "2d4": "Insensible",
+                            "3d4": "Eveillé",
+                            "4d4": "Novice",
+                            "5d4": "Initié",
+                            "6d4": "Maître",
+                            "7d4": "Archimage"
+                        },
+                        agilite: {
+                            "2d4": "Challengé",
+                            "3d4": "Lourdeau",
+                            "4d4": "Bien",
+                            "5d4": "Rapide",
+                            "6d4": "Très rapide",
+                            "7d4": "Très très rapide"
+                        },
+                        // Support pour les compétences avec les nouveaux niveaux
+                        skill: {
+                            "2d4": "Novice",
+                            "3d4": "Compagnon",
+                            "4d4": "Maître"
+                        }
+                    };
+                    
+                    // Si c'est une compétence, utiliser le mapping skill
+                    if (type === 'skill' || type === 'martialite' || type === 'agilite' || type === 'acuite' || type === 'pimpance' || type === 'arcane') {
+                        const result = mappings[type]?.[value] || value;
+                        return result;
                     }
-                };
-                const result = mappings[type]?.[value] || value;
-                // Helper getSelectedText retourne le résultat
-                return result;
+                    
+                    // Fallback pour les autres types
+                    return value;
+                } catch (error) {
+                    console.warn("Erreur dans getSelectedText:", error);
+                    return value || "?";
+                }
             },
             // Helper pour obtenir la formule de dé en mode unsafe
             getUnsafeFormula: (safeValue) => {
@@ -198,161 +230,177 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             },
             // Helper pour obtenir la plage des dés en mode Safe
             getSafeRange: (safeValue, actor) => {
-                // Vérifier que safeValue est défini
-                if (!safeValue) return "?";
-                
-                const rangeMap = {
-                    "2d4": { min: 2, max: 8 },   // 2d4: min=2, max=8
-                    "3d4": { min: 3, max: 12 },  // 3d4: min=3, max=12
-                    "4d4": { min: 4, max: 16 },  // 4d4: min=4, max=16
-                    "5d4": { min: 5, max: 20 },  // 5d4: min=5, max=20
-                    "6d4": { min: 6, max: 24 },  // 6d4: min=6, max=24
-                    "7d4": { min: 7, max: 28 }   // 7d4: min=7, max=28
-                };
-                
-                const range = rangeMap[safeValue];
-                if (!range) return "?";
-                
-                // Calculer le bonus total de la caractéristique
-                let totalBonus = 0;
-                
-                // Déterminer le nom de la caractéristique basé sur la valeur
-                let statName = null;
-                if (actor.system.martialite && actor.system.martialite.value === safeValue) statName = 'martialite';
-                else if (actor.system.agilite && actor.system.agilite.value === safeValue) statName = 'agilite';
-                else if (actor.system.acuite && actor.system.acuite.value === safeValue) statName = 'acuite';
-                else if (actor.system.pimpance && actor.system.pimpance.value === safeValue) statName = 'pimpance';
-                else if (actor.system.arcane && actor.system.arcane.value === safeValue) statName = 'arcane';
-                
-                // Bonus de trait
-                if (actor && actor.system && actor.system.traitBonuses && statName) {
-                    const traitBonus = actor.system.traitBonuses[statName] || 0;
-                    totalBonus += traitBonus;
-                }
-                
-                // Malus d'agilité dû à l'armure (seulement pour l'agilité)
-                if (statName === 'agilite') {
-                    try {
-                        if (actor.system.armor && actor.system.armor.type) {
-                            const penaltyMap = {
-                                'tissu': 0,      // Pas de malus
-                                'legere': -4,    // Malus de 4
-                                'lourde': -8,    // Malus de 8
-                                'blindee': -16   // Malus de 16
-                            };
-                            const armorPenalty = penaltyMap[actor.system.armor.type] || 0;
-                            totalBonus += armorPenalty;
-                        }
-                    } catch (e) {
-                        console.warn("Erreur lors du calcul du malus d'agilité:", e);
+                try {
+                    // Vérifier que safeValue est défini
+                    if (!safeValue) return "?";
+                    
+                    const rangeMap = {
+                        "2d4": { min: 2, max: 8 },   // 2d4: min=2, max=8
+                        "3d4": { min: 3, max: 12 },  // 3d4: min=3, max=12
+                        "4d4": { min: 4, max: 16 },  // 4d4: min=4, max=16
+                        "5d4": { min: 5, max: 20 },  // 5d4: min=5, max=20
+                        "6d4": { min: 6, max: 24 },  // 6d4: min=6, max=24
+                        "7d4": { min: 7, max: 28 }   // 7d4: min=7, max=28
+                    };
+                    
+                    const range = rangeMap[safeValue];
+                    if (!range) return "?";
+                    
+                    // Calculer le bonus total de la caractéristique
+                    let totalBonus = 0;
+                    
+                    // Déterminer le nom de la caractéristique basé sur la valeur
+                    let statName = null;
+                    if (actor && actor.system) {
+                        if (actor.system.martialite && actor.system.martialite.value === safeValue) statName = 'martialite';
+                        else if (actor.system.agilite && actor.system.agilite.value === safeValue) statName = 'agilite';
+                        else if (actor.system.acuite && actor.system.acuite.value === safeValue) statName = 'acuite';
+                        else if (actor.system.pimpance && actor.system.pimpance.value === safeValue) statName = 'pimpance';
+                        else if (actor.system.arcane && actor.system.arcane.value === safeValue) statName = 'arcane';
                     }
+                    
+                    // Bonus de trait
+                    if (actor && actor.system && actor.system.traitBonuses && statName) {
+                        const traitBonus = actor.system.traitBonuses[statName] || 0;
+                        totalBonus += traitBonus;
+                    }
+                    
+                    // Malus d'agilité dû à l'armure (seulement pour l'agilité)
+                    if (statName === 'agilite') {
+                        try {
+                            if (actor.system.armor && actor.system.armor.type) {
+                                const penaltyMap = {
+                                    'tissu': 0,      // Pas de malus
+                                    'legere': -4,    // Malus de 4
+                                    'lourde': -8,    // Malus de 8
+                                    'blindee': -16   // Malus de 16
+                                };
+                                const armorPenalty = penaltyMap[actor.system.armor.type] || 0;
+                                totalBonus += armorPenalty;
+                            }
+                        } catch (e) {
+                            console.warn("Erreur lors du calcul du malus d'agilité:", e);
+                        }
+                    }
+                    
+                    // Appliquer le bonus total aux ranges
+                    const adjustedMin = Math.max(1, range.min + totalBonus);
+                    const adjustedMax = Math.max(1, range.max + totalBonus);
+                    
+                    // Si pas de bonus, retourner la range normale
+                    if (totalBonus === 0) {
+                        return `${range.min}-${range.max}`;
+                    }
+                    
+                    // Sinon, retourner la range avec bonus
+                    return `${adjustedMin}-${adjustedMax}`;
+                } catch (error) {
+                    console.warn("Erreur dans getSafeRange:", error);
+                    return "?";
                 }
-                
-                // Appliquer le bonus total aux ranges
-                const adjustedMin = Math.max(1, range.min + totalBonus);
-                const adjustedMax = Math.max(1, range.max + totalBonus);
-                
-                // Si pas de bonus, retourner la range normale
-                if (totalBonus === 0) {
-                    return `${range.min}-${range.max}`;
-                }
-                
-                // Sinon, retourner la range avec bonus
-                return `${adjustedMin}-${adjustedMax}`;
             },
             // Helper pour obtenir la plage des dés en mode Unsafe
             getUnsafeRange: (safeValue, actor) => {
-                // Vérifier que safeValue est défini
-                if (!safeValue) return "?";
-                
-                const rangeMap = {
-                    "2d4": { min: 1, max: 12 },  // 1d12: min=1, max=12
-                    "3d4": { min: 1, max: 16 },  // 1d16: min=1, max=16
-                    "4d4": { min: 1, max: 20 },  // 1d20: min=1, max=20
-                    "5d4": { min: 1, max: 24 },  // 1d24: min=1, max=24
-                    "6d4": { min: 1, max: 28 },  // 1d28: min=1, max=28
-                    "7d4": { min: 1, max: 32 }   // 1d32: min=1, max=32
-                };
-                
-                const range = rangeMap[safeValue];
-                if (!range) return "?";
-                
-                // Calculer le bonus total de la caractéristique
-                let totalBonus = 0;
-                
-                // Déterminer le nom de la caractéristique basé sur la valeur
-                let statName = null;
-                if (actor.system.martialite && actor.system.martialite.value === safeValue) statName = 'martialite';
-                else if (actor.system.agilite && actor.system.agilite.value === safeValue) statName = 'agilite';
-                else if (actor.system.acuite && actor.system.acuite.value === safeValue) statName = 'acuite';
-                else if (actor.system.pimpance && actor.system.pimpance.value === safeValue) statName = 'pimpance';
-                else if (actor.system.arcane && actor.system.arcane.value === safeValue) statName = 'arcane';
-                
-                // Bonus de trait
-                if (actor && actor.system && actor.system.traitBonuses && statName) {
-                    const traitBonus = actor.system.traitBonuses[statName] || 0;
-                    totalBonus += traitBonus;
-                }
-                
-                // Malus d'agilité dû à l'armure (seulement pour l'agilité)
-                if (statName === 'agilite') {
-                    try {
-                        if (actor.system.armor && actor.system.armor.type) {
-                            const penaltyMap = {
-                                'tissu': 0,      // Pas de malus
-                                'legere': -4,    // Malus de 4
-                                'lourde': -8,    // Malus de 8
-                                'blindee': -16   // Malus de 16
-                            };
-                            const armorPenalty = penaltyMap[actor.system.armor.type] || 0;
-                            totalBonus += armorPenalty;
-                        }
-                    } catch (e) {
-                        console.warn("Erreur lors du calcul du malus d'agilité:", e);
+                try {
+                    // Vérifier que safeValue est défini
+                    if (!safeValue) return "?";
+                    
+                    const rangeMap = {
+                        "2d4": { min: 1, max: 12 },  // 1d12: min=1, max=12
+                        "3d4": { min: 1, max: 16 },  // 1d16: min=1, max=16
+                        "4d4": { min: 1, max: 20 },  // 1d20: min=1, max=20
+                        "5d4": { min: 1, max: 24 },  // 1d24: min=1, max=24
+                        "6d4": { min: 1, max: 28 },  // 1d28: min=1, max=28
+                        "7d4": { min: 1, max: 32 }   // 1d32: min=1, max=32
+                    };
+                    
+                    const range = rangeMap[safeValue];
+                    if (!range) return "?";
+                    
+                    // Calculer le bonus total de la caractéristique
+                    let totalBonus = 0;
+                    
+                    // Déterminer le nom de la caractéristique basé sur la valeur
+                    let statName = null;
+                    if (actor && actor.system) {
+                        if (actor.system.martialite && actor.system.martialite.value === safeValue) statName = 'martialite';
+                        else if (actor.system.agilite && actor.system.agilite.value === safeValue) statName = 'agilite';
+                        else if (actor.system.acuite && actor.system.acuite.value === safeValue) statName = 'acuite';
+                        else if (actor.system.pimpance && actor.system.pimpance.value === safeValue) statName = 'pimpance';
+                        else if (actor.system.arcane && actor.system.arcane.value === safeValue) statName = 'arcane';
                     }
+                    
+                    // Bonus de trait
+                    if (actor && actor.system && actor.system.traitBonuses && statName) {
+                        const traitBonus = actor.system.traitBonuses[statName] || 0;
+                        totalBonus += traitBonus;
+                    }
+                    
+                    // Malus d'agilité dû à l'armure (seulement pour l'agilité)
+                    if (statName === 'agilite') {
+                        try {
+                            if (actor.system.armor && actor.system.armor.type) {
+                                const penaltyMap = {
+                                    'tissu': 0,      // Pas de malus
+                                    'legere': -4,    // Malus de 4
+                                    'lourde': -8,    // Malus de 8
+                                    'blindee': -16   // Malus de 16
+                                };
+                                const armorPenalty = penaltyMap[actor.system.armor.type] || 0;
+                                totalBonus += armorPenalty;
+                            }
+                        } catch (e) {
+                            console.warn("Erreur lors du calcul du malus d'agilité:", e);
+                        }
+                    }
+                    
+                    // Appliquer le bonus total aux ranges
+                    const adjustedMin = Math.max(1, range.min + totalBonus);
+                    const adjustedMax = Math.max(1, range.max + totalBonus);
+                    
+                    // Si pas de bonus, retourner la range normale
+                    if (totalBonus === 0) {
+                        return `${range.min}-${range.max}`;
+                    }
+                    
+                    // Sinon, retourner la range avec bonus
+                    return `${adjustedMin}-${adjustedMax}`;
+                } catch (error) {
+                    console.warn("Erreur dans getUnsafeRange:", error);
+                    return "?";
                 }
-                
-                // Appliquer le bonus total aux ranges
-                const adjustedMin = Math.max(1, range.min + totalBonus);
-                const adjustedMax = Math.max(1, range.max + totalBonus);
-                
-                // Si pas de bonus, retourner la range normale
-                if (totalBonus === 0) {
-                    return `${range.min}-${range.max}`;
-                }
-                
-                // Sinon, retourner la range avec bonus
-                return `${adjustedMin}-${adjustedMax}`;
             },
             // Nouveau helper pour afficher le total des bonus d'une caractéristique
             getTotalBonus: (statName, actor) => {
-                if (!actor || !actor.system || !actor.system.traitBonuses) return "0";
-                
-                let totalBonus = 0;
-                let bonusDetails = [];
-                
-                // Bonus de trait
-                const traitBonus = actor.system.traitBonuses[statName] || 0;
-                if (traitBonus > 0) {
-                    totalBonus += traitBonus;
-                    bonusDetails.push(`+${traitBonus} trait`);
-                }
-                
-                // Malus d'agilité dû à l'armure (seulement pour l'agilité)
-                if (statName === 'agilite' && actor.system.armor && actor.system.armor.type) {
-                    const penaltyMap = { 'tissu': 0, 'legere': -4, 'lourde': -8, 'blindee': -16 };
-                    const armorPenalty = penaltyMap[actor.system.armor.type] || 0;
-                    if (armorPenalty < 0) {
-                        totalBonus += armorPenalty;
-                        bonusDetails.push(`${armorPenalty} armure`);
+                try {
+                    if (!actor || !actor.system) return "+0";
+                    
+                    let totalBonus = 0;
+                    
+                    // Bonus de trait
+                    if (actor.system.traitBonuses && actor.system.traitBonuses[statName]) {
+                        const traitBonus = actor.system.traitBonuses[statName] || 0;
+                        totalBonus += traitBonus;
                     }
-                }
-                
-                // Retourner le total et les détails
-                if (bonusDetails.length > 0) {
-                    return `${totalBonus >= 0 ? '+' : ''}${totalBonus} (${bonusDetails.join(', ')})`;
-                } else {
-                    return "0";
+                    
+                    // Malus d'agilité dû à l'armure (seulement pour l'agilité)
+                    if (statName === 'agilite' && actor.system.armor && actor.system.armor.type) {
+                        const penaltyMap = { 'tissu': 0, 'legere': -4, 'lourde': -8, 'blindee': -16 };
+                        const armorPenalty = penaltyMap[actor.system.armor.type] || 0;
+                        totalBonus += armorPenalty;
+                    }
+                    
+                    // Retourner le bonus formaté
+                    if (totalBonus > 0) {
+                        return `+${totalBonus}`;
+                    } else if (totalBonus < 0) {
+                        return `${totalBonus}`;
+                    } else {
+                        return "+0";
+                    }
+                } catch (error) {
+                    console.warn("Erreur dans getTotalBonus:", error);
+                    return "+0";
                 }
             },
             // Helper pour obtenir le malus d'agilité basé sur le type d'armure
