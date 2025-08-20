@@ -279,17 +279,35 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     _initializeHearts() {
         const blessure = this.actor.system.resources?.blessure?.value || 0;
         const totalConstitution = this._getTotalConstitution(); // Utiliser la constitution totale avec bonus
-        const hearts = this.element.find('.heart-wrapper');
+        const heartsContainer = this.element.find('.hearts-container');
         
-        console.log(`Initialisation des cœurs: ${hearts.length} cœurs, ${blessure} blessures, constitution totale: ${totalConstitution}`);
+        console.log(`Initialisation des cœurs: constitution totale: ${totalConstitution}, blessures: ${blessure}`);
         
-        // Si le nombre de cœurs ne correspond pas à la constitution totale, forcer le re-render
-        if (hearts.length !== totalConstitution) {
-            console.log(`Nombre de cœurs incorrect (${hearts.length} vs ${totalConstitution}), re-render nécessaire`);
-            this.render(true);
-            return;
+        // Vider le conteneur des cœurs
+        heartsContainer.empty();
+        
+        // Créer le bon nombre de cœurs basé sur la constitution totale
+        for (let i = 0; i < totalConstitution; i++) {
+            const heartWrapper = $(`
+                <div class="heart-wrapper" data-heart-index="${i}">
+                    <button class="heart-button alive" data-heart-index="${i}" data-alive="true">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                    <button class="heart-button dead hidden" data-heart-index="${i}" data-alive="false">
+                        <i class="fas fa-heart-broken"></i>
+                    </button>
+                </div>
+            `);
+            
+            // Attacher l'événement de clic
+            heartWrapper.find('.heart-button').click(this._onHeartClick.bind(this));
+            
+            // Ajouter au conteneur
+            heartsContainer.append(heartWrapper);
         }
         
+        // Maintenant mettre à jour l'affichage des cœurs existants
+        const hearts = this.element.find('.heart-wrapper');
         hearts.each((index, wrapper) => {
             const heartIndex = index;
             const aliveButton = wrapper.querySelector('.alive');
@@ -307,6 +325,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 console.log(`Cœur ${heartIndex} initialisé comme vivant`);
             }
         });
+        
+        console.log(`${totalConstitution} cœurs créés et initialisés`);
     }
 
     /**
@@ -316,17 +336,35 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     _initializeShields() {
         const armorDamage = this.actor.system.resources?.armorDamage?.value || 0;
         const totalArmor = this._getTotalArmor(); // Utiliser l'armure totale avec bonus
-        const shields = this.element.find('.shield-wrapper');
+        const shieldsContainer = this.element.find('.shields-container');
         
-        console.log(`Initialisation des boucliers: ${shields.length} boucliers, ${armorDamage} dégâts, armure totale: ${totalArmor}`);
+        console.log(`Initialisation des boucliers: armure totale: ${totalArmor}, dégâts: ${armorDamage}`);
         
-        // Si le nombre de boucliers ne correspond pas à l'armure totale, forcer le re-render
-        if (shields.length !== totalArmor) {
-            console.log(`Nombre de boucliers incorrect (${shields.length} vs ${totalArmor}), re-render nécessaire`);
-            this.render(true);
-            return;
+        // Vider le conteneur des boucliers
+        shieldsContainer.empty();
+        
+        // Créer le bon nombre de boucliers basé sur l'armure totale
+        for (let i = 0; i < totalArmor; i++) {
+            const shieldWrapper = $(`
+                <div class="shield-wrapper" data-shield-index="${i}">
+                    <button class="shield-button active" data-shield-index="${i}" data-active="true">
+                        <i class="fas fa-shield-alt"></i>
+                    </button>
+                    <button class="shield-button broken hidden" data-shield-index="${i}" data-active="false">
+                        <i class="fas fa-shield-alt"></i>
+                    </button>
+                </div>
+            `);
+            
+            // Attacher l'événement de clic
+            shieldWrapper.find('.shield-button').click(this._onShieldClick.bind(this));
+            
+            // Ajouter au conteneur
+            shieldsContainer.append(shieldWrapper);
         }
         
+        // Maintenant mettre à jour l'affichage des boucliers existants
+        const shields = this.element.find('.shield-wrapper');
         shields.each((index, wrapper) => {
             const shieldIndex = index;
             const activeButton = wrapper.querySelector('.active');
@@ -350,6 +388,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 console.log(`Bouclier ${shieldIndex} initialisé comme actif`);
             }
         });
+        
+        console.log(`${totalArmor} boucliers créés et initialisés`);
     }
 
     /**
@@ -555,8 +595,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Si le nombre de cœurs ne correspond pas à la constitution totale, forcer le re-render
         if (hearts.length !== totalConstitution) {
             console.log(`Nombre de cœurs incorrect (${hearts.length} vs ${totalConstitution}), re-render nécessaire`);
-            // Forcer la mise à jour des données en mémoire avant le re-render
-            this._applyTraitBonuses();
+            // Ne pas appeler _applyTraitBonuses ici pour éviter la boucle infinie
+            // Les bonus des traits sont déjà calculés et stockés
             this.render(true);
             return;
         }
@@ -590,8 +630,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     _updateShieldsDisplay() {
         console.log("=== Debug Shields Display ===");
         
-        // Appliquer les bonus des boucliers avant de calculer l'armure totale
-        this._applyShieldBonuses();
+        // Ne pas appeler _applyTraitBonuses ici pour éviter la boucle infinie
+        // Les bonus des traits sont déjà calculés et stockés dans this.actor.system.traitBonuses
         
         const totalArmor = this._getTotalArmor();
         const armorDamage = parseInt(this.actor.system.resources?.armorDamage?.value) || 0;
@@ -605,7 +645,6 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         if (shields.length !== totalArmor) {
             console.log(`Nombre de boucliers incorrect (${shields.length} vs ${totalArmor}), re-render nécessaire`);
             // Forcer la mise à jour des données en mémoire avant le re-render
-            this._applyTraitBonuses();
             this.render(true);
             return;
         }
@@ -844,8 +883,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         if (!this.actor.system.resources.armor) this.actor.system.resources.armor = {};
         this.actor.system.resources.armor.value = value;
         
-        // IMPORTANT: Forcer la mise à jour des helpers Handlebars
-        this._applyTraitBonuses();
+        // Ne pas appeler _applyTraitBonuses ici pour éviter la boucle infinie
+        // Les bonus des traits sont déjà calculés et stockés
         
         // Mettre à jour l'affichage des valeurs totales d'armure
         this._updateArmorTotalDisplay();
@@ -867,8 +906,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         if (!this.actor.system.constitution) this.actor.system.constitution = {};
         this.actor.system.constitution.value = value;
         
-        // IMPORTANT: Forcer la mise à jour des helpers Handlebars
-        this._applyTraitBonuses();
+        // Ne pas appeler _applyTraitBonuses ici pour éviter la boucle infinie
+        // Les bonus des traits sont déjà calculés et stockés
         
         // Mettre à jour l'affichage des valeurs totales de constitution
         this._updateConstitutionTotalDisplay();
@@ -1075,28 +1114,18 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         console.log('Bonus des traits appliqués:', bonuses);
         
-        // Si les bonus d'armure ou de constitution ont changé, forcer la mise à jour de l'affichage
+        // Si les bonus d'armure ou de constitution ont changé, stocker les anciens bonus pour comparaison
         const oldArmorBonus = this._lastArmorBonus || 0;
         const oldConstitutionBonus = this._lastConstitutionBonus || 0;
         const oldArcaneBonus = this._lastArcaneBonus || 0;
         
-        if (bonuses.armor !== oldArmorBonus || bonuses.constitution !== oldConstitutionBonus || bonuses.arcane !== oldArcaneBonus) {
-            console.log('Bonus d\'armure, constitution ou arcane changé, mise à jour de l\'affichage...');
-            this._updateHealthStatus();
-            this._updateShieldsDisplay();
-            this._updateHeartsDisplay();
-            
-            // Si le bonus d'Arcane a changé, mettre à jour le mana
-            if (bonuses.arcane !== oldArcaneBonus) {
-                console.log('Bonus d\'Arcane changé, mise à jour du mana...');
-                this._updateManaDisplay();
-            }
-            
-            // Stocker les nouveaux bonus pour la prochaine comparaison
-            this._lastArmorBonus = bonuses.armor;
-            this._lastConstitutionBonus = bonuses.constitution;
-            this._lastArcaneBonus = bonuses.arcane;
-        }
+        // Stocker les nouveaux bonus pour la prochaine comparaison
+        this._lastArmorBonus = bonuses.armor;
+        this._lastConstitutionBonus = bonuses.constitution;
+        this._lastArcaneBonus = bonuses.arcane;
+        
+        // Note: Ne pas appeler _updateShieldsDisplay ou _updateHeartsDisplay ici
+        // Ces méthodes seront appelées séparément quand nécessaire
     }
 
     /**
@@ -1164,8 +1193,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Si le nombre de cœurs ne correspond pas à la constitution totale, forcer le re-render
         if (hearts.length !== totalConstitution) {
             console.log(`Nombre de cœurs incorrect (${hearts.length} vs ${totalConstitution}), re-render nécessaire`);
-            // Forcer la mise à jour des données en mémoire avant le re-render
-            this._applyTraitBonuses();
+            // Ne pas appeler _applyTraitBonuses ici pour éviter la boucle infinie
+            // Les bonus des traits sont déjà calculés et stockés
             this.render(true);
             return;
         }
@@ -2306,6 +2335,43 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             
             console.log(`Affichage mana total mis à jour: ${totalMana}`);
         }
+    }
+
+    /**
+     * Initialise l'état des points de mana
+     * @private
+     */
+    _initializeMana() {
+        const totalMana = this._getTotalMana(); // Utiliser le mana total avec bonus des traits
+        const currentMana = this.actor.system.mana?.value || totalMana;
+        const manaContainer = this.element.find('.mana-container');
+        
+        console.log(`Initialisation du mana: total: ${totalMana}, actuel: ${currentMana}`);
+        
+        // Vider le conteneur du mana
+        manaContainer.empty();
+        
+        // Créer le bon nombre de points de mana basé sur le mana total
+        for (let i = 0; i < totalMana; i++) {
+            const manaIndex = i + 1;
+            const isActive = manaIndex <= currentMana;
+            
+            const manaButton = $(`
+                <button class="mana-button ${isActive ? 'active' : 'depleted'}" 
+                        data-mana-index="${manaIndex}" 
+                        data-active="${isActive}">
+                    <i class="fas fa-star"></i>
+                </button>
+            `);
+            
+            // Attacher l'événement de clic
+            manaButton.click(this._onManaClick.bind(this));
+            
+            // Ajouter au conteneur
+            manaContainer.append(manaButton);
+        }
+        
+        console.log(`${totalMana} points de mana créés et initialisés`);
     }
 }
 
