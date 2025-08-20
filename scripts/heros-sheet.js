@@ -268,6 +268,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Initialiser les boucliers
         this._initializeShields();
         
+        // Initialiser les points de mana
+        this._initializeMana();
+        
         // Mettre à jour l'état de santé
         this._updateHealthStatus();
     }
@@ -338,7 +341,15 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const totalArmor = this._getTotalArmor(); // Utiliser l'armure totale avec bonus
         const shieldsContainer = this.element.find('.shields-container');
         
-        console.log(`Initialisation des boucliers: armure totale: ${totalArmor}, dégâts: ${armorDamage}`);
+        console.log(`=== Debug Initialize Shields ===`);
+        console.log(`Armure de base: ${this.actor.system.resources?.armor?.value || 0}`);
+        console.log(`Bonus des traits: ${this.actor.system.traitBonuses?.armor || 0}`);
+        console.log(`Bonus d'équipement: ${this._getArmorTypeBonus()}`);
+        console.log(`Bonus des boucliers: ${this._getShieldBonus()}`);
+        console.log(`Armure totale calculée: ${totalArmor}`);
+        console.log(`Dégâts d'armure: ${armorDamage}`);
+        console.log(`TraitBonuses object:`, this.actor.system.traitBonuses);
+        console.log(`=== Fin Debug Initialize Shields ===`);
         
         // Vider le conteneur des boucliers
         shieldsContainer.empty();
@@ -1037,6 +1048,27 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         return bonusMap[armorType] || 0;
     }
     
+    /**
+     * Calcule le bonus des boucliers d'armes
+     * @returns {number} - Bonus total des boucliers
+     * @private
+     */
+    _getShieldBonus() {
+        let shieldBonus = 0;
+        
+        // Vérifier la main principale
+        if (this.actor.system.weapons?.primary?.type === 'shield') {
+            shieldBonus += parseInt(this.actor.system.weapons.primary.bonus) || 0;
+        }
+        
+        // Vérifier la main secondaire
+        if (this.actor.system.weapons?.secondary?.type === 'shield') {
+            shieldBonus += parseInt(this.actor.system.weapons.secondary.bonus) || 0;
+        }
+        
+        return shieldBonus;
+    }
+
     /**
      * Recalcule les bonus des traits (appelé avant chaque jet de dé)
      * @private
