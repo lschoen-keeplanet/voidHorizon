@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Intégration des Bonus dans les Ranges</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-title {
+            color: #800000;
+            border-bottom: 2px solid #800000;
+            padding-bottom: 10px;
+        }
+        .test-description {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .test-example {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-family: monospace;
+        }
+        .test-result {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .test-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        code {
+            background: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test - Intégration des Bonus dans les Ranges</h1>
+    
+    <div class="test-section">
+        <h2 class="test-title">Objectif du Test</h2>
+        <div class="test-description">
+            <p><strong>Problème résolu :</strong> Les divs "BONUS TOTAL" ont été supprimés de la fiche de personnage car ils n'étaient pas très graphiques. Cependant, les bonus doivent toujours être pris en compte et intégrés directement dans les ranges des dés.</p>
+            <p><strong>Solution implémentée :</strong> Les helpers <code>getSafeRange</code> et <code>getUnsafeRange</code> ont été modifiés pour calculer automatiquement le bonus total et l'appliquer aux ranges.</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2 class="test-title">Modifications Apportées</h2>
+        
+        <h3>1. Suppression des Divs "BONUS TOTAL"</h3>
+        <div class="test-description">
+            <p><strong>Fichier modifié :</strong> <code>templates/sheets/heros-sheet.html</code></p>
+            <p>Les 5 divs suivants ont été supprimés :</p>
+            <ul>
+                <li>Bonus total pour Martialité</li>
+                <li>Bonus total pour Agilité</li>
+                <li>Bonus total pour Acuité</li>
+                <li>Bonus total pour Pimpance</li>
+                <li>Bonus total pour Arcane</li>
+            </ul>
+        </div>
+
+        <h3>2. Mise à Jour des Helpers de Range</h3>
+        <div class="test-description">
+            <p><strong>Fichier modifié :</strong> <code>scripts/heros-sheet.js</code></p>
+            <p>Les helpers <code>getSafeRange</code> et <code>getUnsafeRange</code> ont été enrichis pour :</p>
+            <ul>
+                <li>Calculer automatiquement le bonus total de chaque caractéristique</li>
+                <li>Identifier la caractéristique basée sur la valeur des dés</li>
+                <li>Récupérer les bonus de traits depuis <code>actor.system.traitBonuses</code></li>
+                <li>Appliquer les malus d'armure pour l'agilité</li>
+                <li>Retourner les ranges avec bonus appliqués</li>
+            </ul>
+        </div>
+
+        <h3>3. Mise à Jour des Appels de Template</h3>
+        <div class="test-description">
+            <p><strong>Fichier modifié :</strong> <code>templates/sheets/heros-sheet.html</code></p>
+            <p>Tous les appels aux helpers de range passent maintenant le paramètre <code>actor</code> :</p>
+            <ul>
+                <li><code>{{helpers.getSafeRange system.martialite.value actor}}</code></li>
+                <li><code>{{helpers.getSafeRange system.agilite.value actor}}</code></li>
+                <li><code>{{helpers.getSafeRange system.acuite.value actor}}</code></li>
+                <li><code>{{helpers.getSafeRange system.pimpance.value actor}}</code></li>
+                <li><code>{{helpers.getSafeRange system.arcane.value actor}}</code></li>
+                <li>Et de même pour <code>getUnsafeRange</code></li>
+            </ul>
+        </div>
+
+        <h3>4. Nettoyage CSS</h3>
+        <div class="test-description">
+            <p><strong>Fichier modifié :</strong> <code>styles/heros-sheet.css</code></p>
+            <p>Les styles CSS pour <code>.bonus-display</code> ont été supprimés car ils ne sont plus utilisés.</p>
+            <p><strong>Note :</strong> Les styles pour <code>.trait-bonus-display</code> ont été conservés car ils sont encore utilisés dans la liste des traits.</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2 class="test-title">Fonctionnement des Ranges avec Bonus</h2>
+        
+        <h3>Exemple de Calcul</h3>
+        <div class="test-example">
+            <p><strong>Scénario :</strong> Personnage avec Martialité 4d4 et un bonus de trait de +10</p>
+            <ul>
+                <li><strong>Range de base :</strong> 4d4 = 4-16</li>
+                <li><strong>Bonus de trait :</strong> +10</li>
+                <li><strong>Range Safe avec bonus :</strong> 14-26</li>
+                <li><strong>Range Unsafe avec bonus :</strong> 11-26</li>
+            </ul>
+        </div>
+
+        <h3>Gestion des Malus d'Armure</h3>
+        <div class="test-example">
+            <p><strong>Scénario :</strong> Personnage avec Agilité 5d4, bonus de trait +5, et armure lourde (-8)</p>
+            <ul>
+                <li><strong>Range de base :</strong> 5d4 = 5-20</li>
+                <li><strong>Bonus de trait :</strong> +5</li>
+                <li><strong>Malus d'armure :</strong> -8</li>
+                <li><strong>Bonus total :</strong> +5 + (-8) = -3</li>
+                <li><strong>Range Safe avec bonus :</strong> 2-17</li>
+                <li><strong>Range Unsafe avec bonus :</strong> 1-17</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2 class="test-title">Points de Vérification</h2>
+        
+        <div class="test-result">
+            <h3>✅ À Vérifier</h3>
+            <ul>
+                <li><strong>Suppression des bonus totaux :</strong> Vérifier qu'il n'y a plus de divs "Bonus total:" dans la fiche</li>
+                <li><strong>Ranges avec bonus :</strong> Vérifier que les ranges affichent les bonnes valeurs avec bonus appliqués</li>
+                <li><strong>Mise à jour dynamique :</strong> Vérifier que les ranges se mettent à jour quand les bonus changent</li>
+                <li><strong>Malus d'armure :</strong> Vérifier que les malus d'armure sont correctement appliqués aux ranges d'agilité</li>
+                <li><strong>Bonus de traits :</strong> Vérifier que les bonus de traits sont correctement appliqués aux ranges</li>
+            </ul>
+        </div>
+
+        <div class="test-warning">
+            <h3>⚠️ Points d'Attention</h3>
+            <ul>
+                <li><strong>Paramètre actor :</strong> Tous les appels aux helpers de range doivent passer le paramètre <code>actor</code></li>
+                <li><strong>Identification des caractéristiques :</strong> Les helpers identifient les caractéristiques en comparant les valeurs de dés</li>
+                <li><strong>Gestion des erreurs :</strong> Les helpers gèrent les cas où l'actor n'est pas défini</li>
+                <li><strong>Valeurs minimales :</strong> Les ranges ne peuvent jamais descendre en dessous de 1</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2 class="test-title">Code des Helpers Modifiés</h2>
+        
+        <h3>getSafeRange et getUnsafeRange</h3>
+        <div class="test-example">
+            <p>Les deux helpers suivent maintenant la même logique :</p>
+            <ol>
+                <li>Déterminer la range de base selon la valeur des dés</li>
+                <li>Identifier la caractéristique basée sur la valeur</li>
+                <li>Récupérer le bonus de trait correspondant</li>
+                <li>Appliquer le malus d'armure si c'est l'agilité</li>
+                <li>Calculer le bonus total</li>
+                <li>Appliquer le bonus aux ranges min et max</li>
+                <li>Retourner la range ajustée</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2 class="test-title">Résultat Attendu</h2>
+        
+        <div class="test-result">
+            <p><strong>Avant :</strong> Les bonus totaux étaient affichés séparément et les ranges ne prenaient pas en compte les bonus</p>
+            <p><strong>Après :</strong> Les bonus sont intégrés directement dans les ranges, rendant l'interface plus claire et intuitive</p>
+            <p><strong>Exemple concret :</strong> Un personnage avec +10 en Martialité verra ses ranges passer de "4-16" à "14-26" pour le mode Safe</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2 class="test-title">Instructions de Test</h2>
+        
+        <ol>
+            <li><strong>Ouvrir la fiche de personnage</strong> et vérifier qu'il n'y a plus de divs "Bonus total:"</li>
+            <li><strong>Vérifier les ranges</strong> sous les boutons Safe/Unsafe pour chaque caractéristique</li>
+            <li><strong>Ajouter des bonus de traits</strong> et vérifier que les ranges se mettent à jour</li>
+            <li><strong>Changer le type d'armure</strong> et vérifier que les ranges d'agilité se mettent à jour</li>
+            <li><strong>Vérifier la cohérence</strong> entre les bonus affichés et les ranges calculées</li>
+        </ol>
+    </div>
+</body>
+</html>
