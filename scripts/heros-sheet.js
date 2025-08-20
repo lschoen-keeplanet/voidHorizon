@@ -3631,18 +3631,53 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             diceFormula = unsafeMap[martialiteValue] || martialiteValue;
             rollMode = 'Blocage';
             characteristicLabel = 'Martialité';
+        } else if (action === 'parade') {
+            // Parade : dé de martialité (unsafe) + armure × 2
+            const martialiteValue = this.actor.system.martialite?.value || "2d4";
+            const unsafeMap = {
+                "2d4": "1d12", "3d4": "1d16", "4d4": "1d20",
+                "5d4": "1d24", "6d4": "1d28", "7d4": "1d32"
+            };
+            diceFormula = unsafeMap[martialiteValue] || martialiteValue;
+            rollMode = 'Parade';
+            characteristicLabel = 'Martialité';
         } else {
             console.error('Action de résistance non reconnue:', action);
             return;
         }
         
-        // Construire la formule finale
-        const finalFormula = `${diceFormula} + ${resistance} + ${shieldBonus}`;
+        // Construire la formule finale selon l'action
+        let finalFormula;
+        if (action === 'parade') {
+            // Pour la parade : dé + armure × 2
+            const totalArmor = this._calculateTotalArmor();
+            const armorBonus = totalArmor * 2;
+            finalFormula = `${diceFormula} + ${armorBonus}`;
+        } else if (action === 'block') {
+            // Pour le blocage : dé + armure × 2 + jet de qualité du bouclier
+            const totalArmor = this._calculateTotalArmor();
+            const armorBonus = totalArmor * 2;
+            finalFormula = `${diceFormula} + ${armorBonus} + ${shieldBonus}`;
+        } else {
+            // Pour esquive : dé + résistance + bonus bouclier
+            finalFormula = `${diceFormula} + ${resistance} + ${shieldBonus}`;
+        }
         
         console.log('Formule finale:', finalFormula);
         console.log('Mode de lancer:', rollMode);
-        console.log('Résistance:', resistance);
-        console.log('Bonus bouclier:', shieldBonus);
+        if (action === 'parade') {
+            const totalArmor = this._calculateTotalArmor();
+            console.log('Armure totale:', totalArmor);
+            console.log('Bonus armure (×2):', totalArmor * 2);
+        } else if (action === 'block') {
+            const totalArmor = this._calculateTotalArmor();
+            console.log('Armure totale:', totalArmor);
+            console.log('Bonus armure (×2):', totalArmor * 2);
+            console.log('Bonus bouclier:', shieldBonus);
+        } else {
+            console.log('Résistance:', resistance);
+            console.log('Bonus bouclier:', shieldBonus);
+        }
         
         try {
             // Créer le jet de dé
@@ -3654,14 +3689,19 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 user: game.user.id,
                 speaker: ChatMessage.getSpeaker({ actor: this.actor }),
                 content: `
-                    <div class="resistance-roll-result">
-                        <h3><i class="fas fa-shield-alt"></i> Jet de ${rollMode}</h3>
-                        <div class="roll-details">
-                            <p><strong>Caractéristique:</strong> ${characteristicLabel}</p>
-                            <p><strong>Formule:</strong> ${finalFormula}</p>
-                            <p><strong>Résultat:</strong> ${roll.total}</p>
-                            <p><strong>Détail:</strong> ${diceFormula} + ${resistance} résistance + ${shieldBonus} bouclier</p>
-                        </div>
+                    <div class="resistance-roll-result${action === 'parade' ? ' parade' : ''}">
+                        <h3><i class="fas fa-${action === 'dodge' ? 'running' : action === 'block' ? 'shield-alt' : 'hand-paper'}"></i> Jet de ${rollMode}</h3>
+                                                    <div class="roll-details">
+                                <p><strong>Caractéristique:</strong> ${characteristicLabel}</p>
+                                <p><strong>Formule:</strong> ${finalFormula}</p>
+                                <p><strong>Résultat:</strong> ${roll.total}</p>
+                                ${action === 'parade' ? 
+                                    `<p><strong>Détail:</strong> ${diceFormula} + ${this._calculateTotalArmor() * 2} armure (×2)</p>` :
+                                    action === 'block' ?
+                                    `<p><strong>Détail:</strong> ${diceFormula} + ${this._calculateTotalArmor() * 2} armure (×2) + ${shieldBonus} bouclier</p>` :
+                                    `<p><strong>Détail:</strong> ${diceFormula} + ${resistance} résistance + ${shieldBonus} bouclier</p>`
+                                }
+                            </div>
                     </div>
                 `,
                 roll: roll
@@ -3679,7 +3719,52 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      * @returns {number} La valeur de résistance totale
      * @private
      */
-    _calculateTotalResistance() {
+                    _calculateTotalResistance() {
+                    // Calculer l'armure totale
+                    const baseArmor = parseInt(this.actor.system.resources?.armor?.value) || 0;
+                    const traitBonus = parseInt(this.actor.system.traitBonuses?.armor) || 0;
+                    const equipmentBonus = this._getArmorTypeBonus();
+                    
+                    // Calculer le bonus des boucliers d'armes
+                    let shieldBonus = 0;
+                    if (this.actor.system.weapons?.primary?.type === 'shield') {
+                        shieldBonus += parseInt(this.actor.system.weapons.primary.bonus) || 0;
+                    }
+                    if (this.actor.system.weapons?.secondary?.type === 'shield') {
+                        shieldBonus += parseInt(this.actor.system.weapons.secondary.bonus) || 0;
+                    }
+                    
+                    const totalArmor = baseArmor + equipmentBonus + traitBonus + shieldBonus;
+                    
+                    // Calculer la constitution totale
+                    const baseConstitution = parseInt(this.actor.system.constitution?.value) || 0;
+                    const constitutionTraitBonus = parseInt(this.actor.system.traitBonuses?.constitution) || 0;
+                    const totalConstitution = baseConstitution + constitutionTraitBonus;
+                    
+                    // Calculer le degré de martialité (convertir la valeur de dés en nombre)
+                    const martialiteValue = this.actor.system.martialite?.value || "2d4";
+                    const martialiteDegreeMap = {
+                        "2d4": 1,   // Challengé
+                        "3d4": 2,   // Lourdeau
+                        "4d4": 3,   // Bien
+                        "5d4": 4,   // Rapide
+                        "6d4": 5,   // Très rapide
+                        "7d4": 6    // Très très rapide
+                    };
+                    const martialiteDegree = martialiteDegreeMap[martialiteValue] || 1;
+                    
+                    // Appliquer la formule : armure * 3 + constitution * 2 + degré de martialité * 2
+                    const resistance = (totalArmor * 3) + (totalConstitution * 2) + (martialiteDegree * 2);
+                    
+                    return resistance;
+                }
+
+    /**
+     * Calcule l'armure totale du personnage
+     * @returns {number} La valeur d'armure totale
+     * @private
+     */
+    _calculateTotalArmor() {
         // Calculer l'armure totale
         const baseArmor = parseInt(this.actor.system.resources?.armor?.value) || 0;
         const traitBonus = parseInt(this.actor.system.traitBonuses?.armor) || 0;
@@ -3696,27 +3781,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         const totalArmor = baseArmor + equipmentBonus + traitBonus + shieldBonus;
         
-        // Calculer la constitution totale
-        const baseConstitution = parseInt(this.actor.system.constitution?.value) || 0;
-        const constitutionTraitBonus = parseInt(this.actor.system.traitBonuses?.constitution) || 0;
-        const totalConstitution = baseConstitution + constitutionTraitBonus;
-        
-        // Calculer le degré d'agilité (convertir la valeur de dés en nombre)
-        const agilityValue = this.actor.system.agilite?.value || "2d4";
-        const agilityDegreeMap = {
-            "2d4": 1,   // Challengé
-            "3d4": 2,   // Lourdeau
-            "4d4": 3,   // Bien
-            "5d4": 4,   // Rapide
-            "6d4": 5,   // Très rapide
-            "7d4": 6    // Très très rapide
-        };
-        const agilityDegree = agilityDegreeMap[agilityValue] || 1;
-        
-        // Appliquer la formule : 3 * (armure + bonus d'armure) + 2 * constitution + 2 * degré d'agilité
-        const resistance = (3 * totalArmor) + (2 * totalConstitution) + (2 * agilityDegree);
-        
-        return resistance;
+        return totalArmor;
     }
 }
 
@@ -3755,6 +3820,22 @@ Hooks.once("init", function() {
 
     Handlebars.registerHelper('contains', function(array, value) {
         return array && array.includes(parseInt(value));
+    });
+
+    Handlebars.registerHelper('or', function(a, b) {
+        return a || b;
+    });
+
+    Handlebars.registerHelper('ne', function(a, b) {
+        return a !== b;
+    });
+
+    Handlebars.registerHelper('and', function(a, b) {
+        return a && b;
+    });
+
+    Handlebars.registerHelper('get', function(obj, key) {
+        return obj && obj[key];
     });
 
             // Nouveaux helpers pour les valeurs totales incluant les bonus des traits
@@ -3822,47 +3903,47 @@ Hooks.once("init", function() {
         });
 
         // Helper pour calculer la résistance du personnage
-        Handlebars.registerHelper('getTotalResistance', function(actor) {
-            // Résistance = 3 * (armure + bonus d'armure) + 2 * constitution + 2 * degré d'agilité
-            
-            // Calculer l'armure totale
-            const baseArmor = parseInt(actor.system.resources?.armor?.value) || 0;
-            const traitBonus = parseInt(actor.system.traitBonuses?.armor) || 0;
-            const equipmentBonus = getArmorTypeBonus(actor);
-            
-            // Calculer le bonus des boucliers d'armes
-            let shieldBonus = 0;
-            if (actor.system.weapons?.primary?.type === 'shield') {
-                shieldBonus += parseInt(actor.system.weapons.primary.bonus) || 0;
-            }
-            if (actor.system.weapons?.secondary?.type === 'shield') {
-                shieldBonus += parseInt(actor.system.weapons.secondary.bonus) || 0;
-            }
-            
-            const totalArmor = baseArmor + equipmentBonus + traitBonus + shieldBonus;
-            
-            // Calculer la constitution totale
-            const baseConstitution = parseInt(actor.system.constitution?.value) || 0;
-            const constitutionTraitBonus = parseInt(actor.system.traitBonuses?.constitution) || 0;
-            const totalConstitution = baseConstitution + constitutionTraitBonus;
-            
-            // Calculer le degré d'agilité (convertir la valeur de dés en nombre)
-            const agilityValue = actor.system.agilite?.value || "2d4";
-            const agilityDegreeMap = {
-                "2d4": 1,   // Challengé
-                "3d4": 2,   // Lourdeau
-                "4d4": 3,   // Bien
-                "5d4": 4,   // Rapide
-                "6d4": 5,   // Très rapide
-                "7d4": 6    // Très très rapide
-            };
-            const agilityDegree = agilityDegreeMap[agilityValue] || 1;
-            
-            // Appliquer la formule : 3 * (armure + bonus d'armure) + 2 * constitution + 2 * degré d'agilité
-            const resistance = (3 * totalArmor) + (2 * totalConstitution) + (2 * agilityDegree);
-            
-            return resistance;
-        });
+                    Handlebars.registerHelper('getTotalResistance', function(actor) {
+                // Résistance = armure * 3 + constitution * 2 + degré de martialité * 2
+                
+                // Calculer l'armure totale
+                const baseArmor = parseInt(actor.system.resources?.armor?.value) || 0;
+                const traitBonus = parseInt(actor.system.traitBonuses?.armor) || 0;
+                const equipmentBonus = getArmorTypeBonus(actor);
+                
+                // Calculer le bonus des boucliers d'armes
+                let shieldBonus = 0;
+                if (actor.system.weapons?.primary?.type === 'shield') {
+                    shieldBonus += parseInt(actor.system.weapons.primary.bonus) || 0;
+                }
+                if (actor.system.weapons?.secondary?.type === 'shield') {
+                    shieldBonus += parseInt(actor.system.weapons.secondary.bonus) || 0;
+                }
+                
+                const totalArmor = baseArmor + equipmentBonus + traitBonus + shieldBonus;
+                
+                // Calculer la constitution totale
+                const baseConstitution = parseInt(actor.system.constitution?.value) || 0;
+                const constitutionTraitBonus = parseInt(actor.system.traitBonuses?.constitution) || 0;
+                const totalConstitution = baseConstitution + constitutionTraitBonus;
+                
+                // Calculer le degré de martialité (convertir la valeur de dés en nombre)
+                const martialiteValue = actor.system.martialite?.value || "2d4";
+                const martialiteDegreeMap = {
+                    "2d4": 1,   // Challengé
+                    "3d4": 2,   // Lourdeau
+                    "4d4": 3,   // Bien
+                    "5d4": 4,   // Rapide
+                    "6d4": 5,   // Très rapide
+                    "7d4": 6    // Très très rapide
+                };
+                const martialiteDegree = martialiteDegreeMap[martialiteValue] || 1;
+                
+                // Appliquer la formule : armure * 3 + constitution * 2 + degré de martialité * 2
+                const resistance = (totalArmor * 3) + (totalConstitution * 2) + (martialiteDegree * 2);
+                
+                return resistance;
+            });
 
         // Helper pour accéder aux propriétés imbriquées
         Handlebars.registerHelper('get', function(obj, key) {

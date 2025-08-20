@@ -830,12 +830,12 @@
                                         <span class="source-label">Constitution (×2):</span>
                                         <span class="source-value">{{getTotalConstitution actor}}</span>
                                     </div>
-                                    <div class="resistance-source">
-                                        <span class="source-label">Degré d'Agilité (×2):</span>
-                                        <span class="source-value">
-                                            {{#if (eq system.agilite.value "2d4")}}1{{else if (eq system.agilite.value "3d4")}}2{{else if (eq system.agilite.value "4d4")}}3{{else if (eq system.agilite.value "5d4")}}4{{else if (eq system.agilite.value "6d4")}}5{{else if (eq system.agilite.value "7d4")}}6{{else}}1{{/if}}
-                                        </span>
-                                    </div>
+                                                                <div class="resistance-source">
+                                <span class="source-label">Degré de Martialité (×2):</span>
+                                <span class="source-value">
+                                    {{#if (eq system.martialite.value "2d4")}}1{{else if (eq system.martialite.value "3d4")}}2{{else if (eq system.martialite.value "4d4")}}3{{else if (eq system.martialite.value "5d4")}}4{{else if (eq system.martialite.value "6d4")}}5{{else if (eq system.martialite.value "7d4")}}6{{else}}1{{/if}}
+                                </span>
+                            </div>
                                     <div class="resistance-source total">
                                         <span class="source-label">Total:</span>
                                         <span class="source-value">{{getTotalResistance actor}}</span>
@@ -846,9 +846,15 @@
                                 <button type="button" class="resistance-roll-btn dodge" data-action="dodge" title="Lancer un dé d'esquive (dé d'agilité unsafe + résistance + bonus bouclier)">
                                     <i class="fas fa-running"></i> Esquive
                                 </button>
+                                {{#if (or (eq system.weapons.primary.type "shield") (eq system.weapons.secondary.type "shield"))}}
                                 <button type="button" class="resistance-roll-btn block" data-action="block" title="Lancer un dé de blocage (dé de martialité unsafe + résistance + bonus bouclier)">
                                     <i class="fas fa-shield-alt"></i> Blocage
                                 </button>
+                                {{else}}
+                                <button type="button" class="resistance-roll-btn parade" data-action="parade" title="Lancer un dé de parade (dé de martialité unsafe + armure × 2)">
+                                    <i class="fas fa-hand-paper"></i> Parade
+                                </button>
+                                {{/if}}
                             </div>
                         </div>
                     </div>
