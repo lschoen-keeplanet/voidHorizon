@@ -2180,28 +2180,29 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      * @returns {string} - La formule de dés à lancer
      * @private
      */
-    _calculateDiceFormula(statValue, isUnsafe) {
-        console.log(`Calcul formule dés: ${statValue}, unsafe: ${isUnsafe}`);
-        
-        if (!isUnsafe) {
-            // Mode Safe: retourner la valeur telle quelle (ex: "3d4")
-            console.log(`Mode Safe: formule = ${statValue}`);
-            return statValue;
-        } else {
-            // Mode Unsafe: convertir selon la table de conversion
-            const safeToUnsafe = {
-                "1d4": "1d4",   // Degré 1
-                "2d4": "1d8",   // Degré 2
-                "3d4": "1d12",  // Degré 3
-                "4d4": "1d16",  // Degré 4
-                "5d4": "1d20",  // Degré 5
-                "6d4": "1d24"   // Degré 6
-            };
-            const unsafeFormula = safeToUnsafe[statValue] || statValue;
-            console.log(`Mode Unsafe: ${statValue} -> ${unsafeFormula}`);
-            return unsafeFormula;
-        }
-    }
+                    _calculateDiceFormula(statValue, isUnsafe) {
+                    console.log(`Calcul formule dés: ${statValue}, unsafe: ${isUnsafe}`);
+
+                    if (!isUnsafe) {
+                        // Mode Safe: retourner la valeur telle quelle (ex: "3d4")
+                        console.log(`Mode Safe: formule = ${statValue}`);
+                        return statValue;
+                    } else {
+                        // Mode Unsafe: convertir selon la table de conversion et ajouter 1d4
+                        const safeToUnsafe = {
+                            "1d4": "1d4",   // Degré 1
+                            "2d4": "1d8",   // Degré 2
+                            "3d4": "1d12",  // Degré 3
+                            "4d4": "1d16",  // Degré 4
+                            "5d4": "1d20",  // Degré 5
+                            "6d4": "1d24"   // Degré 6
+                        };
+                        const unsafeFormula = safeToUnsafe[statValue] || statValue;
+                        const finalFormula = `${unsafeFormula} + 1d4`;
+                        console.log(`Mode Unsafe: ${statValue} -> ${unsafeFormula} + 1d4 = ${finalFormula}`);
+                        return finalFormula;
+                    }
+                }
     
     /**
      * Lance les dés avec la formule donnée
