@@ -815,6 +815,34 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- Section Résistance -->
+                        <div class="stat">
+                            <label>Résistance</label>
+                            <div class="stat-value resistance-display">
+                                <span class="resistance-value">{{getTotalResistance actor}}</span>
+                                <div class="resistance-breakdown">
+                                    <div class="resistance-source">
+                                        <span class="source-label">Armure (×3):</span>
+                                        <span class="source-value">{{getTotalArmor actor}}</span>
+                                    </div>
+                                    <div class="resistance-source">
+                                        <span class="source-label">Constitution (×2):</span>
+                                        <span class="source-value">{{getTotalConstitution actor}}</span>
+                                    </div>
+                                    <div class="resistance-source">
+                                        <span class="source-label">Degré d'Agilité (×2):</span>
+                                        <span class="source-value">
+                                            {{#if (eq system.agilite.value "2d4")}}1{{else if (eq system.agilite.value "3d4")}}2{{else if (eq system.agilite.value "4d4")}}3{{else if (eq system.agilite.value "5d4")}}4{{else if (eq system.agilite.value "6d4")}}5{{else if (eq system.agilite.value "7d4")}}6{{else}}1{{/if}}
+                                        </span>
+                                    </div>
+                                    <div class="resistance-source total">
+                                        <span class="source-label">Total:</span>
+                                        <span class="source-value">{{getTotalResistance actor}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="armor-section">

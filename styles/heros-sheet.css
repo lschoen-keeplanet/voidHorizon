@@ -83,6 +83,57 @@ img{
     text-align: right;
 }
 
+/* Styles pour la section Résistance */
+.resistance-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.resistance-value {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #800000;
+    text-align: center;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    min-width: 60px;
+    text-align: center;
+}
+
+.resistance-breakdown {
+    margin-top: 8px;
+    padding: 8px;
+    background: rgba(255, 107, 107, 0.05);
+    border: 1px solid rgba(255, 107, 107, 0.2);
+    border-radius: 4px;
+    font-size: 0.85em;
+    width: 100%;
+}
+
+.resistance-source {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+    padding: 2px 0;
+}
+
+.resistance-source:last-of-type {
+    margin-bottom: 8px;
+}
+
+.resistance-source.total {
+    border-top: 1px solid rgba(255, 107, 107, 0.3);
+    padding-top: 6px;
+    margin-top: 6px;
+    font-weight: 600;
+}
+
 .header-main {
     display: flex;
     align-items: flex-start;

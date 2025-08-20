@@ -3680,6 +3680,49 @@ Hooks.once("init", function() {
             return manaPerLevel[arcaneValue] || 2;
         });
 
+        // Helper pour calculer la résistance du personnage
+        Handlebars.registerHelper('getTotalResistance', function(actor) {
+            // Résistance = 3 * (armure + bonus d'armure) + 2 * constitution + 2 * degré d'agilité
+            
+            // Calculer l'armure totale
+            const baseArmor = parseInt(actor.system.resources?.armor?.value) || 0;
+            const traitBonus = parseInt(actor.system.traitBonuses?.armor) || 0;
+            const equipmentBonus = getArmorTypeBonus(actor);
+            
+            // Calculer le bonus des boucliers d'armes
+            let shieldBonus = 0;
+            if (actor.system.weapons?.primary?.type === 'shield') {
+                shieldBonus += parseInt(actor.system.weapons.primary.bonus) || 0;
+            }
+            if (actor.system.weapons?.secondary?.type === 'shield') {
+                shieldBonus += parseInt(actor.system.weapons.secondary.bonus) || 0;
+            }
+            
+            const totalArmor = baseArmor + equipmentBonus + traitBonus + shieldBonus;
+            
+            // Calculer la constitution totale
+            const baseConstitution = parseInt(actor.system.constitution?.value) || 0;
+            const constitutionTraitBonus = parseInt(actor.system.traitBonuses?.constitution) || 0;
+            const totalConstitution = baseConstitution + constitutionTraitBonus;
+            
+            // Calculer le degré d'agilité (convertir la valeur de dés en nombre)
+            const agilityValue = actor.system.agilite?.value || "2d4";
+            const agilityDegreeMap = {
+                "2d4": 1,   // Challengé
+                "3d4": 2,   // Lourdeau
+                "4d4": 3,   // Bien
+                "5d4": 4,   // Rapide
+                "6d4": 5,   // Très rapide
+                "7d4": 6    // Très très rapide
+            };
+            const agilityDegree = agilityDegreeMap[agilityValue] || 1;
+            
+            // Appliquer la formule : 3 * (armure + bonus d'armure) + 2 * constitution + 2 * degré d'agilité
+            const resistance = (3 * totalArmor) + (2 * totalConstitution) + (2 * agilityDegree);
+            
+            return resistance;
+        });
+
         // Helper pour accéder aux propriétés imbriquées
         Handlebars.registerHelper('get', function(obj, key) {
             if (!obj || typeof obj !== 'object') return 0;
