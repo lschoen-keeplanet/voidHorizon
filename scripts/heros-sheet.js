@@ -216,20 +216,18 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 // Calculer le bonus total de la caractéristique
                 let totalBonus = 0;
                 
+                // Déterminer le nom de la caractéristique basé sur la valeur
+                let statName = null;
+                if (actor.system.martialite && actor.system.martialite.value === safeValue) statName = 'martialite';
+                else if (actor.system.agilite && actor.system.agilite.value === safeValue) statName = 'agilite';
+                else if (actor.system.acuite && actor.system.acuite.value === safeValue) statName = 'acuite';
+                else if (actor.system.pimpance && actor.system.pimpance.value === safeValue) statName = 'pimpance';
+                else if (actor.system.arcane && actor.system.arcane.value === safeValue) statName = 'arcane';
+                
                 // Bonus de trait
-                if (actor && actor.system && actor.system.traitBonuses) {
-                    // Déterminer le nom de la caractéristique basé sur la valeur
-                    let statName = null;
-                    if (actor.system.martialite && actor.system.martialite.value === safeValue) statName = 'martialite';
-                    else if (actor.system.agilite && actor.system.agilite.value === safeValue) statName = 'agilite';
-                    else if (actor.system.acuite && actor.system.acuite.value === safeValue) statName = 'acuite';
-                    else if (actor.system.pimpance && actor.system.pimpance.value === safeValue) statName = 'pimpance';
-                    else if (actor.system.arcane && actor.system.arcane.value === safeValue) statName = 'arcane';
-                    
-                    if (statName) {
-                        const traitBonus = actor.system.traitBonuses[statName] || 0;
-                        totalBonus += traitBonus;
-                    }
+                if (actor && actor.system && actor.system.traitBonuses && statName) {
+                    const traitBonus = actor.system.traitBonuses[statName] || 0;
+                    totalBonus += traitBonus;
                 }
                 
                 // Malus d'agilité dû à l'armure (seulement pour l'agilité)
@@ -282,20 +280,18 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 // Calculer le bonus total de la caractéristique
                 let totalBonus = 0;
                 
+                // Déterminer le nom de la caractéristique basé sur la valeur
+                let statName = null;
+                if (actor.system.martialite && actor.system.martialite.value === safeValue) statName = 'martialite';
+                else if (actor.system.agilite && actor.system.agilite.value === safeValue) statName = 'agilite';
+                else if (actor.system.acuite && actor.system.acuite.value === safeValue) statName = 'acuite';
+                else if (actor.system.pimpance && actor.system.pimpance.value === safeValue) statName = 'pimpance';
+                else if (actor.system.arcane && actor.system.arcane.value === safeValue) statName = 'arcane';
+                
                 // Bonus de trait
-                if (actor && actor.system && actor.system.traitBonuses) {
-                    // Déterminer le nom de la caractéristique basé sur la valeur
-                    let statName = null;
-                    if (actor.system.martialite && actor.system.martialite.value === safeValue) statName = 'martialite';
-                    else if (actor.system.agilite && actor.system.agilite.value === safeValue) statName = 'agilite';
-                    else if (actor.system.acuite && actor.system.acuite.value === safeValue) statName = 'acuite';
-                    else if (actor.system.pimpance && actor.system.pimpance.value === safeValue) statName = 'pimpance';
-                    else if (actor.system.arcane && actor.system.arcane.value === safeValue) statName = 'arcane';
-                    
-                    if (statName) {
-                        const traitBonus = actor.system.traitBonuses[statName] || 0;
-                        totalBonus += traitBonus;
-                    }
+                if (actor && actor.system && actor.system.traitBonuses && statName) {
+                    const traitBonus = actor.system.traitBonuses[statName] || 0;
+                    totalBonus += traitBonus;
                 }
                 
                 // Malus d'agilité dû à l'armure (seulement pour l'agilité)
