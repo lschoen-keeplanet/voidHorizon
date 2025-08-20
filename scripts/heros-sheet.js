@@ -198,6 +198,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             },
             // Helper pour obtenir la plage des dés en mode Safe
             getSafeRange: (safeValue, actor) => {
+                // Vérifier que safeValue est défini
+                if (!safeValue) return "?";
+                
                 const rangeMap = {
                     "2d4": { min: 2, max: 8 },   // 2d4: min=2, max=8
                     "3d4": { min: 3, max: 12 },  // 3d4: min=3, max=12
@@ -212,7 +215,23 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 
                 // Si c'est pour l'agilité et qu'il y a un malus d'armure, l'appliquer
                 if (actor && actor.system && actor.system.agilite && actor.system.agilite.value === safeValue) {
-                    const agilityPenalty = getAgilityPenalty(actor);
+                    // Calculer le malus d'agilité directement ici pour éviter les problèmes de scope
+                    let agilityPenalty = 0;
+                    try {
+                        if (actor.system.armor && actor.system.armor.type) {
+                            const penaltyMap = {
+                                'tissu': 0,      // Pas de malus
+                                'legere': -4,    // Malus de 4
+                                'lourde': -8,    // Malus de 8
+                                'blindee': -16   // Malus de 16
+                            };
+                            agilityPenalty = penaltyMap[actor.system.armor.type] || 0;
+                        }
+                    } catch (e) {
+                        console.warn("Erreur lors du calcul du malus d'agilité:", e);
+                        agilityPenalty = 0;
+                    }
+                    
                     if (agilityPenalty < 0) {
                         const adjustedMin = Math.max(1, range.min + agilityPenalty);
                         const adjustedMax = Math.max(1, range.max + agilityPenalty);
@@ -224,6 +243,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             },
             // Helper pour obtenir la plage des dés en mode Unsafe
             getUnsafeRange: (safeValue, actor) => {
+                // Vérifier que safeValue est défini
+                if (!safeValue) return "?";
+                
                 const rangeMap = {
                     "2d4": { min: 1, max: 12 },  // 1d12: min=1, max=12
                     "3d4": { min: 1, max: 16 },  // 1d16: min=1, max=16
@@ -238,7 +260,23 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 
                 // Si c'est pour l'agilité et qu'il y a un malus d'armure, l'appliquer
                 if (actor && actor.system && actor.system.agilite && actor.system.agilite.value === safeValue) {
-                    const agilityPenalty = getAgilityPenalty(actor);
+                    // Calculer le malus d'agilité directement ici pour éviter les problèmes de scope
+                    let agilityPenalty = 0;
+                    try {
+                        if (actor.system.armor && actor.system.armor.type) {
+                            const penaltyMap = {
+                                'tissu': 0,      // Pas de malus
+                                'legere': -4,    // Malus de 4
+                                'lourde': -8,    // Malus de 8
+                                'blindee': -16   // Malus de 16
+                            };
+                            agilityPenalty = penaltyMap[actor.system.armor.type] || 0;
+                        }
+                    } catch (e) {
+                        console.warn("Erreur lors du calcul du malus d'agilité:", e);
+                        agilityPenalty = 0;
+                    }
+                    
                     if (agilityPenalty < 0) {
                         const adjustedMin = Math.max(1, range.min + agilityPenalty);
                         const adjustedMax = Math.max(1, range.max + agilityPenalty);
@@ -250,15 +288,20 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             },
             // Helper pour obtenir le malus d'agilité basé sur le type d'armure
             getAgilityPenalty: (actor) => {
-                if (!actor || !actor.system) return 0;
-                const armorType = actor.system.armor?.type || 'tissu';
-                const penaltyMap = {
-                    'tissu': 0,      // Pas de malus
-                    'legere': -4,    // Malus de 4
-                    'lourde': -8,    // Malus de 8
-                    'blindee': -16   // Malus de 16
-                };
-                return penaltyMap[armorType] || 0;
+                try {
+                    if (!actor || !actor.system) return 0;
+                    const armorType = actor.system.armor?.type || 'tissu';
+                    const penaltyMap = {
+                        'tissu': 0,      // Pas de malus
+                        'legere': -4,    // Malus de 4
+                        'lourde': -8,    // Malus de 8
+                        'blindee': -16   // Malus de 16
+                    };
+                    return penaltyMap[armorType] || 0;
+                } catch (e) {
+                    console.warn("Erreur lors du calcul du malus d'agilité:", e);
+                    return 0;
+                }
             }
         };
         
