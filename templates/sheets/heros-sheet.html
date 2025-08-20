@@ -339,6 +339,9 @@
                                                             <option value="agility" {{selected "agility"
                                                                 actor.system.weapons.primary.type}}>Agilité (Agilité)
                                                             </option>
+                                                            <option value="acuite" {{selected "acuite"
+                                                                actor.system.weapons.primary.type}}>Acuité (Acuité)
+                                                            </option>
                                                             <option value="shield" {{selected "shield"
                                                                 actor.system.weapons.primary.type}}>Bouclier</option>
                                                         </select>
@@ -346,6 +349,8 @@
                                                             actor.system.weapons.primary.type "strength")}}Force
                                                             (Martialité){{else if (eq actor.system.weapons.primary.type
                                                             "agility")}}Agilité (Agilité){{else if (eq
+                                                            actor.system.weapons.primary.type
+                                                            "acuite")}}Acuité (Acuité){{else if (eq
                                                             actor.system.weapons.primary.type
                                                             "shield")}}Bouclier{{else}}Non défini{{/if}}</div>
                                                     </div>
@@ -396,11 +401,13 @@
                                                         <div class="read-mode">
                                                             {{actor.system.weapons.primary.description}}</div>
                                                     </div>
+                                                    {{#unless (eq actor.system.weapons.primary.type "shield")}}
                                                     <button type="button" class="roll-weapon-btn read-mode"
                                                         data-weapon="primary"
                                                         title="Lancer les dés pour l'arme principale">
                                                         <i class="fas fa-sword"></i> Lancer les dés
                                                     </button>
+                                                    {{/unless}}
                                                 </div>
                                             </div>
 
@@ -425,6 +432,9 @@
                                                             <option value="agility" {{selected "agility"
                                                                 actor.system.weapons.secondary.type}}>Agilité (Agilité)
                                                             </option>
+                                                            <option value="acuite" {{selected "acuite"
+                                                                actor.system.weapons.secondary.type}}>Acuité (Acuité)
+                                                            </option>
                                                             <option value="shield" {{selected "shield"
                                                                 actor.system.weapons.secondary.type}}>Bouclier</option>
                                                         </select>
@@ -433,6 +443,7 @@
                                                             (Martialité){{else if (eq
                                                             actor.system.weapons.secondary.type "agility")}}Agilité
                                                             (Agilité){{else if (eq actor.system.weapons.secondary.type
+                                                            "acuite")}}Acuité (Acuité){{else if (eq actor.system.weapons.secondary.type
                                                             "shield")}}Bouclier{{else}}Non défini{{/if}}</div>
                                                     </div>
                                                     <div class="weapon-field">
@@ -482,11 +493,13 @@
                                                         <div class="read-mode">
                                                             {{actor.system.weapons.secondary.description}}</div>
                                                     </div>
+                                                    {{#unless (eq actor.system.weapons.secondary.type "shield")}}
                                                     <button type="button" class="roll-weapon-btn read-mode"
                                                         data-weapon="secondary"
                                                         title="Lancer les dés pour l'arme secondaire">
                                                         <i class="fas fa-sword"></i> Lancer les dés
                                                     </button>
+                                                    {{/unless}}
                                                 </div>
                                             </div>
                                         </div>
