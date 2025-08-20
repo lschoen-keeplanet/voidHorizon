@@ -823,19 +823,33 @@
                                 <span class="resistance-value">{{getTotalResistance actor}}</span>
                                 <div class="resistance-breakdown">
                                     <div class="resistance-source">
-                                        <span class="source-label">Armure (×3):</span>
-                                        <span class="source-value">{{getTotalArmor actor}}</span>
-                                    </div>
-                                    <div class="resistance-source">
                                         <span class="source-label">Constitution (×2):</span>
                                         <span class="source-value">{{getTotalConstitution actor}}</span>
                                     </div>
-                                                                <div class="resistance-source">
-                                <span class="source-label">Degré de Martialité (×2):</span>
-                                <span class="source-value">
-                                    {{#if (eq system.martialite.value "2d4")}}1{{else if (eq system.martialite.value "3d4")}}2{{else if (eq system.martialite.value "4d4")}}3{{else if (eq system.martialite.value "5d4")}}4{{else if (eq system.martialite.value "6d4")}}5{{else if (eq system.martialite.value "7d4")}}6{{else}}1{{/if}}
-                                </span>
-                            </div>
+                                    <div class="resistance-source">
+                                        <span class="source-label">Degré d'Agilité:</span>
+                                        <span class="source-value">
+                                            {{#if (eq system.agilite.value "2d4")}}1{{else if (eq system.agilite.value "3d4")}}2{{else if (eq system.agilite.value "4d4")}}3{{else if (eq system.agilite.value "5d4")}}4{{else if (eq system.agilite.value "6d4")}}5{{else if (eq system.agilite.value "7d4")}}6{{else}}1{{/if}}
+                                        </span>
+                                    </div>
+                                    <div class="resistance-source">
+                                        <span class="source-label">Malus d'Agilité (×2):</span>
+                                        <span class="source-value">
+                                            {{#if (eq actor.system.armor.type "tissu")}}0{{else if (eq actor.system.armor.type "legere")}}-8{{else if (eq actor.system.armor.type "lourde")}}-16{{else if (eq actor.system.armor.type "blindee")}}-32{{else}}0{{/if}}
+                                        </span>
+                                    </div>
+                                    <div class="resistance-source">
+                                        <span class="source-label">Degré de Martialité:</span>
+                                        <span class="source-value">
+                                            {{#if (eq system.martialite.value "2d4")}}1{{else if (eq system.martialite.value "3d4")}}2{{else if (eq system.martialite.value "4d4")}}3{{else if (eq system.martialite.value "5d4")}}4{{else if (eq system.martialite.value "6d4")}}5{{else if (eq system.martialite.value "7d4")}}6{{else}}1{{/if}}
+                                        </span>
+                                    </div>
+                                    <div class="resistance-source">
+                                        <span class="source-label">Type d'Armure:</span>
+                                        <span class="source-value">
+                                            {{#if (eq actor.system.armor.type "tissu")}}+0{{else if (eq actor.system.armor.type "legere")}}+2{{else if (eq actor.system.armor.type "lourde")}}+4{{else if (eq actor.system.armor.type "blindee")}}+8{{else}}+0{{/if}}
+                                        </span>
+                                    </div>
                                     <div class="resistance-source total">
                                         <span class="source-label">Total:</span>
                                         <span class="source-value">{{getTotalResistance actor}}</span>
@@ -914,11 +928,4 @@
             </div>
         </div>
     </header>
-
-
-
-
-
-
-
 </form>

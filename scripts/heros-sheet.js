@@ -3719,45 +3719,65 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      * @returns {number} La valeur de résistance totale
      * @private
      */
-                    _calculateTotalResistance() {
-                    // Calculer l'armure totale
-                    const baseArmor = parseInt(this.actor.system.resources?.armor?.value) || 0;
-                    const traitBonus = parseInt(this.actor.system.traitBonuses?.armor) || 0;
-                    const equipmentBonus = this._getArmorTypeBonus();
-                    
-                    // Calculer le bonus des boucliers d'armes
-                    let shieldBonus = 0;
-                    if (this.actor.system.weapons?.primary?.type === 'shield') {
-                        shieldBonus += parseInt(this.actor.system.weapons.primary.bonus) || 0;
-                    }
-                    if (this.actor.system.weapons?.secondary?.type === 'shield') {
-                        shieldBonus += parseInt(this.actor.system.weapons.secondary.bonus) || 0;
-                    }
-                    
-                    const totalArmor = baseArmor + equipmentBonus + traitBonus + shieldBonus;
-                    
-                    // Calculer la constitution totale
-                    const baseConstitution = parseInt(this.actor.system.constitution?.value) || 0;
-                    const constitutionTraitBonus = parseInt(this.actor.system.traitBonuses?.constitution) || 0;
-                    const totalConstitution = baseConstitution + constitutionTraitBonus;
-                    
-                    // Calculer le degré de martialité (convertir la valeur de dés en nombre)
-                    const martialiteValue = this.actor.system.martialite?.value || "2d4";
-                    const martialiteDegreeMap = {
-                        "2d4": 1,   // Challengé
-                        "3d4": 2,   // Lourdeau
-                        "4d4": 3,   // Bien
-                        "5d4": 4,   // Rapide
-                        "6d4": 5,   // Très rapide
-                        "7d4": 6    // Très très rapide
-                    };
-                    const martialiteDegree = martialiteDegreeMap[martialiteValue] || 1;
-                    
-                    // Appliquer la formule : armure * 3 + constitution * 2 + degré de martialité * 2
-                    const resistance = (totalArmor * 3) + (totalConstitution * 2) + (martialiteDegree * 2);
-                    
-                    return resistance;
-                }
+    _calculateTotalResistance() {
+        // Nouvelle formule : Résistance = Constitution * 2 + degré d'agilité - malus d'agilité * 2 + degré de martialité - malus de martialité + type d'armure
+        
+        // Calculer la constitution totale
+        const baseConstitution = parseInt(this.actor.system.constitution?.value) || 0;
+        const constitutionTraitBonus = parseInt(this.actor.system.traitBonuses?.constitution) || 0;
+        const totalConstitution = baseConstitution + constitutionTraitBonus;
+        
+        // Calculer le degré d'agilité (convertir la valeur de dés en nombre)
+        const agiliteValue = this.actor.system.agilite?.value || "2d4";
+        const agiliteDegreeMap = {
+            "2d4": 1,   // Challengé
+            "3d4": 2,   // Lourdeau
+            "4d4": 3,   // Bien
+            "5d4": 4,   // Rapide
+            "6d4": 5,   // Très rapide
+            "7d4": 6    // Très très rapide
+        };
+        const agiliteDegree = agiliteDegreeMap[agiliteValue] || 1;
+        
+        // Calculer le degré de martialité (convertir la valeur de dés en nombre)
+        const martialiteValue = this.actor.system.martialite?.value || "2d4";
+        const martialiteDegreeMap = {
+            "2d4": 1,   // Incompétent
+            "3d4": 2,   // Combatif
+            "4d4": 3,   // Soldat
+            "5d4": 4,   // Expérimenté
+            "6d4": 5,   // Vétéran
+            "7d4": 6    // Légende
+        };
+        const martialiteDegree = martialiteDegreeMap[martialiteValue] || 1;
+        
+        // Calculer le malus d'agilité dû au type d'armure
+        const armorType = this.actor.system.armor?.type || "tissu";
+        const agilityPenaltyMap = {
+            "tissu": 0,
+            "legere": 4,
+            "lourde": 8,
+            "blindee": 16
+        };
+        const agilityPenalty = agilityPenaltyMap[armorType] || 0;
+        
+        // Calculer le malus de martialité (pour l'instant 0, à ajuster selon vos besoins)
+        const martialitePenalty = 0;
+        
+        // Calculer le bonus du type d'armure
+        const armorTypeBonusMap = {
+            "tissu": 0,
+            "legere": 2,
+            "lourde": 4,
+            "blindee": 8
+        };
+        const armorTypeBonus = armorTypeBonusMap[armorType] || 0;
+        
+        // Appliquer la nouvelle formule : Constitution * 2 + degré d'agilité - malus d'agilité * 2 + degré de martialité - malus de martialité + type d'armure
+        const resistance = (totalConstitution * 2) + agiliteDegree - (agilityPenalty * 2) + martialiteDegree - martialitePenalty + armorTypeBonus;
+        
+        return Math.max(0, resistance); // Éviter les valeurs négatives
+    }
 
     /**
      * Calcule l'armure totale du personnage
@@ -3903,47 +3923,65 @@ Hooks.once("init", function() {
         });
 
         // Helper pour calculer la résistance du personnage
-                    Handlebars.registerHelper('getTotalResistance', function(actor) {
-                // Résistance = armure * 3 + constitution * 2 + degré de martialité * 2
-                
-                // Calculer l'armure totale
-                const baseArmor = parseInt(actor.system.resources?.armor?.value) || 0;
-                const traitBonus = parseInt(actor.system.traitBonuses?.armor) || 0;
-                const equipmentBonus = getArmorTypeBonus(actor);
-                
-                // Calculer le bonus des boucliers d'armes
-                let shieldBonus = 0;
-                if (actor.system.weapons?.primary?.type === 'shield') {
-                    shieldBonus += parseInt(actor.system.weapons.primary.bonus) || 0;
-                }
-                if (actor.system.weapons?.secondary?.type === 'shield') {
-                    shieldBonus += parseInt(actor.system.weapons.secondary.bonus) || 0;
-                }
-                
-                const totalArmor = baseArmor + equipmentBonus + traitBonus + shieldBonus;
-                
-                // Calculer la constitution totale
-                const baseConstitution = parseInt(actor.system.constitution?.value) || 0;
-                const constitutionTraitBonus = parseInt(actor.system.traitBonuses?.constitution) || 0;
-                const totalConstitution = baseConstitution + constitutionTraitBonus;
-                
-                // Calculer le degré de martialité (convertir la valeur de dés en nombre)
-                const martialiteValue = actor.system.martialite?.value || "2d4";
-                const martialiteDegreeMap = {
-                    "2d4": 1,   // Challengé
-                    "3d4": 2,   // Lourdeau
-                    "4d4": 3,   // Bien
-                    "5d4": 4,   // Rapide
-                    "6d4": 5,   // Très rapide
-                    "7d4": 6    // Très très rapide
-                };
-                const martialiteDegree = martialiteDegreeMap[martialiteValue] || 1;
-                
-                // Appliquer la formule : armure * 3 + constitution * 2 + degré de martialité * 2
-                const resistance = (totalArmor * 3) + (totalConstitution * 2) + (martialiteDegree * 2);
-                
-                return resistance;
-            });
+        Handlebars.registerHelper('getTotalResistance', function(actor) {
+            // Nouvelle formule : Résistance = Constitution * 2 + degré d'agilité - malus d'agilité * 2 + degré de martialité - malus de martialité + type d'armure
+            
+            // Calculer la constitution totale
+            const baseConstitution = parseInt(actor.system.constitution?.value) || 0;
+            const constitutionTraitBonus = parseInt(actor.system.traitBonuses?.constitution) || 0;
+            const totalConstitution = baseConstitution + constitutionTraitBonus;
+            
+            // Calculer le degré d'agilité (convertir la valeur de dés en nombre)
+            const agiliteValue = actor.system.agilite?.value || "2d4";
+            const agiliteDegreeMap = {
+                "2d4": 1,   // Challengé
+                "3d4": 2,   // Lourdeau
+                "4d4": 3,   // Bien
+                "5d4": 4,   // Rapide
+                "6d4": 5,   // Très rapide
+                "7d4": 6    // Très très rapide
+            };
+            const agiliteDegree = agiliteDegreeMap[agiliteValue] || 1;
+            
+            // Calculer le degré de martialité (convertir la valeur de dés en nombre)
+            const martialiteValue = actor.system.martialite?.value || "2d4";
+            const martialiteDegreeMap = {
+                "2d4": 1,   // Incompétent
+                "3d4": 2,   // Combatif
+                "4d4": 3,   // Soldat
+                "5d4": 4,   // Expérimenté
+                "6d4": 5,   // Vétéran
+                "7d4": 6    // Légende
+            };
+            const martialiteDegree = martialiteDegreeMap[martialiteValue] || 1;
+            
+            // Calculer le malus d'agilité dû au type d'armure
+            const armorType = actor.system.armor?.type || "tissu";
+            const agilityPenaltyMap = {
+                "tissu": 0,
+                "legere": 4,
+                "lourde": 8,
+                "blindee": 16
+            };
+            const agilityPenalty = agilityPenaltyMap[armorType] || 0;
+            
+            // Calculer le malus de martialité (pour l'instant 0, à ajuster selon vos besoins)
+            const martialitePenalty = 0;
+            
+            // Calculer le bonus du type d'armure
+            const armorTypeBonusMap = {
+                "tissu": 0,
+                "legere": 2,
+                "lourde": 4,
+                "blindee": 8
+            };
+            const armorTypeBonus = armorTypeBonusMap[armorType] || 0;
+            
+            // Appliquer la nouvelle formule : Constitution * 2 + degré d'agilité - malus d'agilité * 2 + degré de martialité - malus de martialité + type d'armure
+            const resistance = (totalConstitution * 2) + agiliteDegree - (agilityPenalty * 2) + martialiteDegree - martialitePenalty + armorTypeBonus;
+            
+            return Math.max(0, resistance); // Éviter les valeurs négatives
+        });
 
         // Helper pour accéder aux propriétés imbriquées
         Handlebars.registerHelper('get', function(obj, key) {
