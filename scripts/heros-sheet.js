@@ -258,13 +258,29 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     /**
-     * Initialise l'état des cœurs en fonction de la valeur de blessure
-     * @param {jQuery} html - Le contenu HTML de la fiche
+     * Initialise l'état des cœurs et boucliers en fonction des valeurs actuelles
      * @private
      */
-    _initializeHearts(html) {
-        const blessure = this.actor.system.resources.blessure?.value || 0;
-        const hearts = html.find('.heart-wrapper');
+    _initializeHealthState() {
+        // Initialiser les cœurs
+        this._initializeHearts();
+        
+        // Initialiser les boucliers
+        this._initializeShields();
+        
+        // Mettre à jour l'état de santé
+        this._updateHealthStatus();
+    }
+
+    /**
+     * Initialise l'état des cœurs en fonction de la valeur de blessure
+     * @private
+     */
+    _initializeHearts() {
+        const blessure = this.actor.system.resources?.blessure?.value || 0;
+        const hearts = this.element.find('.heart-wrapper');
+        
+        console.log(`Initialisation des cœurs: ${hearts.length} cœurs, ${blessure} blessures`);
         
         hearts.each((index, wrapper) => {
             const heartIndex = index;
@@ -272,25 +288,28 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             const deadButton = wrapper.querySelector('.dead');
             
             if (heartIndex < blessure) {
+                // Ce cœur est "mort" (blessé)
                 aliveButton.classList.add('hidden');
                 deadButton.classList.remove('hidden');
+                console.log(`Cœur ${heartIndex} initialisé comme mort`);
             } else {
+                // Ce cœur est "vivant" (non blessé)
                 aliveButton.classList.remove('hidden');
                 deadButton.classList.add('hidden');
+                console.log(`Cœur ${heartIndex} initialisé comme vivant`);
             }
         });
     }
 
     /**
      * Initialise l'état des boucliers d'armure
-     * @param {jQuery} html - Le contenu HTML de la fiche
      * @private
      */
-    _initializeShields(html) {
-        const armorDamage = this.actor.system.resources.armorDamage?.value || 0;
-        const shields = html.find('.armor-container .shield-wrapper');
+    _initializeShields() {
+        const armorDamage = this.actor.system.resources?.armorDamage?.value || 0;
+        const shields = this.element.find('.shield-wrapper');
         
-        console.log(`Initialisation des boucliers: ${shields.length} trouvés, dégâts: ${armorDamage}`);
+        console.log(`Initialisation des boucliers: ${shields.length} boucliers, ${armorDamage} dégâts`);
         
         shields.each((index, wrapper) => {
             const shieldIndex = index;
@@ -304,13 +323,15 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             }
             
             if (shieldIndex < armorDamage) {
+                // Ce bouclier est cassé
                 activeButton.classList.add('hidden');
                 brokenButton.classList.remove('hidden');
-                console.log(`Bouclier ${shieldIndex} marqué comme cassé`);
+                console.log(`Bouclier ${shieldIndex} initialisé comme cassé`);
             } else {
+                // Ce bouclier est actif
                 activeButton.classList.remove('hidden');
                 brokenButton.classList.add('hidden');
-                console.log(`Bouclier ${shieldIndex} marqué comme actif`);
+                console.log(`Bouclier ${shieldIndex} initialisé comme actif`);
             }
         });
     }
@@ -1125,8 +1146,29 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const heartWrapper = button.closest('.heart-wrapper');
         
         // Mettre à jour la valeur de blessure
-        const currentValue = this.actor.system.resources.blessure?.value || 0;
-        const newValue = isAlive ? currentValue + 1 : currentValue - 1;
+        const currentValue = this.actor.system.resources?.blessure?.value || 0;
+        const maxConstitution = this._getTotalConstitution();
+        
+        let newValue;
+        if (isAlive) {
+            // Le cœur était vivant, on le tue (ajoute une blessure)
+            newValue = currentValue + 1;
+            // Vérifier qu'on ne dépasse pas la constitution maximale
+            if (newValue > maxConstitution) {
+                console.log("Impossible d'ajouter plus de blessures que de constitution");
+                return;
+            }
+        } else {
+            // Le cœur était mort, on le ressuscite (retire une blessure)
+            newValue = currentValue - 1;
+            // Vérifier qu'on ne descend pas en dessous de 0
+            if (newValue < 0) {
+                console.log("Impossible d'avoir moins de 0 blessures");
+                return;
+            }
+        }
+        
+        console.log(`Blessures: ${currentValue} -> ${newValue} (max: ${maxConstitution})`);
         
         try {
             // Mettre à jour l'acteur avec la nouvelle valeur
@@ -1143,8 +1185,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Mettre à jour l'état de santé
             this._updateHealthStatus();
             
-            // Forcer la mise à jour de l'affichage
-            this.render(true);
+            // Forcer la mise à jour de l'affichage des cœurs
+            this._updateHeartsDisplay();
+            
+            console.log("Points de vie mis à jour avec succès");
         } catch (error) {
             console.error("Erreur lors de la mise à jour des points de vie:", error);
         }
@@ -1161,11 +1205,15 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         const deadButton = heartWrapper.querySelector('.dead');
         
         if (isAlive) {
+            // Le cœur était vivant, on le tue (ajoute une blessure)
             aliveButton.classList.add('hidden');
             deadButton.classList.remove('hidden');
+            console.log("Cœur marqué comme mort");
         } else {
+            // Le cœur était mort, on le ressuscite (retire une blessure)
             aliveButton.classList.remove('hidden');
             deadButton.classList.add('hidden');
+            console.log("Cœur marqué comme vivant");
         }
     }
 
@@ -1190,15 +1238,18 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         }
         
         // Mettre à jour la valeur de dégâts d'armure
-        const currentDamage = this.actor.system.resources.armorDamage?.value || 0;
+        const currentDamage = this.actor.system.resources?.armorDamage?.value || 0;
         const newDamage = isActive ? currentDamage + 1 : currentDamage - 1;
         
-        console.log(`Dégâts d'armure: ${currentDamage} -> ${newDamage}`);
+        // S'assurer que les dégâts ne descendent pas en dessous de 0
+        const finalDamage = Math.max(0, newDamage);
+        
+        console.log(`Dégâts d'armure: ${currentDamage} -> ${finalDamage}`);
         
         try {
             // Mettre à jour l'acteur avec la nouvelle valeur de dégâts d'armure
             const updateData = {
-                'system.resources.armorDamage.value': newDamage
+                'system.resources.armorDamage.value': finalDamage
             };
             
             console.log("Mise à jour des boucliers:", updateData);
@@ -1206,6 +1257,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             
             // Mettre à jour l'affichage des boutons
             this._updateShieldDisplay(shieldWrapper, isActive);
+            
+            // Forcer la mise à jour de l'affichage des boucliers
+            this._updateShieldsDisplay();
             
             console.log("Bouclier mis à jour avec succès");
         } catch (error) {
@@ -1232,12 +1286,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         }
         
         if (isActive) {
-            // Le bouclier était actif, on le casse
+            // Le bouclier était actif, on le casse (ajoute des dégâts)
             activeButton.classList.add('hidden');
             brokenButton.classList.remove('hidden');
             console.log("Bouclier marqué comme cassé");
         } else {
-            // Le bouclier était cassé, on le répare
+            // Le bouclier était cassé, on le répare (retire des dégâts)
             activeButton.classList.remove('hidden');
             brokenButton.classList.add('hidden');
             console.log("Bouclier marqué comme actif");
@@ -2082,7 +2136,7 @@ Hooks.once("init", function() {
                 "6d4": "1d24"   // Degré 6
             };
             return safeToUnsafe[safeValue] || safeValue;
-    });
+        });
 
     foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
     foundry.documents.collections.Actors.registerSheet("voidHorizon", HeroSheet, {
