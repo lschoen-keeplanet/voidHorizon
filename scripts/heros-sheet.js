@@ -177,6 +177,30 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                     "7d4": "1d32"   // Degré 6: 7d4 max=28, donc 1d28+4=1d32
                 };
                 return safeToUnsafe[safeValue] || safeValue;
+            },
+            // Helper pour obtenir la plage des dés en mode Safe
+            getSafeRange: (safeValue) => {
+                const rangeMap = {
+                    "2d4": "2-8",   // 2d4: min=2, max=8
+                    "3d4": "3-12",  // 3d4: min=3, max=12
+                    "4d4": "4-16",  // 4d4: min=4, max=16
+                    "5d4": "5-20",  // 5d4: min=5, max=20
+                    "6d4": "6-24",  // 6d4: min=6, max=24
+                    "7d4": "7-28"   // 7d4: min=7, max=28
+                };
+                return rangeMap[safeValue] || "?";
+            },
+            // Helper pour obtenir la plage des dés en mode Unsafe
+            getUnsafeRange: (safeValue) => {
+                const rangeMap = {
+                    "2d4": "1-12",  // 1d12: min=1, max=12
+                    "3d4": "1-16",  // 1d16: min=1, max=16
+                    "4d4": "1-20",  // 1d20: min=1, max=20
+                    "5d4": "1-24",  // 1d24: min=1, max=24
+                    "6d4": "1-28",  // 1d28: min=1, max=28
+                    "7d4": "1-32"   // 1d32: min=1, max=32
+                };
+                return rangeMap[safeValue] || "?";
             }
         };
         
