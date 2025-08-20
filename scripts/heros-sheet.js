@@ -169,12 +169,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Helper pour obtenir la formule de dé en mode unsafe
             getUnsafeFormula: (safeValue) => {
                 const safeToUnsafe = {
-                    "2d4": "1d8",   // Degré 1
-                    "3d4": "1d12",  // Degré 2
-                    "4d4": "1d16",  // Degré 3
-                    "5d4": "1d20",  // Degré 4
-                    "6d4": "1d24",  // Degré 5
-                    "7d4": "1d28"   // Degré 6
+                    "2d4": "1d12",  // Degré 1: 2d4 max=8, donc 1d8+4=1d12
+                    "3d4": "1d16",  // Degré 2: 3d4 max=12, donc 1d12+4=1d16
+                    "4d4": "1d20",  // Degré 3: 4d4 max=16, donc 1d16+4=1d20
+                    "5d4": "1d24",  // Degré 4: 5d4 max=20, donc 1d20+4=1d24
+                    "6d4": "1d28",  // Degré 5: 6d4 max=24, donc 1d24+4=1d28
+                    "7d4": "1d32"   // Degré 6: 7d4 max=28, donc 1d28+4=1d32
                 };
                 return safeToUnsafe[safeValue] || safeValue;
             }
@@ -2188,19 +2188,18 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                         console.log(`Mode Safe: formule = ${statValue}`);
                         return statValue;
                     } else {
-                        // Mode Unsafe: convertir selon la table de conversion et ajouter 1d4
+                        // Mode Unsafe: convertir selon la table de conversion et ajouter 4 aux faces
                         const safeToUnsafe = {
-                            "2d4": "1d8",   // Degré 1
-                            "3d4": "1d12",  // Degré 2
-                            "4d4": "1d16",  // Degré 3
-                            "5d4": "1d20",  // Degré 4
-                            "6d4": "1d24",  // Degré 5
-                            "7d4": "1d28"   // Degré 6
+                            "2d4": "1d12",  // Degré 1: 2d4 max=8, donc 1d8+4=1d12
+                            "3d4": "1d16",  // Degré 2: 3d4 max=12, donc 1d12+4=1d16
+                            "4d4": "1d20",  // Degré 3: 4d4 max=16, donc 1d16+4=1d20
+                            "5d4": "1d24",  // Degré 4: 5d4 max=20, donc 1d20+4=1d24
+                            "6d4": "1d28",  // Degré 5: 6d4 max=24, donc 1d24+4=1d28
+                            "7d4": "1d32"   // Degré 6: 7d4 max=28, donc 1d28+4=1d32
                         };
                         const unsafeFormula = safeToUnsafe[statValue] || statValue;
-                        const finalFormula = `${unsafeFormula} + 1d4`;
-                        console.log(`Mode Unsafe: ${statValue} -> ${unsafeFormula} + 1d4 = ${finalFormula}`);
-                        return finalFormula;
+                        console.log(`Mode Unsafe: ${statValue} -> ${unsafeFormula}`);
+                        return unsafeFormula;
                     }
                 }
     
@@ -2584,12 +2583,12 @@ Hooks.once("init", function() {
         // Helper pour obtenir la formule de dé en mode unsafe
         Handlebars.registerHelper('getUnsafeFormula', function(safeValue) {
             const safeToUnsafe = {
-                "2d4": "1d8",   // Degré 1
-                "3d4": "1d12",  // Degré 2
-                "4d4": "1d16",  // Degré 3
-                "5d4": "1d20",  // Degré 4
-                "6d4": "1d24",  // Degré 5
-                "7d4": "1d28"   // Degré 6
+                "2d4": "1d12",  // Degré 1: 2d4 max=8, donc 1d8+4=1d12
+                "3d4": "1d16",  // Degré 2: 3d4 max=12, donc 1d12+4=1d16
+                "4d4": "1d20",  // Degré 3: 4d4 max=16, donc 1d16+4=1d20
+                "5d4": "1d24",  // Degré 4: 5d4 max=20, donc 1d20+4=1d24
+                "6d4": "1d28",  // Degré 5: 6d4 max=24, donc 1d24+4=1d28
+                "7d4": "1d32"   // Degré 6: 7d4 max=28, donc 1d28+4=1d32
             };
             return safeToUnsafe[safeValue] || safeValue;
         });
