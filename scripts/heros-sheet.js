@@ -1159,31 +1159,28 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      }
      
      /**
-      * Applique les bonus des boucliers à l'armure et la constitution
+      * Applique les bonus des boucliers à l'armure
       * @private
       */
-           _applyShieldBonuses() {
-          let totalArmorBonus = 0;
-          let totalConstitutionBonus = 0;
-          
-          // Vérifier la main principale
-          if (this.actor.system.weapons?.primary?.type === 'shield') {
-              const shield = this.actor.system.weapons.primary;
-              const bonus = parseInt(shield.bonus) || 0;
-              totalArmorBonus += bonus;
-              totalConstitutionBonus += bonus;
-          }
-          
-          // Vérifier la main secondaire
-          if (this.actor.system.weapons?.secondary?.type === 'shield') {
-              const shield = this.actor.system.weapons.secondary;
-              const bonus = parseInt(shield.bonus) || 0;
-              totalArmorBonus += bonus;
-              totalConstitutionBonus += bonus;
-          }
-          
-          return { armorBonus: totalArmorBonus, constitutionBonus: totalConstitutionBonus };
-      }
+            _applyShieldBonuses() {
+           let totalArmorBonus = 0;
+           
+           // Vérifier la main principale
+           if (this.actor.system.weapons?.primary?.type === 'shield') {
+               const shield = this.actor.system.weapons.primary;
+               const bonus = parseInt(shield.bonus) || 0;
+               totalArmorBonus += bonus;
+           }
+           
+           // Vérifier la main secondaire
+           if (this.actor.system.weapons?.secondary?.type === 'shield') {
+               const shield = this.actor.system.weapons.secondary;
+               const bonus = parseInt(shield.bonus) || 0;
+               totalArmorBonus += bonus;
+           }
+           
+           return { armorBonus: totalArmorBonus };
+       }
 
     /**
      * Gère le clic sur un cœur de constitution
@@ -2192,6 +2189,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     _getTotalConstitution() {
         const baseConstitution = parseInt(this.actor.system.constitution?.value) || 0;
         const traitBonus = this.actor.system.traitBonuses?.constitution || 0;
+        // Note: Les bonus d'équipement pour la constitution pourront être ajoutés ici plus tard
         return baseConstitution + traitBonus;
     }
 
@@ -2303,6 +2301,7 @@ Hooks.once("init", function() {
         Handlebars.registerHelper('getTotalConstitution', function(actor) {
             const baseConstitution = parseInt(actor.system.constitution?.value) || 0;
             const traitBonus = parseInt(actor.system.traitBonuses?.constitution) || 0;
+            // Note: Les bonus d'équipement pour la constitution pourront être ajoutés ici plus tard
             return baseConstitution + traitBonus;
         });
 

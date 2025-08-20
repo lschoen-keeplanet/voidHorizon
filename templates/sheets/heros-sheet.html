@@ -601,16 +601,8 @@
                                     <span class="source-value">{{#if (gt (get actor.system.traitBonuses.constitution 0) 0)}}+{{/if}}{{get actor.system.traitBonuses.constitution 0}}</span>
                                 </div>
                                 <div class="armor-source">
-                                    <span class="source-label">Boucliers:</span>
-                                    <span class="source-value">{{#if (or (eq actor.system.weapons.primary.type "shield") (eq actor.system.weapons.secondary.type "shield"))}}
-                                        {{#if (eq actor.system.weapons.primary.type "shield")}}
-                                            {{#if (gt actor.system.weapons.primary.bonus 0)}}+{{/if}}{{actor.system.weapons.primary.bonus}}
-                                        {{/if}}
-                                        {{#if (and (eq actor.system.weapons.primary.type "shield") (eq actor.system.weapons.secondary.type "shield"))}} + {{/if}}
-                                        {{#if (eq actor.system.weapons.secondary.type "shield")}}
-                                            {{#if (gt actor.system.weapons.secondary.bonus 0)}}+{{/if}}{{actor.system.weapons.secondary.bonus}}
-                                        {{/if}}
-                                    {{else}}+0{{/if}}</span>
+                                    <span class="source-label">Équipement:</span>
+                                    <span class="source-value">+0</span>
                                 </div>
                                 <div class="armor-source total">
                                     <span class="source-label">Total:</span>
