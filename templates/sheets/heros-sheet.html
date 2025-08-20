@@ -552,6 +552,37 @@
                                 <input type="number" name="system.resources.armor.value"
                                     value="{{actor.system.resources.armor.value}}" min="0" data-no-save="true" />
                             </div>
+                            <!-- Affichage détaillé des sources de bonus d'armure -->
+                            <div class="armor-breakdown">
+                                <div class="armor-source">
+                                    <span class="source-label">Base:</span>
+                                    <span class="source-value">{{actor.system.resources.armor.value}}</span>
+                                </div>
+                                <div class="armor-source">
+                                    <span class="source-label">Équipement:</span>
+                                    <span class="source-value">{{#if (eq actor.system.armor.type "legere")}}+1{{else if (eq actor.system.armor.type "lourde")}}+2{{else if (eq actor.system.armor.type "blindee")}}+4{{else}}+0{{/if}}</span>
+                                </div>
+                                <div class="armor-source">
+                                    <span class="source-label">Traits:</span>
+                                    <span class="source-value">{{#if (gt (get actor.system.traitBonuses.armor 0) 0)}}+{{/if}}{{get actor.system.traitBonuses.armor 0}}</span>
+                                </div>
+                                <div class="armor-source">
+                                    <span class="source-label">Boucliers:</span>
+                                    <span class="source-value">{{#if (or (eq actor.system.weapons.primary.type "shield") (eq actor.system.weapons.secondary.type "shield"))}}
+                                        {{#if (eq actor.system.weapons.primary.type "shield")}}
+                                            {{#if (gt actor.system.weapons.primary.bonus 0)}}+{{/if}}{{actor.system.weapons.primary.bonus}}
+                                        {{/if}}
+                                        {{#if (and (eq actor.system.weapons.primary.type "shield") (eq actor.system.weapons.secondary.type "shield"))}} + {{/if}}
+                                        {{#if (eq actor.system.weapons.secondary.type "shield")}}
+                                            {{#if (gt actor.system.weapons.secondary.bonus 0)}}+{{/if}}{{actor.system.weapons.secondary.bonus}}
+                                        {{/if}}
+                                    {{else}}+0{{/if}}</span>
+                                </div>
+                                <div class="armor-total">
+                                    <span class="total-label">Total:</span>
+                                    <span class="total-value">{{getTotalArmor actor}}</span>
+                                </div>
+                            </div>
                         </div>
                         <div class="stat">
                             <label>Constitution</label>

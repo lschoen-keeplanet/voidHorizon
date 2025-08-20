@@ -20,6 +20,62 @@ img{
     padding-bottom: 10px;
 }
 
+/* Affichage détaillé des sources d'armure */
+.armor-breakdown {
+    margin-top: 8px;
+    padding: 8px;
+    background: rgba(128, 0, 0, 0.05);
+    border: 1px solid rgba(128, 0, 0, 0.2);
+    border-radius: 4px;
+    font-size: 0.85em;
+}
+
+.armor-source {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+    padding: 2px 0;
+}
+
+.armor-source:last-of-type {
+    margin-bottom: 8px;
+}
+
+.source-label {
+    color: #800000;
+    font-weight: 500;
+    min-width: 80px;
+}
+
+.source-value {
+    color: #333;
+    font-weight: 600;
+    text-align: right;
+}
+
+.armor-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 6px;
+    border-top: 1px solid rgba(128, 0, 0, 0.3);
+    margin-top: 4px;
+}
+
+.total-label {
+    color: #800000;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.total-value {
+    color: #800000;
+    font-weight: bold;
+    font-size: 1.1em;
+    text-align: right;
+}
+
 .header-main {
     display: flex;
     align-items: flex-start;
