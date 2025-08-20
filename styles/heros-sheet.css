@@ -1851,6 +1851,112 @@ textarea:focus {
     display: none !important;
 }
 
+/* Boutons de lancer de dé pour les compétences */
+.skill-roll-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+.skill-roll-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 100px;
+    justify-content: center;
+}
+
+.skill-roll-btn.safe {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    box-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
+}
+
+.skill-roll-btn.safe:hover {
+    background: linear-gradient(135deg, #45a049, #3d8b40);
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.4);
+    transform: translateY(-1px);
+}
+
+.skill-roll-btn.unsafe {
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+    color: white;
+    box-shadow: 0 2px 4px rgba(244, 67, 54, 0.3);
+}
+
+.skill-roll-btn.unsafe:hover {
+    background: linear-gradient(135deg, #d32f2f, #b71c1c);
+    box-shadow: 0 4px 8px rgba(244, 67, 54, 0.4);
+    transform: translateY(-1px);
+}
+
+.skill-roll-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.skill-roll-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Styles pour les résultats de jets de dé des compétences dans le chat */
+.skill-roll-result {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border: 2px solid #800000;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px 0;
+    box-shadow: 0 2px 8px rgba(128, 0, 0, 0.1);
+}
+
+.skill-roll-result h3 {
+    margin: 0 0 15px 0;
+    color: #800000;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px solid rgba(128, 0, 0, 0.2);
+    padding-bottom: 8px;
+}
+
+.skill-roll-result h3 i {
+    margin-right: 8px;
+    color: #800000;
+}
+
+.roll-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.roll-details p {
+    margin: 0;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(128, 0, 0, 0.1);
+}
+
+.roll-details p:last-child {
+    border-bottom: none;
+}
+
+.roll-details strong {
+    color: #800000;
+    font-weight: 600;
+    min-width: 80px;
+    display: inline-block;
+}
+
 /* Styles pour les points de mana */
 .mana-section {
     margin-top: 20px;

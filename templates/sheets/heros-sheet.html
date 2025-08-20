@@ -721,6 +721,26 @@
                                              <div class="skill-description">
                                                  {{skill.description}}
                                              </div>
+                                             
+                                             <!-- Boutons de lancer de dé pour la compétence -->
+                                             <div class="skill-roll-buttons">
+                                                 <button type="button" class="skill-roll-btn safe" 
+                                                         data-skill-id="{{skillId}}" 
+                                                         data-characteristic="{{skill.characteristic}}"
+                                                         data-mastery="{{skill.mastery}}"
+                                                         data-unsafe="false"
+                                                         title="Lancer {{skill.name}} (Mode Safe - {{skill.characteristic}} unsafe + bonus + {{skill.mastery}})">
+                                                     <i class="fas fa-shield-alt"></i> Safe
+                                                 </button>
+                                                 <button type="button" class="skill-roll-btn unsafe" 
+                                                         data-skill-id="{{skillId}}" 
+                                                         data-characteristic="{{skill.characteristic}}"
+                                                         data-mastery="{{skill.mastery}}"
+                                                         data-unsafe="true"
+                                                         title="Lancer {{skill.name}} (Mode Unsafe - {{skill.characteristic}} safe + bonus + {{skill.mastery}})">
+                                                     <i class="fas fa-skull-crossbones"></i> Unsafe
+                                                 </button>
+                                             </div>
                                          </div>
                                          {{/if}}
                                          {{/each}}

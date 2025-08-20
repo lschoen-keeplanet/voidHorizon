@@ -611,6 +611,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         html.find('#skill-cancel-btn').click(this._onCancelSkillClick.bind(this));
         html.find('.skill-edit').click(this._onEditSkillClick.bind(this));
         html.find('.skill-delete').click(this._onDeleteSkillClick.bind(this));
+        html.find('.skill-roll-btn').click(this._onSkillRollClick.bind(this));
         
         // IMPORTANT: Calculer les bonus des traits AVANT d'initialiser l'état de santé
         this._applyTraitBonuses();
@@ -2629,6 +2630,129 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         } catch (error) {
             console.error('Erreur lors de la suppression de la compétence:', error);
             ui.notifications.error('Erreur lors de la suppression de la compétence');
+        }
+    }
+
+    /**
+     * Gère le clic sur les boutons de lancer de dé des compétences
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onSkillRollClick(event) {
+        event.preventDefault();
+        
+        const button = event.currentTarget;
+        const skillId = button.dataset.skillId;
+        const characteristic = button.dataset.characteristic;
+        const mastery = button.dataset.mastery;
+        const isUnsafe = button.dataset.unsafe === 'true';
+        
+        console.log('=== LANCER DE DÉ DE COMPÉTENCE ===');
+        console.log('Compétence ID:', skillId);
+        console.log('Caractéristique:', characteristic);
+        console.log('Maîtrise:', mastery);
+        console.log('Mode Unsafe:', isUnsafe);
+        
+        // Récupérer la compétence
+        const skill = this.actor.system.skills?.[skillId];
+        if (!skill) {
+            console.error('Compétence non trouvée pour ID:', skillId);
+            ui.notifications.error('Compétence non trouvée');
+            return;
+        }
+        
+        // Récupérer la valeur de la caractéristique
+        const characteristicValue = this.actor.system[characteristic]?.value;
+        if (!characteristicValue) {
+            console.error(`Valeur de caractéristique non trouvée pour ${characteristic}`);
+            ui.notifications.error(`Valeur de caractéristique non trouvée pour ${characteristic}`);
+            return;
+        }
+        
+        // Calculer le bonus total de la caractéristique
+        let totalBonus = 0;
+        let bonusDetails = [];
+        
+        // Bonus des traits
+        if (this.actor.system.traitBonuses && this.actor.system.traitBonuses[characteristic]) {
+            const traitBonus = this.actor.system.traitBonuses[characteristic];
+            if (traitBonus > 0) {
+                totalBonus += traitBonus;
+                bonusDetails.push(`+${traitBonus} trait`);
+            }
+        }
+        
+        // Malus d'armure pour l'agilité
+        if (characteristic === 'agilite' && this.actor.system.armor && this.actor.system.armor.type) {
+            const penaltyMap = { 'tissu': 0, 'legere': -4, 'lourde': -8, 'blindee': -16 };
+            const armorPenalty = penaltyMap[this.actor.system.armor.type] || 0;
+            if (armorPenalty < 0) {
+                totalBonus += armorPenalty;
+                bonusDetails.push(`${armorPenalty} armure`);
+            }
+        }
+        
+        // Déterminer la formule de dé selon le mode
+        let diceFormula;
+        let rollMode;
+        
+        if (isUnsafe) {
+            // Mode Unsafe : caractéristique (safe) + bonus + maîtrise
+            diceFormula = characteristicValue;
+            rollMode = 'Safe';
+        } else {
+            // Mode Safe : caractéristique (unsafe) + bonus + maîtrise
+            // Convertir la valeur safe en unsafe
+            const unsafeMap = {
+                "2d4": "1d12",
+                "3d4": "1d16", 
+                "4d4": "1d20",
+                "5d4": "1d24",
+                "6d4": "1d28",
+                "7d4": "1d32"
+            };
+            diceFormula = unsafeMap[characteristicValue] || characteristicValue;
+            rollMode = 'Unsafe';
+        }
+        
+        // Ajouter le bonus et la maîtrise à la formule
+        const finalFormula = `${diceFormula} + ${totalBonus} + ${mastery}`;
+        
+        console.log('Formule finale:', finalFormula);
+        console.log('Mode de lancer:', rollMode);
+        console.log('Bonus appliqués:', bonusDetails);
+        
+        try {
+            // Créer le jet de dé
+            const roll = new Roll(finalFormula);
+            await roll.evaluate();
+            
+            // Afficher le résultat
+            const messageData = {
+                user: game.user.id,
+                speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                content: `
+                    <div class="skill-roll-result">
+                        <h3><i class="fas fa-dice-d20"></i> Jet de ${skill.name}</h3>
+                        <div class="roll-details">
+                            <p><strong>Mode:</strong> ${rollMode}</p>
+                            <p><strong>Formule:</strong> ${finalFormula}</p>
+                            <p><strong>Résultat:</strong> ${roll.total}</p>
+                            ${bonusDetails.length > 0 ? `<p><strong>Bonus:</strong> ${bonusDetails.join(', ')}</p>` : ''}
+                        </div>
+                    </div>
+                `,
+                roll: roll
+            };
+            
+            await ChatMessage.create(messageData);
+            
+            // Notification de succès
+            ui.notifications.info(`Jet de ${skill.name} lancé avec succès !`);
+            
+        } catch (error) {
+            console.error('Erreur lors du lancement des dés:', error);
+            ui.notifications.error('Erreur lors du lancement des dés');
         }
     }
 
