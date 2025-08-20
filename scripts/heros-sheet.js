@@ -2298,11 +2298,18 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         let criticalMessage = '';
         if (isUnsafe) {
             const diceRange = this._calculateDiceRange(formula);
+            console.log(`DEBUG - Formule: ${formula}, baseResult: ${baseResult}, diceRange:`, diceRange);
+            console.log(`DEBUG - Comparaison: baseResult === diceRange.min: ${baseResult === diceRange.min}, baseResult === diceRange.max: ${baseResult === diceRange.max}`);
+            
             if (baseResult === diceRange.min) {
                 criticalMessage = '<p class="critical-failure">💥 <strong>ÉCHEC CRITIQUE!</strong></p>';
+                console.log('DEBUG - ÉCHEC CRITIQUE détecté!');
             } else if (baseResult === diceRange.max) {
                 criticalMessage = '<p class="critical-success">⭐ <strong>RÉUSSITE CRITIQUE!</strong></p>';
+                console.log('DEBUG - RÉUSSITE CRITIQUE détectée!');
             }
+            
+            console.log(`DEBUG - criticalMessage final:`, criticalMessage);
         }
         
         // Créer un message de chat avec le résultat
