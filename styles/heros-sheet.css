@@ -20,7 +20,7 @@ img{
     padding-bottom: 10px;
 }
 
-/* Affichage détaillé des sources d'armure */
+/* Affichage détaillé des sources d'armure et de constitution */
 .armor-breakdown {
     margin-top: 8px;
     padding: 8px;
@@ -40,6 +40,13 @@ img{
 
 .armor-source:last-of-type {
     margin-bottom: 8px;
+}
+
+.armor-source.total {
+    border-top: 1px solid rgba(128, 0, 0, 0.3);
+    padding-top: 6px;
+    margin-top: 6px;
+    font-weight: 600;
 }
 
 .source-label {

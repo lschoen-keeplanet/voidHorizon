@@ -1182,65 +1182,8 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
               totalConstitutionBonus += bonus;
           }
           
-          // Mettre à jour l'affichage des bonus
-          this._updateShieldBonusDisplay(totalArmorBonus, totalConstitutionBonus);
-          
           return { armorBonus: totalArmorBonus, constitutionBonus: totalConstitutionBonus };
       }
-     
-     /**
-      * Met à jour l'affichage des bonus de bouclier
-      * @param {number} armorBonus - Bonus d'armure total
-      * @param {number} constitutionBonus - Bonus de constitution total
-      * @private
-      */
-     _updateShieldBonusDisplay(armorBonus, constitutionBonus) {
-         // Mettre à jour l'affichage de l'armure
-         const armorInput = this.element.find('input[name="system.resources.armor.value"]');
-         if (armorInput.length > 0) {
-             const baseArmor = parseInt(this.actor.system.resources.armor?.value) || 0;
-             const totalArmor = baseArmor + armorBonus;
-             
-             // Ajouter un indicateur visuel du bonus
-             const armorContainer = armorInput.closest('.resource');
-             let bonusIndicator = armorContainer.find('.shield-bonus-indicator');
-             
-             if (armorBonus > 0) {
-                 if (bonusIndicator.length === 0) {
-                     bonusIndicator = $(`<div class="shield-bonus-indicator">+${armorBonus} (Bouclier)</div>`);
-                     armorContainer.append(bonusIndicator);
-                 } else {
-                     bonusIndicator.text(`+${armorBonus} (Bouclier)`);
-                 }
-                 bonusIndicator.show();
-             } else if (bonusIndicator.length > 0) {
-                 bonusIndicator.hide();
-             }
-         }
-         
-         // Mettre à jour l'affichage de la constitution
-         const constitutionInput = this.element.find('input[name="system.constitution.value"]');
-         if (constitutionInput.length > 0) {
-             const baseConstitution = parseInt(this.actor.system.constitution?.value) || 0;
-             const totalConstitution = baseConstitution + constitutionBonus;
-             
-             // Ajouter un indicateur visuel du bonus
-             const constitutionContainer = constitutionInput.closest('.stat');
-             let bonusIndicator = constitutionContainer.find('.shield-bonus-indicator');
-             
-             if (constitutionBonus > 0) {
-                 if (bonusIndicator.length === 0) {
-                     bonusIndicator = $(`<div class="shield-bonus-indicator">+${constitutionBonus} (Bouclier)</div>`);
-                     constitutionContainer.append(bonusIndicator);
-                 } else {
-                     bonusIndicator.text(`+${constitutionBonus} (Bouclier)`);
-                 }
-                 bonusIndicator.show();
-             } else if (bonusIndicator.length > 0) {
-                 bonusIndicator.hide();
-             }
-         }
-     }
 
     /**
      * Gère le clic sur un cœur de constitution

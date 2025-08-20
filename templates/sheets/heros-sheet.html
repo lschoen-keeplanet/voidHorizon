@@ -586,9 +586,36 @@
                         </div>
                         <div class="stat">
                             <label>Constitution</label>
-                            <div class="stat-controls">
+                            <div class="stat-value">
                                 <input type="number" name="system.constitution.value"
                                     value="{{system.constitution.value}}" min="1" max="10" data-no-save="true" />
+                            </div>
+                            <!-- Affichage détaillé des sources de bonus de constitution -->
+                            <div class="armor-breakdown">
+                                <div class="armor-source">
+                                    <span class="source-label">Base:</span>
+                                    <span class="source-value">{{system.constitution.value}}</span>
+                                </div>
+                                <div class="armor-source">
+                                    <span class="source-label">Traits:</span>
+                                    <span class="source-value">{{#if (gt (get actor.system.traitBonuses.constitution 0) 0)}}+{{/if}}{{get actor.system.traitBonuses.constitution 0}}</span>
+                                </div>
+                                <div class="armor-source">
+                                    <span class="source-label">Boucliers:</span>
+                                    <span class="source-value">{{#if (or (eq actor.system.weapons.primary.type "shield") (eq actor.system.weapons.secondary.type "shield"))}}
+                                        {{#if (eq actor.system.weapons.primary.type "shield")}}
+                                            {{#if (gt actor.system.weapons.primary.bonus 0)}}+{{/if}}{{actor.system.weapons.primary.bonus}}
+                                        {{/if}}
+                                        {{#if (and (eq actor.system.weapons.primary.type "shield") (eq actor.system.weapons.secondary.type "shield"))}} + {{/if}}
+                                        {{#if (eq actor.system.weapons.secondary.type "shield")}}
+                                            {{#if (gt actor.system.weapons.secondary.bonus 0)}}+{{/if}}{{actor.system.weapons.secondary.bonus}}
+                                        {{/if}}
+                                    {{else}}+0{{/if}}</span>
+                                </div>
+                                <div class="armor-source total">
+                                    <span class="source-label">Total:</span>
+                                    <span class="source-value">{{getTotalConstitution actor}}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
