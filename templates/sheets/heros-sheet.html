@@ -143,9 +143,9 @@
                             </div>
                             <!-- Affichage du malus d'agilité dû à l'armure -->
                             <div class="agility-penalty-display">
-                                {{#if (gt actor.system.armorAgilityPenalty.value 0)}}
+                                {{#if (lt (helpers.getAgilityPenalty actor) 0)}}
                                     <span class="penalty-info">
-                                        <i class="fas fa-exclamation-triangle"></i> Malus d'armure: {{actor.system.armorAgilityPenalty.value}}
+                                        <i class="fas fa-exclamation-triangle"></i> Malus d'armure: {{helpers.getAgilityPenalty actor}}
                                     </span>
                                 {{else}}
                                     <span class="penalty-info no-penalty">

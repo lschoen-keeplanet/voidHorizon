@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Correction de l'affichage du Malus d'Agilité</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+        code { background: #f4f4f4; padding: 2px 4px; border-radius: 3px; }
+        .section { margin: 20px 0; padding: 15px; border-left: 4px solid #007cba; background: #f8f9fa; }
+    </style>
+</head>
+<body>
+    <h1>🎯 Test - Correction de l'affichage du Malus d'Agilité</h1>
+    
+    <div class="section">
+        <h2>✅ Problème résolu</h2>
+        <p>Le malus d'agilité dû à l'armure n'apparaissait pas sous la caractéristique Agilité sur la fiche personnage.</p>
+    </div>
+
+    <div class="section">
+        <h2>🔍 Causes identifiées</h2>
+        <ol>
+            <li><strong>Condition HTML incorrecte :</strong> La condition vérifiait si le malus était > 0, mais les malus sont des nombres négatifs (-4, -8, -16)</li>
+            <li><strong>Accès direct à la variable :</strong> Le template accédait directement à <code>actor.system.armorAgilityPenalty.value</code> au lieu d'utiliser le helper <code>getAgilityPenalty</code></li>
+            <li><strong>Pas de mise à jour en temps réel :</strong> L'affichage n'était pas mis à jour quand le type d'armure changeait</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <h2>🛠️ Corrections apportées</h2>
+        
+        <h3>1. Correction du template HTML</h3>
+        <p><strong>Avant :</strong></p>
+        <code>
+            {{#if (gt actor.system.armorAgilityPenalty.value 0)}}<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Malus d'armure: {{actor.system.armorAgilityPenalty.value}}<br>
+            {{else}}<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Aucun malus d'armure<br>
+            {{/if}}
+        </code>
+        
+        <p><strong>Après :</strong></p>
+        <code>
+            {{#if (lt (helpers.getAgilityPenalty actor) 0)}}<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Malus d'armure: {{helpers.getAgilityPenalty actor}}<br>
+            {{else}}<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Aucun malus d'armure<br>
+            {{/if}}
+        </code>
+
+        <h3>2. Ajout de la méthode <code>_updateAgilityPenaltyDisplay()</code></h3>
+        <p>Nouvelle méthode qui met à jour l'affichage du malus d'agilité en temps réel :</p>
+        <ul>
+            <li>Recalcule le malus basé sur le type d'armure actuel</li>
+            <li>Met à jour l'affichage HTML directement</li>
+            <li>Gère les cas avec et sans malus</li>
+        </ul>
+
+        <h3>3. Intégration dans les événements</h3>
+        <ul>
+            <li><strong>Changement d'armure :</strong> Appel automatique lors du changement de type d'armure</li>
+            <li><strong>Initialisation :</strong> Appel lors du chargement initial de la fiche</li>
+            <li><strong>Délai de 0.5s :</strong> Appel après le délai pour s'assurer que tout est chargé</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>🧪 Tests à effectuer</h2>
+        <ol>
+            <li><strong>Affichage initial :</strong> Vérifier que le malus s'affiche correctement au chargement de la fiche</li>
+            <li><strong>Changement d'armure :</strong> Changer le type d'armure et vérifier que le malus se met à jour immédiatement</li>
+            <li><strong>Types d'armure :</strong> Tester tous les types :
+                <ul>
+                    <li><strong>Tissu :</strong> Aucun malus (icône verte)</li>
+                    <li><strong>Légère :</strong> Malus de -4 (icône orange)</li>
+                    <li><strong>Lourde :</strong> Malus de -8 (icône orange)</li>
+                    <li><strong>Blindée :</strong> Malus de -16 (icône orange)</li>
+                </ul>
+            </li>
+            <li><strong>Jets d'agilité :</strong> Vérifier que le malus est appliqué aux jets d'agilité et affiché dans le chat</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <h2>📁 Fichiers modifiés</h2>
+        <ul>
+            <li><strong><code>templates/sheets/heros-sheet.html</code></strong> : Correction de la condition et utilisation du helper</li>
+            <li><strong><code>scripts/heros-sheet.js</code></strong> : Ajout de <code>_updateAgilityPenaltyDisplay()</code> et intégration dans les événements</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>🎉 Résultat attendu</h2>
+        <p>Le malus d'agilité dû à l'armure doit maintenant s'afficher correctement sous la caractéristique Agilité et se mettre à jour en temps réel lors des changements d'armure.</p>
+    </div>
+
+    <script>
+        console.log("Test de correction du malus d'agilité - VoidHorizon");
+    </script>
+</body>
+</html>

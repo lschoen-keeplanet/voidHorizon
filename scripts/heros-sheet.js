@@ -323,6 +323,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             this._updateHeartsDisplay();
             this._updateManaDisplay();
             this._updateHealthStatus();
+            this._updateAgilityPenaltyDisplay();
             console.log("Recalcul de tous les éléments de santé terminé après délai");
         }, 500);
     }
@@ -343,6 +344,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         // Mettre à jour l'état de santé
         this._updateHealthStatus();
+        
+        // Mettre à jour l'affichage du malus d'agilité
+        this._updateAgilityPenaltyDisplay();
     }
 
     /**
@@ -1095,6 +1099,33 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         }
         
         return penalty;
+    }
+    
+    /**
+     * Met à jour l'affichage du malus d'agilité dû à l'armure
+     * @private
+     */
+    _updateAgilityPenaltyDisplay() {
+        // Recalculer le malus d'agilité
+        const penalty = this._getAgilityPenalty();
+        
+        // Mettre à jour l'affichage en temps réel
+        const penaltyDisplay = this.element.find('.agility-penalty-display');
+        if (penaltyDisplay.length > 0) {
+            if (penalty < 0) {
+                penaltyDisplay.html(`
+                    <span class="penalty-info">
+                        <i class="fas fa-exclamation-triangle"></i> Malus d'armure: ${penalty}
+                    </span>
+                `);
+            } else {
+                penaltyDisplay.html(`
+                    <span class="penalty-info no-penalty">
+                        <i class="fas fa-check-circle"></i> Aucun malus d'armure
+                    </span>
+                `);
+            }
+        }
     }
     
     /**
@@ -2130,6 +2161,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             
             // Mettre à jour l'affichage des boucliers
             this._updateShieldsDisplay();
+            
+            // Mettre à jour le malus d'agilité et son affichage
+            this._updateAgilityPenaltyDisplay();
         }
         
         // Si c'est un changement de type d'arme (pour les boucliers), mettre à jour l'affichage
