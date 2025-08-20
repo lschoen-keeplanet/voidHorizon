@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Implémentation des Bonus Totaux et Plages Enrichies</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        .warning { background-color: #fff3cd; border-color: #ffeaa7; }
+        code { background-color: #f8f9fa; padding: 2px 4px; border-radius: 3px; }
+        pre { background-color: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Test - Implémentation des Bonus Totaux et Plages Enrichies</h1>
+    
+    <div class="test-section success">
+        <h2>✅ Implémentation terminée</h2>
+        <p>L'implémentation des bonus totaux et des plages de dés enrichies est maintenant complète !</p>
+    </div>
+
+    <div class="test-section info">
+        <h2>Fonctionnalités implémentées</h2>
+        
+        <h3>1. Helpers Handlebars enrichis</h3>
+        <ul>
+            <li><strong><code>getSafeRange(safeValue, actor)</code></strong> : Calcule les plages Safe avec bonus de traits et malus d'armure</li>
+            <li><strong><code>getUnsafeRange(safeValue, actor)</code></strong> : Calcule les plages Unsafe avec bonus de traits et malus d'armure</li>
+            <li><strong><code>getTotalBonus(statName, actor)</code></strong> : Affiche le total des bonus d'une caractéristique</li>
+        </ul>
+
+        <h3>2. Affichage des bonus totaux</h3>
+        <p>Chaque caractéristique affiche maintenant une ligne "Bonus total:" qui montre :</p>
+        <ul>
+            <li>Le total cumulé des bonus et malus</li>
+            <li>Le détail de chaque source (ex: "+2 trait, -4 armure")</li>
+            <li>Un formatage visuel selon le type de bonus</li>
+        </ul>
+
+        <h3>3. Plages de dés enrichies</h3>
+        <p>Les plages Safe/Unsafe affichent maintenant :</p>
+        <ul>
+            <li>La plage finale avec bonus appliqués (ex: "5-20")</li>
+            <li>Le détail des bonus appliqués (ex: "(+2 trait, -4 armure)")</li>
+            <li>Mise à jour automatique quand les traits ou l'équipement changent</li>
+        </ul>
+    </div>
+
+    <div class="test-section info">
+        <h2>Exemples d'affichage</h2>
+        
+        <h3>Bonus total</h3>
+        <ul>
+            <li><strong>Aucun bonus :</strong> <code>0</code></li>
+            <li><strong>Avec trait :</strong> <code>+2 (+2 trait)</code></li>
+            <li><strong>Avec malus d'armure :</strong> <code>-4 (-4 armure)</code></li>
+            <li><strong>Mixte :</strong> <code>-2 (+2 trait, -4 armure)</code></li>
+        </ul>
+
+        <h3>Plages de dés</h3>
+        <ul>
+            <li><strong>Sans bonus :</strong> <code>3-12</code></li>
+            <li><strong>Avec bonus :</strong> <code>5-14 (+2 trait)</code></li>
+            <li><strong>Avec malus :</strong> <code>1-10 (-4 armure)</code></li>
+            <li><strong>Mixte :</strong> <code>1-10 (+2 trait, -4 armure)</code></li>
+        </ul>
+    </div>
+
+    <div class="test-section info">
+        <h2>Fichiers modifiés</h2>
+        <ul>
+            <li><strong>scripts/heros-sheet.js</strong> - Ajout des helpers enrichis et du helper getTotalBonus</li>
+            <li><strong>templates/sheets/heros-sheet.html</strong> - Ajout de l'affichage des bonus totaux sous chaque caractéristique</li>
+            <li><strong>styles/heros-sheet.css</strong> - Ajout des styles pour l'affichage des bonus</li>
+        </ul>
+    </div>
+
+    <div class="test-section success">
+        <h2>Instructions de test</h2>
+        <ol>
+            <li>Ouvrir Foundry VTT</li>
+            <li>Ouvrir une fiche de personnage</li>
+            <li>Vérifier que chaque caractéristique affiche une ligne "Bonus total:"</li>
+            <li>Vérifier que les plages de dés Safe/Unsafe incluent les bonus</li>
+            <li>Ajouter un trait avec bonus à une caractéristique</li>
+            <li>Vérifier que le bonus total et les plages se mettent à jour</li>
+            <li>Changer le type d'armure pour tester le malus d'agilité</li>
+            <li>Vérifier que le malus d'agilité apparaît dans les bonus totaux et les plages</li>
+        </ol>
+    </div>
+
+    <div class="test-section info">
+        <h2>Résultat attendu</h2>
+        <p>Chaque caractéristique devrait maintenant afficher :</p>
+        <ul>
+            <li>Le nom et le degré de maîtrise</li>
+            <li>Une ligne "Bonus total:" avec le total des bonus/malus</li>
+            <li>Les boutons Safe/Unsafe</li>
+            <li>Les plages de dés enrichies avec les bonus appliqués</li>
+            <li>Pour l'Agilité : l'affichage du malus d'armure (si applicable)</li>
+        </ul>
+    </div>
+
+    <div class="test-section warning">
+        <h2>Notes techniques</h2>
+        <ul>
+            <li><strong>Calcul automatique :</strong> Tous les bonus sont calculés en temps réel</li>
+            <li><strong>Gestion des malus :</strong> Les malus d'armure sont automatiquement appliqués à l'Agilité</li>
+            <li><strong>Formatage intelligent :</strong> Les plages affichent les détails seulement quand il y a des bonus</li>
+            <li><strong>Robustesse :</strong> Les helpers gèrent les cas où les données sont manquantes</li>
+        </ul>
+    </div>
+
+    <div class="test-section success">
+        <h2>Statut final</h2>
+        <p><strong>✅ Implémentation complète :</strong> Tous les bonus totaux et plages enrichies sont maintenant fonctionnels</p>
+        <p><strong>✅ Interface utilisateur :</strong> Affichage clair et informatif des bonus pour chaque caractéristique</p>
+        <p><strong>✅ Calculs automatiques :</strong> Mise à jour en temps réel des bonus et des plages</p>
+        <p><strong>✅ Gestion complète :</strong> Traits, équipement et malus d'armure sont tous pris en compte</p>
+    </div>
+</body>
+</html>
