@@ -247,11 +247,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         html.find('.trait-edit').click(this._onEditTraitClick.bind(this));
         html.find('.trait-delete').click(this._onDeleteTraitClick.bind(this));
         
-        // Initialiser l'état des cœurs et de la santé
-        this._initializeHealthState();
-        
-        // Appliquer les bonus des traits
+        // IMPORTANT: Calculer les bonus des traits AVANT d'initialiser l'état de santé
         this._applyTraitBonuses();
+        
+        // Initialiser l'état des cœurs et de la santé (après les bonus des traits)
+        this._initializeHealthState();
         
         // Recalculer les bonus des traits avant chaque jet de dé
         this._recalculateTraitBonuses();
@@ -278,9 +278,17 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      */
     _initializeHearts() {
         const blessure = this.actor.system.resources?.blessure?.value || 0;
+        const totalConstitution = this._getTotalConstitution(); // Utiliser la constitution totale avec bonus
         const hearts = this.element.find('.heart-wrapper');
         
-        console.log(`Initialisation des cœurs: ${hearts.length} cœurs, ${blessure} blessures`);
+        console.log(`Initialisation des cœurs: ${hearts.length} cœurs, ${blessure} blessures, constitution totale: ${totalConstitution}`);
+        
+        // Si le nombre de cœurs ne correspond pas à la constitution totale, forcer le re-render
+        if (hearts.length !== totalConstitution) {
+            console.log(`Nombre de cœurs incorrect (${hearts.length} vs ${totalConstitution}), re-render nécessaire`);
+            this.render(true);
+            return;
+        }
         
         hearts.each((index, wrapper) => {
             const heartIndex = index;
@@ -307,9 +315,17 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
      */
     _initializeShields() {
         const armorDamage = this.actor.system.resources?.armorDamage?.value || 0;
+        const totalArmor = this._getTotalArmor(); // Utiliser l'armure totale avec bonus
         const shields = this.element.find('.shield-wrapper');
         
-        console.log(`Initialisation des boucliers: ${shields.length} boucliers, ${armorDamage} dégâts`);
+        console.log(`Initialisation des boucliers: ${shields.length} boucliers, ${armorDamage} dégâts, armure totale: ${totalArmor}`);
+        
+        // Si le nombre de boucliers ne correspond pas à l'armure totale, forcer le re-render
+        if (shields.length !== totalArmor) {
+            console.log(`Nombre de boucliers incorrect (${shields.length} vs ${totalArmor}), re-render nécessaire`);
+            this.render(true);
+            return;
+        }
         
         shields.each((index, wrapper) => {
             const shieldIndex = index;
@@ -745,14 +761,19 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Mettre à jour seulement l'affichage local, pas la sauvegarde
             this.actor.system.mana.max = newMaxMana;
             this.actor.system.mana.value = newMaxMana;
+            
+            // Mettre à jour l'affichage du mana
             this._updateManaDisplay();
+            
+            // Mettre à jour l'affichage des valeurs totales de mana
+            this._updateManaTotalDisplay();
             
             console.log(`Arcane et mana mis à jour localement: ${value} -> ${newMaxMana} points de mana`);
             
             // Ajouter les changements de mana aux changements en attente
-        if (!this._pendingChanges) {
-            this._pendingChanges = {};
-        }
+            if (!this._pendingChanges) {
+                this._pendingChanges = {};
+            }
             this._pendingChanges['system.mana.max'] = newMaxMana;
             this._pendingChanges['system.mana.value'] = newMaxMana;
             
@@ -787,6 +808,17 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 const label = this._getStatLabel(statName, value);
                 readModeElement.text(label);
             }
+            
+            // Si c'est une caractéristique qui affecte les bonus des traits, recalculer et mettre à jour l'affichage
+            if (['martialite', 'pimpance', 'acuite', 'arcane'].includes(statName)) {
+                console.log(`Caractéristique ${statName} mise à jour, recalcul des bonus des traits...`);
+                
+                // Recalculer les bonus des traits
+                this._applyTraitBonuses();
+                
+                // Mettre à jour l'affichage des valeurs totales
+                this._updateTotalValuesDisplay();
+            }
         }
     }
 
@@ -804,6 +836,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         if (!this.actor.system.resources.armor) this.actor.system.resources.armor = {};
         this.actor.system.resources.armor.value = value;
         
+        // Mettre à jour l'affichage des valeurs totales d'armure
+        this._updateArmorTotalDisplay();
+        
         // Forcer la mise à jour de l'affichage des boucliers
         this._updateShieldsDisplay();
     }
@@ -820,6 +855,9 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Mettre à jour les données en mémoire pour que les calculs incluent les bonus
         if (!this.actor.system.constitution) this.actor.system.constitution = {};
         this.actor.system.constitution.value = value;
+        
+        // Mettre à jour l'affichage des valeurs totales de constitution
+        this._updateConstitutionTotalDisplay();
         
         // Forcer la mise à jour de l'affichage des cœurs
         this._updateHeartsDisplay();
@@ -1718,11 +1756,25 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         console.log(`Changement d'équipement: ${field} = ${value}`);
         
-        // Si c'est un changement de type d'armure, mettre à jour l'affichage des boucliers
+        // Si c'est un changement de type d'armure, mettre à jour l'affichage des boucliers et des valeurs totales
         if (field === 'system.armor.type') {
             // Répliquer en mémoire pour un rendu immédiat cohérent
             if (!this.actor.system.armor) this.actor.system.armor = {};
             this.actor.system.armor.type = value;
+            
+            // Mettre à jour l'affichage des valeurs totales d'armure
+            this._updateArmorTotalDisplay();
+            
+            // Mettre à jour l'affichage des boucliers
+            this._updateShieldsDisplay();
+        }
+        
+        // Si c'est un changement de type d'arme (pour les boucliers), mettre à jour l'affichage
+        if (field.includes('system.weapons.') && field.endsWith('.type')) {
+            // Mettre à jour l'affichage des valeurs totales d'armure
+            this._updateArmorTotalDisplay();
+            
+            // Mettre à jour l'affichage des boucliers
             this._updateShieldsDisplay();
         }
     }
@@ -1935,7 +1987,47 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             return;
         }
         
+        // Si c'est un changement d'Arcane, mettre à jour seulement l'affichage du mana localement
+        if (field === "system.arcane.value") {
+            // Calculer le nouveau mana maximum basé sur la nouvelle valeur d'Arcane
+            const manaPerLevel = {
+                "1d4": 2,   // Insensible
+                "2d4": 4,   // Eveillé
+                "3d4": 6,   // Novice
+                "4d4": 8,   // Initié
+                "5d4": 10,  // Maître
+                "6d4": 12   // Archimage
+            };
+            const newMaxMana = manaPerLevel[value] || 2;
+            
+            // Mettre à jour seulement l'affichage local, pas la sauvegarde
+            this.actor.system.mana.max = newMaxMana;
+            this.actor.system.mana.value = newMaxMana;
+            
+            // Mettre à jour l'affichage du mana
+            this._updateManaDisplay();
+            
+            // Mettre à jour l'affichage des valeurs totales de mana
+            this._updateManaTotalDisplay();
+            
+            console.log(`Arcane et mana mis à jour localement: ${value} -> ${newMaxMana} points de mana`);
+            
+            // Ajouter les changements de mana aux changements en attente
+            if (!this._pendingChanges) {
+                this._pendingChanges = {};
+            }
+            this._pendingChanges['system.mana.max'] = newMaxMana;
+            this._pendingChanges['system.mana.value'] = newMaxMana;
+            
+            // Continuer vers le traitement standard (stockage en mémoire sans sauvegarde)
+        }
+        
         // Pour les autres champs (caractéristiques), stocker le changement en mémoire sans sauvegarder
+        if (!this._pendingChanges) {
+            this._pendingChanges = {};
+        }
+        this._pendingChanges[field] = value;
+        
         console.log(`Changement en attente pour ${field}: ${value}`);
         
         // Mettre à jour l'affichage local sans sauvegarder
@@ -2101,6 +2193,103 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         };
         
         return mappings[statName]?.[value] || value;
+    }
+
+    /**
+     * Met à jour l'affichage des valeurs totales incluant les bonus des traits
+     * @private
+     */
+    _updateTotalValuesDisplay() {
+        console.log("=== Mise à jour de l'affichage des valeurs totales ===");
+        
+        // Mettre à jour l'affichage de l'armure totale
+        this._updateArmorTotalDisplay();
+        
+        // Mettre à jour l'affichage de la constitution totale
+        this._updateConstitutionTotalDisplay();
+        
+        // Mettre à jour l'affichage du mana total
+        this._updateManaTotalDisplay();
+        
+        console.log("=== Fin mise à jour des valeurs totales ===");
+    }
+    
+    /**
+     * Met à jour l'affichage de l'armure totale
+     * @private
+     */
+    _updateArmorTotalDisplay() {
+        const totalArmor = this._getTotalArmor();
+        const armorBreakdown = this.element.find('.armor-breakdown');
+        
+        if (armorBreakdown.length > 0) {
+            // Mettre à jour la valeur totale
+            const totalElement = armorBreakdown.find('.armor-source.total .source-value');
+            if (totalElement.length > 0) {
+                totalElement.text(totalArmor);
+            }
+            
+            // Mettre à jour les bonus des traits
+            const traitBonusElement = armorBreakdown.find('.armor-source[data-source="traits"] .source-value');
+            if (traitBonusElement.length > 0) {
+                const traitBonus = this.actor.system.traitBonuses?.armor || 0;
+                traitBonusElement.text(traitBonus);
+            }
+            
+            // Mettre à jour le bonus d'équipement
+            const equipmentBonusElement = armorBreakdown.find('.armor-source[data-source="equipment"] .source-value');
+            if (equipmentBonusElement.length > 0) {
+                const equipmentBonus = this._getArmorTypeBonus();
+                equipmentBonusElement.text(equipmentBonus);
+            }
+            
+            console.log(`Affichage armure totale mis à jour: ${totalArmor}`);
+        }
+    }
+    
+    /**
+     * Met à jour l'affichage de la constitution totale
+     * @private
+     */
+    _updateConstitutionTotalDisplay() {
+        const totalConstitution = this._getTotalConstitution();
+        const constitutionBreakdown = this.element.find('.constitution-breakdown');
+        
+        if (constitutionBreakdown.length > 0) {
+            // Mettre à jour la valeur totale
+            const totalElement = constitutionBreakdown.find('.armor-source.total .source-value');
+            if (totalElement.length > 0) {
+                totalElement.text(totalConstitution);
+            }
+            
+            // Mettre à jour les bonus des traits
+            const traitBonusElement = constitutionBreakdown.find('.armor-source[data-source="traits"] .source-value');
+            if (traitBonusElement.length > 0) {
+                const traitBonus = this.actor.system.traitBonuses?.constitution || 0;
+                traitBonusElement.text(traitBonus);
+            }
+            
+            console.log(`Affichage constitution totale mis à jour: ${totalConstitution}`);
+        }
+    }
+    
+    /**
+     * Met à jour l'affichage du mana total
+     * @private
+     */
+    _updateManaTotalDisplay() {
+        const totalMana = this._getTotalMana();
+        const manaDisplay = this.element.find('.mana-display');
+        
+        if (manaDisplay.length > 0) {
+            // Mettre à jour la valeur maximale du mana
+            const maxManaElement = manaDisplay.find('.mana-max');
+            if (maxManaElement.length > 0) {
+                maxManaElement.text(totalMana);
+            }
+            
+            console.log(`Affichage mana total mis à jour: ${totalMana}`);
+        }
     }
 }
 
