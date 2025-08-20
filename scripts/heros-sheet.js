@@ -197,28 +197,56 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 return safeToUnsafe[safeValue] || safeValue;
             },
             // Helper pour obtenir la plage des dés en mode Safe
-            getSafeRange: (safeValue) => {
+            getSafeRange: (safeValue, actor) => {
                 const rangeMap = {
-                    "2d4": "2-8",   // 2d4: min=2, max=8
-                    "3d4": "3-12",  // 3d4: min=3, max=12
-                    "4d4": "4-16",  // 4d4: min=4, max=16
-                    "5d4": "5-20",  // 5d4: min=5, max=20
-                    "6d4": "6-24",  // 6d4: min=6, max=24
-                    "7d4": "7-28"   // 7d4: min=7, max=28
+                    "2d4": { min: 2, max: 8 },   // 2d4: min=2, max=8
+                    "3d4": { min: 3, max: 12 },  // 3d4: min=3, max=12
+                    "4d4": { min: 4, max: 16 },  // 4d4: min=4, max=16
+                    "5d4": { min: 5, max: 20 },  // 5d4: min=5, max=20
+                    "6d4": { min: 6, max: 24 },  // 6d4: min=6, max=24
+                    "7d4": { min: 7, max: 28 }   // 7d4: min=7, max=28
                 };
-                return rangeMap[safeValue] || "?";
+                
+                const range = rangeMap[safeValue];
+                if (!range) return "?";
+                
+                // Si c'est pour l'agilité et qu'il y a un malus d'armure, l'appliquer
+                if (actor && actor.system.agilite && actor.system.agilite.value === safeValue) {
+                    const agilityPenalty = getAgilityPenalty(actor);
+                    if (agilityPenalty < 0) {
+                        const adjustedMin = Math.max(1, range.min + agilityPenalty);
+                        const adjustedMax = Math.max(1, range.max + agilityPenalty);
+                        return `${adjustedMin}-${adjustedMax}`;
+                    }
+                }
+                
+                return `${range.min}-${range.max}`;
             },
             // Helper pour obtenir la plage des dés en mode Unsafe
-            getUnsafeRange: (safeValue) => {
+            getUnsafeRange: (safeValue, actor) => {
                 const rangeMap = {
-                    "2d4": "1-12",  // 1d12: min=1, max=12
-                    "3d4": "1-16",  // 1d16: min=1, max=16
-                    "4d4": "1-20",  // 1d20: min=1, max=20
-                    "5d4": "1-24",  // 1d24: min=1, max=24
-                    "6d4": "1-28",  // 1d28: min=1, max=28
-                    "7d4": "1-32"   // 1d32: min=1, max=32
+                    "2d4": { min: 1, max: 12 },  // 1d12: min=1, max=12
+                    "3d4": { min: 1, max: 16 },  // 1d16: min=1, max=16
+                    "4d4": { min: 1, max: 20 },  // 1d20: min=1, max=20
+                    "5d4": { min: 1, max: 24 },  // 1d24: min=1, max=24
+                    "6d4": { min: 1, max: 28 },  // 1d28: min=1, max=28
+                    "7d4": { min: 1, max: 32 }   // 1d32: min=1, max=32
                 };
-                return rangeMap[safeValue] || "?";
+                
+                const range = rangeMap[safeValue];
+                if (!range) return "?";
+                
+                // Si c'est pour l'agilité et qu'il y a un malus d'armure, l'appliquer
+                if (actor && actor.system.agilite && actor.system.agilite.value === safeValue) {
+                    const agilityPenalty = getAgilityPenalty(actor);
+                    if (agilityPenalty < 0) {
+                        const adjustedMin = Math.max(1, range.min + agilityPenalty);
+                        const adjustedMax = Math.max(1, range.max + agilityPenalty);
+                        return `${adjustedMin}-${adjustedMax}`;
+                    }
+                }
+                
+                return `${range.min}-${range.max}`;
             },
             // Helper pour obtenir le malus d'agilité basé sur le type d'armure
             getAgilityPenalty: (actor) => {
@@ -1124,6 +1152,74 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                         <i class="fas fa-check-circle"></i> Aucun malus d'armure
                     </span>
                 `);
+            }
+        }
+        
+        // Mettre à jour aussi les plages de dés d'agilité
+        this._updateAgilityDiceRanges(penalty);
+    }
+    
+    /**
+     * Met à jour l'affichage des plages de dés d'agilité avec le malus d'armure
+     * @param {number} penalty - Le malus d'agilité actuel
+     * @private
+     */
+    _updateAgilityDiceRanges(penalty) {
+        const agilityStatBlock = this.element.find('.stat-block').filter(function() {
+            return $(this).find('label[data-stat="agilite"]').length > 0;
+        });
+        
+        if (agilityStatBlock.length > 0) {
+            const safeRange = agilityStatBlock.find('.safe-range');
+            const unsafeRange = agilityStatBlock.find('.unsafe-range');
+            
+            if (safeRange.length > 0 && unsafeRange.length > 0) {
+                const agiliteValue = this.actor.system.agilite?.value || "2d4";
+                
+                // Calculer les nouvelles plages avec le malus
+                const safeRangeMap = {
+                    "2d4": { min: 2, max: 8 },
+                    "3d4": { min: 3, max: 12 },
+                    "4d4": { min: 4, max: 16 },
+                    "5d4": { min: 5, max: 20 },
+                    "6d4": { min: 6, max: 24 },
+                    "7d4": { min: 7, max: 28 }
+                };
+                
+                const unsafeRangeMap = {
+                    "2d4": { min: 1, max: 12 },
+                    "3d4": { min: 1, max: 16 },
+                    "4d4": { min: 1, max: 20 },
+                    "5d4": { min: 1, max: 24 },
+                    "6d4": { min: 1, max: 28 },
+                    "7d4": { min: 1, max: 32 }
+                };
+                
+                const safeRangeData = safeRangeMap[agiliteValue];
+                const unsafeRangeData = unsafeRangeMap[agiliteValue];
+                
+                if (safeRangeData && unsafeRangeData) {
+                    let safeText, unsafeText;
+                    
+                    if (penalty < 0) {
+                        // Appliquer le malus
+                        const safeMin = Math.max(1, safeRangeData.min + penalty);
+                        const safeMax = Math.max(1, safeRangeData.max + penalty);
+                        const unsafeMin = Math.max(1, unsafeRangeData.min + penalty);
+                        const unsafeMax = Math.max(1, unsafeRangeData.max + penalty);
+                        
+                        safeText = `${safeMin}-${safeMax}`;
+                        unsafeText = `${unsafeMin}-${unsafeMax}`;
+                    } else {
+                        // Pas de malus
+                        safeText = `${safeRangeData.min}-${safeRangeData.max}`;
+                        unsafeText = `${unsafeRangeData.min}-${unsafeRangeData.max}`;
+                    }
+                    
+                    // Mettre à jour l'affichage
+                    safeRange.html(`<i class="fas fa-shield-alt"></i> ${safeText}`);
+                    unsafeRange.html(`<i class="fas fa-skull-crossbones"></i> ${unsafeText}`);
+                }
             }
         }
     }

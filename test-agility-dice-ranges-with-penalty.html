@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Plages de Dés d'Agilité avec Malus d'Armure</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+        code { background: #f4f4f4; padding: 2px 4px; border-radius: 3px; }
+        .section { margin: 20px 0; padding: 15px; border-left: 4px solid #007cba; background: #f8f9fa; }
+        .example { background: #fff3cd; padding: 10px; border-radius: 5px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>🎯 Test - Plages de Dés d'Agilité avec Malus d'Armure</h1>
+    
+    <div class="section">
+        <h2>✅ Fonctionnalité implémentée</h2>
+        <p>Les plages de dés (Safe et Unsafe) pour la caractéristique Agilité prennent maintenant en compte le malus d'agilité dû à l'armure.</p>
+    </div>
+
+    <div class="section">
+        <h2>🔍 Principe de fonctionnement</h2>
+        <p>Quand un personnage porte une armure qui impose un malus d'agilité, les plages de dés affichées sous la caractéristique Agilité sont automatiquement ajustées pour refléter ce malus.</p>
+        
+        <div class="example">
+            <h4>Exemple concret :</h4>
+            <p><strong>Caractéristique Agilité :</strong> 3d4 (Lourdeau)</p>
+            <ul>
+                <li><strong>Sans armure (Tissu) :</strong> Safe: 3-12, Unsafe: 1-16</li>
+                <li><strong>Avec armure légère (-4) :</strong> Safe: 1-8, Unsafe: 1-12</li>
+                <li><strong>Avec armure lourde (-8) :</strong> Safe: 1-4, Unsafe: 1-8</li>
+                <li><strong>Avec armure blindée (-16) :</strong> Safe: 1-1, Unsafe: 1-1</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🛠️ Modifications apportées</h2>
+        
+        <h3>1. Mise à jour des helpers Handlebars</h3>
+        <p><strong>Fichier :</strong> <code>scripts/heros-sheet.js</code></p>
+        <ul>
+            <li><strong><code>getSafeRange(safeValue, actor)</code></strong> : Ajout du paramètre <code>actor</code></li>
+            <li><strong><code>getUnsafeRange(safeValue, actor)</code></strong> : Ajout du paramètre <code>actor</code></li>
+            <li>Détection automatique si la caractéristique est l'Agilité</li>
+            <li>Application du malus d'armure aux plages min/max</li>
+            <li>Protection contre les valeurs négatives (minimum 1)</li>
+        </ul>
+
+        <h3>2. Mise à jour du template HTML</h3>
+        <p><strong>Fichier :</strong> <code>templates/sheets/heros-sheet.html</code></p>
+        <p>Les appels aux helpers passent maintenant l'acteur :</p>
+        <code>
+            {{helpers.getSafeRange system.agilite.value actor}}<br>
+            {{helpers.getUnsafeRange system.agilite.value actor}}
+        </code>
+
+        <h3>3. Mise à jour en temps réel</h3>
+        <p><strong>Nouvelle méthode :</strong> <code>_updateAgilityDiceRanges(penalty)</code></p>
+        <ul>
+            <li>Met à jour l'affichage des plages quand le malus change</li>
+            <li>Appelée automatiquement lors des changements d'armure</li>
+            <li>Recalcule les plages Safe et Unsafe avec le malus actuel</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>🧮 Calcul des plages ajustées</h2>
+        
+        <h3>Formule générale :</h3>
+        <code>Plage ajustée = Plage de base + Malus d'armure</code>
+        
+        <h3>Exemples détaillés :</h3>
+        <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+            <tr style="background: #f8f9fa;">
+                <th style="border: 1px solid #dee2e6; padding: 8px;">Degré</th>
+                <th style="border: 1px solid #dee2e6; padding: 8px;">Plage Safe</th>
+                <th style="border: 1px solid #dee2e6; padding: 8px;">Plage Unsafe</th>
+                <th style="border: 1px solid #dee2e6; padding: 8px;">Avec -4</th>
+                <th style="border: 1px solid #dee2e6; padding: 8px;">Avec -8</th>
+                <th style="border: 1px solid #dee2e6; padding: 8px;">Avec -16</th>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">2d4 (Challengé)</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">2-8</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">1-12</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">1-4 / 1-8</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">1-1 / 1-4</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">1-1 / 1-1</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">3d4 (Lourdeau)</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">3-12</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">1-16</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">1-8 / 1-12</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">1-4 / 1-8</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">1-1 / 1-1</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">4d4 (Bien)</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">4-16</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">1-20</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">1-12 / 1-16</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">1-8 / 1-12</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">1-1 / 1-4</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>🧪 Tests à effectuer</h2>
+        <ol>
+            <li><strong>Affichage initial :</strong> Vérifier que les plages s'affichent correctement au chargement</li>
+            <li><strong>Changement d'armure :</strong> Changer le type d'armure et vérifier que les plages se mettent à jour</li>
+            <li><strong>Types d'armure :</strong> Tester tous les types et vérifier les plages ajustées</li>
+            <li><strong>Changement de degré :</strong> Changer le degré d'Agilité et vérifier que les plages se recalculent</li>
+            <li><strong>Retour à l'armure tissu :</strong> Remettre l'armure tissu et vérifier que les plages reviennent à la normale</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <h2>📁 Fichiers modifiés</h2>
+        <ul>
+            <li><strong><code>scripts/heros-sheet.js</code></strong> : 
+                <ul>
+                    <li>Mise à jour des helpers <code>getSafeRange</code> et <code>getUnsafeRange</code></li>
+                    <li>Ajout de <code>_updateAgilityDiceRanges()</code></li>
+                    <li>Intégration dans <code>_updateAgilityPenaltyDisplay()</code></li>
+                </ul>
+            </li>
+            <li><strong><code>templates/sheets/heros-sheet.html</code></strong> : Passage de l'acteur aux helpers de plages</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>🎉 Résultat attendu</h2>
+        <p>Les plages de dés d'Agilité affichent maintenant automatiquement les valeurs ajustées en fonction du malus d'armure, donnant aux joueurs une vision claire de l'impact de leur équipement sur leurs jets d'Agilité.</p>
+    </div>
+
+    <script>
+        console.log("Test des plages de dés d'Agilité avec malus d'armure - VoidHorizon");
+    </script>
+</body>
+</html>
