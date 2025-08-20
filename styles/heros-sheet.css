@@ -351,19 +351,41 @@ img{
 .dice-ranges {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
+    align-items: center;
     margin-top: 5px;
-    font-size: 0.8em;
+    gap: 8px;
 }
 
 .range-info {
     display: flex;
     align-items: center;
     gap: 4px;
-    padding: 3px 6px;
-    border-radius: 3px;
-    font-weight: 500;
+    font-size: 0.9em;
     color: #666;
+}
+
+.bonus-display {
+    background: linear-gradient(135deg, #4a90e2, #357abd);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 0.85em;
+    min-width: 40px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.bonus-display:empty {
+    display: none;
+}
+
+.bonus-display:contains("+0") {
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+}
+
+.bonus-display:contains("-") {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
 }
 
 .range-info.safe-range {

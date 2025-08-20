@@ -1396,6 +1396,18 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                         }
                     }
                     
+                    // Mettre à jour l'affichage du bonus
+                    const bonusDisplay = $block.find('.bonus-display');
+                    if (bonusDisplay.length > 0) {
+                        if (totalBonus > 0) {
+                            bonusDisplay.html(`+${totalBonus}`);
+                        } else if (totalBonus < 0) {
+                            bonusDisplay.html(`${totalBonus}`);
+                        } else {
+                            bonusDisplay.html('+0');
+                        }
+                    }
+                    
                     // Calculer les nouvelles plages avec le bonus
                     const rangeMap = {
                         "2d4": { min: 2, max: 8 },

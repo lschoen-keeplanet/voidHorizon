@@ -100,6 +100,9 @@
                                         <span class="range-info safe-range">
                                             <i class="fas fa-shield-alt"></i> {{helpers.getSafeRange system.martialite.value actor}}
                                         </span>
+                                        <span class="range-info bonus-display">
+                                            {{helpers.getTotalBonus 'martialite' actor}}
+                                        </span>
                                         <span class="range-info unsafe-range">
                                             <i class="fas fa-skull-crossbones"></i> {{helpers.getUnsafeRange system.martialite.value actor}}
                                         </span>
@@ -142,6 +145,9 @@
                             <div class="dice-ranges">
                                 <span class="range-info safe-range">
                                     <i class="fas fa-shield-alt"></i> {{helpers.getSafeRange system.agilite.value actor}}
+                                </span>
+                                <span class="range-info bonus-display">
+                                    {{helpers.getTotalBonus 'agilite' actor}}
                                 </span>
                                 <span class="range-info unsafe-range">
                                     <i class="fas fa-skull-crossbones"></i> {{helpers.getUnsafeRange system.agilite.value actor}}
@@ -198,6 +204,9 @@
                                         <span class="range-info safe-range">
                                             <i class="fas fa-shield-alt"></i> {{helpers.getSafeRange system.acuite.value actor}}
                                         </span>
+                                        <span class="range-info bonus-display">
+                                            {{helpers.getTotalBonus 'acuite' actor}}
+                                        </span>
                                         <span class="range-info unsafe-range">
                                             <i class="fas fa-skull-crossbones"></i> {{helpers.getUnsafeRange system.acuite.value actor}}
                                         </span>
@@ -241,6 +250,9 @@
                                         <span class="range-info safe-range">
                                             <i class="fas fa-shield-alt"></i> {{helpers.getSafeRange system.pimpance.value actor}}
                                         </span>
+                                        <span class="range-info bonus-display">
+                                            {{helpers.getTotalBonus 'pimpance' actor}}
+                                        </span>
                                         <span class="range-info unsafe-range">
                                             <i class="fas fa-skull-crossbones"></i> {{helpers.getUnsafeRange system.pimpance.value actor}}
                                         </span>
@@ -283,6 +295,9 @@
                                     <div class="dice-ranges">
                                         <span class="range-info safe-range">
                                             <i class="fas fa-shield-alt"></i> {{helpers.getSafeRange system.arcane.value actor}}
+                                        </span>
+                                        <span class="range-info bonus-display">
+                                            {{helpers.getTotalBonus 'arcane' actor}}
                                         </span>
                                         <span class="range-info unsafe-range">
                                             <i class="fas fa-skull-crossbones"></i> {{helpers.getUnsafeRange system.arcane.value actor}}
