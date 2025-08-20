@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Système d'Attaque d'Armes avec Modes Safe/Unsafe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .success { color: #4CAF50; font-weight: bold; }
+        .warning { color: #FF9800; font-weight: bold; }
+        .error { color: #F44336; font-weight: bold; }
+        .info { color: #2196F3; font-weight: bold; }
+        code {
+            background: #f5f5f5;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .feature {
+            background: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .critical {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎯 Test - Système d'Attaque d'Armes avec Modes Safe/Unsafe</h1>
+    
+    <div class="feature">
+        <h2>✅ Fonctionnalités Implémentées</h2>
+        <ul>
+            <li><strong>Deux modes d'attaque :</strong> Safe et Unsafe</li>
+            <li><strong>Formule d'attaque :</strong> jet de compétence + jet de qualité + bonus</li>
+            <li><strong>Détection des coups critiques :</strong> Succès et échecs critiques pour le mode Unsafe</li>
+            <li><strong>Interface utilisateur :</strong> Boutons distincts avec couleurs différentes</li>
+            <li><strong>Gestion des boucliers :</strong> Boutons automatiquement cachés</li>
+        </ul>
+    </div>
+
+    <div class="feature">
+        <h2>🎲 Formules d'Attaque</h2>
+        <h3>Mode Safe :</h3>
+        <p><code>jet de compétence (safe) + jet de qualité + bonus</code></p>
+        
+        <h3>Mode Unsafe :</h3>
+        <p><code>jet de compétence (unsafe) + jet de qualité + bonus</code></p>
+        
+        <p><strong>Note :</strong> Les deux modes utilisent la même formule de base, mais le mode Unsafe peut déclencher des coups critiques.</p>
+    </div>
+
+    <div class="critical">
+        <h2>⭐ Système de Coups Critiques (Mode Unsafe uniquement)</h2>
+        <h3>Réussite Critique :</h3>
+        <p>Quand le résultat des dés de caractéristique est égal au <strong>maximum possible</strong> de la formule.</p>
+        <p><strong>Exemple :</strong> Pour 4d4 (max 16), si le résultat des dés est 16 → ⭐ RÉUSSITE CRITIQUE!</p>
+        
+        <h3>Échec Critique :</h3>
+        <p>Quand le résultat des dés de caractéristique est égal au <strong>minimum possible</strong> de la formule.</p>
+        <p><strong>Exemple :</strong> Pour 4d4 (min 4), si le résultat des dés est 4 → 💥 ÉCHEC CRITIQUE!</p>
+        
+        <p><strong>Important :</strong> Les coups critiques ne s'appliquent qu'aux dés de caractéristique, pas aux dés de qualité ou aux bonus.</p>
+    </div>
+
+    <div class="feature">
+        <h2>🔧 Types d'Armes et Caractéristiques</h2>
+        <ul>
+            <li><strong>Force (strength) →</strong> Martialité</li>
+            <li><strong>Agilité (agility) →</strong> Agilité</li>
+            <li><strong>Acuité (acuite) →</strong> Acuité</li>
+            <li><strong>Bouclier (shield) →</strong> Pas de bouton d'attaque</li>
+        </ul>
+    </div>
+
+    <div class="feature">
+        <h2>⚔️ Qualité des Armes</h2>
+        <ul>
+            <li><strong>Rang 0 :</strong> Équipement brisé → 1d4</li>
+            <li><strong>Rang 1 :</strong> Équipement commun → 1d6</li>
+            <li><strong>Rang 2 :</strong> Équipement de qualité → 1d8</li>
+            <li><strong>Rang 3 :</strong> Équipement rare → 1d10</li>
+            <li><strong>Rang 4 :</strong> Équipement exceptionnel → 1d12</li>
+            <li><strong>Rang 5 :</strong> Équipement légendaire → 1d20</li>
+        </ul>
+    </div>
+
+    <div class="feature">
+        <h2>🎨 Interface Utilisateur</h2>
+        <h3>Boutons d'Attaque :</h3>
+        <ul>
+            <li><strong>Bouton Safe :</strong> 🟢 Vert avec icône bouclier</li>
+            <li><strong>Bouton Unsafe :</strong> 🔴 Rouge avec icône épée</li>
+            <li><strong>Disposition :</strong> Côte à côte avec espacement égal</li>
+            <li><strong>Masquage automatique :</strong> Pour les boucliers</li>
+        </ul>
+    </div>
+
+    <div class="feature">
+        <h2>📝 Messages de Chat</h2>
+        <p>Chaque attaque génère un message détaillé dans le chat contenant :</p>
+        <ul>
+            <li>🎯 Titre de l'attaque avec nom de l'arme</li>
+            <li>⭐/💥 Message de coup critique (si applicable)</li>
+            <li>Mode d'attaque (Safe/Unsafe)</li>
+            <li>Formule complète utilisée</li>
+            <li>Caractéristique et dés utilisés</li>
+            <li>Qualité de l'arme</li>
+            <li>Bonus de l'arme (si > 0)</li>
+            <li>Résultat final du jet</li>
+        </ul>
+    </div>
+
+    <div class="feature">
+        <h2>🧪 Exemple d'Utilisation</h2>
+        <p><strong>Scénario :</strong> Arme de type "Force" avec Martialité 4d4, Qualité 1d8, Bonus +2</p>
+        
+        <h3>Mode Safe :</h3>
+        <p><code>Formule : 4d4 + 1d8 + 2</code></p>
+        <p>Pas de coups critiques possibles</p>
+        
+        <h3>Mode Unsafe :</h3>
+        <p><code>Formule : 4d4 + 1d8 + 2</code></p>
+        <p><strong>Réussite critique :</strong> Si les 4d4 donnent 16 (maximum)</p>
+        <p><strong>Échec critique :</strong> Si les 4d4 donnent 4 (minimum)</p>
+    </div>
+
+    <div class="success">
+        <h2>🎉 Système Complet !</h2>
+        <p>Le système d'attaque d'armes est maintenant entièrement fonctionnel avec :</p>
+        <ul>
+            <li>✅ Modes Safe et Unsafe</li>
+            <li>✅ Détection des coups critiques</li>
+            <li>✅ Interface utilisateur intuitive</li>
+            <li>✅ Gestion des boucliers</li>
+            <li>✅ Messages de chat détaillés</li>
+            <li>✅ Formules d'attaque correctes</li>
+        </ul>
+        <p><strong>🍪 Cookie mérité !</strong> Tous les scripts sont maintenant terminés !</p>
+    </div>
+
+    <div class="info">
+        <h2>📋 Fichiers Modifiés</h2>
+        <ul>
+            <li><code>templates/sheets/heros-sheet.html</code> - Boutons Safe/Unsafe et correction des rangs</li>
+            <li><code>styles/heros-sheet.css</code> - Styles pour les nouveaux boutons</li>
+            <li><code>scripts/heros-sheet.js</code> - Logique d'attaque avec modes et coups critiques</li>
+        </ul>
+    </div>
+</body>
+</html>

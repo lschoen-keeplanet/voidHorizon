@@ -360,24 +360,21 @@
                                                             <option value="0" {{selected "0"
                                                                 actor.system.weapons.primary.rank}}>Équipement brisé (0)
                                                             </option>
-                                                            <option value="1d4" {{selected "1d4"
+                                                            <option value="1" {{selected "1"
                                                                 actor.system.weapons.primary.rank}}>Équipement commun
-                                                                (1d4)</option>
-                                                            <option value="1d6" {{selected "1d6"
+                                                                (1)</option>
+                                                            <option value="2" {{selected "2"
                                                                 actor.system.weapons.primary.rank}}>Équipement de
-                                                                qualité (1d6)</option>
-                                                            <option value="1d8" {{selected "1d8"
+                                                                qualité (2)</option>
+                                                            <option value="3" {{selected "3"
                                                                 actor.system.weapons.primary.rank}}>Équipement rare
-                                                                (1d8)</option>
-                                                            <option value="1d10" {{selected "1d10"
+                                                                (3)</option>
+                                                            <option value="4" {{selected "4"
                                                                 actor.system.weapons.primary.rank}}>Équipement
-                                                                exceptionnel (1d10)</option>
-                                                            <option value="1d12" {{selected "1d12"
+                                                                exceptionnel (4)</option>
+                                                            <option value="5" {{selected "5"
                                                                 actor.system.weapons.primary.rank}}>Équipement
-                                                                légendaire (1d12)</option>
-                                                            <option value="1d20" {{selected "1d20"
-                                                                actor.system.weapons.primary.rank}}>Équipement mythique
-                                                                (1d20)</option>
+                                                                légendaire (5)</option>
                                                         </select>
                                                         <div class="read-mode">{{#if (eq
                                                             actor.system.weapons.primary.rank "0")}}Équipement
@@ -401,11 +398,18 @@
                                                         <div class="read-mode">
                                                             {{actor.system.weapons.primary.description}}</div>
                                                     </div>
-                                                    <button type="button" class="roll-weapon-btn read-mode {{#if (eq actor.system.weapons.primary.type "shield")}}hidden{{/if}}"
-                                                        data-weapon="primary"
-                                                        title="Lancer les dés pour l'arme principale">
-                                                        <i class="fas fa-sword"></i> Lancer les dés
-                                                    </button>
+                                                    <div class="weapon-roll-buttons {{#if (eq actor.system.weapons.primary.type "shield")}}hidden{{/if}}">
+                                                        <button type="button" class="roll-weapon-btn safe read-mode"
+                                                            data-weapon="primary" data-mode="safe"
+                                                            title="Lancer les dés en mode Safe pour l'arme principale">
+                                                            <i class="fas fa-shield-alt"></i> Safe
+                                                        </button>
+                                                        <button type="button" class="roll-weapon-btn unsafe read-mode"
+                                                            data-weapon="primary" data-mode="unsafe"
+                                                            title="Lancer les dés en mode Unsafe pour l'arme principale">
+                                                            <i class="fas fa-sword"></i> Unsafe
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -450,24 +454,21 @@
                                                             <option value="0" {{selected "0"
                                                                 actor.system.weapons.secondary.rank}}>Équipement brisé
                                                                 (0)</option>
-                                                            <option value="1d4" {{selected "1d4"
+                                                            <option value="1" {{selected "1"
                                                                 actor.system.weapons.secondary.rank}}>Équipement commun
-                                                                (1d4)</option>
-                                                            <option value="1d6" {{selected "1d6"
+                                                                (1)</option>
+                                                            <option value="2" {{selected "2"
                                                                 actor.system.weapons.secondary.rank}}>Équipement de
-                                                                qualité (1d6)</option>
-                                                            <option value="1d8" {{selected "1d8"
+                                                                qualité (2)</option>
+                                                            <option value="3" {{selected "3"
                                                                 actor.system.weapons.secondary.rank}}>Équipement rare
-                                                                (1d8)</option>
-                                                            <option value="1d10" {{selected "1d10"
+                                                                (3)</option>
+                                                            <option value="4" {{selected "4"
                                                                 actor.system.weapons.secondary.rank}}>Équipement
-                                                                exceptionnel (1d10)</option>
-                                                            <option value="1d12" {{selected "1d12"
+                                                                exceptionnel (4)</option>
+                                                            <option value="5" {{selected "5"
                                                                 actor.system.weapons.secondary.rank}}>Équipement
-                                                                légendaire (1d12)</option>
-                                                            <option value="1d20" {{selected "1d20"
-                                                                actor.system.weapons.secondary.rank}}>Équipement
-                                                                mythique (1d20)</option>
+                                                                légendaire (5)</option>
                                                         </select>
                                                         <div class="read-mode">{{#if (eq
                                                             actor.system.weapons.secondary.rank "0")}}Équipement
@@ -491,11 +492,18 @@
                                                         <div class="read-mode">
                                                             {{actor.system.weapons.secondary.description}}</div>
                                                     </div>
-                                                    <button type="button" class="roll-weapon-btn read-mode {{#if (eq actor.system.weapons.secondary.type "shield")}}hidden{{/if}}"
-                                                        data-weapon="secondary"
-                                                        title="Lancer les dés pour l'arme secondaire">
-                                                        <i class="fas fa-sword"></i> Lancer les dés
-                                                    </button>
+                                                    <div class="weapon-roll-buttons {{#if (eq actor.system.weapons.secondary.type "shield")}}hidden{{/if}}">
+                                                        <button type="button" class="roll-weapon-btn safe read-mode"
+                                                            data-weapon="secondary" data-mode="safe"
+                                                            title="Lancer les dés en mode Safe pour l'arme secondaire">
+                                                            <i class="fas fa-shield-alt"></i> Safe
+                                                        </button>
+                                                        <button type="button" class="roll-weapon-btn unsafe read-mode"
+                                                            data-weapon="secondary" data-mode="unsafe"
+                                                            title="Lancer les dés en mode Unsafe pour l'arme secondaire">
+                                                            <i class="fas fa-sword"></i> Unsafe
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

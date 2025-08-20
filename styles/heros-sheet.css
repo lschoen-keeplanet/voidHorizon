@@ -1236,6 +1236,31 @@ textarea:focus {
     font-size: 1.1em;
 }
 
+/* Styles pour les boutons Safe et Unsafe des armes */
+.weapon-roll-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.roll-weapon-btn.safe {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    flex: 1;
+}
+
+.roll-weapon-btn.safe:hover {
+    background: linear-gradient(135deg, #45a049, #3d8b40);
+}
+
+.roll-weapon-btn.unsafe {
+    background: linear-gradient(135deg, #800000, #600000);
+    flex: 1;
+}
+
+.roll-weapon-btn.unsafe:hover {
+    background: linear-gradient(135deg, #600000, #400000);
+}
+
 /* Responsive design pour les armes */
 @media (max-width: 768px) {
     .weapons-grid {

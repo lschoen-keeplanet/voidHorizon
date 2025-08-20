@@ -3391,14 +3391,130 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     async _onRollWeapon(event) {
         event.preventDefault();
         const button = event.currentTarget;
-        const weaponType = button.dataset.weapon;
+        const weaponType = button.dataset.weapon; // "primary" ou "secondary"
+        const rollMode = button.dataset.mode; // "safe" ou "unsafe"
         
-        console.log(`Lancement de dés pour arme ${weaponType}`);
+        console.log(`Lancement de dés pour arme ${weaponType} en mode ${rollMode}`);
+        
+        // Récupérer les données de l'arme
+        const weapon = this.actor.system.weapons[weaponType];
+        if (!weapon || weapon.type === "shield") {
+            console.warn("Arme invalide ou bouclier détecté");
+            return;
+        }
         
         // Recalculer les bonus des traits avant le jet
         this._recalculateTraitBonuses();
         
-        // Pour l'instant, juste un log - notification supprimée pour éviter les messages système
+        try {
+            // Déterminer la caractéristique basée sur le type d'arme
+            let characteristicDice;
+            let characteristicName;
+            
+            switch (weapon.type) {
+                case "strength":
+                    characteristicDice = this.actor.system.martialite.value;
+                    characteristicName = "Martialité";
+                    break;
+                case "agility":
+                    characteristicDice = this.actor.system.agilite.value;
+                    characteristicName = "Agilité";
+                    break;
+                case "acuite":
+                    characteristicDice = this.actor.system.acuite.value;
+                    characteristicName = "Acuité";
+                    break;
+                default:
+                    console.error("Type d'arme non reconnu:", weapon.type);
+                    return;
+            }
+            
+            // Récupérer les dés de qualité de l'arme
+            const weaponQualityDice = this._getWeaponQualityDice(weapon.rank);
+            
+            // Récupérer le bonus de l'arme
+            const weaponBonus = parseInt(weapon.bonus) || 0;
+            
+            // Construire la formule selon le mode
+            let finalFormula;
+            let modeLabel;
+            
+            if (rollMode === "safe") {
+                // Mode Safe : caractéristique (safe) + qualité + bonus
+                finalFormula = `${characteristicDice} + ${weaponQualityDice}${weaponBonus > 0 ? ` + ${weaponBonus}` : ''}`;
+                modeLabel = "Safe";
+            } else {
+                // Mode Unsafe : caractéristique (unsafe) + qualité + bonus
+                finalFormula = `${characteristicDice} + ${weaponQualityDice}${weaponBonus > 0 ? ` + ${weaponBonus}` : ''}`;
+                modeLabel = "Unsafe";
+            }
+            
+            console.log(`Formule d'attaque (${modeLabel}): ${finalFormula}`);
+            
+            // Créer le jet de dés
+            const roll = new Roll(finalFormula);
+            const result = await roll.evaluate({async: true});
+            
+            // Détecter les succès/échecs critiques pour les jets Unsafe
+            let criticalMessage = '';
+            if (rollMode === "unsafe") {
+                const diceRange = this._calculateDiceRange(characteristicDice);
+                const baseResult = result.total - weaponBonus; // Retirer le bonus pour vérifier les dés de base
+                
+                if (baseResult === diceRange.min) {
+                    criticalMessage = '<p class="critical-failure">💥 <strong>ÉCHEC CRITIQUE!</strong></p>';
+                    console.log('DEBUG - ÉCHEC CRITIQUE détecté!');
+                } else if (baseResult === diceRange.max) {
+                    criticalMessage = '<p class="critical-success">⭐ <strong>RÉUSSITE CRITIQUE!</strong></p>';
+                    console.log('DEBUG - RÉUSSITE CRITIQUE détectée!');
+                }
+            }
+            
+            // Préparer le message de chat
+            const speaker = ChatMessage.getSpeaker({actor: this.actor});
+            const chatRollMode = game.settings.get("core", "rollMode");
+            
+            // Créer le message de chat
+            await ChatMessage.create({
+                speaker: speaker,
+                roll: roll,
+                type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+                content: `
+                    <div class="chat-message">
+                        <h4>🎯 Attaque d'arme - ${weapon.name || "Arme"}</h4>
+                        ${criticalMessage}
+                        <p><strong>Mode:</strong> ${modeLabel}</p>
+                        <p><strong>Formule:</strong> ${finalFormula}</p>
+                        <p><strong>Caractéristique:</strong> ${characteristicName} (${characteristicDice})</p>
+                        <p><strong>Qualité:</strong> ${weaponQualityDice}</p>
+                        ${weaponBonus > 0 ? `<p><strong>Bonus d'arme:</strong> +${weaponBonus}</p>` : ''}
+                        <p><strong>Résultat:</strong> ${result.total}</p>
+                    </div>
+                `,
+                rollMode: chatRollMode
+            });
+            
+        } catch (error) {
+            console.error("Erreur lors du jet d'arme:", error);
+        }
+    }
+
+    /**
+     * Retourne les dés de qualité d'une arme basé sur son rang
+     * @param {string} rank - Le rang de l'arme
+     * @returns {string} - La formule de dés (ex: "1d6")
+     * @private
+     */
+    _getWeaponQualityDice(rank) {
+        const qualityDiceMap = {
+            "0": "1d4",   // Équipement brisé
+            "1": "1d6",   // Équipement commun
+            "2": "1d8",   // Équipement de qualité
+            "3": "1d10",  // Équipement rare
+            "4": "1d12",  // Équipement épique
+            "5": "1d20"   // Équipement mythique
+        };
+        return qualityDiceMap[rank] || "1d4";
     }
 
     /**
