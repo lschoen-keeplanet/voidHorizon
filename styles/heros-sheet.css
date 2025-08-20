@@ -1343,6 +1343,10 @@ textarea:focus {
     display: none;
 }
 
+.roll-weapon-btn.hidden {
+    display: none !important;
+}
+
 /* Styles pour les champs en mode lecture */
 .weapon-field .read-mode {
     background: rgba(255, 255, 255, 0.8);
