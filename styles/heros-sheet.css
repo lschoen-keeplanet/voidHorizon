@@ -30,6 +30,87 @@ img{
     font-size: 0.85em;
 }
 
+/* Indicateurs de total à côté des champs */
+.total-indicator {
+    margin-left: 8px;
+    color: #800000;
+    font-weight: 600;
+    font-size: 0.9em;
+    background: rgba(128, 0, 0, 0.1);
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid rgba(128, 0, 0, 0.2);
+}
+
+/* Tooltips pour les détails de calcul */
+.total-with-tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-content {
+    position: relative;
+    cursor: help;
+}
+
+/* Masquer le contenu détaillé par défaut */
+.tooltip-content .armor-breakdown {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.95);
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.85em;
+    z-index: 1000;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    min-width: 200px;
+    white-space: nowrap;
+}
+
+.total-with-tooltip:hover .tooltip-content .armor-breakdown {
+    display: block;
+}
+
+.tooltip-content .armor-breakdown::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.95);
+}
+
+/* Style des tooltips */
+.tooltip-content .armor-breakdown .armor-source {
+    margin-bottom: 6px;
+    padding: 2px 0;
+}
+
+.tooltip-content .armor-breakdown .armor-source.total {
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    padding-top: 8px;
+    margin-top: 8px;
+    font-weight: 600;
+}
+
+.tooltip-content .armor-breakdown .source-label {
+    color: #ffd700;
+    font-weight: 500;
+    min-width: 80px;
+}
+
+.tooltip-content .armor-breakdown .source-value {
+    color: white;
+    font-weight: 600;
+    text-align: right;
+}
+
 .armor-source {
     display: flex;
     justify-content: space-between;
