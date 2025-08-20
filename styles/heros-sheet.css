@@ -388,6 +388,13 @@ img{
     background: linear-gradient(135deg, #e74c3c, #c0392b);
 }
 
+/* Style spécial pour l'agilité avec malus d'armure */
+.bonus-display.agility-with-penalty {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+    border-color: #e65100;
+    color: white;
+}
+
 .range-info.safe-range {
     background: rgba(76, 175, 80, 0.1);
     border: 1px solid rgba(76, 175, 80, 0.3);
@@ -404,40 +411,7 @@ img{
     font-size: 0.9em;
 }
 
-/* Affichage du malus d'agilité dû à l'armure */
-.agility-penalty-display {
-    margin-top: 8px;
-    padding: 6px 8px;
-    border-radius: 4px;
-    font-size: 0.85em;
-    text-align: center;
-}
 
-.penalty-info {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 4px 8px;
-    border-radius: 3px;
-    font-weight: 500;
-}
-
-.penalty-info:not(.no-penalty) {
-    background: rgba(255, 152, 0, 0.1);
-    border: 1px solid rgba(255, 152, 0, 0.4);
-    color: #e65100;
-}
-
-.penalty-info.no-penalty {
-    background: rgba(76, 175, 80, 0.1);
-    border: 1px solid rgba(76, 175, 80, 0.3);
-    color: #2e7d32;
-}
-
-.penalty-info i {
-    font-size: 0.9em;
-}
 
 .stat-controls {
     display: flex;

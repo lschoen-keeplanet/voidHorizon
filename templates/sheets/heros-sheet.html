@@ -151,18 +151,7 @@
                                      <i class="fas fa-skull-crossbones"></i> {{#if (eq system.agilite.value "2d4")}}1-12{{else if (eq system.agilite.value "3d4")}}1-16{{else if (eq system.agilite.value "4d4")}}1-20{{else if (eq system.agilite.value "5d4")}}1-24{{else if (eq system.agilite.value "6d4")}}1-28{{else if (eq system.agilite.value "7d4")}}1-32{{else}}?-?{{/if}}
                                  </span>
                              </div>
-                            <!-- Affichage du malus d'agilité dû à l'armure -->
-                                                         <div class="agility-penalty-display">
-                                 {{#if (eq actor.system.armor.type "tissu")}}
-                                     <span class="penalty-info no-penalty">
-                                         <i class="fas fa-check-circle"></i> Aucun malus d'armure
-                                     </span>
-                                 {{else}}
-                                     <span class="penalty-info">
-                                         <i class="fas fa-exclamation-triangle"></i> Malus d'armure: {{#if (eq actor.system.armor.type "legere")}}-4{{else if (eq actor.system.armor.type "lourde")}}-8{{else if (eq actor.system.armor.type "blindee")}}-16{{else}}0{{/if}}
-                                     </span>
-                                 {{/if}}
-                             </div>
+
                         </div>
                         
                         <div class="stat-block">

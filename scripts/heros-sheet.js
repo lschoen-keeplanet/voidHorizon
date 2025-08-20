@@ -630,7 +630,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             this._updateHeartsDisplay();
             this._updateManaDisplay();
             this._updateHealthStatus();
-            this._updateAgilityPenaltyDisplay();
+            this._updateAgilityDiceRanges(this._getAgilityPenalty());
             this._updateAllDiceRanges();
             console.log("Recalcul de tous les éléments de santé et des ranges terminé après délai");
         }, 500);
@@ -654,7 +654,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         this._updateHealthStatus();
         
         // Mettre à jour l'affichage du malus d'agilité
-        this._updateAgilityPenaltyDisplay();
+        this._updateAgilityDiceRanges(this._getAgilityPenalty());
     }
 
     /**
@@ -1409,35 +1409,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         return penalty;
     }
     
-    /**
-     * Met à jour l'affichage du malus d'agilité dû à l'armure
-     * @private
-     */
-    _updateAgilityPenaltyDisplay() {
-        // Recalculer le malus d'agilité
-        const penalty = this._getAgilityPenalty();
-        
-        // Mettre à jour l'affichage en temps réel
-        const penaltyDisplay = this.element.find('.agility-penalty-display');
-        if (penaltyDisplay.length > 0) {
-            if (penalty < 0) {
-                penaltyDisplay.html(`
-                    <span class="penalty-info">
-                        <i class="fas fa-exclamation-triangle"></i> Malus d'armure: ${penalty}
-                    </span>
-                `);
-            } else {
-                penaltyDisplay.html(`
-                    <span class="penalty-info no-penalty">
-                        <i class="fas fa-check-circle"></i> Aucun malus d'armure
-                    </span>
-                `);
-            }
-        }
-        
-        // Mettre à jour aussi les plages de dés d'agilité
-        this._updateAgilityDiceRanges(penalty);
-    }
+
     
     /**
      * Met à jour l'affichage des plages de dés d'agilité avec le malus d'armure
@@ -1499,6 +1471,18 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                     // Mettre à jour l'affichage
                     safeRange.html(`<i class="fas fa-shield-alt"></i> ${safeText}`);
                     unsafeRange.html(`<i class="fas fa-skull-crossbones"></i> ${unsafeText}`);
+                    
+                    // Mettre à jour aussi l'affichage du bonus avec la classe CSS appropriée
+                    const bonusDisplay = agilityStatBlock.find('.bonus-display');
+                    if (bonusDisplay.length > 0) {
+                        if (penalty < 0) {
+                            bonusDisplay.addClass('agility-with-penalty');
+                            bonusDisplay.html(`${penalty}`);
+                        } else {
+                            bonusDisplay.removeClass('agility-with-penalty');
+                            bonusDisplay.html('+0');
+                        }
+                    }
                 }
             }
         }
@@ -1553,9 +1537,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                         const armorType = this.actor.system.armor?.type;
                         if (armorType) {
                             const armorPenalties = {
-                                'light': 0,
-                                'medium': -2,
-                                'heavy': -4
+                                'tissu': 0,
+                                'legere': -4,
+                                'lourde': -8,
+                                'blindee': -16
                             };
                             const armorPenalty = armorPenalties[armorType] || 0;
                             totalBonus += armorPenalty;
@@ -1565,6 +1550,13 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                     // Mettre à jour l'affichage du bonus
                     const bonusDisplay = $block.find('.bonus-display');
                     if (bonusDisplay.length > 0) {
+                        // Appliquer la classe CSS spéciale pour l'agilité avec malus d'armure
+                        if (statName === 'agilite' && totalBonus < 0) {
+                            bonusDisplay.addClass('agility-with-penalty');
+                        } else {
+                            bonusDisplay.removeClass('agility-with-penalty');
+                        }
+                        
                         if (totalBonus > 0) {
                             bonusDisplay.html(`+${totalBonus}`);
                         } else if (totalBonus < 0) {
@@ -2799,7 +2791,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             this._updateShieldsDisplay();
             
             // Mettre à jour le malus d'agilité et son affichage
-            this._updateAgilityPenaltyDisplay();
+            this._updateAgilityDiceRanges(this._getAgilityPenalty());
         }
         
         // Si c'est un changement de type d'arme (pour les boucliers), mettre à jour l'affichage
