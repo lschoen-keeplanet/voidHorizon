@@ -489,7 +489,7 @@ class NpcSheet extends ActorSheet {
         const template = `
             <div class="voidhorizon-attack-roll">
                 <div class="roll-header">
-                    <h3>⚔️ ${attack.name}</h3>
+                    <h3>${attack.name}</h3>
                     <div class="actor-info">${this.actor.name}</div>
                 </div>
                 
@@ -520,7 +520,7 @@ class NpcSheet extends ActorSheet {
         const template = `
             <div class="voidhorizon-skill-use">
                 <div class="skill-header">
-                    <h3>⭐ ${skill.name}</h3>
+                    <h3>${skill.name}</h3>
                     <div class="actor-info">${this.actor.name}</div>
                 </div>
                 
@@ -557,7 +557,7 @@ class NpcSheet extends ActorSheet {
         const template = `
             <div class="voidhorizon-characteristic-roll">
                 <div class="roll-header">
-                    <h3>🎯 ${label}</h3>
+                    <h3>${label}</h3>
                     <div class="actor-info">${this.actor.name}</div>
                 </div>
                 
