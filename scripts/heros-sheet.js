@@ -689,19 +689,40 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     /**
-     * Met à jour la nature d'une main
-     * @param {string} hand - La main à mettre à jour ('primary' ou 'secondary')
-     * @param {string} nature - La nouvelle nature ('weapon', 'shield', 'focus')
+     * Met à jour la nature d'une main et réinitialise les champs du formulaire
+     * @param {string} hand - La main à mettre à jour (primary ou secondary)
+     * @param {string} nature - La nouvelle nature (weapon, shield, focus)
      * @private
      */
     async _updateHandNature(hand, nature) {
         try {
-            // Mettre à jour la nature dans les données de l'acteur
-            await this.actor.update({
+            // Préparer les données à mettre à jour
+            const updateData = {
                 [`system.weapons.${hand}.nature`]: nature
-            });
+            };
+
+            // Si la nature change, réinitialiser tous les champs sauf le nom
+            const currentNature = this.actor.system.weapons[hand].nature;
+            if (currentNature !== nature) {
+                // Réinitialiser tous les champs du formulaire sauf le nom
+                updateData[`system.weapons.${hand}.type`] = null;
+                updateData[`system.weapons.${hand}.rank`] = null;
+                updateData[`system.weapons.${hand}.bonus`] = null;
+                updateData[`system.weapons.${hand}.description`] = null;
+                
+                console.log(`Réinitialisation des champs du formulaire pour la main ${hand} (nature changée de ${currentNature} vers ${nature})`);
+            }
+
+            // Mettre à jour les données de l'acteur
+            await this.actor.update(updateData);
             
             console.log(`Nature de la main ${hand} mise à jour vers: ${nature}`);
+            
+            // Si c'est un bouclier, s'assurer que les boutons de lancer de dés sont masqués
+            if (nature === 'shield') {
+                console.log(`Main ${hand} configurée comme bouclier - masquage des boutons de lancer de dés`);
+            }
+            
         } catch (error) {
             console.error(`Erreur lors de la mise à jour de la nature de la main ${hand}:`, error);
         }
@@ -743,6 +764,19 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         if (nature === 'shield') {
             rollButtons.classList.add('hidden');
             diceRanges.classList.add('hidden');
+            
+            // Réinitialiser les valeurs des champs du formulaire dans l'UI
+            const typeSelect = handContainer.querySelector('select[name*=".type"]');
+            const rankSelect = handContainer.querySelector('select[name*=".rank"]');
+            const bonusInput = handContainer.querySelector('input[name*=".bonus"]');
+            const descriptionTextarea = handContainer.querySelector('textarea[name*=".description"]');
+            
+            if (typeSelect) typeSelect.value = '';
+            if (rankSelect) rankSelect.value = '';
+            if (bonusInput) bonusInput.value = '';
+            if (descriptionTextarea) descriptionTextarea.value = '';
+            
+            console.log(`UI mise à jour pour la main ${hand} - champs du formulaire réinitialisés`);
         } else {
             rollButtons.classList.remove('hidden');
             diceRanges.classList.remove('hidden');
