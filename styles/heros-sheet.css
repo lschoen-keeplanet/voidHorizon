@@ -3,7 +3,11 @@ section.chat-sidebar{
     overflow: auto;
 }
 
+#chat-message{
+    color:#333;
+}
 
+/* */
 img{
     border:0px solid red;
 }
