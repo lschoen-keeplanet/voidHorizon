@@ -1,0 +1,263 @@
+<form class="npc-sheet" autocomplete="off">
+    <header class="sheet-header">
+        <div class="header-fields">
+            <h1 class="charname">
+                <input name="name" type="text" value="{{actor.name}}" placeholder="Nom du NPC"/>
+            </h1>
+        </div>
+    </header>
+
+    <nav class="sheet-tabs" data-group="primary">
+        <a class="item" data-tab="stats">Statistiques</a>
+        <a class="item" data-tab="combat">Combat</a>
+        <a class="item" data-tab="inventory">Inventaire</a>
+        <a class="item" data-tab="notes">Notes</a>
+    </nav>
+
+    <section class="sheet-body">
+        <!-- Onglet Statistiques -->
+        <div class="tab stats" data-group="primary" data-tab="stats">
+            <div class="stats-container">
+                <!-- Informations générales -->
+                <div class="general-info">
+                    <h3>Informations Générales</h3>
+                    <div class="form-group">
+                        <label>Type:</label>
+                        <select name="system.type">
+                            <option value="enemy" {{#if (eq actor.system.type "enemy")}}selected{{/if}}>Ennemi</option>
+                            <option value="neutral" {{#if (eq actor.system.type "neutral")}}selected{{/if}}>Neutre</option>
+                            <option value="ally" {{#if (eq actor.system.type "ally")}}selected{{/if}}>Allié</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Niveau:</label>
+                        <input type="number" name="system.level" value="{{actor.system.level}}" min="1" max="20"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Description:</label>
+                        <textarea name="system.description" rows="3">{{actor.system.description}}</textarea>
+                    </div>
+                </div>
+
+                <!-- Ressources -->
+                <div class="resources-section">
+                    <h3>Ressources</h3>
+                    <div class="resources-grid">
+                        <!-- Points de Vie -->
+                        <div class="resource-item">
+                            <label>Points de Vie</label>
+                            <div class="resource-inputs">
+                                <input type="number" 
+                                       class="resource-input" 
+                                       data-resource="health"
+                                       name="system.resources.health.value" 
+                                       value="{{actor.system.resources.health.value}}" 
+                                       min="0"/>
+                                <span class="separator">/</span>
+                                <input type="number" 
+                                       class="resource-input" 
+                                       data-resource="health"
+                                       name="system.resources.health.max" 
+                                       value="{{actor.system.resources.health.max}}" 
+                                       min="0"/>
+                            </div>
+                        </div>
+
+                        <!-- Bouclier -->
+                        <div class="resource-item">
+                            <label>Bouclier</label>
+                            <div class="resource-inputs">
+                                <input type="number" 
+                                       class="resource-input" 
+                                       data-resource="shield"
+                                       name="system.resources.shield.value" 
+                                       value="{{actor.system.resources.shield.value}}" 
+                                       min="0"/>
+                                <span class="separator">/</span>
+                                <input type="number" 
+                                       class="resource-input" 
+                                       data-resource="shield"
+                                       name="system.resources.shield.max" 
+                                       value="{{actor.system.resources.shield.max}}" 
+                                       min="0"/>
+                            </div>
+                        </div>
+
+                        <!-- Mana -->
+                        <div class="resource-item">
+                            <label>Mana</label>
+                            <div class="resource-inputs">
+                                <input type="number" 
+                                       class="resource-input" 
+                                       data-resource="mana"
+                                       name="system.resources.mana.value" 
+                                       value="{{actor.system.resources.mana.value}}" 
+                                       min="0"/>
+                                <span class="separator">/</span>
+                                <input type="number" 
+                                       class="resource-input" 
+                                       data-resource="mana"
+                                       name="system.resources.mana.max" 
+                                       value="{{actor.system.resources.mana.max}}" 
+                                       min="0"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Caractéristiques -->
+                <div class="characteristics-section">
+                    <h3>Caractéristiques</h3>
+                    <div class="characteristics-grid">
+                        <div class="characteristic-item">
+                            <label>Acuité</label>
+                            <select name="system.acuite.value" class="characteristic-input" data-characteristic="acuite">
+                                <option value="2d4" {{#if (eq actor.system.acuite.value "2d4")}}selected{{/if}}>2d4 - Insensible</option>
+                                <option value="3d4" {{#if (eq actor.system.acuite.value "3d4")}}selected{{/if}}>3d4 - Éveillé</option>
+                                <option value="4d4" {{#if (eq actor.system.acuite.value "4d4")}}selected{{/if}}>4d4 - Novice</option>
+                                <option value="5d4" {{#if (eq actor.system.acuite.value "5d4")}}selected{{/if}}>5d4 - Initié</option>
+                                <option value="6d4" {{#if (eq actor.system.acuite.value "6d4")}}selected{{/if}}>6d4 - Maître</option>
+                                <option value="7d4" {{#if (eq actor.system.acuite.value "7d4")}}selected{{/if}}>7d4 - Archimage</option>
+                            </select>
+                        </div>
+
+                        <div class="characteristic-item">
+                            <label>Pimpance</label>
+                            <select name="system.pimpance.value" class="characteristic-input" data-characteristic="pimpance">
+                                <option value="2d4" {{#if (eq actor.system.pimpance.value "2d4")}}selected{{/if}}>2d4 - Insensible</option>
+                                <option value="3d4" {{#if (eq actor.system.pimpance.value "3d4")}}selected{{/if}}>3d4 - Éveillé</option>
+                                <option value="4d4" {{#if (eq actor.system.pimpance.value "4d4")}}selected{{/if}}>4d4 - Novice</option>
+                                <option value="5d4" {{#if (eq actor.system.pimpance.value "5d4")}}selected{{/if}}>5d4 - Initié</option>
+                                <option value="6d4" {{#if (eq actor.system.pimpance.value "6d4")}}selected{{/if}}>6d4 - Maître</option>
+                                <option value="7d4" {{#if (eq actor.system.pimpance.value "7d4")}}selected{{/if}}>7d4 - Archimage</option>
+                            </select>
+                        </div>
+
+                        <div class="characteristic-item">
+                            <label>Martialité</label>
+                            <select name="system.martialite.value" class="characteristic-input" data-characteristic="martialite">
+                                <option value="2d4" {{#if (eq actor.system.martialite.value "2d4")}}selected{{/if}}>2d4 - Insensible</option>
+                                <option value="3d4" {{#if (eq actor.system.martialite.value "3d4")}}selected{{/if}}>3d4 - Éveillé</option>
+                                <option value="4d4" {{#if (eq actor.system.martialite.value "4d4")}}selected{{/if}}>4d4 - Novice</option>
+                                <option value="5d4" {{#if (eq actor.system.martialite.value "5d4")}}selected{{/if}}>5d4 - Initié</option>
+                                <option value="6d4" {{#if (eq actor.system.martialite.value "6d4")}}selected{{/if}}>6d4 - Maître</option>
+                                <option value="7d4" {{#if (eq actor.system.martialite.value "7d4")}}selected{{/if}}>7d4 - Archimage</option>
+                            </select>
+                        </div>
+
+                        <div class="characteristic-item">
+                            <label>Arcane</label>
+                            <select name="system.arcane.value" class="characteristic-input" data-characteristic="arcane">
+                                <option value="2d4" {{#if (eq actor.system.arcane.value "2d4")}}selected{{/if}}>2d4 - Insensible</option>
+                                <option value="3d4" {{#if (eq actor.system.arcane.value "3d4")}}selected{{/if}}>3d4 - Éveillé</option>
+                                <option value="4d4" {{#if (eq actor.system.arcane.value "4d4")}}selected{{/if}}>4d4 - Novice</option>
+                                <option value="5d4" {{#if (eq actor.system.arcane.value "5d4")}}selected{{/if}}>5d4 - Initié</option>
+                                <option value="6d4" {{#if (eq actor.system.arcane.value "6d4")}}selected{{/if}}>6d4 - Maître</option>
+                                <option value="7d4" {{#if (eq actor.system.arcane.value "7d4")}}selected{{/if}}>7d4 - Archimage</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Onglet Combat -->
+        <div class="tab combat" data-group="primary" data-tab="combat">
+            <div class="combat-section">
+                <h3>Combat</h3>
+                
+                <!-- Section Attaques -->
+                <div class="attacks-section">
+                    <div class="section-header">
+                        <h4>Attaques</h4>
+                        <button type="button" class="add-attack-btn" title="Ajouter une attaque">
+                            <i class="fas fa-plus"></i> Ajouter
+                        </button>
+                    </div>
+                    
+                    <div class="attacks-list" id="attacksList">
+                        {{#each actor.system.attacks as |attack index|}}
+                        <div class="attack-item" data-index="{{index}}">
+                            <div class="attack-header">
+                                <input type="text" 
+                                       name="system.attacks.{{index}}.name" 
+                                       value="{{attack.name}}" 
+                                       placeholder="Nom de l'attaque"
+                                       class="attack-name-input"/>
+                                <button type="button" class="remove-attack-btn" data-index="{{index}}" title="Supprimer cette attaque">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <div class="attack-details">
+                                <div class="attack-dice">
+                                    <label>Lancer de dé:</label>
+                                    <input type="text" 
+                                           name="system.attacks.{{index}}.dice" 
+                                           value="{{attack.dice}}" 
+                                           placeholder="ex: 1d20+5, 2d6+3, etc."
+                                           class="dice-input"/>
+                                </div>
+                                <div class="attack-description">
+                                    <label>Description:</label>
+                                    <textarea name="system.attacks.{{index}}.description" 
+                                              rows="2" 
+                                              placeholder="Description de l'attaque qui apparaîtra lors du lancer de dé">{{attack.description}}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+                
+                <!-- Section Compétences -->
+                <div class="skills-section">
+                    <div class="section-header">
+                        <h4>Compétences</h4>
+                        <button type="button" class="add-skill-btn" title="Ajouter une compétence">
+                            <i class="fas fa-plus"></i> Ajouter
+                        </button>
+                    </div>
+                    
+                    <div class="skills-list" id="skillsList">
+                        {{#each actor.system.skills as |skill index|}}
+                        <div class="skill-item" data-index="{{index}}">
+                            <div class="skill-header">
+                                <input type="text" 
+                                       name="system.skills.{{index}}.name" 
+                                       value="{{skill.name}}" 
+                                       placeholder="Nom de la compétence"
+                                       class="skill-name-input"/>
+                                <button type="button" class="remove-skill-btn" data-index="{{index}}" title="Supprimer cette compétence">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <div class="skill-description">
+                                <label>Description:</label>
+                                <textarea name="system.skills.{{index}}.description" 
+                                          rows="2" 
+                                          placeholder="Description de la compétence">{{skill.description}}</textarea>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Onglet Inventaire -->
+        <div class="tab inventory" data-group="primary" data-tab="inventory">
+            <div class="inventory-section">
+                <h3>Inventaire</h3>
+                <p>L'inventaire sera intégré dans une version future.</p>
+            </div>
+        </div>
+
+        <!-- Onglet Notes -->
+        <div class="tab notes" data-group="primary" data-tab="notes">
+            <div class="notes-section">
+                <h3>Notes</h3>
+                <textarea name="system.notes" rows="10" placeholder="Notes sur ce NPC...">{{actor.system.notes}}</textarea>
+            </div>
+        </div>
+    </section>
+</form>

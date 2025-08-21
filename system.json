@@ -18,13 +18,15 @@
   ],
   "scripts": [
     "scripts/heros-sheet.js",
+    "scripts/npc-sheet.js",
     "scripts/VHItemSheet.js"
   ],
   "esmodules": [
     "voidHorizon.js"
   ],
   "styles": [
-    "styles/heros-sheet.css"
+    "styles/heros-sheet.css",
+    "styles/npc-sheet.css"
   ],
   "packs": [
     {
@@ -69,12 +71,12 @@
   "readme": "README.md",
   "bugs": "https://github.com/lschoen-keeplanet/voidHorizon/issues",
   "changelog": "CHANGELOG.md",
-  "documentTypes": {
-    "Actor": {
-      "types": ["heros"]
-    },
-    "Item": {
-      "types": ["equipment"]
+      "documentTypes": {
+      "Actor": {
+        "types": ["heros", "npc"]
+      },
+      "Item": {
+        "types": ["equipment"]
+      }
     }
-  }
 }

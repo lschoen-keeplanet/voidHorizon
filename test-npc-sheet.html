@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Fiche NPC - Void Horizon</title>
+    <link rel="stylesheet" href="styles/npc-sheet.css">
+    <style>
+        /* Styles supplémentaires pour le test */
+        body {
+            margin: 0;
+            padding: 0;
+            background: #1a1a1a;
+        }
+        
+        .test-header {
+            background: #800000;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .test-controls {
+            background: #333;
+            color: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .test-controls button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .test-controls button:hover {
+            background: #c0392b;
+        }
+        
+        .test-controls input {
+            padding: 8px;
+            margin: 5px;
+            border-radius: 4px;
+            border: 1px solid #666;
+            background: #444;
+            color: white;
+        }
+        
+        .test-controls label {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-header">
+        <h1>🧪 Test de la Fiche NPC - Void Horizon</h1>
+        <p>Test de rendu et de fonctionnalité de la fiche des NPC</p>
+    </div>
+    
+    <div class="test-controls">
+        <h3>Contrôles de Test</h3>
+        <div>
+            <label>Type:</label>
+            <select id="testType">
+                <option value="enemy">Ennemi</option>
+                <option value="neutral">Neutre</option>
+                <option value="ally">Allié</option>
+            </select>
+            
+            <label>Niveau:</label>
+            <input type="number" id="testLevel" value="1" min="1" max="20">
+            
+            <button onclick="updateTestData()">Mettre à jour</button>
+            <button onclick="resetTestData()">Réinitialiser</button>
+        </div>
+    </div>
+
+    <!-- Simulation de la fiche NPC -->
+    <form class="npc-sheet" autocomplete="off">
+        <header class="sheet-header">
+            <div class="header-fields">
+                <h1 class="charname">
+                    <input name="name" type="text" value="Gobelin Guerrier" placeholder="Nom du NPC"/>
+                </h1>
+            </div>
+        </header>
+
+        <nav class="sheet-tabs" data-group="primary">
+            <a class="item active" data-tab="stats">Statistiques</a>
+            <a class="item" data-tab="combat">Combat</a>
+            <a class="item" data-tab="inventory">Inventaire</a>
+            <a class="item" data-tab="notes">Notes</a>
+        </nav>
+
+        <section class="sheet-body">
+            <!-- Onglet Statistiques -->
+            <div class="tab stats active" data-group="primary" data-tab="stats">
+                <div class="stats-container">
+                    <!-- Informations générales -->
+                    <div class="general-info">
+                        <h3>Informations Générales</h3>
+                        <div class="form-group">
+                            <label>Type:</label>
+                            <select name="system.type" id="npcType">
+                                <option value="enemy" selected>Ennemi</option>
+                                <option value="neutral">Neutre</option>
+                                <option value="ally">Allié</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Niveau:</label>
+                            <input type="number" name="system.level" id="npcLevel" value="3" min="1" max="20"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Description:</label>
+                            <textarea name="system.description" rows="3">Un gobelin agressif armé d'une épée rouillée et d'un bouclier en bois.</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Ressources -->
+                    <div class="resources-section">
+                        <h3>Ressources</h3>
+                        <div class="resources-grid">
+                            <!-- Points de Vie -->
+                            <div class="resource-item">
+                                <label>Points de Vie</label>
+                                <div class="resource-inputs">
+                                    <input type="number" 
+                                           class="resource-input" 
+                                           data-resource="health"
+                                           name="system.resources.health.value" 
+                                           value="12" 
+                                           min="0"/>
+                                    <span class="separator">/</span>
+                                    <input type="number" 
+                                           class="resource-input" 
+                                           data-resource="health"
+                                           name="system.resources.health.max" 
+                                           value="12" 
+                                           min="0"/>
+                                </div>
+                            </div>
+
+                            <!-- Bouclier -->
+                            <div class="resource-item">
+                                <label>Bouclier</label>
+                                <div class="resource-inputs">
+                                    <input type="number" 
+                                           class="resource-input" 
+                                           data-resource="shield"
+                                           name="system.resources.shield.value" 
+                                           value="5" 
+                                           min="0"/>
+                                    <span class="separator">/</span>
+                                    <input type="number" 
+                                           class="resource-input" 
+                                           data-resource="shield"
+                                           name="system.resources.shield.max" 
+                                           value="5" 
+                                           min="0"/>
+                                </div>
+                            </div>
+
+                            <!-- Mana -->
+                            <div class="resource-item">
+                                <label>Mana</label>
+                                <div class="resource-inputs">
+                                    <input type="number" 
+                                           class="resource-input" 
+                                           data-resource="mana"
+                                           name="system.resources.mana.value" 
+                                           value="0" 
+                                           min="0"/>
+                                    <span class="separator">/</span>
+                                    <input type="number" 
+                                           class="resource-input" 
+                                           data-resource="mana"
+                                           name="system.resources.mana.max" 
+                                           value="0" 
+                                           min="0"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Caractéristiques -->
+                    <div class="characteristics-section">
+                        <h3>Caractéristiques</h3>
+                        <div class="characteristics-grid">
+                            <div class="characteristic-item">
+                                <label>Acuité</label>
+                                <select name="system.acuite.value" class="characteristic-input" data-characteristic="acuite">
+                                    <option value="2d4">2d4 - Insensible</option>
+                                    <option value="3d4" selected>3d4 - Éveillé</option>
+                                    <option value="4d4">4d4 - Novice</option>
+                                    <option value="5d4">5d4 - Initié</option>
+                                    <option value="6d4">6d4 - Maître</option>
+                                    <option value="7d4">7d4 - Archimage</option>
+                                </select>
+                            </div>
+
+                            <div class="characteristic-item">
+                                <label>Pimpance</label>
+                                <select name="system.pimpance.value" class="characteristic-input" data-characteristic="pimpance">
+                                    <option value="2d4">2d4 - Insensible</option>
+                                    <option value="3d4" selected>3d4 - Éveillé</option>
+                                    <option value="4d4">4d4 - Novice</option>
+                                    <option value="5d4">5d4 - Initié</option>
+                                    <option value="6d4">6d4 - Maître</option>
+                                    <option value="7d4">7d4 - Archimage</option>
+                                </select>
+                            </div>
+
+                            <div class="characteristic-item">
+                                <label>Martialité</label>
+                                <select name="system.martialite.value" class="characteristic-input" data-characteristic="martialite">
+                                    <option value="2d4">2d4 - Insensible</option>
+                                    <option value="3d4">3d4 - Éveillé</option>
+                                    <option value="4d4" selected>4d4 - Novice</option>
+                                    <option value="5d4">5d4 - Initié</option>
+                                    <option value="6d4">6d4 - Maître</option>
+                                    <option value="7d4">7d4 - Archimage</option>
+                                </select>
+                            </div>
+
+                            <div class="characteristic-item">
+                                <label>Arcane</label>
+                                <select name="system.arcane.value" class="characteristic-input" data-characteristic="arcane">
+                                    <option value="2d4" selected>2d4 - Insensible</option>
+                                    <option value="3d4">3d4 - Éveillé</option>
+                                    <option value="4d4">4d4 - Novice</option>
+                                    <option value="5d4">5d4 - Initié</option>
+                                    <option value="6d4">6d4 - Maître</option>
+                                    <option value="7d4">7d4 - Archimage</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onglet Combat -->
+            <div class="tab combat" data-group="primary" data-tab="combat">
+                <div class="combat-section">
+                    <h3>Combat</h3>
+                    
+                    <!-- Section Attaques -->
+                    <div class="attacks-section">
+                        <div class="section-header">
+                            <h4>Attaques</h4>
+                            <button type="button" class="add-attack-btn" title="Ajouter une attaque">
+                                <i class="fas fa-plus"></i> Ajouter
+                            </button>
+                        </div>
+                        
+                        <div class="attacks-list" id="attacksList">
+                            <div class="attack-item" data-index="0">
+                                <div class="attack-header">
+                                    <input type="text" 
+                                           name="system.attacks.0.name" 
+                                           value="Morsure" 
+                                           placeholder="Nom de l'attaque"
+                                           class="attack-name-input"/>
+                                    <button type="button" class="remove-attack-btn" data-index="0" title="Supprimer cette attaque">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                <div class="attack-details">
+                                    <div class="attack-dice">
+                                        <label>Lancer de dé:</label>
+                                        <input type="text" 
+                                               name="system.attacks.0.dice" 
+                                               value="1d20+4" 
+                                               placeholder="ex: 1d20+5, 2d6+3, etc."
+                                               class="dice-input"/>
+                                    </div>
+                                    <div class="attack-description">
+                                        <label>Description:</label>
+                                        <textarea name="system.attacks.0.description" 
+                                                  rows="2" 
+                                                  placeholder="Description de l'attaque qui apparaîtra lors du lancer de dé">Morsure acérée qui peut transmettre une maladie.</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="attack-item" data-index="1">
+                                <div class="attack-header">
+                                    <input type="text" 
+                                           name="system.attacks.1.name" 
+                                           value="Griffe" 
+                                           placeholder="Nom de l'attaque"
+                                           class="attack-name-input"/>
+                                    <button type="button" class="remove-attack-btn" data-index="1" title="Supprimer cette attaque">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                <div class="attack-details">
+                                    <div class="attack-dice">
+                                        <label>Lancer de dé:</label>
+                                        <input type="text" 
+                                               name="system.attacks.1.dice" 
+                                               value="1d20+3" 
+                                               placeholder="ex: 1d20+5, 2d6+3, etc."
+                                               class="dice-input"/>
+                                    </div>
+                                    <div class="attack-description">
+                                        <label>Description:</label>
+                                        <textarea name="system.attacks.1.description" 
+                                                  rows="2" 
+                                                  placeholder="Description de l'attaque qui apparaîtra lors du lancer de dé">Griffe acérée qui peut lacérer la chair.</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Section Compétences -->
+                    <div class="skills-section">
+                        <div class="section-header">
+                            <h4>Compétences</h4>
+                            <button type="button" class="add-skill-btn" title="Ajouter une compétence">
+                                <i class="fas fa-plus"></i> Ajouter
+                            </button>
+                        </div>
+                        
+                        <div class="skills-list" id="skillsList">
+                            <div class="skill-item" data-index="0">
+                                <div class="skill-header">
+                                    <input type="text" 
+                                           name="system.skills.0.name" 
+                                           value="Discrétion" 
+                                           placeholder="Nom de la compétence"
+                                           class="skill-name-input"/>
+                                    <button type="button" class="remove-skill-btn" data-index="0" title="Supprimer cette compétence">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                <div class="skill-description">
+                                    <label>Description:</label>
+                                    <textarea name="system.skills.0.description" 
+                                              rows="2" 
+                                              placeholder="Description de la compétence">Capacité à se déplacer silencieusement et à se cacher dans l'ombre.</textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="skill-item" data-index="1">
+                                <div class="skill-header">
+                                    <input type="text" 
+                                           name="system.skills.1.name" 
+                                           value="Survie" 
+                                           placeholder="Nom de la compétence"
+                                           class="skill-name-input"/>
+                                    <button type="button" class="remove-skill-btn" data-index="1" title="Supprimer cette compétence">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                <div class="skill-description">
+                                    <label>Description:</label>
+                                    <textarea name="system.skills.1.description" 
+                                              rows="2" 
+                                              placeholder="Description de la compétence">Capacité à survivre dans la nature et à suivre des pistes.</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onglet Inventaire -->
+            <div class="tab inventory" data-group="primary" data-tab="inventory">
+                <div class="inventory-section">
+                    <h3>Inventaire</h3>
+                    <p>L'inventaire sera intégré dans une version future.</p>
+                </div>
+            </div>
+
+            <!-- Onglet Notes -->
+            <div class="tab notes" data-group="primary" data-tab="notes">
+                <div class="notes-section">
+                    <h3>Notes</h3>
+                    <textarea name="system.notes" rows="10" placeholder="Notes sur ce NPC...">Ce gobelin fait partie d'une bande qui rôde dans les ruines au nord du village. Il est connu pour être particulièrement agressif et attaque sans provocation.</textarea>
+                </div>
+            </div>
+        </section>
+    </form>
+
+    <script>
+        // Simulation des données de l'acteur
+        const mockNpcData = {
+            name: "Gobelin Guerrier",
+            system: {
+                type: "enemy",
+                level: 3,
+                description: "Un gobelin agressif armé d'une épée rouillée et d'un bouclier en bois.",
+                resources: {
+                    health: { value: 12, max: 12 },
+                    shield: { value: 5, max: 5 },
+                    mana: { value: 0, max: 0 }
+                },
+                acuite: { value: "3d4" },
+                pimpance: { value: "3d4" },
+                martialite: { value: "4d4" },
+                arcane: { value: "2d4" },
+                attacks: [
+                    {
+                        name: "Morsure",
+                        dice: "1d20+4",
+                        description: "Morsure acérée qui peut transmettre une maladie."
+                    },
+                    {
+                        name: "Griffe",
+                        dice: "1d20+3",
+                        description: "Griffe acérée qui peut lacérer la chair."
+                    }
+                ],
+                skills: [
+                    {
+                        name: "Discrétion",
+                        description: "Capacité à se déplacer silencieusement et à se cacher dans l'ombre."
+                    },
+                    {
+                        name: "Survie",
+                        description: "Capacité à survivre dans la nature et à suivre des pistes."
+                    }
+                ],
+                notes: "Ce gobelin fait partie d'une bande qui rôde dans les ruines au nord du village. Il est connu pour être particulièrement agressif et attaque sans provocation."
+            }
+        };
+
+        // Gestion des onglets
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.sheet-tabs .item');
+            const tabContents = document.querySelectorAll('.tab');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetTab = this.dataset.tab;
+                    
+                    // Retirer la classe active de tous les onglets
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(tc => tc.classList.remove('active'));
+                    
+                    // Ajouter la classe active à l'onglet cliqué
+                    this.classList.add('active');
+                    document.querySelector(`[data-tab="${targetTab}"]`).classList.add('active');
+                });
+            });
+
+            // Gestion des changements de ressources
+            const resourceInputs = document.querySelectorAll('.resource-input');
+            resourceInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    const resourceType = this.dataset.resource;
+                    const value = parseInt(this.value) || 0;
+                    console.log(`Ressource ${resourceType} mise à jour: ${value}`);
+                });
+            });
+
+            // Gestion des changements de caractéristiques
+            const characteristicInputs = document.querySelectorAll('.characteristic-input');
+            characteristicInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    const characteristic = this.dataset.characteristic;
+                    const value = this.value;
+                    console.log(`Caractéristique ${characteristic} mise à jour: ${value}`);
+                });
+            });
+
+            // Gestion des attaques
+            initializeAttacks();
+            
+            // Gestion des compétences
+            initializeSkills();
+        });
+
+        // Initialisation des attaques
+        function initializeAttacks() {
+            const addAttackBtn = document.querySelector('.add-attack-btn');
+            const attacksList = document.getElementById('attacksList');
+            
+            if (addAttackBtn) {
+                addAttackBtn.addEventListener('click', function() {
+                    addAttack();
+                });
+            }
+            
+            // Gestion des boutons de suppression
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.remove-attack-btn')) {
+                    const btn = e.target.closest('.remove-attack-btn');
+                    const index = parseInt(btn.dataset.index);
+                    removeAttack(index);
+                }
+            });
+            
+            // Gestion des changements dans les attaques
+            document.addEventListener('change', function(e) {
+                if (e.target.closest('.attack-item')) {
+                    const attackItem = e.target.closest('.attack-item');
+                    const index = parseInt(attackItem.dataset.index);
+                    const field = getAttackFieldName(e.target);
+                    const value = e.target.value;
+                    console.log(`Attaque ${index}, champ ${field} mis à jour: ${value}`);
+                }
+            });
+        }
+
+        // Initialisation des compétences
+        function initializeSkills() {
+            const addSkillBtn = document.querySelector('.add-skill-btn');
+            const skillsList = document.getElementById('skillsList');
+            
+            if (addSkillBtn) {
+                addSkillBtn.addEventListener('click', function() {
+                    addSkill();
+                });
+            }
+            
+            // Gestion des boutons de suppression
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.remove-skill-btn')) {
+                    const btn = e.target.closest('.remove-skill-btn');
+                    const index = parseInt(btn.dataset.index);
+                    removeSkill(index);
+                }
+            });
+            
+            // Gestion des changements dans les compétences
+            document.addEventListener('change', function(e) {
+                if (e.target.closest('.skill-item')) {
+                    const skillItem = e.target.closest('.skill-item');
+                    const index = parseInt(skillItem.dataset.index);
+                    const field = getSkillFieldName(e.target);
+                    const value = e.target.value;
+                    console.log(`Compétence ${index}, champ ${field} mis à jour: ${value}`);
+                }
+            });
+        }
+
+        // Ajouter une attaque
+        function addAttack() {
+            const attacksList = document.getElementById('attacksList');
+            const newIndex = attacksList.children.length;
+            
+            const newAttack = document.createElement('div');
+            newAttack.className = 'attack-item';
+            newAttack.dataset.index = newIndex;
+            
+            newAttack.innerHTML = `
+                <div class="attack-header">
+                    <input type="text" 
+                           name="system.attacks.${newIndex}.name" 
+                           value="Nouvelle attaque" 
+                           placeholder="Nom de l'attaque"
+                           class="attack-name-input"/>
+                    <button type="button" class="remove-attack-btn" data-index="${newIndex}" title="Supprimer cette attaque">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <div class="attack-details">
+                    <div class="attack-dice">
+                        <label>Lancer de dé:</label>
+                        <input type="text" 
+                               name="system.attacks.${newIndex}.dice" 
+                               value="1d20" 
+                               placeholder="ex: 1d20+5, 2d6+3, etc."
+                               class="dice-input"/>
+                    </div>
+                    <div class="attack-description">
+                        <label>Description:</label>
+                        <textarea name="system.attacks.${newIndex}.description" 
+                                  rows="2" 
+                                  placeholder="Description de l'attaque qui apparaîtra lors du lancer de dé">Description de l'attaque</textarea>
+                    </div>
+                </div>
+            `;
+            
+            attacksList.appendChild(newAttack);
+            console.log('Nouvelle attaque ajoutée');
+        }
+
+        // Supprimer une attaque
+        function removeAttack(index) {
+            const attacksList = document.getElementById('attacksList');
+            const attackItem = attacksList.querySelector(`[data-index="${index}"]`);
+            
+            if (attackItem) {
+                attackItem.remove();
+                console.log(`Attaque à l'index ${index} supprimée`);
+                
+                // Réindexer les éléments restants
+                reindexAttacks();
+            }
+        }
+
+        // Ajouter une compétence
+        function addSkill() {
+            const skillsList = document.getElementById('skillsList');
+            const newIndex = skillsList.children.length;
+            
+            const newSkill = document.createElement('div');
+            newSkill.className = 'skill-item';
+            newSkill.dataset.index = newIndex;
+            
+            newSkill.innerHTML = `
+                <div class="skill-header">
+                    <input type="text" 
+                           name="system.skills.${newIndex}.name" 
+                           value="Nouvelle compétence" 
+                           placeholder="Nom de la compétence"
+                           class="skill-name-input"/>
+                    <button type="button" class="remove-skill-btn" data-index="${newIndex}" title="Supprimer cette compétence">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <div class="skill-description">
+                    <label>Description:</label>
+                    <textarea name="system.skills.${newIndex}.description" 
+                              rows="2" 
+                              placeholder="Description de la compétence">Description de la compétence</textarea>
+                </div>
+            `;
+            
+            skillsList.appendChild(newSkill);
+            console.log('Nouvelle compétence ajoutée');
+        }
+
+        // Supprimer une compétence
+        function removeSkill(index) {
+            const skillsList = document.getElementById('skillsList');
+            const skillItem = skillsList.querySelector(`[data-index="${index}"]`);
+            
+            if (skillItem) {
+                skillItem.remove();
+                console.log(`Compétence à l'index ${index} supprimée`);
+                
+                // Réindexer les éléments restants
+                reindexSkills();
+            }
+        }
+
+        // Réindexer les attaques
+        function reindexAttacks() {
+            const attacksList = document.getElementById('attacksList');
+            const attackItems = attacksList.querySelectorAll('.attack-item');
+            
+            attackItems.forEach((item, newIndex) => {
+                item.dataset.index = newIndex;
+                
+                // Mettre à jour les boutons de suppression
+                const removeBtn = item.querySelector('.remove-attack-btn');
+                if (removeBtn) {
+                    removeBtn.dataset.index = newIndex;
+                }
+                
+                // Mettre à jour les noms des champs
+                const nameInput = item.querySelector('.attack-name-input');
+                const diceInput = item.querySelector('.dice-input');
+                const descTextarea = item.querySelector('.attack-description textarea');
+                
+                if (nameInput) nameInput.name = `system.attacks.${newIndex}.name`;
+                if (diceInput) diceInput.name = `system.attacks.${newIndex}.dice`;
+                if (descTextarea) descTextarea.name = `system.attacks.${newIndex}.description`;
+            });
+        }
+
+        // Réindexer les compétences
+        function reindexSkills() {
+            const skillsList = document.getElementById('skillsList');
+            const skillItems = skillsList.querySelectorAll('.skill-item');
+            
+            skillItems.forEach((item, newIndex) => {
+                item.dataset.index = newIndex;
+                
+                // Mettre à jour les boutons de suppression
+                const removeBtn = item.querySelector('.remove-skill-btn');
+                if (removeBtn) {
+                    removeBtn.dataset.index = newIndex;
+                }
+                
+                // Mettre à jour les noms des champs
+                const nameInput = item.querySelector('.skill-name-input');
+                const descTextarea = item.querySelector('.skill-description textarea');
+                
+                if (nameInput) nameInput.name = `system.skills.${newIndex}.name`;
+                if (descTextarea) descTextarea.name = `system.skills.${newIndex}.description`;
+            });
+        }
+
+        // Déterminer le nom du champ pour les attaques
+        function getAttackFieldName(element) {
+            if (element.classList.contains('attack-name-input')) {
+                return 'name';
+            } else if (element.classList.contains('dice-input')) {
+                return 'dice';
+            } else if (element.closest('.attack-description')) {
+                return 'description';
+            }
+            return 'unknown';
+        }
+
+        // Déterminer le nom du champ pour les compétences
+        function getSkillFieldName(element) {
+            if (element.classList.contains('skill-name-input')) {
+                return 'name';
+            } else if (element.closest('.skill-description')) {
+                return 'description';
+            }
+            return 'unknown';
+        }
+
+        // Fonctions de test
+        function updateTestData() {
+            const type = document.getElementById('testType').value;
+            const level = document.getElementById('testLevel').value;
+            
+            document.getElementById('npcType').value = type;
+            document.getElementById('npcLevel').value = level;
+            
+            console.log(`Données de test mises à jour: Type=${type}, Niveau=${level}`);
+        }
+
+        function resetTestData() {
+            document.getElementById('testType').value = 'enemy';
+            document.getElementById('testLevel').value = 3;
+            document.getElementById('npcType').value = 'enemy';
+            document.getElementById('npcLevel').value = 3;
+            
+            console.log('Données de test réinitialisées');
+        }
+
+        // Log d'initialisation
+        console.log('Test de la fiche NPC initialisé');
+        console.log('Données mockées:', mockNpcData);
+    </script>
+</body>
+</html>
