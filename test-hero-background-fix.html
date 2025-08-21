@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Correction Background Fiche Héros - Void Horizon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .demo-hero-sheet {
+            background: #343a40;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: white;
+        }
+        .hero-sheet-element {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background: white;
+            color: #212529;
+        }
+        
+        /* Styles de test pour la fiche de héros */
+        .voidHorizon-sheet.heros-sheet {
+            min-width: 600px;
+            min-height: 600px;
+            background: transparent;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .sheet-header {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #800000;
+            padding-bottom: 10px;
+        }
+        
+        .armor-breakdown {
+            margin-top: 8px;
+            padding: 8px;
+            background: transparent;
+            border: 1px solid rgba(128, 0, 0, 0.2);
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+        
+        .faction-crest {
+            flex: 0 0 122px;
+            height: 122px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border-radius: 4px;
+            padding: 0.5rem;
+        }
+        
+        .bonus-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #4CAF50;
+            background: transparent;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .info-box {
+            background: #e9ecef;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .info-box h4 {
+            color: #495057;
+            margin-top: 0;
+        }
+        
+        .info-box ul {
+            color: #6c757d;
+            margin: 10px 0;
+        }
+        
+        .demo-container {
+            border: 2px dashed #6c757d;
+            padding: 20px;
+            margin: 20px 0;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Test Correction Background Fiche Héros - Void Horizon</h1>
+    
+    <div class="test-section">
+        <h2>Problème Résolu</h2>
+        <p>Les backgrounds des fiches de héros ont été modifiés pour résoudre les problèmes de clipping.</p>
+        <ul>
+            <li>✅ <strong>Background principal</strong> : Changé de #f0f0f0 à transparent</li>
+            <li>✅ <strong>Faction crest</strong> : Background supprimé</li>
+            <li>✅ <strong>Armor breakdown</strong> : Background supprimé</li>
+            <li>✅ <strong>Bonus values</strong> : Background supprimé</li>
+            <li>✅ <strong>Autres éléments</strong> : Backgrounds problématiques supprimés</li>
+        </ul>
+    </div>
+
+    <div class="demo-hero-sheet">
+        <h2>🎭 Démonstration de la Fiche de Héros</h2>
+        
+        <div class="demo-container">
+            <h3>Container Principal (Background Transparent)</h3>
+            <p>Ce container simule la fiche de héros avec un background transparent.</p>
+        </div>
+        
+        <!-- Simulation de la fiche de héros -->
+        <div class="voidHorizon-sheet heros-sheet">
+            <div class="sheet-header">
+                <h3>En-tête de la Fiche</h3>
+                <p>Cette section a un background transparent pour éviter les problèmes de clipping.</p>
+            </div>
+            
+            <div class="armor-breakdown">
+                <h4>Détail de l'Armure</h4>
+                <p>Cette section a maintenant un background transparent au lieu de rgba(128, 0, 0, 0.05).</p>
+            </div>
+            
+            <div class="faction-crest">
+                <p>Emblème de Faction</p>
+                <p>Background transparent pour éviter les problèmes de rendu.</p>
+            </div>
+            
+            <div class="bonus-value">
+                +5
+            </div>
+            <p>Cette valeur de bonus a maintenant un background transparent.</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Détails des Corrections</h2>
+        
+        <div class="info-box">
+            <h4>🎨 Modifications Apportées</h4>
+            <ul>
+                <li><strong>.voidHorizon-sheet.heros-sheet</strong> : background: transparent</li>
+                <li><strong>.faction-crest</strong> : background: transparent</li>
+                <li><strong>.armor-breakdown</strong> : background: transparent</li>
+                <li><strong>.bonus-value</strong> : background: transparent</li>
+            </ul>
+        </div>
+        
+        <div class="info-box">
+            <h4>🔧 Avantages de la Correction</h4>
+            <ul>
+                <li><strong>Pas de clipping</strong> : Les éléments s'affichent correctement</li>
+                <li><strong>Transparence</strong> : La fiche s'intègre mieux dans l'interface</li>
+                <li><strong>Performance</strong> : Moins de rendu de backgrounds complexes</li>
+                <li><strong>Flexibilité</strong> : Prêt pour de futurs styles</li>
+            </ul>
+        </div>
+        
+        <div class="info-box">
+            <h4>📱 Impact sur l'Interface</h4>
+            <ul>
+                <li><strong>Visuel</strong> : Apparence plus propre et moderne</li>
+                <li><strong>Intégration</strong> : Meilleure cohérence avec Foundry VTT</li>
+                <li><strong>Accessibilité</strong> : Moins de distractions visuelles</li>
+                <li><strong>Maintenance</strong> : Plus facile à modifier à l'avenir</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Instructions de Test dans Foundry VTT</h2>
+        <ol>
+            <li><strong>Redémarrer Foundry VTT</strong> pour charger les corrections CSS</li>
+            <li><strong>Ouvrir une fiche de héros</strong> existante ou en créer une nouvelle</li>
+            <li><strong>Vérifier l'absence de clipping</strong> sur tous les éléments</li>
+            <li><strong>Confirmer la transparence</strong> des backgrounds</li>
+            <li><strong>Tester la navigation</strong> entre les onglets</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>Prochaines Étapes</h2>
+        <p>Une fois que les problèmes de clipping sont résolus, vous pourrez :</p>
+        <ul>
+            <li><strong>Ajouter de nouveaux styles</strong> sans crainte de conflits</li>
+            <li><strong>Personnaliser l'apparence</strong> avec des thèmes</li>
+            <li><strong>Intégrer des éléments visuels</strong> plus complexes</li>
+            <li><strong>Optimiser les performances</strong> de rendu</li>
+        </ul>
+    </div>
+
+    <script>
+        // Test de transparence
+        function testTransparency() {
+            const elements = document.querySelectorAll('.voidHorizon-sheet, .faction-crest, .armor-breakdown, .bonus-value');
+            elements.forEach(element => {
+                const computedStyle = window.getComputedStyle(element);
+                const backgroundColor = computedStyle.backgroundColor;
+                console.log(`Element: ${element.className}, Background: ${backgroundColor}`);
+            });
+        }
+        
+        // Tester au chargement
+        window.addEventListener('load', function() {
+            console.log('Test de transparence des backgrounds de la fiche de héros');
+            testTransparency();
+        });
+    </script>
+</body>
+</html>

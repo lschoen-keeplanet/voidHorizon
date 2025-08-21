@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Styles Chat NPC - Void Horizon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .demo-chat {
+            background: #343a40;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: white;
+        }
+        .chat-message {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background: white;
+            color: #212529;
+        }
+        
+        /* Styles pour les messages de chat des jets de dés */
+        .voidhorizon-attack-roll,
+        .voidhorizon-skill-use {
+            background: #f8f9fa;
+            border: 2px solid #6c757d;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 10px 0;
+            color: #212529;
+            font-family: 'Signika', sans-serif;
+        }
+        
+        .roll-header,
+        .skill-header {
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #6c757d;
+            padding-bottom: 10px;
+        }
+        
+        .roll-header h3,
+        .skill-header h3 {
+            color: #495057;
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .actor-info {
+            color: #6c757d;
+            font-size: 14px;
+            font-style: italic;
+            margin: 10px 0;
+        }
+        
+        .roll-result {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background: rgba(108, 117, 125, 0.1);
+        }
+        
+        .roll-result.critique {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            border: 2px solid #28a745;
+            animation: pulse 2s infinite;
+        }
+        
+        .roll-result.echec {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            border: 2px solid #dc3545;
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        .roll-result.normal {
+            background: linear-gradient(135deg, #17a2b8, #138496);
+            border: 2px solid #17a2b8;
+        }
+        
+        .dice-result {
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .result-text {
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .roll-details {
+            background: rgba(108, 117, 125, 0.1);
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .dice-formula {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            color: #495057;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .dice-breakdown {
+            font-size: 14px;
+            color: #6c757d;
+            font-style: italic;
+        }
+        
+        .attack-description,
+        .skill-description {
+            background: rgba(108, 117, 125, 0.1);
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid #6c757d;
+            font-style: italic;
+            line-height: 1.4;
+        }
+        
+        /* Styles pour les jets de caractéristiques */
+        .voidhorizon-characteristic-roll {
+            background: #f8f9fa;
+            border: 2px solid #6c757d;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 10px 0;
+            color: #212529;
+            font-family: 'Signika', sans-serif;
+        }
+        
+        .bonus-info {
+            background: rgba(40, 167, 69, 0.2);
+            border: 1px solid #28a745;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 10px;
+            text-align: center;
+            color: #28a745;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        /* Animations pour les jets de dés */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .info-box {
+            background: #e9ecef;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .info-box h4 {
+            color: #495057;
+            margin-top: 0;
+        }
+        
+        .info-box ul {
+            color: #6c757d;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎨 Test des Styles de Chat NPC - Void Horizon</h1>
+    
+    <div class="test-section">
+        <h2>Améliorations Apportées</h2>
+        <ul>
+            <li>✅ <strong>Emojis supprimés</strong> : Plus d'emojis dans les titres des messages</li>
+            <li>✅ <strong>Contraste amélioré</strong> : Fond gris clair (#f8f9fa) avec texte noir (#212529)</li>
+            <li>✅ <strong>Organisation des compétences</strong> : Titre au-dessus du nom du NPC</li>
+            <li>✅ <strong>Couleurs cohérentes</strong> : Palette de couleurs harmonieuse et lisible</li>
+            <li>✅ <strong>Bordures subtiles</strong> : Bordures grises (#6c757d) pour un look professionnel</li>
+        </ul>
+    </div>
+
+    <div class="demo-chat">
+        <h2>💬 Démonstration des Messages de Chat</h2>
+        
+        <div class="chat-message">
+            <h3>Message de Chat Normal</h3>
+            <p>Ceci simule l'apparence générale du chat Foundry VTT.</p>
+        </div>
+        
+        <!-- Jet d'Attaque -->
+        <div class="voidhorizon-attack-roll">
+            <div class="roll-header">
+                <h3>Baguette Magique</h3>
+                <div class="actor-info">Gandalf le Gris</div>
+            </div>
+            
+            <div class="roll-result normal">
+                <div class="dice-result">28</div>
+                <div class="result-text">Résultat normal</div>
+            </div>
+            
+            <div class="roll-details">
+                <div class="dice-formula">1d20+8</div>
+                <div class="dice-breakdown">20</div>
+            </div>
+            
+            <div class="attack-description">
+                Lance un rayon de lumière aveuglante qui peut étourdir les ennemis.
+            </div>
+        </div>
+        
+        <!-- Jet de Compétence -->
+        <div class="voidhorizon-skill-use">
+            <div class="skill-header">
+                <h3>Lumières</h3>
+            </div>
+            
+            <div class="actor-info">Gandalf le Gris</div>
+            
+            <div class="skill-description">
+                Crée une lumière magique qui éclaire une zone de 20 mètres de rayon. 
+                La lumière est suffisamment intense pour repousser les créatures des ténèbres.
+            </div>
+        </div>
+        
+        <!-- Jet de Caractéristique -->
+        <div class="voidhorizon-characteristic-roll">
+            <div class="roll-header">
+                <h3>Acuité</h3>
+                <div class="actor-info">Gandalf le Gris</div>
+            </div>
+            
+            <div class="roll-result critique">
+                <div class="dice-result">15</div>
+                <div class="result-text">🎯 COUP CRITIQUE !</div>
+            </div>
+            
+            <div class="roll-details">
+                <div class="dice-formula">3d4+3</div>
+                <div class="dice-breakdown">4, 3, 5</div>
+                <div class="bonus-info">Bonus appliqué: +3</div>
+            </div>
+        </div>
+        
+        <!-- Jet d'Attaque Critique -->
+        <div class="voidhorizon-attack-roll">
+            <div class="roll-header">
+                <h3>Épée Glamdring</h3>
+                <div class="actor-info">Gandalf le Gris</div>
+            </div>
+            
+            <div class="roll-result critique">
+                <div class="dice-result">26</div>
+                <div class="result-text">🎯 COUP CRITIQUE !</div>
+            </div>
+            
+            <div class="roll-details">
+                <div class="dice-formula">1d20+6</div>
+                <div class="dice-breakdown">20</div>
+            </div>
+            
+            <div class="attack-description">
+                Une frappe puissante avec l'épée légendaire qui peut trancher même la pierre.
+            </div>
+        </div>
+        
+        <!-- Jet d'Attaque Échec -->
+        <div class="voidhorizon-attack-roll">
+            <div class="roll-header">
+                <h3>Lance de Feu</h3>
+                <div class="actor-info">Gandalf le Gris</div>
+            </div>
+            
+            <div class="roll-result echec">
+                <div class="dice-result">7</div>
+                <div class="result-text">💥 ÉCHEC CRITIQUE !</div>
+            </div>
+            
+            <div class="roll-details">
+                <div class="dice-formula">1d20+5</div>
+                <div class="dice-breakdown">2</div>
+            </div>
+            
+            <div class="attack-description">
+                Lance une flamme ardente qui peut brûler les ennemis et éclairer les passages sombres.
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Détails des Améliorations</h2>
+        
+        <div class="info-box">
+            <h4>🎨 Palette de Couleurs</h4>
+            <ul>
+                <li><strong>Fond principal</strong> : #f8f9fa (gris très clair)</li>
+                <li><strong>Texte principal</strong> : #212529 (noir profond)</li>
+                <li><strong>Titres</strong> : #495057 (gris foncé)</li>
+                <li><strong>Informations secondaires</strong> : #6c757d (gris moyen)</li>
+                <li><strong>Bordures</strong> : #6c757d (gris moyen)</li>
+            </ul>
+        </div>
+        
+        <div class="info-box">
+            <h4>🔧 Modifications Techniques</h4>
+            <ul>
+                <li><strong>Suppression des emojis</strong> : Plus de 🎯, ⚔️, ⭐ dans les titres</li>
+                <li><strong>Réorganisation des compétences</strong> : Titre → Nom NPC → Description</li>
+                <li><strong>Amélioration du contraste</strong> : Ratio de contraste conforme aux standards d'accessibilité</li>
+                <li><strong>Cohérence visuelle</strong> : Même style pour tous les types de messages</li>
+            </ul>
+        </div>
+        
+        <div class="info-box">
+            <h4>📱 Avantages de la Nouvelle Interface</h4>
+            <ul>
+                <li><strong>Lisibilité améliorée</strong> : Texte noir sur fond clair</li>
+                <li><strong>Professionnalisme</strong> : Apparence plus sobre et élégante</li>
+                <li><strong>Accessibilité</strong> : Meilleur contraste pour tous les utilisateurs</li>
+                <li><strong>Cohérence</strong> : Style uniforme dans tout le chat</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Instructions de Test dans Foundry VTT</h2>
+        <ol>
+            <li><strong>Redémarrer Foundry VTT</strong> pour charger les nouveaux styles</li>
+            <li><strong>Ouvrir un NPC</strong> et tester les jets de dés</li>
+            <li><strong>Vérifier l'apparence</strong> des messages dans le chat</li>
+            <li><strong>Confirmer l'absence d'emojis</strong> dans les titres</li>
+            <li><strong>Tester la lisibilité</strong> avec le nouveau contraste</li>
+        </ol>
+    </div>
+
+    <script>
+        // Animation automatique des résultats critiques
+        function animateResults() {
+            const criticalResults = document.querySelectorAll('.roll-result.critique, .roll-result.echec');
+            criticalResults.forEach(result => {
+                result.style.animationPlayState = 'running';
+            });
+        }
+        
+        // Démarrer les animations au chargement
+        window.addEventListener('load', function() {
+            setTimeout(animateResults, 1000);
+        });
+    </script>
+</body>
+</html>

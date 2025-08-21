@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Nouveaux Labels Agilité - Void Horizon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .demo-hero-sheet {
+            background: #343a40;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: white;
+        }
+        .hero-sheet-element {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background: white;
+            color: #212529;
+        }
+        
+        /* Styles de test pour la fiche de héros */
+        .voidHorizon-sheet.heros-sheet {
+            min-width: 600px;
+            min-height: 600px;
+            background: transparent;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .stat-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        
+        .stat-header .stat-icon {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            border-radius: 0;
+        }
+        
+        .stat-header label.rollable {
+            cursor: pointer;
+            color: #800000;
+            font-weight: bold;
+            transition: color 0.2s ease;
+            text-align: center;
+            margin: 0;
+        }
+        
+        .stat-header label.rollable:hover {
+            color: #ff0000;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+        }
+        
+        .stat-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .stat-controls select {
+            flex: 1;
+            padding: 0.25rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: white;
+        }
+        
+        .stat-controls select:focus {
+            border-color: #800000;
+            outline: none;
+            box-shadow: 0 0 3px rgba(128, 0, 0, 0.3);
+        }
+        
+        .read-mode {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 8px 12px;
+            min-height: 20px;
+            font-weight: 500;
+            color: #333;
+            text-align: center;
+        }
+        
+        .info-box {
+            background: #e9ecef;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .info-box h4 {
+            color: #495057;
+            margin-top: 0;
+        }
+        
+        .info-box ul {
+            color: #6c757d;
+            margin: 10px 0;
+        }
+        
+        .agility-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .agility-table th,
+        .agility-table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .agility-table th {
+            background: #800000;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .agility-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .agility-table tr:hover {
+            background: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <h1>🏃 Test Nouveaux Labels Agilité - Void Horizon</h1>
+    
+    <div class="test-section">
+        <h2>Nouveau Barème Implémenté</h2>
+        <p>Les labels de l'agilité ont été mis à jour avec le nouveau barème demandé.</p>
+        <ul>
+            <li>✅ <strong>2d4</strong> : Gourd (au lieu de Challengé)</li>
+            <li>✅ <strong>3d4</strong> : Raide (au lieu de Lourdeau)</li>
+            <li>✅ <strong>4d4</strong> : Ordinaire (au lieu de Bien)</li>
+            <li>✅ <strong>5d4</strong> : Adroit (au lieu de Rapide)</li>
+            <li>✅ <strong>6d4</strong> : Leste (au lieu de Très rapide)</li>
+            <li>✅ <strong>7d4</strong> : Félin (au lieu de Très très rapide)</li>
+        </ul>
+    </div>
+
+    <div class="demo-hero-sheet">
+        <h2>🎭 Démonstration de la Nouvelle Labellisation</h2>
+        
+        <!-- Simulation de la fiche de héros -->
+        <div class="voidHorizon-sheet heros-sheet">
+            <div class="stat-header">
+                <img src="systems/voidHorizon/assets/icons/agilite.png" class="stat-icon" alt="Agilité">
+                <label class="rollable" data-stat="agilite">Agilité</label>
+            </div>
+            
+            <div class="stat-controls">
+                <select name="system.agilite.value" class="edit-mode">
+                    <option value="2d4">2d4</option>
+                    <option value="3d4">3d4</option>
+                    <option value="4d4">4d4</option>
+                    <option value="5d4">5d4</option>
+                    <option value="6d4">6d4</option>
+                    <option value="7d4">7d4</option>
+                </select>
+            </div>
+            
+            <!-- Affichage des nouveaux labels -->
+            <div class="read-mode" id="agility-label">Ordinaire</div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Tableau de Correspondance</h2>
+        
+        <table class="agility-table">
+            <thead>
+                <tr>
+                    <th>Formule de Dés</th>
+                    <th>Ancien Label</th>
+                    <th>Nouveau Label</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>2d4</strong></td>
+                    <td>Challengé</td>
+                    <td><strong>Gourd</strong></td>
+                    <td>Agilité très limitée</td>
+                </tr>
+                <tr>
+                    <td><strong>3d4</strong></td>
+                    <td>Lourdeau</td>
+                    <td><strong>Raide</strong></td>
+                    <td>Agilité limitée</td>
+                </tr>
+                <tr>
+                    <td><strong>4d4</strong></td>
+                    <td>Bien</td>
+                    <td><strong>Ordinaire</strong></td>
+                    <td>Agilité moyenne</td>
+                </tr>
+                <tr>
+                    <td><strong>5d4</strong></td>
+                    <td>Rapide</td>
+                    <td><strong>Adroit</strong></td>
+                    <td>Bonne agilité</td>
+                </tr>
+                <tr>
+                    <td><strong>6d4</strong></td>
+                    <td>Très rapide</td>
+                    <td><strong>Leste</strong></td>
+                    <td>Très bonne agilité</td>
+                </tr>
+                <tr>
+                    <td><strong>7d4</strong></td>
+                    <td>Très très rapide</td>
+                    <td><strong>Félin</strong></td>
+                    <td>Agilité exceptionnelle</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="test-section">
+        <h2>Détails des Modifications</h2>
+        
+        <div class="info-box">
+            <h4>🎨 Changements Apportés</h4>
+            <ul>
+                <li><strong>2d4 → Gourd</strong> : Plus descriptif et immersif</li>
+                <li><strong>3d4 → Raide</strong> : Évoque la rigidité et la lenteur</li>
+                <li><strong>4d4 → Ordinaire</strong> : Terme neutre pour la moyenne</li>
+                <li><strong>5d4 → Adroit</strong> : Évoque la dextérité et la précision</li>
+                <li><strong>6d4 → Leste</strong> : Évoque la légèreté et la rapidité</li>
+                <li><strong>7d4 → Félin</strong> : Évoque la grâce et l'agilité naturelle</li>
+            </ul>
+        </div>
+        
+        <div class="info-box">
+            <h4>🔧 Avantages de la Nouvelle Labellisation</h4>
+            <ul>
+                <li><strong>Immersif</strong> : Labels plus évocateurs et thématiques</li>
+                <li><strong>Clair</strong> : Progression logique et intuitive</li>
+                <li><strong>Coherent</strong> : Style uniforme avec le reste du système</li>
+                <li><strong>Mémorisable</strong> : Labels plus faciles à retenir</li>
+            </ul>
+        </div>
+        
+        <div class="info-box">
+            <h4>📱 Impact sur l'Interface</h4>
+            <ul>
+                <li><strong>Affichage</strong> : Nouveaux labels visibles en mode lecture</li>
+                <li><strong>Tooltips</strong> : Informations mises à jour</li>
+                <li><strong>Calculs</strong> : Aucun impact sur la mécanique de jeu</li>
+                <li><strong>Compatibilité</strong> : Fonctionne avec les fiches existantes</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Instructions de Test dans Foundry VTT</h2>
+        <ol>
+            <li><strong>Redémarrer Foundry VTT</strong> pour charger les modifications</li>
+            <li><strong>Ouvrir une fiche de héros</strong> existante ou en créer une nouvelle</li>
+            <li><strong>Modifier l'agilité</strong> en changeant la valeur des dés</li>
+            <li><strong>Vérifier l'affichage</strong> des nouveaux labels en mode lecture</li>
+            <li><strong>Tester toutes les valeurs</strong> de 2d4 à 7d4</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Interactif</h2>
+        <p>Testez la nouvelle labellisation en changeant la valeur de l'agilité :</p>
+        
+        <div class="stat-controls">
+            <select id="test-agility-select">
+                <option value="2d4">2d4</option>
+                <option value="3d4">3d4</option>
+                <option value="4d4" selected>4d4</option>
+                <option value="5d4">5d4</option>
+                <option value="6d4">6d4</option>
+                <option value="7d4">7d4</option>
+            </select>
+        </div>
+        
+        <div class="read-mode" id="test-agility-display">Ordinaire</div>
+        
+        <p><em>Changez la valeur ci-dessus pour voir le label correspondant s'afficher.</em></p>
+    </div>
+
+    <script>
+        // Test de la nouvelle labellisation
+        function updateAgilityLabel(value) {
+            const labelMap = {
+                '2d4': 'Gourd',
+                '3d4': 'Raide',
+                '4d4': 'Ordinaire',
+                '5d4': 'Adroit',
+                '6d4': 'Leste',
+                '7d4': 'Félin'
+            };
+            
+            return labelMap[value] || value;
+        }
+        
+        // Mettre à jour l'affichage lors du changement de sélection
+        document.getElementById('test-agility-select').addEventListener('change', function() {
+            const selectedValue = this.value;
+            const label = updateAgilityLabel(selectedValue);
+            document.getElementById('test-agility-display').textContent = label;
+        });
+        
+        // Test au chargement
+        window.addEventListener('load', function() {
+            console.log('Test de la nouvelle labellisation de l\'agilité');
+            console.log('2d4 →', updateAgilityLabel('2d4'));
+            console.log('3d4 →', updateAgilityLabel('3d4'));
+            console.log('4d4 →', updateAgilityLabel('4d4'));
+            console.log('5d4 →', updateAgilityLabel('5d4'));
+            console.log('6d4 →', updateAgilityLabel('6d4'));
+            console.log('7d4 →', updateAgilityLabel('7d4'));
+        });
+    </script>
+</body>
+</html>

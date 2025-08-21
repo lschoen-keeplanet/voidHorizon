@@ -23,14 +23,15 @@ Les NPCs de Void Horizon disposent maintenant d'un système complet de jets de d
 ### 3. ⭐ Utilisation des Compétences
 - **Boutons d'utilisation** : Chaque compétence a un bouton ⭐
 - **Pas de jet de dés** : Affichage direct de la description dans le chat
-- **Informations contextuelles** : Nom du NPC et nom de la compétence
+- **Organisation améliorée** : Titre de la compétence au-dessus du nom du NPC
 - **Style distinctif** : Interface différente des jets de dés
 
 ### 4. 🎨 Interface de Chat Stylisée
 - **Messages distinctifs** : Chaque type de jet a son propre style
 - **Animations** : Effets visuels pour les coups critiques et échecs critiques
-- **Couleurs thématiques** : Palette de couleurs cohérente avec Void Horizon
+- **Contraste optimisé** : Fond gris clair (#f8f9fa) avec texte noir (#212529)
 - **Informations complètes** : Formules, résultats, bonus et descriptions
+- **Apparence professionnelle** : Style sobre et élégant sans emojis
 
 ## 🔧 Implémentation Technique
 
@@ -54,11 +55,13 @@ Les NPCs de Void Horizon disposent maintenant d'un système complet de jets de d
 - **Champs de bonus** : Style vert distinctif pour les bonus
 - **Messages de chat** : Styles spécifiques pour chaque type de jet
 - **Animations** : Effets de pulsation et de secousse pour les critiques
+- **Palette de couleurs** : Fond gris clair avec texte noir pour un contraste optimal
 
 ## 🧪 Test des Fonctionnalités
 
 ### Fichier de Test
 - **`test-npc-rolls.html`** : Démonstration interactive des nouvelles fonctionnalités
+- **`test-npc-chat-styles.html`** : Démonstration des nouveaux styles de chat
 - **Simulation des jets** : Tests des formules et des bonus
 - **Interface de démonstration** : NPC exemple avec toutes les fonctionnalités
 
@@ -114,6 +117,24 @@ Description: Crée une lumière magique qui éclaire une zone de 20 mètres
 - **Immersion** : Descriptions intégrées dans les jets
 - **Feedback** : Animations et couleurs pour les résultats importants
 
+## 🎨 Améliorations de Style
+
+### Contraste et Lisibilité
+- **Fond principal** : #f8f9fa (gris très clair)
+- **Texte principal** : #212529 (noir profond)
+- **Titres** : #495057 (gris foncé)
+- **Bordures** : #6c757d (gris moyen)
+
+### Organisation des Messages
+- **Attaques** : Titre → Nom NPC → Résultat → Détails → Description
+- **Compétences** : Titre → Nom NPC → Description
+- **Caractéristiques** : Titre → Nom NPC → Résultat → Détails → Bonus
+
+### Suppression des Emojis
+- **Titres épurés** : Plus d'emojis dans les en-têtes des messages
+- **Apparence professionnelle** : Style sobre et élégant
+- **Cohérence visuelle** : Uniformité dans tout le chat
+
 ## 🔮 Évolutions Futures
 
 ### Phase 3 : Combat Avancé
@@ -130,4 +151,4 @@ Description: Crée une lumière magique qui éclaire une zone de 20 mètres
 
 ---
 
-*Développé pour le système Void Horizon - Version 2.0*
+*Développé pour le système Void Horizon - Version 2.1*
