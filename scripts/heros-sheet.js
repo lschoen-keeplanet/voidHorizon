@@ -1631,13 +1631,13 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 let statName = null;
                 let statValue = null;
                 
-                if (weaponType.includes('martialité') || weaponType.includes('force')) {
+                if (weaponType === 'strength' || weaponType.includes('martialité') || weaponType.includes('force')) {
                     statName = 'martialite';
                     statValue = this.actor.system.martialite?.value;
-                } else if (weaponType.includes('agilité') || weaponType.includes('agility')) {
+                } else if (weaponType === 'agility' || weaponType.includes('agilité') || weaponType.includes('agility')) {
                     statName = 'agilite';
                     statValue = this.actor.system.agilite?.value;
-                } else if (weaponType.includes('acuité') || weaponType.includes('acuite')) {
+                } else if (weaponType === 'acuite' || weaponType.includes('acuité') || weaponType.includes('acuite')) {
                     statName = 'acuite';
                     statValue = this.actor.system.acuite?.value;
                 }

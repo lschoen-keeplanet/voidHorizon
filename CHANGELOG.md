@@ -59,6 +59,8 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Inversion des modes Safe/Unsafe pour les compétences
 - Application incorrecte des malus d'agilité sur la martialité
 - Affichage des boutons de parade/blocage selon l'équipement
+- **Ranges des armes martialité non affichés** - Correction de la détection du type d'arme "strength"
+- **Affichage incorrect de la qualité d'arme** - Les options montrent maintenant les dés (1d4, 1d6, 1d8, etc.) au lieu des entiers
 
 #### 🗑️ Supprimé
 - Affichage séparé des bonus totaux
