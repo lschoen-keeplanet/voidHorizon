@@ -1,7 +1,8 @@
 {
     "Actor": {
         "types": [
-            "heros"
+            "heros",
+            "npc"
         ],
         "templates": {
             "background": {
@@ -120,6 +121,61 @@
                     "value": 0,
                     "label": "Malus d'agilité dû à l'armure"
                 }
+                }
+            },
+            "npc": {
+                "name": "NPC",
+                "img": "systems/voidHorizon/assets/icons/npc.svg",
+                "templates": [
+                    "background",
+                    "resources"
+                ],
+                "system": {
+                    "type": "enemy",
+                    "level": 1,
+                    "description": "Un nouveau NPC",
+                    "resources": {
+                        "health": {
+                            "value": 10,
+                            "max": 10,
+                            "label": "Points de vie"
+                        },
+                        "shield": {
+                            "value": 0,
+                            "max": 0,
+                            "label": "Points de bouclier"
+                        },
+                        "mana": {
+                            "value": 0,
+                            "max": 0,
+                            "label": "Points de mana"
+                        }
+                    },
+                    "acuite": {
+                        "value": "3d4",
+                        "label": "Acuité"
+                    },
+                    "pimpance": {
+                        "value": "3d4",
+                        "label": "Pimpance"
+                    },
+                    "martialite": {
+                        "value": "3d4",
+                        "label": "Martialité"
+                    },
+                    "arcane": {
+                        "value": "2d4",
+                        "label": "Arcane"
+                    },
+                    "attacks": {
+                        "type": "Array",
+                        "default": []
+                    },
+                    "skills": {
+                        "type": "Array",
+                        "default": []
+                    },
+                    "notes": ""
                 }
             }
         }

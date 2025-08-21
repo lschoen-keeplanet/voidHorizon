@@ -161,10 +161,22 @@ Le fichier `test-npc-sheet.html` permet de tester :
 
 #### Vérifications de base :
 - ✅ Type "npc" dans `system.json` → `documentTypes.Actor.types`
+- ✅ Type "npc" dans `template.json` → `Actor.types` **[CRITIQUE - RÉSOLU]**
+- ✅ Modèle de données NPC dans `template.json` → `Actor.npc` **[CRITIQUE - RÉSOLU]**
 - ✅ Script `npc-sheet.js` dans `system.json` → `scripts`
 - ✅ Template `npc-sheet.html` dans `templates/sheets/`
 - ✅ Styles `npc-sheet.css` dans `system.json` → `styles`
 - ✅ Import dans `voidHorizon.js` → `import "./scripts/npc-sheet.js"`
+
+#### 🔧 Problème résolu :
+Le type "npc" n'apparaissait pas dans la liste car :
+1. **`template.json`** ne contenait que le type "heros" 
+2. **Modèle de données manquant** pour les NPCs
+
+**Solution appliquée :**
+- Ajout du type "npc" dans `template.json`
+- Définition complète du modèle de données NPC avec valeurs par défaut
+- Simplification du script JavaScript (suppression des hooks redondants)
 
 ## 🎨 Personnalisation
 
