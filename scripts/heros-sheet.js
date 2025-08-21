@@ -640,6 +640,133 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             this._updateAllDiceRanges();
             console.log("Recalcul de tous les éléments de santé et des ranges terminé après délai");
         }, 500);
+
+        // Initialise les événements de la fiche
+        this._initializeEvents();
+        
+        // Initialiser la fiche avec les valeurs par défaut
+        this._initializeSheet();
+    }
+
+    /**
+     * Initialise les événements de la fiche
+     * @private
+     */
+    _initializeEvents() {
+        // ... existing code ...
+
+        // Gestion des boutons de nature de main
+        this._initializeNatureButtons();
+        
+        // ... existing code ...
+    }
+
+    /**
+     * Initialise les boutons de nature de main
+     * @private
+     */
+    _initializeNatureButtons() {
+        const natureButtons = this.element.querySelectorAll('.nature-btn');
+        
+        natureButtons.forEach(button => {
+            button.addEventListener('click', async (event) => {
+                const hand = button.dataset.hand;
+                const nature = button.dataset.nature;
+                
+                // Mettre à jour la nature de la main
+                await this._updateHandNature(hand, nature);
+                
+                // Mettre à jour l'affichage des boutons
+                this._updateNatureButtonsDisplay(hand);
+                
+                // Mettre à jour l'affichage des éléments d'armes
+                this._updateWeaponDisplay(hand);
+                
+                // Mettre à jour l'affichage des boutons de résistance
+                this._updateResistanceButtons();
+            });
+        });
+    }
+
+    /**
+     * Met à jour la nature d'une main
+     * @param {string} hand - La main à mettre à jour ('primary' ou 'secondary')
+     * @param {string} nature - La nouvelle nature ('weapon', 'shield', 'focus')
+     * @private
+     */
+    async _updateHandNature(hand, nature) {
+        try {
+            // Mettre à jour la nature dans les données de l'acteur
+            await this.actor.update({
+                [`system.weapons.${hand}.nature`]: nature
+            });
+            
+            console.log(`Nature de la main ${hand} mise à jour vers: ${nature}`);
+        } catch (error) {
+            console.error(`Erreur lors de la mise à jour de la nature de la main ${hand}:`, error);
+        }
+    }
+
+    /**
+     * Met à jour l'affichage des boutons de nature
+     * @param {string} hand - La main à mettre à jour
+     * @private
+     */
+    _updateNatureButtonsDisplay(hand) {
+        const handContainer = this.element.querySelector(`.${hand}-weapon`);
+        const natureButtons = handContainer.querySelectorAll('.nature-btn');
+        
+        natureButtons.forEach(button => {
+            const buttonNature = button.dataset.nature;
+            const currentNature = this.actor.system.weapons[hand].nature;
+            
+            if (buttonNature === currentNature) {
+                button.setAttribute('data-active', 'true');
+            } else {
+                button.removeAttribute('data-active');
+            }
+        });
+    }
+
+    /**
+     * Met à jour l'affichage des éléments d'armes selon la nature
+     * @param {string} hand - La main à mettre à jour
+     * @private
+     */
+    _updateWeaponDisplay(hand) {
+        const handContainer = this.element.querySelector(`.${hand}-weapon`);
+        const nature = this.actor.system.weapons[hand].nature;
+        
+        const rollButtons = handContainer.querySelector('.weapon-roll-buttons');
+        const diceRanges = handContainer.querySelector('.weapon-dice-ranges');
+        
+        if (nature === 'shield') {
+            rollButtons.classList.add('hidden');
+            diceRanges.classList.add('hidden');
+        } else {
+            rollButtons.classList.remove('hidden');
+            diceRanges.classList.remove('hidden');
+        }
+    }
+
+    /**
+     * Met à jour l'affichage des boutons de résistance
+     * @private
+     */
+    _updateResistanceButtons() {
+        const hasShield = this.actor.system.weapons.primary.nature === 'shield' || 
+                         this.actor.system.weapons.secondary.nature === 'shield';
+        
+        const blockButton = this.element.querySelector('.resistance-roll-btn.block');
+        const paradeButton = this.element.querySelector('.resistance-roll-btn.parade');
+        
+        if (hasShield) {
+            if (blockButton) blockButton.style.display = 'flex';
+            if (paradeButton) paradeButton.style.display = 'none';
+        } else {
+            if (blockButton) blockButton.style.display = 'none';
+            if (paradeButton) paradeButton.style.display = 'flex';
+        }
     }
 
     /**
@@ -1363,10 +1490,10 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         
         // Calculer le bonus des boucliers d'armes
         let shieldBonus = 0;
-        if (this.actor.system.weapons?.primary?.type === 'shield') {
+        if (this.actor.system.weapons?.primary?.nature === 'shield') {
             shieldBonus += parseInt(this.actor.system.weapons.primary.bonus) || 0;
         }
-        if (this.actor.system.weapons?.secondary?.type === 'shield') {
+        if (this.actor.system.weapons?.secondary?.nature === 'shield') {
             shieldBonus += parseInt(this.actor.system.weapons.secondary.bonus) || 0;
         }
         
@@ -1747,12 +1874,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         let shieldBonus = 0;
         
         // Vérifier la main principale
-        if (this.actor.system.weapons?.primary?.type === 'shield') {
+        if (this.actor.system.weapons?.primary?.nature === 'shield') {
             shieldBonus += parseInt(this.actor.system.weapons.primary.bonus) || 0;
         }
         
         // Vérifier la main secondaire
-        if (this.actor.system.weapons?.secondary?.type === 'shield') {
+        if (this.actor.system.weapons?.secondary?.nature === 'shield') {
             shieldBonus += parseInt(this.actor.system.weapons.secondary.bonus) || 0;
         }
         
@@ -3941,11 +4068,11 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         // Récupérer le bonus des boucliers d'équipement
         let shieldBonus = 0;
         let shieldQualityDice = null;
-        if (this.actor.system.weapons?.primary?.type === 'shield') {
+        if (this.actor.system.weapons?.primary?.nature === 'shield') {
             shieldBonus += parseInt(this.actor.system.weapons.primary.bonus) || 0;
             shieldQualityDice = this._getShieldQualityDice(this.actor.system.weapons.primary.rank);
         }
-        if (this.actor.system.weapons?.secondary?.type === 'shield') {
+        if (this.actor.system.weapons?.secondary?.nature === 'shield') {
             shieldBonus += parseInt(this.actor.system.weapons.secondary.bonus) || 0;
             if (!shieldQualityDice) {
                 shieldQualityDice = this._getShieldQualityDice(this.actor.system.weapons.secondary.rank);
@@ -3972,15 +4099,41 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             rollMode = 'Esquive';
             characteristicLabel = 'Agilité';
         } else if (action === 'block') {
-            // Blocage : jet de martialité (unsafe) + jet de qualité du bouclier + bonus du bouclier
-            const martialiteValue = this.actor.system.martialite?.value || "2d4";
+            // Blocage : jet basé sur le type du bouclier (unsafe) + jet de qualité du bouclier + bonus du bouclier
+            let characteristicValue, characteristicName;
+            
+            // Déterminer quelle caractéristique utiliser selon le type du bouclier
+            if (this.actor.system.weapons?.primary?.nature === 'shield') {
+                const shieldType = this.actor.system.weapons.primary.type;
+                if (shieldType === 'agility') {
+                    characteristicValue = this.actor.system.agilite?.value || "2d4";
+                    characteristicName = 'Agilité';
+                } else {
+                    characteristicValue = this.actor.system.martialite?.value || "2d4";
+                    characteristicName = 'Martialité';
+                }
+            } else if (this.actor.system.weapons?.secondary?.nature === 'shield') {
+                const shieldType = this.actor.system.weapons.secondary.type;
+                if (shieldType === 'agility') {
+                    characteristicValue = this.actor.system.agilite?.value || "2d4";
+                    characteristicName = 'Agilité';
+                } else {
+                    characteristicValue = this.actor.system.martialite?.value || "2d4";
+                    characteristicName = 'Martialité';
+                }
+            } else {
+                // Fallback par défaut
+                characteristicValue = this.actor.system.martialite?.value || "2d4";
+                characteristicName = 'Martialité';
+            }
+            
             const unsafeMap = {
                 "2d4": "1d12", "3d4": "1d16", "4d4": "1d20",
                 "5d4": "1d24", "6d4": "1d28", "7d4": "1d32"
             };
-            diceFormula = unsafeMap[martialiteValue] || martialiteValue;
+            diceFormula = unsafeMap[characteristicValue] || characteristicValue;
             rollMode = 'Blocage';
-            characteristicLabel = 'Martialité';
+            characteristicLabel = characteristicName;
         } else if (action === 'parade') {
             // Parade : jet de martialité (unsafe)
             const martialiteValue = this.actor.system.martialite?.value || "2d4";
@@ -4002,8 +4155,29 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             // Pour la parade : jet de martialité (unsafe) + bonus de parade
             finalFormula = paradeBonus > 0 ? `${diceFormula} + ${paradeBonus}` : diceFormula;
         } else if (action === 'block') {
-            // Pour le blocage : jet de martialité (unsafe) + bonus de blocage + jet de qualité du bouclier + bonus du bouclier
+            // Pour le blocage : jet basé sur le type du bouclier (unsafe) + bonus de blocage + jet de qualité du bouclier + bonus du bouclier
             let blockFormula = diceFormula;
+            
+            // Appliquer le malus d'agilité si on utilise l'agilité pour le blocage
+            if (characteristicName === 'Agilité') {
+                try {
+                    if (this.actor.system.armor && this.actor.system.armor.type) {
+                        const penaltyMap = {
+                            'tissu': 0,      // Pas de malus
+                            'legere': -4,    // Malus de 4
+                            'lourde': -8,    // Malus de 8
+                            'blindee': -16   // Malus de 16
+                        };
+                        const armorPenalty = penaltyMap[this.actor.system.armor.type] || 0;
+                        if (armorPenalty < 0) {
+                            blockFormula += ` + ${armorPenalty}`;
+                        }
+                    }
+                } catch (e) {
+                    console.warn("Erreur lors du calcul du malus d'agilité pour le blocage:", e);
+                }
+            }
+            
             if (blocageBonus > 0) {
                 blockFormula += ` + ${blocageBonus}`;
             }
@@ -4025,10 +4199,21 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
             console.log('Parade: jet de martialité (unsafe) + bonus de parade');
             console.log('Bonus de parade:', paradeBonus);
         } else if (action === 'block') {
-            console.log('Blocage: jet de martialité (unsafe) + bonus de blocage + jet de qualité du bouclier + bonus du bouclier');
+            console.log(`Blocage: jet de ${characteristicName.toLowerCase()} (unsafe) + bonus de blocage + jet de qualité du bouclier + bonus du bouclier`);
+            console.log('Caractéristique utilisée:', characteristicName);
             console.log('Bonus de blocage:', blocageBonus);
             console.log('Bonus bouclier:', shieldBonus);
             console.log('Dé de qualité du bouclier:', shieldQualityDice);
+            // Afficher le malus d'agilité si applicable
+            if (characteristicName === 'Agilité' && this.actor.system.armor && this.actor.system.armor.type) {
+                const penaltyMap = {
+                    'tissu': 0, 'legere': -4, 'lourde': -8, 'blindee': -16
+                };
+                const armorPenalty = penaltyMap[this.actor.system.armor.type] || 0;
+                if (armorPenalty < 0) {
+                    console.log('Malus d\'armure sur l\'agilité:', armorPenalty);
+                }
+            }
         } else {
             console.log('Esquive: jet d\'agilité (unsafe) + bonus d\'esquive');
             console.log('Bonus d\'esquive:', esquiveBonus);
@@ -4068,7 +4253,7 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                             ${action === 'parade' ? 
                                 `<p><strong>Détail:</strong> Jet de martialité (unsafe)${paradeBonus > 0 ? ` + ${paradeBonus} bonus parade` : ''}</p>` :
                                 action === 'block' ?
-                                `<p><strong>Détail:</strong> Jet de martialité (unsafe)${blocageBonus > 0 ? ` + ${blocageBonus} bonus blocage` : ''} + jet de qualité du bouclier${shieldBonus > 0 ? ` + ${shieldBonus} bonus bouclier` : ''}</p>` :
+                                `<p><strong>Détail:</strong> Jet de ${characteristicName.toLowerCase()} (unsafe)${blocageBonus > 0 ? ` + ${blocageBonus} bonus blocage` : ''} + jet de qualité du bouclier${shieldBonus > 0 ? ` + ${shieldBonus} bonus bouclier` : ''}${characteristicName === 'Agilité' && this.actor.system.armor && this.actor.system.armor.type ? this._getAgilityPenalty() < 0 ? ` + ${this._getAgilityPenalty()} malus armure` : '' : ''}</p>` :
                                 `<p><strong>Détail:</strong> Jet d'agilité (unsafe)${esquiveBonus > 0 ? ` + ${esquiveBonus} bonus esquive` : ''}</p>`
                             }
                         </div>
@@ -4191,6 +4376,80 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
         };
         return qualityDiceMap[rank] || "1d4";
     }
+
+    /**
+     * Initialise la fiche avec les valeurs par défaut
+     * @private
+     */
+    async _initializeSheet() {
+        // S'assurer que les mains ont une nature par défaut
+        await this._ensureDefaultHandNature();
+        
+        // Initialiser l'affichage des boutons de nature
+        this._initializeNatureButtonsDisplay();
+        
+        // Initialiser l'affichage des éléments d'armes
+        this._initializeWeaponDisplay();
+        
+        // Initialiser l'affichage des boutons de résistance
+        this._initializeResistanceButtonsDisplay();
+    }
+
+    /**
+     * S'assure que chaque main a une nature par défaut
+     * @private
+     */
+    async _ensureDefaultHandNature() {
+        const updates = {};
+        
+        // Main principale
+        if (!this.actor.system.weapons.primary.nature) {
+            updates['system.weapons.primary.nature'] = 'weapon';
+        }
+        
+        // Main secondaire
+        if (!this.actor.system.weapons.secondary.nature) {
+            updates['system.weapons.secondary.nature'] = 'weapon';
+        }
+        
+        // Mettre à jour si nécessaire
+        if (Object.keys(updates).length > 0) {
+            try {
+                await this.actor.update(updates);
+                console.log('Nature des mains initialisée avec succès');
+            } catch (error) {
+                console.error('Erreur lors de l\'initialisation de la nature des mains:', error);
+            }
+        }
+    }
+
+    /**
+     * Initialise l'affichage des boutons de nature
+     * @private
+     */
+    _initializeNatureButtonsDisplay() {
+        ['primary', 'secondary'].forEach(hand => {
+            this._updateNatureButtonsDisplay(hand);
+        });
+    }
+
+    /**
+     * Initialise l'affichage des éléments d'armes
+     * @private
+     */
+    _initializeWeaponDisplay() {
+        ['primary', 'secondary'].forEach(hand => {
+            this._updateWeaponDisplay(hand);
+        });
+    }
+
+    /**
+     * Initialise l'affichage des boutons de résistance
+     * @private
+     */
+    _initializeResistanceButtonsDisplay() {
+        this._updateResistanceButtons();
+    }
 }
 
 // Enregistrer la classe de la fiche
@@ -4286,10 +4545,10 @@ Hooks.once("init", function() {
             
             // Calculer le bonus des boucliers d'armes
             let shieldBonus = 0;
-            if (actor.system.weapons?.primary?.type === 'shield') {
+            if (actor.system.weapons?.primary?.nature === 'shield') {
                 shieldBonus += parseInt(actor.system.weapons.primary.bonus) || 0;
             }
-            if (actor.system.weapons?.secondary?.type === 'shield') {
+            if (actor.system.weapons?.secondary?.nature === 'shield') {
                 shieldBonus += parseInt(actor.system.weapons.secondary.bonus) || 0;
             }
             
