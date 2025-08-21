@@ -587,6 +587,7 @@ img{
 }
 
 .bonus-display {
+    display:none;
     background: linear-gradient(135deg, #4a90e2, #357abd);
     color: white;
     padding: 2px 8px;

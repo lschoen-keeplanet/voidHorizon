@@ -1,6 +1,7 @@
 import VHItemSheet from "./module/sheets/VHItemSheet.js";
 import {voidHorizon} from "./module/config.js";
 import "./scripts/heros-sheet.js";
+import "./scripts/npc-sheet.js";
 
 Hooks.once("init", function () {
     console.log("%c JS custom operationnel ", 'color:lime;');

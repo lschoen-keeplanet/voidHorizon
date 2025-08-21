@@ -1,7 +1,7 @@
-class NpcSheet extends foundry.appv1.sheets.ActorSheet {
+class NpcSheet extends ActorSheet {
     /** @override */
     static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
+        return mergeObject(super.defaultOptions, {
             classes: ["voidHorizon", "sheet", "actor", "npc"],
             template: "systems/voidHorizon/templates/sheets/npc-sheet.html",
             width: 500,
@@ -312,7 +312,8 @@ Hooks.once("init", function() {
     console.log("Enregistrement de la fiche NPC");
     
     // Enregistrer la classe de la fiche
-    foundry.appv1.sheets.ActorSheet.registerSheet("voidHorizon", NpcSheet, {
+    Actors.unregisterSheet("core", ActorSheet);
+    Actors.registerSheet("voidHorizon", NpcSheet, {
         types: ["npc"],
         makeDefault: true
     });

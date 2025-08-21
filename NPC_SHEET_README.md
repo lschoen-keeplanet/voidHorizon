@@ -107,6 +107,20 @@ voidHorizon/
 ## 🧪 Test et développement
 
 ### Fichier de test
+Le fichier `test-npc-creation.html` permet de tester :
+- La configuration générale du système
+- Les instructions de test dans Foundry VTT
+- Le dépannage des problèmes courants
+
+### Test de création d'acteurs NPC
+1. **Ouvrir Foundry VTT**
+2. **Aller dans l'onglet "Acteurs"**
+3. **Cliquer sur "Créer un acteur"**
+4. **Vérifier que le type "NPC" apparaît dans la liste**
+5. **Sélectionner "NPC" et créer l'acteur**
+6. **Vérifier que la fiche s'ouvre avec les valeurs par défaut**
+
+### Fichier de test de rendu
 Le fichier `test-npc-sheet.html` permet de tester :
 - Le rendu visuel de la fiche
 - La navigation entre les onglets
@@ -129,6 +143,28 @@ Le fichier `test-npc-sheet.html` permet de tester :
    - Modifier le nom et la description
    - Supprimer une compétence avec le bouton 🗑️
 7. Utiliser les contrôles de test
+
+### Dépannage de la création d'acteurs NPC
+
+#### Si le type "NPC" n'apparaît pas :
+1. Vérifier que le script `npc-sheet.js` est chargé dans `voidHorizon.js`
+2. Vérifier la console du navigateur pour les erreurs JavaScript
+3. Redémarrer Foundry VTT
+4. Vérifier que le système voidHorizon est activé
+5. Vérifier que le type "npc" est bien dans `system.json`
+
+#### Si la fiche ne s'ouvre pas :
+1. Vérifier que le template `npc-sheet.html` existe
+2. Vérifier que les styles `npc-sheet.css` sont chargés
+3. Vérifier la syntaxe JavaScript avec `node -c scripts/npc-sheet.js`
+4. Vérifier les logs de la console du navigateur
+
+#### Vérifications de base :
+- ✅ Type "npc" dans `system.json` → `documentTypes.Actor.types`
+- ✅ Script `npc-sheet.js` dans `system.json` → `scripts`
+- ✅ Template `npc-sheet.html` dans `templates/sheets/`
+- ✅ Styles `npc-sheet.css` dans `system.json` → `styles`
+- ✅ Import dans `voidHorizon.js` → `import "./scripts/npc-sheet.js"`
 
 ## 🎨 Personnalisation
 

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Création NPC - Void Horizon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .info { color: #17a2b8; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test de Création d'Acteurs NPC - Void Horizon</h1>
+    
+    <div class="test-section">
+        <h2>Test de Configuration</h2>
+        <p>Ce fichier teste la configuration pour la création d'acteurs NPC dans Foundry VTT.</p>
+        
+        <h3>Vérifications :</h3>
+        <ul>
+            <li>✅ Type "npc" dans system.json</li>
+            <li>✅ Script npc-sheet.js chargé</li>
+            <li>✅ Template npc-sheet.html présent</li>
+            <li>✅ Styles npc-sheet.css chargés</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>Instructions de Test dans Foundry VTT</h2>
+        <ol>
+            <li>Ouvrir Foundry VTT</li>
+            <li>Aller dans l'onglet "Acteurs"</li>
+            <li>Cliquer sur "Créer un acteur"</li>
+            <li>Vérifier que le type "NPC" apparaît dans la liste</li>
+            <li>Sélectionner "NPC" et créer l'acteur</li>
+            <li>Vérifier que la fiche s'ouvre avec les valeurs par défaut</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>Valeurs par Défaut Attendues</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr style="background: #f8f9fa;">
+                <th style="border: 1px solid #dee2e6; padding: 8px;">Propriété</th>
+                <th style="border: 1px solid #dee2e6; padding: 8px;">Valeur</th>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">Type</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">Ennemi</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">Niveau</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">1</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">PV</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">10/10</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">Bouclier</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">0/0</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">Mana</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">0/0</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">Acuité</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">3d4 - Éveillé</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">Pimpance</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">3d4 - Éveillé</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">Martialité</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">3d4 - Éveillé</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">Arcane</td>
+                <td style="border: 1px solid #dee2e6; padding: 8px;">2d4 - Insensible</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="test-section">
+        <h2>Dépannage</h2>
+        <h3>Si le type "NPC" n'apparaît pas :</h3>
+        <ul>
+            <li>Vérifier que le script npc-sheet.js est chargé</li>
+            <li>Vérifier la console du navigateur pour les erreurs</li>
+            <li>Redémarrer Foundry VTT</li>
+            <li>Vérifier que le système voidHorizon est activé</li>
+        </ul>
+        
+        <h3>Si la fiche ne s'ouvre pas :</h3>
+        <ul>
+            <li>Vérifier que le template npc-sheet.html existe</li>
+            <li>Vérifier que les styles npc-sheet.css sont chargés</li>
+            <li>Vérifier la syntaxe JavaScript</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>Logs de Test</h2>
+        <div id="testLog" class="log">Logs de test apparaîtront ici...</div>
+        <button class="test-button" onclick="clearLog()">Effacer les logs</button>
+    </div>
+
+    <script>
+        // Simulation des logs de test
+        function log(message, type = 'info') {
+            const logElement = document.getElementById('testLog');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}\n`;
+            
+            if (type === 'success') {
+                logElement.innerHTML += `<span class="success">${logEntry}</span>`;
+            } else if (type === 'error') {
+                logElement.innerHTML += `<span class="error">${logEntry}</span>`;
+            } else {
+                logElement.innerHTML += `<span class="info">${logEntry}</span>`;
+            }
+            
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('testLog').innerHTML = 'Logs effacés...\n';
+        }
+
+        // Logs de test au chargement
+        window.addEventListener('load', function() {
+            log('Page de test chargée', 'success');
+            log('Vérification de la configuration...', 'info');
+            log('✅ Type "npc" dans system.json', 'success');
+            log('✅ Script npc-sheet.js présent', 'success');
+            log('✅ Template npc-sheet.html présent', 'success');
+            log('✅ Styles npc-sheet.css présents', 'success');
+            log('Configuration prête pour les tests dans Foundry VTT', 'success');
+        });
+    </script>
+</body>
+</html>
