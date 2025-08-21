@@ -701,17 +701,14 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                 [`system.weapons.${hand}.nature`]: nature
             };
 
-            // Si la nature change, réinitialiser tous les champs sauf le nom
-            const currentNature = this.actor.system.weapons[hand].nature;
-            if (currentNature !== nature) {
-                // Réinitialiser tous les champs du formulaire sauf le nom
-                updateData[`system.weapons.${hand}.type`] = null;
-                updateData[`system.weapons.${hand}.rank`] = null;
-                updateData[`system.weapons.${hand}.bonus`] = null;
-                updateData[`system.weapons.${hand}.description`] = null;
-                
-                console.log(`Réinitialisation des champs du formulaire pour la main ${hand} (nature changée de ${currentNature} vers ${nature})`);
-            }
+            // Toujours réinitialiser tous les champs sauf le nom lors d'un changement de nature
+            // Réinitialiser tous les champs du formulaire sauf le nom
+            updateData[`system.weapons.${hand}.type`] = null;
+            updateData[`system.weapons.${hand}.rank`] = null;
+            updateData[`system.weapons.${hand}.bonus`] = null;
+            updateData[`system.weapons.${hand}.description`] = null;
+            
+            console.log(`Réinitialisation des champs du formulaire pour la main ${hand} (nouvelle nature: ${nature})`);
 
             // Mettre à jour les données de l'acteur
             await this.actor.update(updateData);

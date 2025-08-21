@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Reset Functionality</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            border: 1px solid #ccc;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .nature-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #800000;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+            color: #800000;
+            cursor: pointer;
+            margin: 5px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .nature-btn[data-active="true"] {
+            background: linear-gradient(135deg, #800000, #600000);
+            color: white;
+        }
+        .nature-btn.weapon:hover { background: linear-gradient(135deg, #ff6b6b, #ee5a52); }
+        .nature-btn.shield:hover { background: linear-gradient(135deg, #4ecdc4, #44a08d); }
+        .nature-btn.focus:hover { background: linear-gradient(135deg, #45b7d1, #96c93d); }
+        
+        .form-field {
+            margin: 10px 0;
+        }
+        .form-field label {
+            display: inline-block;
+            width: 100px;
+            font-weight: bold;
+        }
+        .form-field input, .form-field select, .form-field textarea {
+            width: 200px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .log {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 3px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test de la Fonctionnalité de Reset</h1>
+    
+    <div class="test-section">
+        <h2>Main Principale</h2>
+        <div class="hand-nature-buttons">
+            <button type="button" class="nature-btn weapon" data-hand="primary" data-nature="weapon" data-active="true">
+                ⚔️
+            </button>
+            <button type="button" class="nature-btn shield" data-hand="primary" data-nature="shield">
+                🛡️
+            </button>
+            <button type="button" class="nature-btn focus" data-hand="primary" data-nature="focus">
+                🔥
+            </button>
+        </div>
+        
+        <div class="weapon-form">
+            <div class="form-field">
+                <label>Nom:</label>
+                <input type="text" name="primary.name" value="Épée longue" readonly>
+            </div>
+            <div class="form-field">
+                <label>Type:</label>
+                <select name="primary.type">
+                    <option value="">Sélectionner...</option>
+                    <option value="agility" selected>Agilité</option>
+                    <option value="martialite">Martialité</option>
+                    <option value="arcane">Arcane</option>
+                </select>
+            </div>
+            <div class="form-field">
+                <label>Rang:</label>
+                <select name="primary.rank">
+                    <option value="">Sélectionner...</option>
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+            <div class="form-field">
+                <label>Bonus:</label>
+                <input type="number" name="primary.bonus" value="2">
+            </div>
+            <div class="form-field">
+                <label>Description:</label>
+                <textarea name="primary.description" rows="3">Une épée longue bien équilibrée</textarea>
+            </div>
+        </div>
+        
+        <div class="weapon-roll-buttons">
+            <button type="button" class="roll-btn">🎲 Safe</button>
+            <button type="button" class="roll-btn">⚔️ Unsafe</button>
+        </div>
+        
+        <div class="weapon-dice-ranges">
+            <span>Range Safe: 5-8</span>
+            <span>Range Unsafe: 1-12</span>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Main Secondaire</h2>
+        <div class="hand-nature-buttons">
+            <button type="button" class="nature-btn weapon" data-hand="secondary" data-nature="weapon" data-active="true">
+                ⚔️
+            </button>
+            <button type="button" class="nature-btn shield" data-hand="secondary" data-nature="shield">
+                🛡️
+            </button>
+            <button type="button" class="nature-btn focus" data-hand="secondary" data-nature="focus">
+                🔥
+            </button>
+        </div>
+        
+        <div class="weapon-form">
+            <div class="form-field">
+                <label>Nom:</label>
+                <input type="text" name="secondary.name" value="Dague" readonly>
+            </div>
+            <div class="form-field">
+                <label>Type:</label>
+                <select name="secondary.type">
+                    <option value="">Sélectionner...</option>
+                    <option value="agility" selected>Agilité</option>
+                    <option value="martialite">Martialité</option>
+                    <option value="arcane">Arcane</option>
+                </select>
+            </div>
+            <div class="form-field">
+                <label>Rang:</label>
+                <select name="secondary.type">
+                    <option value="">Sélectionner...</option>
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+            <div class="form-field">
+                <label>Bonus:</label>
+                <input type="number" name="secondary.bonus" value="1">
+            </div>
+            <div class="form-field">
+                <label>Description:</label>
+                <textarea name="secondary.description" rows="3">Une dague de poche</textarea>
+            </div>
+        </div>
+        
+        <div class="weapon-roll-buttons">
+            <button type="button" class="roll-btn">🎲 Safe</button>
+            <button type="button" class="roll-btn">⚔️ Unsafe</button>
+        </div>
+        
+        <div class="weapon-dice-ranges">
+            <span>Range Safe: 3-6</span>
+            <span>Range Unsafe: 1-8</span>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Log des Actions</h2>
+        <div class="log" id="actionLog"></div>
+    </div>
+    
+    <script>
+        // Simulation des données de l'acteur
+        const mockActor = {
+            system: {
+                weapons: {
+                    primary: {
+                        name: "Épée longue",
+                        nature: "weapon",
+                        type: "agility",
+                        rank: "1",
+                        bonus: "2",
+                        description: "Une épée longue bien équilibrée"
+                    },
+                    secondary: {
+                        name: "Dague",
+                        nature: "weapon",
+                        type: "agility",
+                        rank: "1",
+                        bonus: "1",
+                        description: "Une dague de poche"
+                    }
+                }
+            }
+        };
+        
+        function logAction(message) {
+            const log = document.getElementById('actionLog');
+            const timestamp = new Date().toLocaleTimeString();
+            log.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            log.scrollTop = log.scrollHeight;
+        }
+        
+        // Simulation de la méthode _updateHandNature
+        async function updateHandNature(hand, nature) {
+            logAction(`Mise à jour de la nature de la main ${hand} vers: ${nature}`);
+            
+            // Réinitialiser tous les champs sauf le nom
+            mockActor.system.weapons[hand].type = null;
+            mockActor.system.weapons[hand].rank = null;
+            mockActor.system.weapons[hand].bonus = null;
+            mockActor.system.weapons[hand].description = null;
+            
+            logAction(`Réinitialisation des champs du formulaire pour la main ${hand}`);
+            
+            // Mettre à jour la nature
+            mockActor.system.weapons[hand].nature = nature;
+            
+            // Mettre à jour l'UI
+            updateNatureButtonsDisplay(hand);
+            updateWeaponDisplay(hand);
+            
+            logAction(`Nature de la main ${hand} mise à jour avec succès`);
+        }
+        
+        function updateNatureButtonsDisplay(hand) {
+            const handContainer = document.querySelector(`.${hand}-weapon`);
+            const natureButtons = handContainer.querySelectorAll('.nature-btn');
+            
+            natureButtons.forEach(button => {
+                const buttonNature = button.dataset.nature;
+                const currentNature = mockActor.system.weapons[hand].nature;
+                
+                if (buttonNature === currentNature) {
+                    button.setAttribute('data-active', 'true');
+                } else {
+                    button.removeAttribute('data-active');
+                }
+            });
+        }
+        
+        function updateWeaponDisplay(hand) {
+            const handContainer = document.querySelector(`.${hand}-weapon`);
+            const nature = mockActor.system.weapons[hand].nature;
+            
+            const rollButtons = handContainer.querySelector('.weapon-roll-buttons');
+            const diceRanges = handContainer.querySelector('.weapon-dice-ranges');
+            
+            if (nature === 'shield') {
+                rollButtons.classList.add('hidden');
+                diceRanges.classList.add('hidden');
+                
+                // Réinitialiser les valeurs des champs du formulaire dans l'UI
+                const typeSelect = handContainer.querySelector('select[name*=".type"]');
+                const rankSelect = handContainer.querySelector('select[name*=".rank"]');
+                const bonusInput = handContainer.querySelector('input[name*=".bonus"]');
+                const descriptionTextarea = handContainer.querySelector('textarea[name*=".description"]');
+                
+                if (typeSelect) typeSelect.value = '';
+                if (rankSelect) rankSelect.value = '';
+                if (bonusInput) bonusInput.value = '';
+                if (descriptionTextarea) descriptionTextarea.value = '';
+                
+                logAction(`UI mise à jour pour la main ${hand} - champs du formulaire réinitialisés`);
+            } else {
+                rollButtons.classList.remove('hidden');
+                diceRanges.classList.remove('hidden');
+            }
+        }
+        
+        // Initialiser les événements
+        document.addEventListener('DOMContentLoaded', function() {
+            const natureButtons = document.querySelectorAll('.nature-btn');
+            
+            natureButtons.forEach(button => {
+                button.addEventListener('click', async function() {
+                    const hand = this.dataset.hand;
+                    const nature = this.dataset.nature;
+                    
+                    logAction(`Clic sur le bouton ${nature} pour la main ${hand}`);
+                    
+                    await updateHandNature(hand, nature);
+                });
+            });
+            
+            logAction('Système initialisé - Testez en cliquant sur les boutons de nature');
+        });
+    </script>
+</body>
+</html>
