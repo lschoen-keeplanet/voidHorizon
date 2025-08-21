@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Affichage de la Qualité des Armes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .code-block {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            margin: 10px 0;
+        }
+        .success {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .info {
+            color: #17a2b8;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test - Affichage de la Qualité des Armes</h1>
+    
+    <div class="test-section">
+        <h2>🎯 Objectif</h2>
+        <p>Modifier l'affichage en mode lecture de la qualité des armes et boucliers pour montrer à la fois le label descriptif et le bonus de dés accordé.</p>
+    </div>
+
+    <div class="test-section">
+        <h2>🐛 Problème Identifié</h2>
+        <p>En mode lecture, la qualité des armes et boucliers n'affichait que :</p>
+        <ul>
+            <li><strong>Rang 0 :</strong> "Équipement brisé" ✅ (correct)</li>
+            <li><strong>Rangs 1-5 :</strong> Juste le nombre (1, 2, 3, 4, 5) ❌ (incorrect)</li>
+        </ul>
+        <p>L'utilisateur souhaitait voir : <strong>"Équipement commun (1d6)"</strong> au lieu de juste <strong>"1"</strong></p>
+    </div>
+
+    <div class="test-section">
+        <h2>🔧 Solution Implémentée</h2>
+        
+        <h3>1. Nouvelle Fonction Helper JavaScript</h3>
+        <div class="code-block">/**
+ * Retourne le label descriptif pour la qualité d'une arme
+ * @param {string} rank - Le rang de qualité (0-5)
+ * @returns {string} - Le label descriptif (ex: "Équipement brisé")
+ * @private
+ */
+_getWeaponQualityLabel(rank) {
+    const qualityLabelMap = {
+        "0": "Équipement brisé",
+        "1": "Équipement commun",
+        "2": "Équipement de qualité",
+        "3": "Équipement rare",
+        "4": "Équipement exceptionnel",
+        "5": "Équipement légendaire"
+    };
+    return qualityLabelMap[rank] || "Équipement brisé";
+}</div>
+
+        <h3>2. Helpers Handlebars Enregistrés</h3>
+        <div class="code-block">// Helpers pour la qualité des armes
+Handlebars.registerHelper('getWeaponQualityLabel', function(rank) {
+    const qualityLabelMap = {
+        "0": "Équipement brisé",
+        "1": "Équipement commun",
+        "2": "Équipement de qualité",
+        "3": "Équipement rare",
+        "4": "Équipement exceptionnel",
+        "5": "Équipement légendaire"
+    };
+    return qualityLabelMap[rank] || "Équipement brisé";
+});
+
+Handlebars.registerHelper('getWeaponQualityDice', function(rank) {
+    const qualityDiceMap = {
+        "0": "1d4",
+        "1": "1d6",
+        "2": "1d8",
+        "3": "1d10",
+        "4": "1d12",
+        "5": "1d20"
+    };
+    return qualityDiceMap[rank] || "1d4";
+});</div>
+
+        <h3>3. Template HTML Mis à Jour</h3>
+        <p><strong>Avant :</strong></p>
+        <div class="code-block">&lt;div class="read-mode"&gt;{{#if (eq actor.system.weapons.primary.rank "0")}}Équipement brisé{{else}}{{actor.system.weapons.primary.rank}}{{/if}}&lt;/div&gt;</div>
+        
+        <p><strong>Après :</strong></p>
+        <div class="code-block">&lt;div class="read-mode"&gt;{{getWeaponQualityLabel actor.system.weapons.primary.rank}} ({{getWeaponQualityDice actor.system.weapons.primary.rank}})&lt;/div&gt;</div>
+    </div>
+
+    <div class="test-section">
+        <h2>✅ Résultat Attendu</h2>
+        <p>En mode lecture, la qualité des armes et boucliers affiche maintenant :</p>
+        <ul>
+            <li><strong>Rang 0 :</strong> "Équipement brisé (1d4)"</li>
+            <li><strong>Rang 1 :</strong> "Équipement commun (1d6)"</li>
+            <li><strong>Rang 2 :</strong> "Équipement de qualité (1d8)"</li>
+            <li><strong>Rang 3 :</strong> "Équipement rare (1d10)"</li>
+            <li><strong>Rang 4 :</strong> "Équipement exceptionnel (1d12)"</li>
+            <li><strong>Rang 5 :</strong> "Équipement légendaire (1d20)"</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🧪 Tests à Effectuer</h2>
+        <ol>
+            <li>Ouvrir une fiche de personnage</li>
+            <li>Aller dans l'onglet "Équipement"</li>
+            <li>Vérifier que les deux mains (principale et secondaire) affichent correctement la qualité</li>
+            <li>Changer la qualité d'une arme et vérifier que l'affichage se met à jour</li>
+            <li>Vérifier que l'affichage fonctionne pour tous les rangs (0-5)</li>
+            <li>Vérifier que l'affichage fonctionne pour les boucliers aussi</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>📁 Fichiers Modifiés</h2>
+        <ul>
+            <li><strong>scripts/heros-sheet.js</strong> - Ajout de la fonction `_getWeaponQualityLabel` et des helpers Handlebars</li>
+            <li><strong>templates/sheets/heros-sheet.html</strong> - Mise à jour des affichages de qualité pour les mains principale et secondaire</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🎉 Avantages de cette Solution</h2>
+        <ul>
+            <li><span class="success">Affichage cohérent</span> - Tous les rangs affichent maintenant le label + dés</li>
+            <li><span class="success">Lisibilité améliorée</span> - Plus besoin de deviner ce que signifie "3"</li>
+            <li><span class="success">Cohérence avec l'interface</span> - Les options du select montrent déjà "Équipement rare (1d10)"</li>
+            <li><span class="success">Maintenance facilitée</span> - Centralisation des labels dans des helpers réutilisables</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🔍 Détails Techniques</h2>
+        <ul>
+            <li><strong>Fonction privée :</strong> `_getWeaponQualityLabel(rank)` dans la classe HeroSheet</li>
+            <li><strong>Helpers publics :</strong> `getWeaponQualityLabel` et `getWeaponQualityDice` disponibles dans les templates</li>
+            <li><strong>Mapping :</strong> Correspondance 1:1 entre rangs numériques et labels descriptifs</li>
+            <li><strong>Fallback :</strong> Valeur par défaut "Équipement brisé" si le rang est invalide</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>📝 Notes de Développement</h2>
+        <p>Cette solution suit le même pattern que les autres helpers Handlebars du système :</p>
+        <ul>
+            <li>Fonction privée dans la classe pour la logique métier</li>
+            <li>Helper Handlebars public pour l'utilisation dans les templates</li>
+            <li>Mapping centralisé et facilement modifiable</li>
+            <li>Gestion des cas d'erreur avec des valeurs par défaut</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🎯 Prochaines Étapes</h2>
+        <p>Cette fonctionnalité est maintenant complète et prête pour les tests utilisateur. Les prochaines améliorations pourraient inclure :</p>
+        <ul>
+            <li>Localisation des labels en plusieurs langues</li>
+            <li>Personnalisation des labels par type d'équipement</li>
+            <li>Intégration avec le système de qualité des boucliers existant</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🏆 Conclusion</h2>
+        <p>L'affichage de la qualité des armes et boucliers est maintenant <span class="success">cohérent et informatif</span>. Les utilisateurs peuvent voir clairement à la fois le niveau de qualité descriptif et le bonus de dés correspondant, améliorant significativement l'expérience utilisateur de la fiche de personnage.</p>
+    </div>
+</body>
+</html>

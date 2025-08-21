@@ -376,9 +376,7 @@
                                                                 actor.system.weapons.primary.rank}}>Équipement
                                                                 légendaire (1d20)</option>
                                                         </select>
-                                                        <div class="read-mode">{{#if (eq
-                                                            actor.system.weapons.primary.rank "0")}}Équipement
-                                                            brisé{{else}}{{actor.system.weapons.primary.rank}}{{/if}}
+                                                        <div class="read-mode">{{getWeaponQualityLabel actor.system.weapons.primary.rank}} ({{getWeaponQualityDice actor.system.weapons.primary.rank}})
                                                         </div>
                                                     </div>
                                                     <div class="weapon-field">
@@ -479,9 +477,7 @@
                                                                 actor.system.weapons.secondary.rank}}>Équipement
                                                                 légendaire (1d20)</option>
                                                         </select>
-                                                        <div class="read-mode">{{#if (eq
-                                                            actor.system.weapons.secondary.rank "0")}}Équipement
-                                                            brisé{{else}}{{actor.system.weapons.secondary.rank}}{{/if}}
+                                                        <div class="read-mode">{{getWeaponQualityLabel actor.system.weapons.secondary.rank}} ({{getWeaponQualityDice actor.system.weapons.secondary.rank}})
                                                         </div>
                                                     </div>
                                                     <div class="weapon-field">

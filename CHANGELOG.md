@@ -61,6 +61,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Affichage des boutons de parade/blocage selon l'équipement
 - **Ranges des armes martialité non affichés** - Correction de la détection du type d'arme "strength"
 - **Affichage incorrect de la qualité d'arme** - Les options montrent maintenant les dés (1d4, 1d6, 1d8, etc.) au lieu des entiers
+- **Affichage de la qualité des armes en mode lecture** - Ajout de labels descriptifs et formules de dés pour tous les rangs de qualité
 
 #### 🗑️ Supprimé
 - Affichage séparé des bonus totaux

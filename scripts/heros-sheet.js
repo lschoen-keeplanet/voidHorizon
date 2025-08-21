@@ -3683,6 +3683,24 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     /**
+     * Retourne le label descriptif pour la qualité d'une arme
+     * @param {string} rank - Le rang de qualité (0-5)
+     * @returns {string} - Le label descriptif (ex: "Équipement brisé")
+     * @private
+     */
+    _getWeaponQualityLabel(rank) {
+        const qualityLabelMap = {
+            "0": "Équipement brisé",
+            "1": "Équipement commun",
+            "2": "Équipement de qualité",
+            "3": "Équipement rare",
+            "4": "Équipement exceptionnel",
+            "5": "Équipement légendaire"
+        };
+        return qualityLabelMap[rank] || "Équipement brisé";
+    }
+
+    /**
      * Met à jour l'affichage du blason de faction
      * @param {string} factionValue - La nouvelle valeur de faction
      * @private
@@ -4226,6 +4244,31 @@ Hooks.once("init", function() {
 
     Handlebars.registerHelper('get', function(obj, key) {
         return obj && obj[key];
+    });
+
+    // Helpers pour la qualité des armes
+    Handlebars.registerHelper('getWeaponQualityLabel', function(rank) {
+        const qualityLabelMap = {
+            "0": "Équipement brisé",
+            "1": "Équipement commun",
+            "2": "Équipement de qualité",
+            "3": "Équipement rare",
+            "4": "Équipement exceptionnel",
+            "5": "Équipement légendaire"
+        };
+        return qualityLabelMap[rank] || "Équipement brisé";
+    });
+
+    Handlebars.registerHelper('getWeaponQualityDice', function(rank) {
+        const qualityDiceMap = {
+            "0": "1d4",
+            "1": "1d6",
+            "2": "1d8",
+            "3": "1d10",
+            "4": "1d12",
+            "5": "1d20"
+        };
+        return qualityDiceMap[rank] || "1d4";
     });
 
             // Nouveaux helpers pour les valeurs totales incluant les bonus des traits
