@@ -37,6 +37,26 @@ class NpcSheet extends foundry.appv1.sheets.ActorSheet {
             data.actor.system.skills = [];
         }
 
+        // Initialiser les valeurs par défaut pour un nouvel acteur
+        if (!data.actor.system.type) {
+            data.actor.system.type = "enemy";
+        }
+        if (!data.actor.system.level) {
+            data.actor.system.level = 1;
+        }
+        if (!data.actor.system.acuite?.value) {
+            data.actor.system.acuite = { value: "3d4" };
+        }
+        if (!data.actor.system.pimpance?.value) {
+            data.actor.system.pimpance = { value: "3d4" };
+        }
+        if (!data.actor.system.martialite?.value) {
+            data.actor.system.martialite = { value: "3d4" };
+        }
+        if (!data.actor.system.arcane?.value) {
+            data.actor.system.arcane = { value: "2d4" };
+        }
+
         // Préparation des données pour le template
         this._prepareItems(data);
         
@@ -295,5 +315,42 @@ Hooks.once("init", function() {
     foundry.appv1.sheets.ActorSheet.registerSheet("voidHorizon", NpcSheet, {
         types: ["npc"],
         makeDefault: true
+    });
+});
+
+// Hook pour initialiser les données par défaut lors de la création d'un nouvel acteur NPC
+Hooks.once("ready", function() {
+    // Écouter la création d'un nouvel acteur
+    Hooks.on("createActor", async function(actor, options, userId) {
+        // Vérifier si c'est un acteur NPC et s'il vient d'être créé
+        if (actor.type === "npc" && options.initialize) {
+            console.log("Initialisation d'un nouvel acteur NPC:", actor.name);
+            
+            try {
+                // Initialiser les données par défaut
+                const defaultData = {
+                    "system.type": "enemy",
+                    "system.level": 1,
+                    "system.resources.health": { value: 10, max: 10 },
+                    "system.resources.shield": { value: 0, max: 0 },
+                    "system.resources.mana": { value: 0, max: 0 },
+                    "system.acuite": { value: "3d4" },
+                    "system.pimpance": { value: "3d4" },
+                    "system.martialite": { value: "3d4" },
+                    "system.arcane": { value: "2d4" },
+                    "system.attacks": [],
+                    "system.skills": [],
+                    "system.description": "Un nouveau NPC",
+                    "system.notes": ""
+                };
+                
+                // Mettre à jour l'acteur avec les données par défaut
+                await actor.update(defaultData);
+                console.log("Données par défaut appliquées au NPC:", actor.name);
+                
+            } catch (error) {
+                console.error("Erreur lors de l'initialisation du NPC:", error);
+            }
+        }
     });
 });

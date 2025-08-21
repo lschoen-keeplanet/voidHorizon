@@ -42,6 +42,16 @@ La fiche NPC (Non-Player Character) est un nouveau type d'acteur dans le systèm
 3. Cliquer sur "Créer un acteur"
 4. Sélectionner le type "NPC"
 5. Remplir les informations de base
+6. **Les valeurs par défaut sont automatiquement appliquées** :
+   - Type : Ennemi
+   - Niveau : 1
+   - PV : 10/10
+   - Bouclier : 0/0
+   - Mana : 0/0
+   - Acuité : 3d4 (Éveillé)
+   - Pimpance : 3d4 (Éveillé)
+   - Martialité : 3d4 (Éveillé)
+   - Arcane : 2d4 (Insensible)
 
 ### 2. Configuration des ressources
 - **PV** : Définir la santé maximale selon le niveau et la race
@@ -51,6 +61,11 @@ La fiche NPC (Non-Player Character) est un nouveau type d'acteur dans le systèm
 ### 3. Ajustement des caractéristiques
 - Choisir le niveau de chaque caractéristique selon le rôle du NPC
 - Les valeurs vont de "Insensible" (2d4) à "Archimage" (7d4)
+
+### 4. Ajout d'attaques et compétences
+- **Attaques** : Cliquer sur "Ajouter" pour créer une nouvelle attaque
+- **Compétences** : Cliquer sur "Ajouter" pour créer une nouvelle compétence
+- Tous les champs sont éditables et sauvegardés automatiquement
 
 ## 📁 Structure des fichiers
 
