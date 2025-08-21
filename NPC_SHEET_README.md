@@ -34,6 +34,15 @@ La fiche NPC (Non-Player Character) est un nouveau type d'acteur dans le systèm
 - **Description** : Description détaillée de la compétence
 - **Gestion dynamique** : Ajout/suppression de compétences à volonté
 
+### 🎲 Jets de Dés (Nouveau !)
+- **Jets d'attaques** : Boutons de jet avec gestion des coups critiques et échecs critiques
+- **Jets de compétences** : Boutons d'utilisation sans jet de dés
+- **Jets de caractéristiques** : Boutons de jet avec bonus intégrés
+- **Système de bonus** : Champs de saisie pour ajouter des bonus aux caractéristiques
+- **Affichage dans le chat** : Messages stylisés avec animations et couleurs distinctes
+- **Gestion des critiques** : Détection automatique des coups critiques (max) et échecs critiques (min)
+- **Formules de dés personnalisables** : Support des formules complexes (ex: 2d6+3, 1d20-1)
+
 ## 🎮 Utilisation
 
 ### 1. Création d'un NPC
@@ -67,6 +76,13 @@ La fiche NPC (Non-Player Character) est un nouveau type d'acteur dans le systèm
 - **Compétences** : Cliquer sur "Ajouter" pour créer une nouvelle compétence
 - Tous les champs sont éditables et sauvegardés automatiquement
 
+### 5. Utilisation des jets de dés
+- **Jets d'attaques** : Cliquer sur le bouton ⚔️ à côté de chaque attaque
+- **Jets de caractéristiques** : Cliquer sur le bouton 🎯 à côté de chaque caractéristique
+- **Utilisation des compétences** : Cliquer sur le bouton ⭐ à côté de chaque compétence
+- **Modification des bonus** : Ajuster les valeurs dans les champs verts des caractéristiques
+- **Affichage des résultats** : Tous les jets s'affichent dans le chat avec un style distinctif
+
 ## 📁 Structure des fichiers
 
 ```
@@ -88,11 +104,18 @@ voidHorizon/
 - ✅ Système de compétences avec descriptions
 - ✅ Interface utilisateur moderne et responsive
 
-### Phase 2 : Combat avancé
-- Système de lancers de dés intégré
+### ✅ Phase 2 : Jets de Dés (Terminée)
+- ✅ Système de lancers de dés intégré avec gestion des critiques
+- ✅ Jets d'attaques avec formules personnalisables
+- ✅ Jets de caractéristiques avec système de bonus
+- ✅ Utilisation des compétences avec affichage dans le chat
+- ✅ Interface de chat stylisée avec animations
+
+### Phase 3 : Combat avancé
 - Calculs automatiques de dégâts
 - Conditions de combat et effets spéciaux
 - Actions de combat avancées
+- Système de résistance et immunités
 
 ### Phase 3 : Inventaire
 - Équipement et objets portés

@@ -1,3 +1,9 @@
+/* débug */
+section.chat-sidebar{
+    overflow: auto;
+}
+
+
 img{
     border:0px solid red;
 }

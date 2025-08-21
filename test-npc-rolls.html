@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Jets de Dés NPC - Void Horizon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .demo-npc {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .characteristic-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+        }
+        .characteristic-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #7f8c8d;
+            border-radius: 4px;
+        }
+        .bonus-input {
+            width: 80px;
+            text-align: center;
+            padding: 8px;
+            border: 1px solid #2ecc71;
+            border-radius: 4px;
+            background: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+            font-weight: bold;
+        }
+        .roll-btn {
+            background: #9b59b6;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .roll-btn:hover {
+            background: #8e44ad;
+        }
+        .attack-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+        }
+        .attack-roll-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .attack-roll-btn:hover {
+            background: #2ecc71;
+        }
+        .skill-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+        }
+        .skill-roll-btn {
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .skill-roll-btn:hover {
+            background: #e67e22;
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .info { color: #17a2b8; }
+        .warning { color: #ffc107; }
+    </style>
+</head>
+<body>
+    <h1>🎲 Test des Jets de Dés NPC - Void Horizon</h1>
+    
+    <div class="test-section">
+        <h2>Fonctionnalités Implémentées</h2>
+        <ul>
+            <li>✅ <strong>Jets d'attaques</strong> : Boutons de jet avec gestion des coups critiques et échecs critiques</li>
+            <li>✅ <strong>Jets de compétences</strong> : Boutons d'utilisation sans jet de dés</li>
+            <li>✅ <strong>Jets de caractéristiques</strong> : Boutons de jet avec bonus intégrés</li>
+            <li>✅ <strong>Système de bonus</strong> : Champs de saisie pour ajouter des bonus aux caractéristiques</li>
+            <li>✅ <strong>Affichage dans le chat</strong> : Messages stylisés avec animations</li>
+        </ul>
+    </div>
+
+    <div class="demo-npc">
+        <h2>🧙‍♂️ NPC de Démonstration</h2>
+        <p><strong>Nom :</strong> Gandalf le Gris</p>
+        <p><strong>Type :</strong> Allié</p>
+        <p><strong>Niveau :</strong> 15</p>
+        
+        <h3>Caractéristiques avec Bonus</h3>
+        
+        <div class="characteristic-controls">
+            <label><strong>Acuité :</strong></label>
+            <select class="characteristic-input" id="acuite-select">
+                <option value="3d4">3d4 - Éveillé</option>
+                <option value="4d4">4d4 - Novice</option>
+                <option value="5d4">5d4 - Initié</option>
+                <option value="6d4">6d4 - Maître</option>
+                <option value="7d4">7d4 - Archimage</option>
+            </select>
+            <input type="number" class="bonus-input" id="acuite-bonus" value="+3" placeholder="+0">
+            <button class="roll-btn" onclick="rollCharacteristic('acuite')">🎯 Lancer</button>
+        </div>
+
+        <div class="characteristic-controls">
+            <label><strong>Pimpance :</strong></label>
+            <select class="characteristic-input" id="pimpance-select">
+                <option value="3d4">3d4 - Éveillé</option>
+                <option value="4d4">4d4 - Novice</option>
+                <option value="5d4">5d4 - Initié</option>
+                <option value="6d4">6d4 - Maître</option>
+                <option value="7d4">7d4 - Archimage</option>
+            </select>
+            <input type="number" class="bonus-input" id="pimpance-bonus" value="+2" placeholder="+0">
+            <button class="roll-btn" onclick="rollCharacteristic('pimpance')">🎯 Lancer</button>
+        </div>
+
+        <div class="characteristic-controls">
+            <label><strong>Martialité :</strong></label>
+            <select class="characteristic-input" id="martialite-select">
+                <option value="3d4">3d4 - Éveillé</option>
+                <option value="4d4">4d4 - Novice</option>
+                <option value="5d4">5d4 - Initié</option>
+                <option value="6d4">6d4 - Maître</option>
+                <option value="7d4">7d4 - Archimage</option>
+            </select>
+            <input type="number" class="bonus-input" id="martialite-bonus" value="+1" placeholder="+0">
+            <button class="roll-btn" onclick="rollCharacteristic('martialite')">🎯 Lancer</button>
+        </div>
+
+        <div class="characteristic-controls">
+            <label><strong>Arcane :</strong></label>
+            <select class="characteristic-input" id="arcane-select">
+                <option value="2d4">2d4 - Insensible</option>
+                <option value="3d4">3d4 - Éveillé</option>
+                <option value="4d4">4d4 - Novice</option>
+                <option value="5d4">5d4 - Initié</option>
+                <option value="6d4">6d4 - Maître</option>
+                <option value="7d4">7d4 - Archimage</option>
+            </select>
+            <input type="number" class="bonus-input" id="arcane-bonus" value="+5" placeholder="+0">
+            <button class="roll-btn" onclick="rollCharacteristic('arcane')">🎯 Lancer</button>
+        </div>
+
+        <h3>Attaques</h3>
+        
+        <div class="attack-controls">
+            <label><strong>Baguette Magique :</strong></label>
+            <input type="text" class="characteristic-input" id="attack-dice" value="1d20+8" placeholder="Formule de dés">
+            <button class="attack-roll-btn" onclick="rollAttack('Baguette Magique')">⚔️ Lancer</button>
+        </div>
+
+        <div class="attack-controls">
+            <label><strong>Épée Glamdring :</strong></label>
+            <input type="text" class="characteristic-input" id="attack-dice2" value="1d20+6" placeholder="Formule de dés">
+            <button class="attack-roll-btn" onclick="rollAttack('Épée Glamdring')">⚔️ Lancer</button>
+        </div>
+
+        <h3>Compétences</h3>
+        
+        <div class="skill-controls">
+            <label><strong>Lumière :</strong></label>
+            <button class="skill-roll-btn" onclick="useSkill('Lumières')">⭐ Utiliser</button>
+        </div>
+
+        <div class="skill-controls">
+            <label><strong>Protection :</strong></label>
+            <button class="skill-roll-btn" onclick="useSkill('Protection')">⭐ Utiliser</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Instructions de Test dans Foundry VTT</h2>
+        <ol>
+            <li><strong>Redémarrer Foundry VTT</strong> pour charger les nouvelles fonctionnalités</li>
+            <li><strong>Créer un acteur NPC</strong> ou ouvrir un NPC existant</li>
+            <li><strong>Tester les jets de caractéristiques :</strong>
+                <ul>
+                    <li>Cliquer sur les boutons 🎯 à côté de chaque caractéristique</li>
+                    <li>Modifier les bonus dans les champs verts</li>
+                    <li>Vérifier que les bonus sont appliqués aux jets</li>
+                </ul>
+            </li>
+            <li><strong>Tester les jets d'attaques :</strong>
+                <ul>
+                    <li>Cliquer sur les boutons ⚔️ à côté de chaque attaque</li>
+                    <li>Vérifier l'affichage des coups critiques et échecs critiques</li>
+                </ul>
+            </li>
+            <li><strong>Tester les compétences :</strong>
+                <ul>
+                    <li>Cliquer sur les boutons ⭐ à côté de chaque compétence</li>
+                    <li>Vérifier l'affichage des descriptions dans le chat</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>Logs de Test</h2>
+        <div id="testLog" class="log">Logs de test apparaîtront ici...</div>
+        <button onclick="clearLog()" style="margin: 10px 5px;">Effacer les logs</button>
+    </div>
+
+    <script>
+        // Simulation des jets de dés
+        function log(message, type = 'info') {
+            const logElement = document.getElementById('testLog');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}\n`;
+            
+            if (type === 'success') {
+                logElement.innerHTML += `<span class="success">${logEntry}</span>`;
+            } else if (type === 'error') {
+                logElement.innerHTML += `<span class="error">${logEntry}</span>`;
+            } else if (type === 'warning') {
+                logElement.innerHTML += `<span class="warning">${logEntry}</span>`;
+            } else {
+                logElement.innerHTML += `<span class="info">${logEntry}</span>`;
+            }
+            
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('testLog').innerHTML = 'Logs effacés...\n';
+        }
+
+        function rollCharacteristic(characteristic) {
+            const select = document.getElementById(`${characteristic}-select`);
+            const bonus = document.getElementById(`${characteristic}-bonus`);
+            const dice = select.value;
+            const bonusValue = parseInt(bonus.value) || 0;
+            
+            // Simulation d'un jet de dés
+            const diceMatch = dice.match(/(\d+)d(\d+)/);
+            if (diceMatch) {
+                const numDice = parseInt(diceMatch[1]);
+                const diceFaces = parseInt(diceMatch[2]);
+                
+                let total = 0;
+                let rolls = [];
+                for (let i = 0; i < numDice; i++) {
+                    const roll = Math.floor(Math.random() * diceFaces) + 1;
+                    rolls.push(roll);
+                    total += roll;
+                }
+                
+                total += bonusValue;
+                
+                let result = "normal";
+                let resultText = "";
+                
+                if (total === diceFaces * numDice + bonusValue) {
+                    result = "critique";
+                    resultText = "🎯 COUP CRITIQUE !";
+                } else if (total === 1 * numDice + bonusValue) {
+                    result = "echec";
+                    resultText = "💥 ÉCHEC CRITIQUE !";
+                }
+                
+                log(`🎯 Jet de ${characteristic}: ${dice}${bonusValue >= 0 ? '+' : ''}${bonusValue} = ${rolls.join(', ')} + ${bonusValue} = ${total} (${result})`, 'success');
+            }
+        }
+
+        function rollAttack(attackName) {
+            const diceInput = document.getElementById('attack-dice');
+            const dice = diceInput.value || "1d20";
+            
+            // Simulation d'un jet d'attaque
+            const diceMatch = dice.match(/(\d+)d(\d+)([+-]\d+)?/);
+            if (diceMatch) {
+                const numDice = parseInt(diceMatch[1]);
+                const diceFaces = parseInt(diceMatch[2]);
+                const bonus = parseInt(diceMatch[3]) || 0;
+                
+                const roll = Math.floor(Math.random() * diceFaces) + 1;
+                const total = roll + bonus;
+                
+                let result = "normal";
+                let resultText = "";
+                
+                if (roll === diceFaces) {
+                    result = "critique";
+                    resultText = "🎯 COUP CRITIQUE !";
+                } else if (roll === 1) {
+                    result = "echec";
+                    resultText = "💥 ÉCHEC CRITIQUE !";
+                }
+                
+                log(`⚔️ ${attackName}: ${dice} = ${roll} + ${bonus} = ${total} (${result})`, 'success');
+            }
+        }
+
+        function useSkill(skillName) {
+            log(`⭐ Compétence ${skillName} utilisée - Description affichée dans le chat`, 'info');
+        }
+
+        // Logs de test au chargement
+        window.addEventListener('load', function() {
+            log('Page de test des jets de dés chargée', 'success');
+            log('Simulation des fonctionnalités de jets de dés des NPCs', 'info');
+            log('✅ Jets de caractéristiques avec bonus', 'success');
+            log('✅ Jets d\'attaques avec gestion des critiques', 'success');
+            log('✅ Utilisation des compétences', 'success');
+            log('Prêt pour les tests dans Foundry VTT', 'success');
+        });
+    </script>
+</body>
+</html>

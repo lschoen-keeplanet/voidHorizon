@@ -105,56 +105,104 @@
                     </div>
                 </div>
 
-                <!-- Caractéristiques -->
+                                <!-- Caractéristiques -->
                 <div class="characteristics-section">
                     <h3>Caractéristiques</h3>
                     <div class="characteristics-grid">
                         <div class="characteristic-item">
                             <label>Acuité</label>
-                            <select name="system.acuite.value" class="characteristic-input" data-characteristic="acuite">
-                                <option value="2d4" {{#if (eq actor.system.acuite.value "2d4")}}selected{{/if}}>2d4 - Insensible</option>
-                                <option value="3d4" {{#if (eq actor.system.acuite.value "3d4")}}selected{{/if}}>3d4 - Éveillé</option>
-                                <option value="4d4" {{#if (eq actor.system.acuite.value "4d4")}}selected{{/if}}>4d4 - Novice</option>
-                                <option value="5d4" {{#if (eq actor.system.acuite.value "5d4")}}selected{{/if}}>5d4 - Initié</option>
-                                <option value="6d4" {{#if (eq actor.system.acuite.value "6d4")}}selected{{/if}}>6d4 - Maître</option>
-                                <option value="7d4" {{#if (eq actor.system.acuite.value "7d4")}}selected{{/if}}>7d4 - Archimage</option>
-                            </select>
+                            <div class="characteristic-controls">
+                                <select name="system.acuite.value" class="characteristic-input" data-characteristic="acuite">
+                                    <option value="2d4" {{#if (eq actor.system.acuite.value "2d4")}}selected{{/if}}>2d4 - Insensible</option>
+                                    <option value="3d4" {{#if (eq actor.system.acuite.value "3d4")}}selected{{/if}}>3d4 - Éveillé</option>
+                                    <option value="4d4" {{#if (eq actor.system.acuite.value "4d4")}}selected{{/if}}>4d4 - Novice</option>
+                                    <option value="5d4" {{#if (eq actor.system.acuite.value "5d4")}}selected{{/if}}>5d4 - Initié</option>
+                                    <option value="6d4" {{#if (eq actor.system.acuite.value "6d4")}}selected{{/if}}>6d4 - Maître</option>
+                                    <option value="7d4" {{#if (eq actor.system.acuite.value "7d4")}}selected{{/if}}>7d4 - Archimage</option>
+                                </select>
+                                <input type="number" 
+                                       name="system.acuite.bonus" 
+                                       value="{{actor.system.acuite.bonus}}" 
+                                       placeholder="+0" 
+                                       class="bonus-input"
+                                       data-characteristic="acuite"
+                                       data-bonus-type="bonus"/>
+                                <button type="button" class="roll-characteristic-btn" data-characteristic="acuite" title="Lancer Acuité">
+                                    <i class="fas fa-dice-d20"></i>
+                                </button>
+                            </div>
                         </div>
-
+                        
                         <div class="characteristic-item">
                             <label>Pimpance</label>
-                            <select name="system.pimpance.value" class="characteristic-input" data-characteristic="pimpance">
-                                <option value="2d4" {{#if (eq actor.system.pimpance.value "2d4")}}selected{{/if}}>2d4 - Insensible</option>
-                                <option value="3d4" {{#if (eq actor.system.pimpance.value "3d4")}}selected{{/if}}>3d4 - Éveillé</option>
-                                <option value="4d4" {{#if (eq actor.system.pimpance.value "4d4")}}selected{{/if}}>4d4 - Novice</option>
-                                <option value="5d4" {{#if (eq actor.system.pimpance.value "5d4")}}selected{{/if}}>5d4 - Initié</option>
-                                <option value="6d4" {{#if (eq actor.system.pimpance.value "6d4")}}selected{{/if}}>6d4 - Maître</option>
-                                <option value="7d4" {{#if (eq actor.system.pimpance.value "7d4")}}selected{{/if}}>7d4 - Archimage</option>
-                            </select>
+                            <div class="characteristic-controls">
+                                <select name="system.pimpance.value" class="characteristic-input" data-characteristic="pimpance">
+                                    <option value="2d4" {{#if (eq actor.system.pimpance.value "2d4")}}selected{{/if}}>2d4 - Insensible</option>
+                                    <option value="3d4" {{#if (eq actor.system.pimpance.value "3d4")}}selected{{/if}}>3d4 - Éveillé</option>
+                                    <option value="4d4" {{#if (eq actor.system.pimpance.value "4d4")}}selected{{/if}}>4d4 - Novice</option>
+                                    <option value="5d4" {{#if (eq actor.system.pimpance.value "5d4")}}selected{{/if}}>5d4 - Initié</option>
+                                    <option value="6d4" {{#if (eq actor.system.pimpance.value "6d4")}}selected{{/if}}>6d4 - Maître</option>
+                                    <option value="7d4" {{#if (eq actor.system.pimpance.value "7d4")}}selected{{/if}}>7d4 - Archimage</option>
+                                </select>
+                                <input type="number" 
+                                       name="system.pimpance.bonus" 
+                                       value="{{actor.system.pimpance.bonus}}" 
+                                       placeholder="+0" 
+                                       class="bonus-input"
+                                       data-characteristic="pimpance"
+                                       data-bonus-type="bonus"/>
+                                <button type="button" class="roll-characteristic-btn" data-characteristic="pimpance" title="Lancer Pimpance">
+                                    <i class="fas fa-dice-d20"></i>
+                                </button>
+                            </div>
                         </div>
-
+                        
                         <div class="characteristic-item">
                             <label>Martialité</label>
-                            <select name="system.martialite.value" class="characteristic-input" data-characteristic="martialite">
-                                <option value="2d4" {{#if (eq actor.system.martialite.value "2d4")}}selected{{/if}}>2d4 - Insensible</option>
-                                <option value="3d4" {{#if (eq actor.system.martialite.value "3d4")}}selected{{/if}}>3d4 - Éveillé</option>
-                                <option value="4d4" {{#if (eq actor.system.martialite.value "4d4")}}selected{{/if}}>4d4 - Novice</option>
-                                <option value="5d4" {{#if (eq actor.system.martialite.value "5d4")}}selected{{/if}}>5d4 - Initié</option>
-                                <option value="6d4" {{#if (eq actor.system.martialite.value "6d4")}}selected{{/if}}>6d4 - Maître</option>
-                                <option value="7d4" {{#if (eq actor.system.martialite.value "7d4")}}selected{{/if}}>7d4 - Archimage</option>
-                            </select>
+                            <div class="characteristic-controls">
+                                <select name="system.martialite.value" class="characteristic-input" data-characteristic="martialite">
+                                    <option value="2d4" {{#if (eq actor.system.martialite.value "2d4")}}selected{{/if}}>2d4 - Insensible</option>
+                                    <option value="3d4" {{#if (eq actor.system.martialite.value "3d4")}}selected{{/if}}>3d4 - Éveillé</option>
+                                    <option value="4d4" {{#if (eq actor.system.martialite.value "4d4")}}selected{{/if}}>4d4 - Novice</option>
+                                    <option value="5d4" {{#if (eq actor.system.martialite.value "5d4")}}selected{{/if}}>5d4 - Initié</option>
+                                    <option value="6d4" {{#if (eq actor.system.martialite.value "6d4")}}selected{{/if}}>6d4 - Maître</option>
+                                    <option value="7d4" {{#if (eq actor.system.martialite.value "7d4")}}selected{{/if}}>7d4 - Archimage</option>
+                                </select>
+                                <input type="number" 
+                                       name="system.martialite.bonus" 
+                                       value="{{actor.system.martialite.bonus}}" 
+                                       placeholder="+0" 
+                                       class="bonus-input"
+                                       data-characteristic="martialite"
+                                       data-bonus-type="bonus"/>
+                                <button type="button" class="roll-characteristic-btn" data-characteristic="martialite" title="Lancer Martialité">
+                                    <i class="fas fa-dice-d20"></i>
+                                </button>
+                            </div>
                         </div>
-
+                        
                         <div class="characteristic-item">
                             <label>Arcane</label>
-                            <select name="system.arcane.value" class="characteristic-input" data-characteristic="arcane">
-                                <option value="2d4" {{#if (eq actor.system.arcane.value "2d4")}}selected{{/if}}>2d4 - Insensible</option>
-                                <option value="3d4" {{#if (eq actor.system.arcane.value "3d4")}}selected{{/if}}>3d4 - Éveillé</option>
-                                <option value="4d4" {{#if (eq actor.system.arcane.value "4d4")}}selected{{/if}}>4d4 - Novice</option>
-                                <option value="5d4" {{#if (eq actor.system.acuite.value "5d4")}}selected{{/if}}>5d4 - Initié</option>
-                                <option value="6d4" {{#if (eq actor.system.acuite.value "6d4")}}selected{{/if}}>6d4 - Maître</option>
-                                <option value="7d4" {{#if (eq actor.system.acuite.value "7d4")}}selected{{/if}}>7d4 - Archimage</option>
-                            </select>
+                            <div class="characteristic-controls">
+                                <select name="system.arcane.value" class="characteristic-input" data-characteristic="arcane">
+                                    <option value="2d4" {{#if (eq actor.system.arcane.value "2d4")}}selected{{/if}}>2d4 - Insensible</option>
+                                    <option value="3d4" {{#if (eq actor.system.arcane.value "3d4")}}selected{{/if}}>3d4 - Éveillé</option>
+                                    <option value="4d4" {{#if (eq actor.system.arcane.value "4d4")}}selected{{/if}}>4d4 - Novice</option>
+                                    <option value="5d4" {{#if (eq actor.system.arcane.value "5d4")}}selected{{/if}}>5d4 - Initié</option>
+                                    <option value="6d4" {{#if (eq actor.system.arcane.value "6d4")}}selected{{/if}}>6d4 - Maître</option>
+                                    <option value="7d4" {{#if (eq actor.system.arcane.value "7d4")}}selected{{/if}}>7d4 - Archimage</option>
+                                </select>
+                                <input type="number" 
+                                       name="system.arcane.bonus" 
+                                       value="{{actor.system.arcane.bonus}}" 
+                                       placeholder="+0" 
+                                       class="bonus-input"
+                                       data-characteristic="arcane"
+                                       data-bonus-type="bonus"/>
+                                <button type="button" class="roll-characteristic-btn" data-characteristic="arcane" title="Lancer Arcane">
+                                    <i class="fas fa-dice-d20"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -184,6 +232,9 @@
                                        value="{{attack.name}}" 
                                        placeholder="Nom de l'attaque"
                                        class="attack-name-input"/>
+                                <button type="button" class="roll-attack-btn" data-index="{{index}}" title="Lancer l'attaque">
+                                    <i class="fas fa-dice-d20"></i>
+                                </button>
                                 <button type="button" class="remove-attack-btn" data-index="{{index}}" title="Supprimer cette attaque">
                                     <i class="fas fa-trash"></i>
                                 </button>
@@ -227,6 +278,9 @@
                                        value="{{skill.name}}" 
                                        placeholder="Nom de la compétence"
                                        class="skill-name-input"/>
+                                <button type="button" class="roll-skill-btn" data-index="{{index}}" title="Utiliser la compétence">
+                                    <i class="fas fa-star"></i>
+                                </button>
                                 <button type="button" class="remove-skill-btn" data-index="{{index}}" title="Supprimer cette compétence">
                                     <i class="fas fa-trash"></i>
                                 </button>

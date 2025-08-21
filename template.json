@@ -153,19 +153,23 @@
                     },
                     "acuite": {
                         "value": "3d4",
-                        "label": "Acuité"
+                        "label": "Acuité",
+                        "bonus": 0
                     },
                     "pimpance": {
                         "value": "3d4",
-                        "label": "Pimpance"
+                        "label": "Pimpance",
+                        "bonus": 0
                     },
                     "martialite": {
                         "value": "3d4",
-                        "label": "Martialité"
+                        "label": "Martialité",
+                        "bonus": 0
                     },
                     "arcane": {
                         "value": "2d4",
-                        "label": "Arcane"
+                        "label": "Arcane",
+                        "bonus": 0
                     },
                     "attacks": {
                         "type": "Array",

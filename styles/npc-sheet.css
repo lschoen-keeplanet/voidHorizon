@@ -222,6 +222,37 @@
     font-size: 14px;
 }
 
+.characteristic-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.characteristic-controls .characteristic-input {
+    flex: 1;
+    margin: 0;
+}
+
+.bonus-input {
+    width: 80px !important;
+    text-align: center;
+    background: rgba(46, 204, 113, 0.1) !important;
+    border-color: #2ecc71 !important;
+    color: #2ecc71 !important;
+    font-weight: bold;
+}
+
+.bonus-input:focus {
+    border-color: #27ae60 !important;
+    box-shadow: 0 0 8px rgba(46, 204, 113, 0.3) !important;
+}
+
+.bonus-input::placeholder {
+    color: #27ae60;
+    opacity: 0.7;
+}
+
 /* Onglets Combat, Inventaire et Notes */
 .combat-section,
 .inventory-section,
@@ -365,6 +396,60 @@
 .remove-attack-btn i,
 .remove-skill-btn i {
     font-size: 12px;
+}
+
+/* Boutons de jet */
+.roll-attack-btn,
+.roll-skill-btn {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    color: white;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    margin-right: 8px;
+}
+
+.roll-attack-btn:hover,
+.roll-skill-btn:hover {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    transform: scale(1.1);
+}
+
+.roll-attack-btn i,
+.roll-skill-btn i {
+    font-size: 14px;
+}
+
+/* Boutons de jet des caractéristiques */
+.roll-characteristic-btn {
+    background: linear-gradient(135deg, #9b59b6, #8e44ad);
+    color: white;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.roll-characteristic-btn:hover {
+    background: linear-gradient(135deg, #8e44ad, #7d3c98);
+    transform: scale(1.1);
+}
+
+.roll-characteristic-btn i {
+    font-size: 14px;
 }
 
 /* Détails des attaques */
@@ -524,4 +609,147 @@
     border-color: rgba(243, 156, 18, 0.5);
     transform: translateY(-2px);
     transition: all 0.3s ease;
+}
+
+/* Styles pour les messages de chat des jets de dés */
+.voidhorizon-attack-roll,
+.voidhorizon-skill-use {
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    border: 2px solid #e74c3c;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 10px 0;
+    color: #ecf0f1;
+    font-family: 'Signika', sans-serif;
+}
+
+.roll-header,
+.skill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #e74c3c;
+    padding-bottom: 10px;
+}
+
+.roll-header h3,
+.skill-header h3 {
+    color: #f39c12;
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.actor-info {
+    color: #bdc3c7;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.roll-result {
+    text-align: center;
+    margin: 20px 0;
+    padding: 15px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.roll-result.critique {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    border: 2px solid #2ecc71;
+    animation: pulse 2s infinite;
+}
+
+.roll-result.echec {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    border: 2px solid #e74c3c;
+    animation: shake 0.5s ease-in-out;
+}
+
+.roll-result.normal {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    border: 2px solid #3498db;
+}
+
+.dice-result {
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.result-text {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+}
+
+.roll-details {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    padding: 15px;
+    margin: 15px 0;
+    text-align: center;
+}
+
+.dice-formula {
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    color: #f39c12;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.dice-breakdown {
+    font-size: 14px;
+    color: #bdc3c7;
+    font-style: italic;
+}
+
+.attack-description,
+.skill-description {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    padding: 15px;
+    margin-top: 15px;
+    border-left: 4px solid #f39c12;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+/* Styles pour les jets de caractéristiques */
+.voidhorizon-characteristic-roll {
+    background: linear-gradient(135deg, #8e44ad, #9b59b6);
+    border: 2px solid #9b59b6;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 10px 0;
+    color: #ecf0f1;
+    font-family: 'Signika', sans-serif;
+}
+
+.bonus-info {
+    background: rgba(46, 204, 113, 0.2);
+    border: 1px solid #2ecc71;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-top: 10px;
+    text-align: center;
+    color: #2ecc71;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Animations pour les jets de dés */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
 }
