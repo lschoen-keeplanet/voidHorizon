@@ -204,12 +204,6 @@ img{
     display: none !important;
 }
 
-/* Masquer les éléments d'armes quand c'est un bouclier */
-.weapon-roll-buttons.hidden,
-.weapon-dice-ranges.hidden {
-    display: none !important;
-}
-
 /* Styles pour les tooltips personnalisés */
 [data-tooltip] {
     position: relative;
@@ -2509,105 +2503,6 @@ textarea:focus {
 
 .resistance-roll-result.parade h3 {
     border-bottom-color: rgba(255, 255, 255, 0.4);
-}
-
-/* Styles pour les boutons de nature de main */
-.hand-nature-buttons {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 15px;
-    justify-content: center;
-}
-
-.nature-btn {
-    width: 40px;
-    height: 40px;
-    border: 2px solid #800000;
-    border-radius: 8px;
-    background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
-    color: #800000;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    position: relative;
-}
-
-.nature-btn:hover {
-    background: linear-gradient(135deg, #e0e0e0, #d0d0d0);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(128, 0, 0, 0.3);
-}
-
-.nature-btn[data-active="true"] {
-    background: linear-gradient(135deg, #800000, #600000);
-    color: white;
-    border-color: #800000;
-    box-shadow: 0 4px 8px rgba(128, 0, 0, 0.4);
-}
-
-.nature-btn[data-active="true"]:hover {
-    background: linear-gradient(135deg, #600000, #400000);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(128, 0, 0, 0.5);
-}
-
-/* Styles spécifiques pour chaque nature */
-.nature-btn.weapon {
-    border-color: #dc3545;
-}
-
-.nature-btn.weapon:hover {
-    border-color: #c82333;
-}
-
-.nature-btn.shield {
-    border-color: #28a745;
-}
-
-.nature-btn.shield:hover {
-    border-color: #1e7e34;
-}
-
-.nature-btn.focus {
-    border-color: #ffc107;
-}
-
-.nature-btn.focus:hover {
-    border-color: #e0a800;
-}
-
-/* Indicateur visuel de la nature active */
-.nature-btn[data-active="true"].weapon {
-    background: linear-gradient(135deg, #dc3545, #c82333);
-    border-color: #dc3545;
-}
-
-.nature-btn[data-active="true"].shield {
-    background: linear-gradient(135deg, #28a745, #1e7e34);
-    border-color: #28a745;
-}
-
-.nature-btn[data-active="true"].focus {
-    background: linear-gradient(135deg, #ffc107, #e0a800);
-    border-color: #ffc107;
-    color: #212529;
-}
-
-/* Responsive design pour les boutons de nature */
-@media (max-width: 768px) {
-    .hand-nature-buttons {
-        gap: 6px;
-        margin-bottom: 12px;
-    }
-    
-    .nature-btn {
-        width: 36px;
-        height: 36px;
-        font-size: 14px;
-    }
 }
 
 

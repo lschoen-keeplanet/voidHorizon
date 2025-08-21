@@ -415,26 +415,6 @@
                                             <!-- Main Principale -->
                                             <div class="weapon-slot primary-weapon">
                                                 <h3>Main Principale</h3>
-                                                
-                                                <!-- Boutons de nature de la main -->
-                                                <div class="hand-nature-buttons">
-                                                    <button type="button" class="nature-btn weapon" data-hand="primary" data-nature="weapon" 
-                                                            title="Main configurée comme Arme" 
-                                                            {{#if (eq actor.system.weapons.primary.nature "weapon")}}data-active="true"{{/if}}>
-                                                        <i class="fas fa-sword"></i>
-                                                    </button>
-                                                    <button type="button" class="nature-btn shield" data-hand="primary" data-nature="shield" 
-                                                            title="Main configurée comme Bouclier"
-                                                            {{#if (eq actor.system.weapons.primary.nature "shield")}}data-active="true"{{/if}}>
-                                                        <i class="fas fa-shield-alt"></i>
-                                                    </button>
-                                                    <button type="button" class="nature-btn focus" data-hand="primary" data-nature="focus" 
-                                                            title="Main configurée comme Focus"
-                                                            {{#if (eq actor.system.weapons.primary.nature "focus")}}data-active="true"{{/if}}>
-                                                        <i class="fas fa-fire"></i>
-                                                    </button>
-                                                </div>
-                                                
                                                 <div class="weapon-form">
                                                     <div class="weapon-field">
                                                         <label>Nom de l'arme:</label>
@@ -456,21 +436,25 @@
                                                             <option value="acuite" {{selected "acuite"
                                                                 actor.system.weapons.primary.type}}>Acuité (Acuité)
                                                             </option>
+                                                            <option value="shield" {{selected "shield"
+                                                                actor.system.weapons.primary.type}}>Bouclier</option>
                                                         </select>
                                                         <div class="read-mode">{{#if (eq
                                                             actor.system.weapons.primary.type "strength")}}Force
-                                                            (Martialité){{else if (eq
-                                                            actor.system.weapons.primary.type "agility")}}Agilité
-                                                            (Agilité){{else if (eq
+                                                            (Martialité){{else if (eq actor.system.weapons.primary.type
+                                                            "agility")}}Agilité (Agilité){{else if (eq
                                                             actor.system.weapons.primary.type
-                                                            "acuite")}}Acuité (Acuité){{else}}Non défini{{/if}}</div>
+                                                            "acuite")}}Acuité (Acuité){{else if (eq
+                                                            actor.system.weapons.primary.type
+                                                            "shield")}}Bouclier{{else}}Non défini{{/if}}</div>
                                                     </div>
                                                     <div class="weapon-field">
                                                         <label>Qualité:</label>
                                                         <select name="system.weapons.primary.rank" class="edit-mode">
                                                             <option value="0" {{selected "0"
                                                                 actor.system.weapons.primary.rank}}>Équipement brisé
-                                                                (1d4)</option>
+                                                                (1d4)
+                                                            </option>
                                                             <option value="1" {{selected "1"
                                                                 actor.system.weapons.primary.rank}}>Équipement commun
                                                                 (1d6)</option>
@@ -488,8 +472,7 @@
                                                                 légendaire (1d20)</option>
                                                         </select>
                                                         <div class="read-mode">{{getWeaponQualityLabel
-                                                            actor.system.weapons.primary.rank}}
-                                                            ({{getWeaponQualityDice
+                                                            actor.system.weapons.primary.rank}} ({{getWeaponQualityDice
                                                             actor.system.weapons.primary.rank}})
                                                         </div>
                                                     </div>
@@ -510,9 +493,8 @@
                                                         <div class="read-mode">
                                                             {{actor.system.weapons.primary.description}}</div>
                                                     </div>
-                                                    
-                                                    <!-- Boutons de lancement de dés (masqués si bouclier) -->
-                                                    <div class="weapon-roll-buttons {{#if (eq actor.system.weapons.primary.nature "shield")}}hidden{{/if}}">
+                                                    <div class="weapon-roll-buttons {{#if (eq actor.system.weapons.primary.type "
+                                                        shield")}}hidden{{/if}}">
                                                         <button type="button" class="roll-weapon-btn safe read-mode"
                                                             data-weapon="primary" data-mode="safe"
                                                             title="Lancer les dés en mode Safe pour l'arme principale">
@@ -524,7 +506,8 @@
                                                             <i class="fas fa-sword"></i> Unsafe
                                                         </button>
                                                     </div>
-                                                    <div class="weapon-dice-ranges {{#if (eq actor.system.weapons.primary.nature "shield")}}hidden{{/if}}">
+                                                    <div class="weapon-dice-ranges {{#if (eq actor.system.weapons.primary.type "
+                                                        shield")}}hidden{{/if}}">
                                                         <span class="range-info weapon-safe-range">
                                                             <i class="fas fa-shield-alt"></i> <span
                                                                 class="range-value">Calculé...</span>
@@ -541,26 +524,6 @@
                                             <!-- Main Secondaire -->
                                             <div class="weapon-slot secondary-weapon">
                                                 <h3>Main Secondaire</h3>
-                                                
-                                                <!-- Boutons de nature de la main -->
-                                                <div class="hand-nature-buttons">
-                                                    <button type="button" class="nature-btn weapon" data-hand="secondary" data-nature="weapon" 
-                                                            title="Main configurée comme Arme" 
-                                                            {{#if (eq actor.system.weapons.secondary.nature "weapon")}}data-active="true"{{/if}}>
-                                                        <i class="fas fa-sword"></i>
-                                                    </button>
-                                                    <button type="button" class="nature-btn shield" data-hand="secondary" data-nature="shield" 
-                                                            title="Main configurée comme Bouclier"
-                                                            {{#if (eq actor.system.weapons.secondary.nature "shield")}}data-active="true"{{/if}}>
-                                                        <i class="fas fa-shield-alt"></i>
-                                                    </button>
-                                                    <button type="button" class="nature-btn focus" data-hand="secondary" data-nature="focus" 
-                                                            title="Main configurée comme Focus"
-                                                            {{#if (eq actor.system.weapons.secondary.nature "focus")}}data-active="true"{{/if}}>
-                                                        <i class="fas fa-fire"></i>
-                                                    </button>
-                                                </div>
-                                                
                                                 <div class="weapon-form">
                                                     <div class="weapon-field">
                                                         <label>Nom de l'arme:</label>
@@ -582,14 +545,17 @@
                                                             <option value="acuite" {{selected "acuite"
                                                                 actor.system.weapons.secondary.type}}>Acuité (Acuité)
                                                             </option>
+                                                            <option value="shield" {{selected "shield"
+                                                                actor.system.weapons.secondary.type}}>Bouclier</option>
                                                         </select>
                                                         <div class="read-mode">{{#if (eq
                                                             actor.system.weapons.secondary.type "strength")}}Force
                                                             (Martialité){{else if (eq
                                                             actor.system.weapons.secondary.type "agility")}}Agilité
-                                                            (Agilité){{else if (eq
+                                                            (Agilité){{else if (eq actor.system.weapons.secondary.type
+                                                            "acuite")}}Acuité (Acuité){{else if (eq
                                                             actor.system.weapons.secondary.type
-                                                            "acuite")}}Acuité (Acuité){{else}}Non défini{{/if}}</div>
+                                                            "shield")}}Bouclier{{else}}Non défini{{/if}}</div>
                                                     </div>
                                                     <div class="weapon-field">
                                                         <label>Qualité:</label>
@@ -636,7 +602,7 @@
                                                         <div class="read-mode">
                                                             {{actor.system.weapons.secondary.description}}</div>
                                                     </div>
-                                                    <div class="weapon-roll-buttons {{#if (eq actor.system.weapons.secondary.nature "
+                                                    <div class="weapon-roll-buttons {{#if (eq actor.system.weapons.secondary.type "
                                                         shield")}}hidden{{/if}}">
                                                         <button type="button" class="roll-weapon-btn safe read-mode"
                                                             data-weapon="secondary" data-mode="safe"
@@ -649,7 +615,7 @@
                                                             <i class="fas fa-sword"></i> Unsafe
                                                         </button>
                                                     </div>
-                                                    <div class="weapon-dice-ranges {{#if (eq actor.system.weapons.secondary.nature "
+                                                    <div class="weapon-dice-ranges {{#if (eq actor.system.weapons.secondary.type "
                                                         shield")}}hidden{{/if}}">
                                                         <span class="range-info weapon-safe-range">
                                                             <i class="fas fa-shield-alt"></i> <span
@@ -967,7 +933,7 @@
                                          data-tooltip="Base: {{actor.system.resources.armor.value}}
 Équipement: {{#if (eq actor.system.armor.type 'tissu')}}+0{{else if (eq actor.system.armor.type 'legere')}}+1{{else if (eq actor.system.armor.type 'lourde')}}+2{{else if (eq actor.system.armor.type 'blindee')}}+4{{else}}+0{{/if}}
 Traits: {{#if (gt actor.system.traitBonuses.armor 0)}}+{{/if}}{{actor.system.traitBonuses.armor}}
-Boucliers: {{#if (eq actor.system.weapons.primary.nature 'shield')}}{{#if (gt actor.system.weapons.primary.bonus 0)}}+{{/if}}{{actor.system.weapons.primary.bonus}}{{/if}}{{#if (eq actor.system.weapons.secondary.nature 'shield')}}{{#if (gt actor.system.weapons.secondary.bonus 0)}}+{{/if}}{{actor.system.weapons.secondary.bonus}}{{/if}}
+Boucliers: {{#if (eq actor.system.weapons.primary.type 'shield')}}{{#if (gt actor.system.weapons.primary.bonus 0)}}+{{/if}}{{actor.system.weapons.primary.bonus}}{{/if}}{{#if (eq actor.system.weapons.secondary.type 'shield')}}{{#if (gt actor.system.weapons.secondary.bonus 0)}}+{{/if}}{{actor.system.weapons.secondary.bonus}}{{/if}}
 Total: {{getTotalArmor actor}}">
                                         <input type="number" name="system.resources.armor.value"
                                             value="{{actor.system.resources.armor.value}}" min="0" data-no-save="true" />
@@ -992,10 +958,10 @@ Total: {{getTotalArmor actor}}">
                                         </div>
                                         <div class="armor-source">
                                             <span class="source-label">Boucliers:</span>
-                                            <span class="source-value">{{#if (eq actor.system.weapons.primary.nature 'shield')}}{{#if (gt
+                                            <span class="source-value">{{#if (eq actor.system.weapons.primary.type 'shield')}}{{#if (gt
                                                 actor.system.weapons.primary.bonus
                                                 0)}}+{{/if}}{{actor.system.weapons.primary.bonus}}{{/if}}{{#if (eq
-                                                actor.system.weapons.secondary.nature 'shield')}}{{#if (gt
+                                                actor.system.weapons.secondary.type 'shield')}}{{#if (gt
                                                 actor.system.weapons.secondary.bonus
                                                 0)}}+{{/if}}{{actor.system.weapons.secondary.bonus}}{{/if}}</span>
                                         </div>
@@ -1122,8 +1088,8 @@ Total: {{getTotalResistance actor}}">
                                             title="Lancer un dé d'esquive (jet d'agilité unsafe + bonus d'esquive)">
                                             <i class="fas fa-running"></i> Esquive
                                         </button>
-                                        {{#if (or (eq actor.system.weapons.primary.nature "shield") (eq
-                                        actor.system.weapons.secondary.nature "shield"))}}
+                                        {{#if (or (eq actor.system.weapons.primary.type "shield") (eq
+                                        actor.system.weapons.secondary.type "shield"))}}
                                         <button type="button" class="resistance-roll-btn block" data-action="block"
                                             title="Lancer un dé de blocage (jet de martialité unsafe + bonus de blocage + jet de qualité du bouclier + bonus du bouclier)">
                                             <i class="fas fa-shield-alt"></i> Blocage
