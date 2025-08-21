@@ -62,239 +62,333 @@
                 <div class="main">
                     <div class="main-fiche">
                         <div>
-                    <div class="stats-grid">
-                        <div class="stat-block">
-                            <div class="stat-header">
+                            <div class="stats-grid">
+                                <div class="stat-block">
+                                    <div class="stat-header">
                                         <img src="systems/voidHorizon/assets/icons/martialite.png" class="stat-icon"
                                             alt="Martialité">
-                                <label class="rollable" data-stat="martialite">Martialité</label>
-                            </div>
-                            <div class="stat-controls">
-                                <select name="system.martialite.value" class="edit-mode">
-                                    {{#select system.martialite.value}}
-                                                                         <option value="2d4">Incompétent</option>
+                                        <label class="rollable" data-stat="martialite">Martialité</label>
+                                    </div>
+                                    <div class="stat-controls">
+                                        <select name="system.martialite.value" class="edit-mode">
+                                            {{#select system.martialite.value}}
+                                            <option value="2d4">Incompétent</option>
                                             <option value="3d4">Combatif</option>
                                             <option value="4d4">Soldat</option>
                                             <option value="5d4">Expérimenté</option>
                                             <option value="6d4">Vétéran</option>
                                             <option value="7d4">Légende</option>
-                                    {{/select}}
-                                </select>
-                                                                                                                                                                                                                 <div class="read-mode">{{#if (eq system.martialite.value "2d4")}}Incompétent{{else if (eq system.martialite.value "3d4")}}Combatif{{else if (eq system.martialite.value "4d4")}}Soldat{{else if (eq system.martialite.value "5d4")}}Expérimenté{{else if (eq system.martialite.value "6d4")}}Vétéran{{else if (eq system.martialite.value "7d4")}}Légende{{else}}{{system.martialite.value}}{{/if}}</div>
-                            </div>
-                            
+                                            {{/select}}
+                                        </select>
+                                        <div class="read-mode">{{#if (eq system.martialite.value
+                                            "2d4")}}Incompétent{{else if (eq system.martialite.value
+                                            "3d4")}}Combatif{{else if (eq system.martialite.value "4d4")}}Soldat{{else
+                                            if (eq system.martialite.value "5d4")}}Expérimenté{{else if (eq
+                                            system.martialite.value "6d4")}}Vétéran{{else if (eq system.martialite.value
+                                            "7d4")}}Légende{{else}}{{system.martialite.value}}{{/if}}</div>
+                                    </div>
 
-                            
-                            <div class="roll-buttons">
-                                        <button type="button" class="roll-dice-btn safe" data-stat="martialite" data-unsafe="false"
+
+
+                                    <div class="roll-buttons">
+                                        <button type="button" class="roll-dice-btn safe" data-stat="martialite"
+                                            data-unsafe="false"
                                             title="Lancer les dés de Martialité (Mode Safe - {{system.martialite.value}})">
                                             <i class="fas fa-shield-alt"></i> Safe
                                         </button>
-                                        <button type="button" class="roll-dice-btn unsafe" data-stat="martialite" data-unsafe="true"
-                                                                                         title="Lancer les dés de Martialité (Mode Unsafe - {{#if (eq system.martialite.value "2d4")}}1d12{{else if (eq system.martialite.value "3d4")}}1d16{{else if (eq system.martialite.value "4d4")}}1d20{{else if (eq system.martialite.value "5d4")}}1d24{{else if (eq system.martialite.value "6d4")}}1d28{{else if (eq system.martialite.value "7d4")}}1d32{{else}}{{system.martialite.value}}{{/if}})">
+                                        <button type="button" class="roll-dice-btn unsafe" data-stat="martialite"
+                                            data-unsafe="true"
+                                            title="Lancer les dés de Martialité (Mode Unsafe - {{#if (eq system.martialite.value "
+                                            2d4")}}1d12{{else if (eq system.martialite.value "3d4" )}}1d16{{else if (eq
+                                            system.martialite.value "4d4" )}}1d20{{else if (eq
+                                            system.martialite.value "5d4" )}}1d24{{else if (eq
+                                            system.martialite.value "6d4" )}}1d28{{else if (eq
+                                            system.martialite.value "7d4"
+                                            )}}1d32{{else}}{{system.martialite.value}}{{/if}})">
                                             <i class="fas fa-skull-crossbones"></i> Unsafe
-                            </button>
+                                        </button>
                                     </div>
                                     <div class="dice-ranges">
-                                                                                 <span class="range-info safe-range">
-                                             <i class="fas fa-shield-alt"></i> {{#if (eq system.martialite.value "2d4")}}2-8{{else if (eq system.martialite.value "3d4")}}3-12{{else if (eq system.martialite.value "4d4")}}4-16{{else if (eq system.martialite.value "5d4")}}5-20{{else if (eq system.martialite.value "6d4")}}6-24{{else if (eq system.martialite.value "7d4")}}7-28{{else}}?-?{{/if}}
-                                         </span>
-                                         <span class="range-info bonus-display">
-                                             +0
-                                         </span>
-                                         <span class="range-info unsafe-range">
-                                             <i class="fas fa-skull-crossbones"></i> {{#if (eq system.martialite.value "2d4")}}1-12{{else if (eq system.martialite.value "3d4")}}1-16{{else if (eq system.martialite.value "4d4")}}1-20{{else if (eq system.martialite.value "5d4")}}1-24{{else if (eq system.martialite.value "6d4")}}1-28{{else if (eq system.martialite.value "7d4")}}1-32{{else}}?-?{{/if}}
-                                         </span>
+                                        <span class="range-info safe-range">
+                                            <i class="fas fa-shield-alt"></i> {{#if (eq system.martialite.value
+                                            "2d4")}}2-8{{else if (eq system.martialite.value "3d4")}}3-12{{else if (eq
+                                            system.martialite.value "4d4")}}4-16{{else if (eq system.martialite.value
+                                            "5d4")}}5-20{{else if (eq system.martialite.value "6d4")}}6-24{{else if (eq
+                                            system.martialite.value "7d4")}}7-28{{else}}?-?{{/if}}
+                                        </span>
+                                        <span class="range-info bonus-display">
+                                            +0
+                                        </span>
+                                        <span class="range-info unsafe-range">
+                                            <i class="fas fa-skull-crossbones"></i> {{#if (eq system.martialite.value
+                                            "2d4")}}1-12{{else if (eq system.martialite.value "3d4")}}1-16{{else if (eq
+                                            system.martialite.value "4d4")}}1-20{{else if (eq system.martialite.value
+                                            "5d4")}}1-24{{else if (eq system.martialite.value "6d4")}}1-28{{else if (eq
+                                            system.martialite.value "7d4")}}1-32{{else}}?-?{{/if}}
+                                        </span>
                                     </div>
-                        </div>
-                        
-                        <div class="stat-block">
-                            <div class="stat-header">
-                                <img src="systems/voidHorizon/assets/icons/agilite.png" class="stat-icon"
-                                    alt="Agilité">
-                                <label class="rollable" data-stat="agilite">Agilité</label>
-                            </div>
-                            <div class="stat-controls">
-                                <select name="system.agilite.value" class="edit-mode">
-                                    {{#select system.agilite.value}}
-                                        <option value="2d4">Challengé</option>
-                                        <option value="3d4">Lourdeau</option>
-                                        <option value="4d4">Bien</option>
-                                        <option value="5d4">Rapide</option>
-                                        <option value="6d4">Très rapide</option>
-                                        <option value="7d4">Très très rapide</option>
-                                    {{/select}}
-                                </select>
-                                                                 <div class="read-mode">{{#if (eq system.agilite.value "2d4")}}Challengé{{else if (eq system.agilite.value "3d4")}}Lourdeau{{else if (eq system.agilite.value "4d4")}}Bien{{else if (eq system.agilite.value "5d4")}}Rapide{{else if (eq system.agilite.value "6d4")}}Très rapide{{else if (eq system.agilite.value "7d4")}}Très très rapide{{else}}{{system.agilite.value}}{{/if}}</div>
-                            </div>
-                            
+                                </div>
 
-                            
-                            <div class="roll-buttons">
-                                <button type="button" class="roll-dice-btn safe" data-stat="agilite" data-unsafe="false"
-                                    title="Lancer les dés d'Agilité (Mode Safe - {{system.agilite.value}})">
-                                    <i class="fas fa-shield-alt"></i> Safe
-                                </button>
-                                <button type="button" class="roll-dice-btn unsafe" data-stat="agilite" data-unsafe="true"
-                                    title="Lancer les dés d'Agilité (Mode Unsafe - {{#if (eq system.agilite.value "2d4")}}1d12{{else if (eq system.agilite.value "3d4")}}1d16{{else if (eq system.agilite.value "4d4")}}1d20{{else if (eq system.agilite.value "5d4")}}1d24{{else if (eq system.agilite.value "6d4")}}1d28{{else if (eq system.agilite.value "7d4")}}1d32{{else}}{{system.agilite.value}}{{/if}})">
-                                    <i class="fas fa-skull-crossbones"></i> Unsafe
-                                </button>
-                            </div>
-                                                         <div class="dice-ranges">
-                                 <span class="range-info safe-range">
-                                     <i class="fas fa-shield-alt"></i> {{#if (eq system.agilite.value "2d4")}}2-8{{else if (eq system.agilite.value "3d4")}}3-12{{else if (eq system.agilite.value "4d4")}}4-16{{else if (eq system.agilite.value "5d4")}}5-20{{else if (eq system.agilite.value "6d4")}}6-24{{else if (eq system.agilite.value "7d4")}}7-28{{else}}?-?{{/if}}
-                                 </span>
-                                 <span class="range-info bonus-display">
-                                     +0
-                                 </span>
-                                 <span class="range-info unsafe-range">
-                                     <i class="fas fa-skull-crossbones"></i> {{#if (eq system.agilite.value "2d4")}}1-12{{else if (eq system.agilite.value "3d4")}}1-16{{else if (eq system.agilite.value "4d4")}}1-20{{else if (eq system.agilite.value "5d4")}}1-24{{else if (eq system.agilite.value "6d4")}}1-28{{else if (eq system.agilite.value "7d4")}}1-32{{else}}?-?{{/if}}
-                                 </span>
-                             </div>
+                                <div class="stat-block">
+                                    <div class="stat-header">
+                                        <img src="systems/voidHorizon/assets/icons/agilite.png" class="stat-icon"
+                                            alt="Agilité">
+                                        <label class="rollable" data-stat="agilite">Agilité</label>
+                                    </div>
+                                    <div class="stat-controls">
+                                        <select name="system.agilite.value" class="edit-mode">
+                                            {{#select system.agilite.value}}
+                                            <option value="2d4">Challengé</option>
+                                            <option value="3d4">Lourdeau</option>
+                                            <option value="4d4">Bien</option>
+                                            <option value="5d4">Rapide</option>
+                                            <option value="6d4">Très rapide</option>
+                                            <option value="7d4">Très très rapide</option>
+                                            {{/select}}
+                                        </select>
+                                        <div class="read-mode">{{#if (eq system.agilite.value "2d4")}}Challengé{{else if
+                                            (eq system.agilite.value "3d4")}}Lourdeau{{else if (eq system.agilite.value
+                                            "4d4")}}Bien{{else if (eq system.agilite.value "5d4")}}Rapide{{else if (eq
+                                            system.agilite.value "6d4")}}Très rapide{{else if (eq system.agilite.value
+                                            "7d4")}}Très très rapide{{else}}{{system.agilite.value}}{{/if}}</div>
+                                    </div>
 
-                        </div>
-                        
-                        <div class="stat-block">
-                            <div class="stat-header">
+
+
+                                    <div class="roll-buttons">
+                                        <button type="button" class="roll-dice-btn safe" data-stat="agilite"
+                                            data-unsafe="false"
+                                            title="Lancer les dés d'Agilité (Mode Safe - {{system.agilite.value}})">
+                                            <i class="fas fa-shield-alt"></i> Safe
+                                        </button>
+                                        <button type="button" class="roll-dice-btn unsafe" data-stat="agilite"
+                                            data-unsafe="true"
+                                            title="Lancer les dés d'Agilité (Mode Unsafe - {{#if (eq system.agilite.value "
+                                            2d4")}}1d12{{else if (eq system.agilite.value "3d4" )}}1d16{{else if (eq
+                                            system.agilite.value "4d4" )}}1d20{{else if (eq system.agilite.value "5d4"
+                                            )}}1d24{{else if (eq system.agilite.value "6d4" )}}1d28{{else if (eq
+                                            system.agilite.value "7d4" )}}1d32{{else}}{{system.agilite.value}}{{/if}})">
+                                            <i class="fas fa-skull-crossbones"></i> Unsafe
+                                        </button>
+                                    </div>
+                                    <div class="dice-ranges">
+                                        <span class="range-info safe-range">
+                                            <i class="fas fa-shield-alt"></i> {{#if (eq system.agilite.value
+                                            "2d4")}}2-8{{else if (eq system.agilite.value "3d4")}}3-12{{else if (eq
+                                            system.agilite.value "4d4")}}4-16{{else if (eq system.agilite.value
+                                            "5d4")}}5-20{{else if (eq system.agilite.value "6d4")}}6-24{{else if (eq
+                                            system.agilite.value "7d4")}}7-28{{else}}?-?{{/if}}
+                                        </span>
+                                        <span class="range-info bonus-display">
+                                            +0
+                                        </span>
+                                        <span class="range-info unsafe-range">
+                                            <i class="fas fa-skull-crossbones"></i> {{#if (eq system.agilite.value
+                                            "2d4")}}1-12{{else if (eq system.agilite.value "3d4")}}1-16{{else if (eq
+                                            system.agilite.value "4d4")}}1-20{{else if (eq system.agilite.value
+                                            "5d4")}}1-24{{else if (eq system.agilite.value "6d4")}}1-28{{else if (eq
+                                            system.agilite.value "7d4")}}1-32{{else}}?-?{{/if}}
+                                        </span>
+                                    </div>
+
+                                </div>
+
+                                <div class="stat-block">
+                                    <div class="stat-header">
                                         <img src="systems/voidHorizon/assets/icons/acuite.png" class="stat-icon"
                                             alt="Acuité">
-                                <label class="rollable" data-stat="acuite">Acuité</label>
-                            </div>
-                            <div class="stat-controls">
-                                <select name="system.acuite.value" class="edit-mode" data-dtype="String">
-                                    {{#select system.acuite.value}}
-                                    <option value="2d4">Aveugle</option>
+                                        <label class="rollable" data-stat="acuite">Acuité</label>
+                                    </div>
+                                    <div class="stat-controls">
+                                        <select name="system.acuite.value" class="edit-mode" data-dtype="String">
+                                            {{#select system.acuite.value}}
+                                            <option value="2d4">Aveugle</option>
                                             <option value="3d4">Distrait</option>
                                             <option value="4d4">Alerte</option>
                                             <option value="5d4">Vif</option>
                                             <option value="6d4">Clairvoyant</option>
                                             <option value="7d4">Fulgurant</option>
-                                    {{/select}}
-                                </select>
-                                                                                                                                                                 <div class="read-mode">{{#if (eq system.acuite.value "2d4")}}Aveugle{{else if (eq system.acuite.value "3d4")}}Distrait{{else if (eq system.acuite.value "4d4")}}Alerte{{else if (eq system.acuite.value "5d4")}}Vif{{else if (eq system.acuite.value "6d4")}}Clairvoyant{{else if (eq system.acuite.value "7d4")}}Fulgurant{{else}}{{system.acuite.value}}{{/if}}</div>
+                                            {{/select}}
+                                        </select>
+                                        <div class="read-mode">{{#if (eq system.acuite.value "2d4")}}Aveugle{{else if
+                                            (eq system.acuite.value "3d4")}}Distrait{{else if (eq system.acuite.value
+                                            "4d4")}}Alerte{{else if (eq system.acuite.value "5d4")}}Vif{{else if (eq
+                                            system.acuite.value "6d4")}}Clairvoyant{{else if (eq system.acuite.value
+                                            "7d4")}}Fulgurant{{else}}{{system.acuite.value}}{{/if}}</div>
                                     </div>
-                                    
-                                    
-                                    
+
+
+
                                     <div class="roll-buttons">
-                                        <button type="button" class="roll-dice-btn safe" data-stat="acuite" data-unsafe="false"
+                                        <button type="button" class="roll-dice-btn safe" data-stat="acuite"
+                                            data-unsafe="false"
                                             title="Lancer les dés d'Acuité (Mode Safe - {{system.acuite.value}})">
                                             <i class="fas fa-shield-alt"></i> Safe
                                         </button>
-                                        <button type="button" class="roll-dice-btn unsafe" data-stat="acuite" data-unsafe="true"
-                                                                                         title="Lancer les dés d'Acuité (Mode Unsafe - {{#if (eq system.acuite.value "2d4")}}1d12{{else if (eq system.acuite.value "3d4")}}1d16{{else if (eq system.acuite.value "4d4")}}1d20{{else if (eq system.acuite.value "5d4")}}1d24{{else if (eq system.acuite.value "6d4")}}1d28{{else if (eq system.acuite.value "7d4")}}1d32{{else}}{{system.acuite.value}}{{/if}})">
+                                        <button type="button" class="roll-dice-btn unsafe" data-stat="acuite"
+                                            data-unsafe="true"
+                                            title="Lancer les dés d'Acuité (Mode Unsafe - {{#if (eq system.acuite.value "
+                                            2d4")}}1d12{{else if (eq system.acuite.value "3d4" )}}1d16{{else if (eq
+                                            system.acuite.value "4d4" )}}1d20{{else if (eq system.acuite.value "5d4"
+                                            )}}1d24{{else if (eq system.acuite.value "6d4" )}}1d28{{else if (eq
+                                            system.acuite.value "7d4" )}}1d32{{else}}{{system.acuite.value}}{{/if}})">
                                             <i class="fas fa-skull-crossbones"></i> Unsafe
-                            </button>
+                                        </button>
                                     </div>
-                                                                         <div class="dice-ranges">
-                                         <span class="range-info safe-range">
-                                             <i class="fas fa-shield-alt"></i> {{#if (eq system.acuite.value "2d4")}}2-8{{else if (eq system.acuite.value "3d4")}}3-12{{else if (eq system.acuite.value "4d4")}}4-16{{else if (eq system.acuite.value "5d4")}}5-20{{else if (eq system.acuite.value "6d4")}}6-24{{else if (eq system.acuite.value "7d4")}}7-28{{else}}?-?{{/if}}
-                                         </span>
-                                         <span class="range-info bonus-display">
-                                             +0
-                                         </span>
-                                         <span class="range-info unsafe-range">
-                                             <i class="fas fa-skull-crossbones"></i> {{#if (eq system.acuite.value "2d4")}}1-12{{else if (eq system.acuite.value "3d4")}}1-16{{else if (eq system.acuite.value "4d4")}}1-20{{else if (eq system.acuite.value "5d4")}}1-24{{else if (eq system.acuite.value "6d4")}}1-28{{else if (eq system.acuite.value "7d4")}}1-32{{else}}?-?{{/if}}
-                                         </span>
-                                     </div>
-                        </div>
-                        
-                        <div class="stat-block">
-                            <div class="stat-header">
+                                    <div class="dice-ranges">
+                                        <span class="range-info safe-range">
+                                            <i class="fas fa-shield-alt"></i> {{#if (eq system.acuite.value
+                                            "2d4")}}2-8{{else if (eq system.acuite.value "3d4")}}3-12{{else if (eq
+                                            system.acuite.value "4d4")}}4-16{{else if (eq system.acuite.value
+                                            "5d4")}}5-20{{else if (eq system.acuite.value "6d4")}}6-24{{else if (eq
+                                            system.acuite.value "7d4")}}7-28{{else}}?-?{{/if}}
+                                        </span>
+                                        <span class="range-info bonus-display">
+                                            +0
+                                        </span>
+                                        <span class="range-info unsafe-range">
+                                            <i class="fas fa-skull-crossbones"></i> {{#if (eq system.acuite.value
+                                            "2d4")}}1-12{{else if (eq system.acuite.value "3d4")}}1-16{{else if (eq
+                                            system.acuite.value "4d4")}}1-20{{else if (eq system.acuite.value
+                                            "5d4")}}1-24{{else if (eq system.acuite.value "6d4")}}1-28{{else if (eq
+                                            system.acuite.value "7d4")}}1-32{{else}}?-?{{/if}}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="stat-block">
+                                    <div class="stat-header">
                                         <img src="systems/voidHorizon/assets/icons/pimpance.png" class="stat-icon"
                                             alt="Pimpance">
-                                <label class="rollable" data-stat="pimpance">Pimpance</label>
-                            </div>
-                            <div class="stat-controls">
-                                <select name="system.pimpance.value" class="edit-mode">
-                                    {{#select system.pimpance.value}}
-                                    <option value="2d4">Tâche</option>
+                                        <label class="rollable" data-stat="pimpance">Pimpance</label>
+                                    </div>
+                                    <div class="stat-controls">
+                                        <select name="system.pimpance.value" class="edit-mode">
+                                            {{#select system.pimpance.value}}
+                                            <option value="2d4">Tâche</option>
                                             <option value="3d4">Pas top</option>
                                             <option value="4d4">Honnête</option>
                                             <option value="5d4">Beau</option>
                                             <option value="6d4">Splendide</option>
                                             <option value="7d4">Ramirez</option>
-                                    {{/select}}
-                                </select>
-                                                                                                                                                                 <div class="read-mode">{{#if (eq system.pimpance.value "2d4")}}Tâche{{else if (eq system.pimpance.value "3d4")}}Pas top{{else if (eq system.pimpance.value "4d4")}}Honnête{{else if (eq system.pimpance.value "5d4")}}Beau{{else if (eq system.pimpance.value "6d4")}}Splendide{{else if (eq system.pimpance.value "7d4")}}Ramirez{{else}}{{system.pimpance.value}}{{/if}}</div>
+                                            {{/select}}
+                                        </select>
+                                        <div class="read-mode">{{#if (eq system.pimpance.value "2d4")}}Tâche{{else if
+                                            (eq system.pimpance.value "3d4")}}Pas top{{else if (eq system.pimpance.value
+                                            "4d4")}}Honnête{{else if (eq system.pimpance.value "5d4")}}Beau{{else if (eq
+                                            system.pimpance.value "6d4")}}Splendide{{else if (eq system.pimpance.value
+                                            "7d4")}}Ramirez{{else}}{{system.pimpance.value}}{{/if}}</div>
                                     </div>
-                                    
-                                    
-                                    
+
+
+
                                     <div class="roll-buttons">
-                                        <button type="button" class="roll-dice-btn safe" data-stat="pimpance" data-unsafe="false"
+                                        <button type="button" class="roll-dice-btn safe" data-stat="pimpance"
+                                            data-unsafe="false"
                                             title="Lancer les dés de Pimpance (Mode Safe - {{system.pimpance.value}})">
                                             <i class="fas fa-shield-alt"></i> Safe
                                         </button>
-                                        <button type="button" class="roll-dice-btn unsafe" data-stat="pimpance" data-unsafe="true"
-                                                                                         title="Lancer les dés de Pimpance (Mode Unsafe - {{#if (eq system.pimpance.value "2d4")}}1d12{{else if (eq system.pimpance.value "3d4")}}1d16{{else if (eq system.pimpance.value "4d4")}}1d20{{else if (eq system.pimpance.value "5d4")}}1d24{{else if (eq system.pimpance.value "6d4")}}1d28{{else if (eq system.pimpance.value "7d4")}}1d32{{else}}{{system.pimpance.value}}{{/if}})">
+                                        <button type="button" class="roll-dice-btn unsafe" data-stat="pimpance"
+                                            data-unsafe="true"
+                                            title="Lancer les dés de Pimpance (Mode Unsafe - {{#if (eq system.pimpance.value "
+                                            2d4")}}1d12{{else if (eq system.pimpance.value "3d4" )}}1d16{{else if (eq
+                                            system.pimpance.value "4d4" )}}1d20{{else if (eq system.pimpance.value "5d4"
+                                            )}}1d24{{else if (eq system.pimpance.value "6d4" )}}1d28{{else if (eq
+                                            system.pimpance.value "7d4"
+                                            )}}1d32{{else}}{{system.pimpance.value}}{{/if}})">
                                             <i class="fas fa-skull-crossbones"></i> Unsafe
-                            </button>
+                                        </button>
                                     </div>
-                                                                         <div class="dice-ranges">
-                                         <span class="range-info safe-range">
-                                             <i class="fas fa-shield-alt"></i> {{#if (eq system.pimpance.value "2d4")}}2-8{{else if (eq system.pimpance.value "3d4")}}3-12{{else if (eq system.pimpance.value "4d4")}}4-16{{else if (eq system.pimpance.value "5d4")}}5-20{{else if (eq system.pimpance.value "6d4")}}6-24{{else if (eq system.pimpance.value "7d4")}}7-28{{else}}?-?{{/if}}
-                                         </span>
-                                         <span class="range-info bonus-display">
-                                             +0
-                                         </span>
-                                         <span class="range-info unsafe-range">
-                                             <i class="fas fa-skull-crossbones"></i> {{#if (eq system.pimpance.value "2d4")}}1-12{{else if (eq system.acuite.value "3d4")}}1-16{{else if (eq system.pimpance.value "4d4")}}1-20{{else if (eq system.pimpance.value "5d4")}}1-24{{else if (eq system.pimpance.value "6d4")}}1-28{{else if (eq system.pimpance.value "7d4")}}1-32{{else}}?-?{{/if}}
-                                         </span>
-                                     </div>
-                        </div>
-                        
-                        <div class="stat-block">
-                            <div class="stat-header">
+                                    <div class="dice-ranges">
+                                        <span class="range-info safe-range">
+                                            <i class="fas fa-shield-alt"></i> {{#if (eq system.pimpance.value
+                                            "2d4")}}2-8{{else if (eq system.pimpance.value "3d4")}}3-12{{else if (eq
+                                            system.pimpance.value "4d4")}}4-16{{else if (eq system.pimpance.value
+                                            "5d4")}}5-20{{else if (eq system.pimpance.value "6d4")}}6-24{{else if (eq
+                                            system.pimpance.value "7d4")}}7-28{{else}}?-?{{/if}}
+                                        </span>
+                                        <span class="range-info bonus-display">
+                                            +0
+                                        </span>
+                                        <span class="range-info unsafe-range">
+                                            <i class="fas fa-skull-crossbones"></i> {{#if (eq system.pimpance.value
+                                            "2d4")}}1-12{{else if (eq system.acuite.value "3d4")}}1-16{{else if (eq
+                                            system.pimpance.value "4d4")}}1-20{{else if (eq system.pimpance.value
+                                            "5d4")}}1-24{{else if (eq system.pimpance.value "6d4")}}1-28{{else if (eq
+                                            system.pimpance.value "7d4")}}1-32{{else}}?-?{{/if}}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="stat-block">
+                                    <div class="stat-header">
                                         <img src="systems/voidHorizon/assets/icons/arcane.png" class="stat-icon"
                                             alt="Arcane">
-                                <label class="rollable" data-stat="arcane">Arcane</label>
-                            </div>
-                            <div class="stat-controls">
-                                <select name="system.arcane.value" class="edit-mode">
-                                    {{#select system.arcane.value}}
-                                    <option value="2d4">Insensible</option>
+                                        <label class="rollable" data-stat="arcane">Arcane</label>
+                                    </div>
+                                    <div class="stat-controls">
+                                        <select name="system.arcane.value" class="edit-mode">
+                                            {{#select system.arcane.value}}
+                                            <option value="2d4">Insensible</option>
                                             <option value="3d4">Eveillé</option>
                                             <option value="4d4">Novice</option>
                                             <option value="5d4">Initié</option>
                                             <option value="6d4">Maître</option>
                                             <option value="7d4">Archimage</option>
-                                    {{/select}}
-                                </select>
-                                                                                                                                                                 <div class="read-mode">{{#if (eq system.arcane.value "2d4")}}Insensible{{else if (eq system.arcane.value "3d4")}}Eveillé{{else if (eq system.arcane.value "4d4")}}Novice{{else if (eq system.arcane.value "5d4")}}Initié{{else if (eq system.arcane.value "6d4")}}Maître{{else if (eq system.arcane.value "7d4")}}Archimage{{else}}{{system.arcane.value}}{{/if}}</div>
+                                            {{/select}}
+                                        </select>
+                                        <div class="read-mode">{{#if (eq system.arcane.value "2d4")}}Insensible{{else if
+                                            (eq system.arcane.value "3d4")}}Eveillé{{else if (eq system.arcane.value
+                                            "4d4")}}Novice{{else if (eq system.arcane.value "5d4")}}Initié{{else if (eq
+                                            system.arcane.value "6d4")}}Maître{{else if (eq system.arcane.value
+                                            "7d4")}}Archimage{{else}}{{system.arcane.value}}{{/if}}</div>
                                     </div>
-                                    
-                                    
-                                    
+
+
+
                                     <div class="roll-buttons">
-                                        <button type="button" class="roll-dice-btn safe" data-stat="arcane" data-unsafe="false"
+                                        <button type="button" class="roll-dice-btn safe" data-stat="arcane"
+                                            data-unsafe="false"
                                             title="Lancer les dés d'Arcane (Mode Safe - {{system.arcane.value}})">
                                             <i class="fas fa-shield-alt"></i> Safe
                                         </button>
-                                        <button type="button" class="roll-dice-btn unsafe" data-stat="arcane" data-unsafe="true"
-                                                                                         title="Lancer les dés d'Arcane (Mode Unsafe - {{#if (eq system.arcane.value "2d4")}}1d12{{else if (eq system.arcane.value "3d4")}}1d16{{else if (eq system.arcane.value "4d4")}}1d20{{else if (eq system.arcane.value "5d4")}}1d24{{else if (eq system.arcane.value "6d4")}}1d28{{else if (eq system.arcane.value "7d4")}}1d32{{else}}{{system.arcane.value}}{{/if}})">
+                                        <button type="button" class="roll-dice-btn unsafe" data-stat="arcane"
+                                            data-unsafe="true"
+                                            title="Lancer les dés d'Arcane (Mode Unsafe - {{#if (eq system.arcane.value "
+                                            2d4")}}1d12{{else if (eq system.arcane.value "3d4" )}}1d16{{else if (eq
+                                            system.arcane.value "4d4" )}}1d20{{else if (eq system.arcane.value "5d4"
+                                            )}}1d24{{else if (eq system.arcane.value "6d4" )}}1d28{{else if (eq
+                                            system.arcane.value "7d4" )}}1d32{{else}}{{system.arcane.value}}{{/if}})">
                                             <i class="fas fa-skull-crossbones"></i> Unsafe
-                            </button>
+                                        </button>
                                     </div>
-                                                                         <div class="dice-ranges">
-                                         <span class="range-info safe-range">
-                                             <i class="fas fa-shield-alt"></i> {{#if (eq system.arcane.value "2d4")}}2-8{{else if (eq system.arcane.value "3d4")}}3-12{{else if (eq system.arcane.value "4d4")}}4-16{{else if (eq system.arcane.value "5d4")}}5-20{{else if (eq system.arcane.value "6d4")}}6-24{{else if (eq system.arcane.value "7d4")}}7-28{{else}}?-?{{/if}}
-                                         </span>
-                                         <span class="range-info bonus-display">
-                                             +0
-                                         </span>
-                                         <span class="range-info unsafe-range">
-                                             <i class="fas fa-skull-crossbones"></i> {{#if (eq system.arcane.value "2d4")}}1-12{{else if (eq system.arcane.value "3d4")}}1-16{{else if (eq system.arcane.value "4d4")}}1-20{{else if (eq system.arcane.value "5d4")}}1-24{{else if (eq system.arcane.value "6d4")}}1-28{{else if (eq system.arcane.value "7d4")}}1-32{{else}}?-?{{/if}}
-                                         </span>
-                                     </div>
-                        </div>
-                        
-                        <div class="edit-mode-button">
+                                    <div class="dice-ranges">
+                                        <span class="range-info safe-range">
+                                            <i class="fas fa-shield-alt"></i> {{#if (eq system.arcane.value
+                                            "2d4")}}2-8{{else if (eq system.arcane.value "3d4")}}3-12{{else if (eq
+                                            system.arcane.value "4d4")}}4-16{{else if (eq system.arcane.value
+                                            "5d4")}}5-20{{else if (eq system.arcane.value "6d4")}}6-24{{else if (eq
+                                            system.arcane.value "7d4")}}7-28{{else}}?-?{{/if}}
+                                        </span>
+                                        <span class="range-info bonus-display">
+                                            +0
+                                        </span>
+                                        <span class="range-info unsafe-range">
+                                            <i class="fas fa-skull-crossbones"></i> {{#if (eq system.arcane.value
+                                            "2d4")}}1-12{{else if (eq system.arcane.value "3d4")}}1-16{{else if (eq
+                                            system.arcane.value "4d4")}}1-20{{else if (eq system.arcane.value
+                                            "5d4")}}1-24{{else if (eq system.arcane.value "6d4")}}1-28{{else if (eq
+                                            system.arcane.value "7d4")}}1-32{{else}}?-?{{/if}}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="edit-mode-button">
                                     <button type="button" class="toggle-edit-mode"
                                         title="Cliquer pour éditer, cliquer à nouveau pour sauvegarder">
-                                <i class="fas fa-edit"></i>
-                                <span class="button-text">Éditer</span>
-                            </button>
+                                        <i class="fas fa-edit"></i>
+                                        <span class="button-text">Éditer</span>
+                                    </button>
                                 </div>
                             </div>
 
@@ -358,7 +452,8 @@
                                                         <label>Qualité:</label>
                                                         <select name="system.weapons.primary.rank" class="edit-mode">
                                                             <option value="0" {{selected "0"
-                                                                actor.system.weapons.primary.rank}}>Équipement brisé (1d4)
+                                                                actor.system.weapons.primary.rank}}>Équipement brisé
+                                                                (1d4)
                                                             </option>
                                                             <option value="1" {{selected "1"
                                                                 actor.system.weapons.primary.rank}}>Équipement commun
@@ -376,7 +471,9 @@
                                                                 actor.system.weapons.primary.rank}}>Équipement
                                                                 légendaire (1d20)</option>
                                                         </select>
-                                                        <div class="read-mode">{{getWeaponQualityLabel actor.system.weapons.primary.rank}} ({{getWeaponQualityDice actor.system.weapons.primary.rank}})
+                                                        <div class="read-mode">{{getWeaponQualityLabel
+                                                            actor.system.weapons.primary.rank}} ({{getWeaponQualityDice
+                                                            actor.system.weapons.primary.rank}})
                                                         </div>
                                                     </div>
                                                     <div class="weapon-field">
@@ -396,7 +493,8 @@
                                                         <div class="read-mode">
                                                             {{actor.system.weapons.primary.description}}</div>
                                                     </div>
-                                                    <div class="weapon-roll-buttons {{#if (eq actor.system.weapons.primary.type "shield")}}hidden{{/if}}">
+                                                    <div class="weapon-roll-buttons {{#if (eq actor.system.weapons.primary.type "
+                                                        shield")}}hidden{{/if}}">
                                                         <button type="button" class="roll-weapon-btn safe read-mode"
                                                             data-weapon="primary" data-mode="safe"
                                                             title="Lancer les dés en mode Safe pour l'arme principale">
@@ -408,13 +506,16 @@
                                                             <i class="fas fa-sword"></i> Unsafe
                                                         </button>
                                                     </div>
-                                                    <div class="weapon-dice-ranges {{#if (eq actor.system.weapons.primary.type "shield")}}hidden{{/if}}">
+                                                    <div class="weapon-dice-ranges {{#if (eq actor.system.weapons.primary.type "
+                                                        shield")}}hidden{{/if}}">
                                                         <span class="range-info weapon-safe-range">
-                                                            <i class="fas fa-shield-alt"></i> <span class="range-value">Calculé...</span>
+                                                            <i class="fas fa-shield-alt"></i> <span
+                                                                class="range-value">Calculé...</span>
                                                         </span>
                                                         <span class="bonus-display weapon-bonus-display"></span>
                                                         <span class="range-info weapon-unsafe-range">
-                                                            <i class="fas fa-skull-crossbones"></i> <span class="range-value">Calculé...</span>
+                                                            <i class="fas fa-skull-crossbones"></i> <span
+                                                                class="range-value">Calculé...</span>
                                                         </span>
                                                     </div>
                                                 </div>
@@ -452,7 +553,8 @@
                                                             (Martialité){{else if (eq
                                                             actor.system.weapons.secondary.type "agility")}}Agilité
                                                             (Agilité){{else if (eq actor.system.weapons.secondary.type
-                                                            "acuite")}}Acuité (Acuité){{else if (eq actor.system.weapons.secondary.type
+                                                            "acuite")}}Acuité (Acuité){{else if (eq
+                                                            actor.system.weapons.secondary.type
                                                             "shield")}}Bouclier{{else}}Non défini{{/if}}</div>
                                                     </div>
                                                     <div class="weapon-field">
@@ -477,7 +579,10 @@
                                                                 actor.system.weapons.secondary.rank}}>Équipement
                                                                 légendaire (1d20)</option>
                                                         </select>
-                                                        <div class="read-mode">{{getWeaponQualityLabel actor.system.weapons.secondary.rank}} ({{getWeaponQualityDice actor.system.weapons.secondary.rank}})
+                                                        <div class="read-mode">{{getWeaponQualityLabel
+                                                            actor.system.weapons.secondary.rank}}
+                                                            ({{getWeaponQualityDice
+                                                            actor.system.weapons.secondary.rank}})
                                                         </div>
                                                     </div>
                                                     <div class="weapon-field">
@@ -497,7 +602,8 @@
                                                         <div class="read-mode">
                                                             {{actor.system.weapons.secondary.description}}</div>
                                                     </div>
-                                                    <div class="weapon-roll-buttons {{#if (eq actor.system.weapons.secondary.type "shield")}}hidden{{/if}}">
+                                                    <div class="weapon-roll-buttons {{#if (eq actor.system.weapons.secondary.type "
+                                                        shield")}}hidden{{/if}}">
                                                         <button type="button" class="roll-weapon-btn safe read-mode"
                                                             data-weapon="secondary" data-mode="safe"
                                                             title="Lancer les dés en mode Safe pour l'arme secondaire">
@@ -509,59 +615,75 @@
                                                             <i class="fas fa-sword"></i> Unsafe
                                                         </button>
                                                     </div>
-                                                    <div class="weapon-dice-ranges {{#if (eq actor.system.weapons.secondary.type "shield")}}hidden{{/if}}">
+                                                    <div class="weapon-dice-ranges {{#if (eq actor.system.weapons.secondary.type "
+                                                        shield")}}hidden{{/if}}">
                                                         <span class="range-info weapon-safe-range">
-                                                            <i class="fas fa-shield-alt"></i> <span class="range-value">Calculé...</span>
+                                                            <i class="fas fa-shield-alt"></i> <span
+                                                                class="range-value">Calculé...</span>
                                                         </span>
                                                         <span class="bonus-display weapon-bonus-display"></span>
                                                         <span class="range-info weapon-unsafe-range">
-                                                            <i class="fas fa-skull-crossbones"></i> <span class="range-value">Calculé...</span>
+                                                            <i class="fas fa-skull-crossbones"></i> <span
+                                                                class="range-value">Calculé...</span>
                                                         </span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <!-- Section Armure -->
                                         <div class="weapon-slot armor-slot">
                                             <h3>Armure</h3>
                                             <div class="weapon-form">
-                                                                                                        <div class="weapon-field">
-                                <label>Nom de l'armure:</label>
-                                <input type="text" name="system.armor.name"
-                                    value="{{actor.system.armor.name}}"
-                                    placeholder="Nom de l'armure" class="edit-mode" data-no-save="true">
-                                <div class="read-mode">{{actor.system.armor.name}}</div>
-                            </div>
-                            
-                            <div class="weapon-field">
-                                <label>Type d'armure:</label>
-                                <select name="system.armor.type" class="edit-mode" data-no-save="true">
-                                    <option value="tissu" {{#if (eq actor.system.armor.type "tissu")}}selected{{/if}}>Tissu (+0 armure, +0 agilité)</option>
-                                    <option value="legere" {{#if (eq actor.system.armor.type "legere")}}selected{{/if}}>Légère (+1 armure, -4 agilité)</option>
-                                    <option value="lourde" {{#if (eq actor.system.armor.type "lourde")}}selected{{/if}}>Lourde (+2 armure, -8 agilité)</option>
-                                    <option value="blindee" {{#if (eq actor.system.armor.type "blindee")}}selected{{/if}}>Blindée (+4 armure, -16 agilité)</option>
-                                </select>
-                                <div class="read-mode">
-                                    {{#if (eq actor.system.armor.type "tissu")}}Tissu (+0 armure, +0 agilité)
-                                    {{else if (eq actor.system.armor.type "legere")}}Légère (+1 armure, -4 agilité)
-                                    {{else if (eq actor.system.armor.type "lourde")}}Lourde (+2 armure, -8 agilité)
-                                    {{else if (eq actor.system.armor.type "blindee")}}Blindée (+4 armure, -16 agilité)
-                                    {{else}}Tissu (+0 armure, +0 agilité){{/if}}
-                                </div>
-                            </div>
-                            
-                            <div class="weapon-field">
-                                <label>Description:</label>
-                                <textarea name="system.armor.description"
-                                    placeholder="Description de l'armure"
-                                    class="edit-mode" data-no-save="true">{{actor.system.armor.description}}</textarea>
-                                <div class="read-mode">{{actor.system.armor.description}}</div>
-                            </div>
+                                                <div class="weapon-field">
+                                                    <label>Nom de l'armure:</label>
+                                                    <input type="text" name="system.armor.name"
+                                                        value="{{actor.system.armor.name}}"
+                                                        placeholder="Nom de l'armure" class="edit-mode"
+                                                        data-no-save="true">
+                                                    <div class="read-mode">{{actor.system.armor.name}}</div>
+                                                </div>
+
+                                                <div class="weapon-field">
+                                                    <label>Type d'armure:</label>
+                                                    <select name="system.armor.type" class="edit-mode"
+                                                        data-no-save="true">
+                                                        <option value="tissu" {{#if (eq actor.system.armor.type "tissu"
+                                                            )}}selected{{/if}}>Tissu (+0 armure, +0 agilité)</option>
+                                                        <option value="legere" {{#if (eq
+                                                            actor.system.armor.type "legere" )}}selected{{/if}}>Légère
+                                                            (+1 armure, -4 agilité)</option>
+                                                        <option value="lourde" {{#if (eq
+                                                            actor.system.armor.type "lourde" )}}selected{{/if}}>Lourde
+                                                            (+2 armure, -8 agilité)</option>
+                                                        <option value="blindee" {{#if (eq
+                                                            actor.system.armor.type "blindee" )}}selected{{/if}}>Blindée
+                                                            (+4 armure, -16 agilité)</option>
+                                                    </select>
+                                                    <div class="read-mode">
+                                                        {{#if (eq actor.system.armor.type "tissu")}}Tissu (+0 armure, +0
+                                                        agilité)
+                                                        {{else if (eq actor.system.armor.type "legere")}}Légère (+1
+                                                        armure, -4 agilité)
+                                                        {{else if (eq actor.system.armor.type "lourde")}}Lourde (+2
+                                                        armure, -8 agilité)
+                                                        {{else if (eq actor.system.armor.type "blindee")}}Blindée (+4
+                                                        armure, -16 agilité)
+                                                        {{else}}Tissu (+0 armure, +0 agilité){{/if}}
+                                                    </div>
+                                                </div>
+
+                                                <div class="weapon-field">
+                                                    <label>Description:</label>
+                                                    <textarea name="system.armor.description"
+                                                        placeholder="Description de l'armure" class="edit-mode"
+                                                        data-no-save="true">{{actor.system.armor.description}}</textarea>
+                                                    <div class="read-mode">{{actor.system.armor.description}}</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Bouton d'édition discret -->
                                     <div class="weapons-edit-mode-button" id="weapons-edit-button">
                                         <button type="button" class="toggle-weapons-edit-mode subtle-edit-btn"
@@ -581,12 +703,14 @@
                                             <i class="fas fa-plus"></i> Ajouter un trait
                                         </button>
                                     </div>
-                                    
+
                                     <!-- Message d'information -->
                                     <div class="traits-info">
-                                        <p><i class="fas fa-info-circle"></i> Les traits confèrent des bonus aux caractéristiques de votre personnage. Cliquez sur "Ajouter un trait" pour commencer.</p>
+                                        <p><i class="fas fa-info-circle"></i> Les traits confèrent des bonus aux
+                                            caractéristiques de votre personnage. Cliquez sur "Ajouter un trait" pour
+                                            commencer.</p>
                                     </div>
-                                    
+
                                     <!-- Formulaire de création de trait (caché par défaut) -->
                                     <div class="trait-form-container" id="trait-form-container" style="display: none;">
                                         <div class="trait-form">
@@ -594,11 +718,14 @@
                                             <div class="trait-form-fields">
                                                 <div class="trait-field">
                                                     <label>Nom du trait:</label>
-                                                    <input type="text" id="trait-name-input" placeholder="Nom du trait" data-no-save="true" />
+                                                    <input type="text" id="trait-name-input" placeholder="Nom du trait"
+                                                        data-no-save="true" />
                                                 </div>
                                                 <div class="trait-field">
                                                     <label>Description:</label>
-                                                    <textarea id="trait-description-input" placeholder="Description du trait" rows="3" data-no-save="true"></textarea>
+                                                    <textarea id="trait-description-input"
+                                                        placeholder="Description du trait" rows="3"
+                                                        data-no-save="true"></textarea>
                                                 </div>
                                                 <div class="trait-field">
                                                     <label>Bonus sur:</label>
@@ -618,7 +745,8 @@
                                                 </div>
                                                 <div class="trait-field">
                                                     <label>Valeur du bonus:</label>
-                                                    <input type="number" id="trait-bonus-value" placeholder="+0" min="0" max="10" data-no-save="true" />
+                                                    <input type="number" id="trait-bonus-value" placeholder="+0" min="0"
+                                                        max="10" data-no-save="true" />
                                                 </div>
                                             </div>
                                             <div class="trait-form-actions">
@@ -631,7 +759,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Liste des traits existants -->
                                     <div class="traits-list" id="traits-list">
                                         {{#each actor.system.traits as |trait traitId|}}
@@ -639,15 +767,18 @@
                                             <div class="trait-header">
                                                 <div class="trait-name">
                                                     <h4>{{trait.name}}</h4>
-                                                                    <span class="trait-bonus-display">
-                    {{#if trait.bonusValue}}+{{/if}}{{trait.bonusValue}} {{trait.bonusTarget}}
-                </span>
+                                                    <span class="trait-bonus-display">
+                                                        {{#if trait.bonusValue}}+{{/if}}{{trait.bonusValue}}
+                                                        {{trait.bonusTarget}}
+                                                    </span>
                                                 </div>
                                                 <div class="trait-controls">
-                                                    <button type="button" class="trait-control trait-edit" title="Modifier" data-trait-id="{{traitId}}">
+                                                    <button type="button" class="trait-control trait-edit"
+                                                        title="Modifier" data-trait-id="{{traitId}}">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
-                                                    <button type="button" class="trait-control trait-delete" title="Supprimer" data-trait-id="{{traitId}}">
+                                                    <button type="button" class="trait-control trait-delete"
+                                                        title="Supprimer" data-trait-id="{{traitId}}">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </div>
@@ -670,12 +801,14 @@
                                             <i class="fas fa-plus"></i> Ajouter une compétence
                                         </button>
                                     </div>
-                                    
+
                                     <!-- Message d'information -->
                                     <div class="skills-info">
-                                        <p><i class="fas fa-info-circle"></i> Les compétences représentent les domaines d'expertise de votre personnage. Cliquez sur "Ajouter une compétence" pour commencer.</p>
+                                        <p><i class="fas fa-info-circle"></i> Les compétences représentent les domaines
+                                            d'expertise de votre personnage. Cliquez sur "Ajouter une compétence" pour
+                                            commencer.</p>
                                     </div>
-                                    
+
                                     <!-- Formulaire de création de compétence (caché par défaut) -->
                                     <div class="skill-form-container" id="skill-form-container" style="display: none;">
                                         <div class="skill-form">
@@ -683,11 +816,14 @@
                                             <div class="skill-form-fields">
                                                 <div class="skill-field">
                                                     <label>Nom de la compétence:</label>
-                                                    <input type="text" id="skill-name-input" placeholder="Nom de la compétence" data-no-save="true" />
+                                                    <input type="text" id="skill-name-input"
+                                                        placeholder="Nom de la compétence" data-no-save="true" />
                                                 </div>
                                                 <div class="skill-field">
                                                     <label>Description:</label>
-                                                    <textarea id="skill-description-input" placeholder="Description de la compétence" rows="3" data-no-save="true"></textarea>
+                                                    <textarea id="skill-description-input"
+                                                        placeholder="Description de la compétence" rows="3"
+                                                        data-no-save="true"></textarea>
                                                 </div>
                                                 <div class="skill-field">
                                                     <label>Caractéristique associée:</label>
@@ -719,267 +855,297 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                                                         <!-- Liste des compétences existantes -->
-                                     <div class="skills-list" id="skills-list">
-                                         {{#each actor.system.skills as |skill skillId|}}
-                                         {{#if (and skill (ne skill null))}}
-                                         <div class="skill" data-skill-id="{{skillId}}">
-                                             <div class="skill-header">
-                                                 <div class="skill-name">
-                                                     <h4>{{skill.name}}</h4>
-                                                     <span class="skill-mastery-display">
-                                                         {{skill.mastery}} ({{#if (eq skill.mastery "2d4")}}Novice{{else if (eq skill.mastery "3d4")}}Compagnon{{else if (eq skill.mastery "4d4")}}Maître{{else}}{{skill.mastery}}{{/if}})
-                                                     </span>
-                                                 </div>
-                                                 <div class="skill-controls">
-                                                     <button type="button" class="skill-control skill-edit" title="Modifier" data-skill-id="{{skillId}}">
-                                                         <i class="fas fa-edit"></i>
-                                                     </button>
-                                                     <button type="button" class="skill-control skill-delete" title="Supprimer" data-skill-id="{{skillId}}">
-                                                         <i class="fas fa-trash"></i>
-                                                     </button>
-                                                 </div>
-                                             </div>
-                                             <div class="skill-description">
-                                                 {{skill.description}}
-                                             </div>
-                                             
-                                             <!-- Boutons de lancer de dé pour la compétence -->
-                                             <div class="skill-roll-buttons">
-                                                 <button type="button" class="skill-roll-btn safe" 
-                                                         data-skill-id="{{skillId}}" 
-                                                         data-characteristic="{{skill.characteristic}}"
-                                                         data-mastery="{{skill.mastery}}"
-                                                         data-unsafe="false"
-                                                         title="Lancer {{skill.name}} (Mode Safe - {{skill.characteristic}} unsafe + bonus + {{skill.mastery}})">
-                                                     <i class="fas fa-shield-alt"></i> Safe
-                                                 </button>
-                                                 <button type="button" class="skill-roll-btn unsafe" 
-                                                         data-skill-id="{{skillId}}" 
-                                                         data-characteristic="{{skill.characteristic}}"
-                                                         data-mastery="{{skill.mastery}}"
-                                                         data-unsafe="true"
-                                                         title="Lancer {{skill.name}} (Mode Unsafe - {{skill.characteristic}} safe + bonus + {{skill.mastery}})">
-                                                     <i class="fas fa-skull-crossbones"></i> Unsafe
-                                                 </button>
-                                             </div>
-                                         </div>
-                                         {{/if}}
-                                         {{/each}}
-                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="health-column">
-                    <div class="health-status">
-                        <span class="status-label">État :</span>
-                        <span class="status-value" data-health-status>
-                            {{#if (gte (sub system.constitution.value system.resources.blessure.value) 3)}}
-                            Bonne santé
-                            {{else if (eq (sub system.constitution.value system.resources.blessure.value) 2)}}
-                            Légèrement blessé
-                            {{else if (eq (sub system.constitution.value system.resources.blessure.value) 1)}}
-                            Grièvement blessé
-                            {{else}}
-                            Incapacité
-                            {{/if}}
-                        </span>
-                    </div>
+                                    <!-- Liste des compétences existantes -->
+                                    <div class="skills-list" id="skills-list">
+                                        {{#each actor.system.skills as |skill skillId|}}
+                                        {{#if (and skill (ne skill null))}}
+                                        <div class="skill" data-skill-id="{{skillId}}">
+                                            <div class="skill-header">
+                                                <div class="skill-name">
+                                                    <h4>{{skill.name}}</h4>
+                                                    <span class="skill-mastery-display">
+                                                        {{skill.mastery}} ({{#if (eq skill.mastery "2d4")}}Novice{{else
+                                                        if (eq skill.mastery "3d4")}}Compagnon{{else if (eq
+                                                        skill.mastery "4d4")}}Maître{{else}}{{skill.mastery}}{{/if}})
+                                                    </span>
+                                                </div>
+                                                <div class="skill-controls">
+                                                    <button type="button" class="skill-control skill-edit"
+                                                        title="Modifier" data-skill-id="{{skillId}}">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button type="button" class="skill-control skill-delete"
+                                                        title="Supprimer" data-skill-id="{{skillId}}">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="skill-description">
+                                                {{skill.description}}
+                                            </div>
 
-                    <div class="stats-row">
-                        <div class="resource">
-                            <label>Armure</label>
-                            <div class="resource-value">
-                                <input type="number" name="system.resources.armor.value"
-                                    value="{{actor.system.resources.armor.value}}" min="0" data-no-save="true" />
-                            </div>
-                            <!-- Affichage détaillé des sources de bonus d'armure -->
-                            <div class="armor-breakdown">
-                                <div class="armor-source">
-                                    <span class="source-label">Base:</span>
-                                    <span class="source-value">{{actor.system.resources.armor.value}}</span>
-                                </div>
-                                <div class="armor-source">
-                                    <span class="source-label">Équipement:</span>
-                                    <span class="source-value">{{#if (eq actor.system.armor.type 'tissu')}}+0{{else if (eq actor.system.armor.type 'legere')}}+1{{else if (eq actor.system.armor.type 'lourde')}}+2{{else if (eq actor.system.armor.type 'blindee')}}+4{{else}}+0{{/if}}</span>
-                                </div>
-                                <div class="armor-source">
-                                    <span class="source-label">Traits:</span>
-                                    <span class="source-value">{{#if (gt actor.system.traitBonuses.armor 0)}}+{{/if}}{{actor.system.traitBonuses.armor}}</span>
-                                </div>
-                                <div class="armor-source">
-                                    <span class="source-label">Boucliers:</span>
-                                    <span class="source-value">{{#if (eq actor.system.weapons.primary.type 'shield')}}{{#if (gt actor.system.weapons.primary.bonus 0)}}+{{/if}}{{actor.system.weapons.primary.bonus}}{{/if}}{{#if (eq actor.system.weapons.secondary.type 'shield')}}{{#if (gt actor.system.weapons.secondary.bonus 0)}}+{{/if}}{{actor.system.weapons.secondary.bonus}}{{/if}}</span>
-                                </div>
-                                <div class="armor-source total">
-                                    <span class="source-label">Total:</span>
-                                    <span class="source-value">{{getTotalArmor actor}}</span>
+                                            <!-- Boutons de lancer de dé pour la compétence -->
+                                            <div class="skill-roll-buttons">
+                                                <button type="button" class="skill-roll-btn safe"
+                                                    data-skill-id="{{skillId}}"
+                                                    data-characteristic="{{skill.characteristic}}"
+                                                    data-mastery="{{skill.mastery}}" data-unsafe="false"
+                                                    title="Lancer {{skill.name}} (Mode Safe - {{skill.characteristic}} unsafe + bonus + {{skill.mastery}})">
+                                                    <i class="fas fa-shield-alt"></i> Safe
+                                                </button>
+                                                <button type="button" class="skill-roll-btn unsafe"
+                                                    data-skill-id="{{skillId}}"
+                                                    data-characteristic="{{skill.characteristic}}"
+                                                    data-mastery="{{skill.mastery}}" data-unsafe="true"
+                                                    title="Lancer {{skill.name}} (Mode Unsafe - {{skill.characteristic}} safe + bonus + {{skill.mastery}})">
+                                                    <i class="fas fa-skull-crossbones"></i> Unsafe
+                                                </button>
+                                            </div>
+                                        </div>
+                                        {{/if}}
+                                        {{/each}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="stat">
-                            <label>Constitution</label>
-                            <div class="stat-value">
-                                <input type="number" name="system.constitution.value"
-                                    value="{{system.constitution.value}}" min="1" max="10" data-no-save="true" />
+                        <div class="health-column">
+                            <div class="health-status">
+                                <span class="status-label">État :</span>
+                                <span class="status-value" data-health-status>
+                                    {{#if (gte (sub system.constitution.value system.resources.blessure.value) 3)}}
+                                    Bonne santé
+                                    {{else if (eq (sub system.constitution.value system.resources.blessure.value) 2)}}
+                                    Légèrement blessé
+                                    {{else if (eq (sub system.constitution.value system.resources.blessure.value) 1)}}
+                                    Grièvement blessé
+                                    {{else}}
+                                    Incapacité
+                                    {{/if}}
+                                </span>
                             </div>
-                            <!-- Affichage détaillé des sources de bonus de constitution -->
-                            <div class="armor-breakdown">
-                                <div class="armor-source">
-                                    <span class="source-label">Base:</span>
-                                    <span class="source-value">{{system.constitution.value}}</span>
+                
+                            <div class="stats-row">
+                                <div class="resource">
+                                    <label>Armure</label>
+                                    <div class="resource-value">
+                                        <input type="number" name="system.resources.armor.value"
+                                            value="{{actor.system.resources.armor.value}}" min="0" data-no-save="true" />
+                                    </div>
+                                    <!-- Affichage détaillé des sources de bonus d'armure -->
+                                    <div class="armor-breakdown">
+                                        <div class="armor-source">
+                                            <span class="source-label">Base:</span>
+                                            <span class="source-value">{{actor.system.resources.armor.value}}</span>
+                                        </div>
+                                        <div class="armor-source">
+                                            <span class="source-label">Équipement:</span>
+                                            <span class="source-value">{{#if (eq actor.system.armor.type 'tissu')}}+0{{else if (eq
+                                                actor.system.armor.type 'legere')}}+1{{else if (eq actor.system.armor.type
+                                                'lourde')}}+2{{else if (eq actor.system.armor.type
+                                                'blindee')}}+4{{else}}+0{{/if}}</span>
+                                        </div>
+                                        <div class="armor-source">
+                                            <span class="source-label">Traits:</span>
+                                            <span class="source-value">{{#if (gt actor.system.traitBonuses.armor
+                                                0)}}+{{/if}}{{actor.system.traitBonuses.armor}}</span>
+                                        </div>
+                                        <div class="armor-source">
+                                            <span class="source-label">Boucliers:</span>
+                                            <span class="source-value">{{#if (eq actor.system.weapons.primary.type 'shield')}}{{#if (gt
+                                                actor.system.weapons.primary.bonus
+                                                0)}}+{{/if}}{{actor.system.weapons.primary.bonus}}{{/if}}{{#if (eq
+                                                actor.system.weapons.secondary.type 'shield')}}{{#if (gt
+                                                actor.system.weapons.secondary.bonus
+                                                0)}}+{{/if}}{{actor.system.weapons.secondary.bonus}}{{/if}}</span>
+                                        </div>
+                                        <div class="armor-source total">
+                                            <span class="source-label">Total:</span>
+                                            <span class="source-value">{{getTotalArmor actor}}</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="armor-source">
-                                    <span class="source-label">Traits:</span>
-                                    <span class="source-value">{{#if (gt actor.system.traitBonuses.constitution 0)}}+{{/if}}{{actor.system.traitBonuses.constitution}}</span>
+                                <div class="stat">
+                                    <label>Constitution</label>
+                                    <div class="stat-value">
+                                        <input type="number" name="system.constitution.value" value="{{system.constitution.value}}"
+                                            min="1" max="10" data-no-save="true" />
+                                    </div>
+                                    <!-- Affichage détaillé des sources de bonus de constitution -->
+                                    <div class="armor-breakdown">
+                                        <div class="armor-source">
+                                            <span class="source-label">Base:</span>
+                                            <span class="source-value">{{system.constitution.value}}</span>
+                                        </div>
+                                        <div class="armor-source">
+                                            <span class="source-label">Traits:</span>
+                                            <span class="source-value">{{#if (gt actor.system.traitBonuses.constitution
+                                                0)}}+{{/if}}{{actor.system.traitBonuses.constitution}}</span>
+                                        </div>
+                                        <div class="armor-source">
+                                            <span class="source-label">Équipement:</span>
+                                            <span class="source-value">+0</span>
+                                        </div>
+                                        <div class="armor-source total">
+                                            <span class="source-label">Total:</span>
+                                            <span class="source-value">{{getTotalConstitution actor}}</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="armor-source">
-                                    <span class="source-label">Équipement:</span>
-                                    <span class="source-value">+0</span>
+                
+                                <!-- Section Résistance -->
+                                <div class="stat">
+                                    <label>Classe d'armure</label>
+                                    <div class="stat-value resistance-display">
+                                        <span class="resistance-value">{{getTotalResistance actor}}</span>
+                                        <div class="resistance-breakdown">
+                                            <div class="resistance-source">
+                                                <span class="source-label">Constitution (×2):</span>
+                                                <span class="source-value">{{getTotalConstitution actor}}</span>
+                                            </div>
+                                            <div class="resistance-source">
+                                                <span class="source-label">Degré d'Agilité:</span>
+                                                <span class="source-value">
+                                                    {{#if (eq system.agilite.value "2d4")}}1{{else if (eq system.agilite.value
+                                                    "3d4")}}2{{else if (eq system.agilite.value "4d4")}}3{{else if (eq
+                                                    system.agilite.value "5d4")}}4{{else if (eq system.agilite.value "6d4")}}5{{else if
+                                                    (eq system.agilite.value "7d4")}}6{{else}}1{{/if}}
+                                                </span>
+                                            </div>
+                                            <div class="resistance-source">
+                                                <span class="source-label">Malus d'Agilité:</span>
+                                                <span class="source-value">
+                                                    {{#if (eq actor.system.armor.type "tissu")}}0{{else if (eq actor.system.armor.type
+                                                    "legere")}}-4{{else if (eq actor.system.armor.type "lourde")}}-8{{else if (eq
+                                                    actor.system.armor.type "blindee")}}-16{{else}}0{{/if}}
+                                                </span>
+                                            </div>
+                                            <div class="resistance-source">
+                                                <span class="source-label">Degré de Martialité:</span>
+                                                <span class="source-value">
+                                                    {{#if (eq system.martialite.value "2d4")}}1{{else if (eq system.martialite.value
+                                                    "3d4")}}2{{else if (eq system.martialite.value "4d4")}}3{{else if (eq
+                                                    system.martialite.value "5d4")}}4{{else if (eq system.martialite.value
+                                                    "6d4")}}5{{else if (eq system.martialite.value "7d4")}}6{{else}}1{{/if}}
+                                                </span>
+                                            </div>
+                                            <div class="resistance-source">
+                                                <span class="source-label">Type d'Armure:</span>
+                                                <span class="source-value">
+                                                    {{#if (eq actor.system.armor.type "tissu")}}+0{{else if (eq actor.system.armor.type
+                                                    "legere")}}+2{{else if (eq actor.system.armor.type "lourde")}}+4{{else if (eq
+                                                    actor.system.armor.type "blindee")}}+8{{else}}+0{{/if}}
+                                                </span>
+                                            </div>
+                                            <div class="resistance-source total">
+                                                <span class="source-label">Total:</span>
+                                                <span class="source-value">{{getTotalResistance actor}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                
+                                    <!-- Affichage des bonus de protection -->
+                                    <div class="protection-bonuses">
+                                        <h4>Bonus de Protection</h4>
+                                        <div class="protection-bonus-row">
+                                            <div class="protection-bonus">
+                                                <span class="bonus-label">Esquive:</span>
+                                                <span class="bonus-value">{{#if (gt actor.system.traitBonuses.bonusEsquive
+                                                    0)}}+{{/if}}{{actor.system.traitBonuses.bonusEsquive}}</span>
+                                            </div>
+                                            <div class="protection-bonus">
+                                                <span class="bonus-label">Blocage:</span>
+                                                <span class="bonus-value">{{#if (gt actor.system.traitBonuses.bonusBlocage
+                                                    0)}}+{{/if}}{{actor.system.traitBonuses.bonusBlocage}}</span>
+                                            </div>
+                                            <div class="protection-bonus">
+                                                <span class="bonus-label">Parade:</span>
+                                                <span class="bonus-value">{{#if (gt actor.system.traitBonuses.bonusParade
+                                                    0)}}+{{/if}}{{actor.system.traitBonuses.bonusParade}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                
+                                    <div class="resistance-roll-buttons">
+                                        <button type="button" class="resistance-roll-btn dodge" data-action="dodge"
+                                            title="Lancer un dé d'esquive (jet d'agilité unsafe + bonus d'esquive)">
+                                            <i class="fas fa-running"></i> Esquive
+                                        </button>
+                                        {{#if (or (eq actor.system.weapons.primary.type "shield") (eq
+                                        actor.system.weapons.secondary.type "shield"))}}
+                                        <button type="button" class="resistance-roll-btn block" data-action="block"
+                                            title="Lancer un dé de blocage (jet de martialité unsafe + bonus de blocage + jet de qualité du bouclier + bonus du bouclier)">
+                                            <i class="fas fa-shield-alt"></i> Blocage
+                                        </button>
+                                        {{else}}
+                                        <button type="button" class="resistance-roll-btn parade" data-action="parade"
+                                            title="Lancer un dé de parade (jet de martialité unsafe + bonus de parade)">
+                                            <i class="fas fa-hand-paper"></i> Parade
+                                        </button>
+                                        {{/if}}
+                                    </div>
                                 </div>
-                                <div class="armor-source total">
-                                    <span class="source-label">Total:</span>
-                                    <span class="source-value">{{getTotalConstitution actor}}</span>
+                            </div>
+                
+                            <div class="armor-section">
+                                <div class="armor-container">
+                                    {{#each (times (getTotalArmor actor))}}
+                                    <div class="shield-wrapper">
+                                        <button type="button" class="shield-button active" data-shield-index="{{this}}"
+                                            data-active="true">
+                                            <i class="fas fa-shield-alt"></i>
+                                        </button>
+                                        <button type="button" class="shield-button broken" data-shield-index="{{this}}"
+                                            data-active="false">
+                                            <i class="fas fa-shield-alt" style="opacity: 0.3;"></i>
+                                        </button>
+                                    </div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                
+                            <div class="health-section">
+                                <div class="hearts-container">
+                                    {{#each (times (getTotalConstitution actor))}}
+                                    <div class="heart-wrapper">
+                                        <button type="button" class="heart-button alive" data-heart-index="{{this}}" data-alive="true">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                        <button type="button" class="heart-button dead" data-heart-index="{{this}}" data-alive="false">
+                                            <i class="fas fa-heart-broken"></i>
+                                        </button>
+                                    </div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                
+                            <!-- Section des points de mana -->
+                            <div class="mana-section">
+                                <h4>Points de Mana</h4>
+                                <div class="mana-container">
+                                    {{#each (times (getTotalMana actor))}}
+                                    <div class="mana-wrapper">
+                                        <button type="button"
+                                            class="mana-button {{#if (gte this (add (get system.mana.value 0) 1))}}active{{else}}depleted{{/if}}"
+                                            data-mana-index="{{this}}"
+                                            data-active="{{#if (gte this (add (get system.mana.value 0) 1))}}true{{else}}false{{/if}}">
+                                            <i class="fas fa-gem"></i>
+                                        </button>
+                                    </div>
+                                    {{/each}}
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Section Résistance -->
-                        <div class="stat">
-                            <label>Classe d'armure</label>
-                            <div class="stat-value resistance-display">
-                                <span class="resistance-value">{{getTotalResistance actor}}</span>
-                                <div class="resistance-breakdown">
-                                    <div class="resistance-source">
-                                        <span class="source-label">Constitution (×2):</span>
-                                        <span class="source-value">{{getTotalConstitution actor}}</span>
-                                    </div>
-                                    <div class="resistance-source">
-                                        <span class="source-label">Degré d'Agilité:</span>
-                                        <span class="source-value">
-                                            {{#if (eq system.agilite.value "2d4")}}1{{else if (eq system.agilite.value "3d4")}}2{{else if (eq system.agilite.value "4d4")}}3{{else if (eq system.agilite.value "5d4")}}4{{else if (eq system.agilite.value "6d4")}}5{{else if (eq system.agilite.value "7d4")}}6{{else}}1{{/if}}
-                                        </span>
-                                    </div>
-                                    <div class="resistance-source">
-                                        <span class="source-label">Malus d'Agilité:</span>
-                                        <span class="source-value">
-                                            {{#if (eq actor.system.armor.type "tissu")}}0{{else if (eq actor.system.armor.type "legere")}}-4{{else if (eq actor.system.armor.type "lourde")}}-8{{else if (eq actor.system.armor.type "blindee")}}-16{{else}}0{{/if}}
-                                        </span>
-                                    </div>
-                                    <div class="resistance-source">
-                                        <span class="source-label">Degré de Martialité:</span>
-                                        <span class="source-value">
-                                            {{#if (eq system.martialite.value "2d4")}}1{{else if (eq system.martialite.value "3d4")}}2{{else if (eq system.martialite.value "4d4")}}3{{else if (eq system.martialite.value "5d4")}}4{{else if (eq system.martialite.value "6d4")}}5{{else if (eq system.martialite.value "7d4")}}6{{else}}1{{/if}}
-                                        </span>
-                                    </div>
-                                    <div class="resistance-source">
-                                        <span class="source-label">Type d'Armure:</span>
-                                        <span class="source-value">
-                                            {{#if (eq actor.system.armor.type "tissu")}}+0{{else if (eq actor.system.armor.type "legere")}}+2{{else if (eq actor.system.armor.type "lourde")}}+4{{else if (eq actor.system.armor.type "blindee")}}+8{{else}}+0{{/if}}
-                                        </span>
-                                    </div>
-                                    <div class="resistance-source total">
-                                        <span class="source-label">Total:</span>
-                                        <span class="source-value">{{getTotalResistance actor}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Affichage des bonus de protection -->
-                            <div class="protection-bonuses">
-                                <h4>Bonus de Protection</h4>
-                                <div class="protection-bonus-row">
-                                    <div class="protection-bonus">
-                                        <span class="bonus-label">Esquive:</span>
-                                        <span class="bonus-value">{{#if (gt actor.system.traitBonuses.bonusEsquive 0)}}+{{/if}}{{actor.system.traitBonuses.bonusEsquive}}</span>
-                                    </div>
-                                    <div class="protection-bonus">
-                                        <span class="bonus-label">Blocage:</span>
-                                        <span class="bonus-value">{{#if (gt actor.system.traitBonuses.bonusBlocage 0)}}+{{/if}}{{actor.system.traitBonuses.bonusBlocage}}</span>
-                                    </div>
-                                    <div class="protection-bonus">
-                                        <span class="bonus-label">Parade:</span>
-                                        <span class="bonus-value">{{#if (gt actor.system.traitBonuses.bonusParade 0)}}+{{/if}}{{actor.system.traitBonuses.bonusParade}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="resistance-roll-buttons">
-                                <button type="button" class="resistance-roll-btn dodge" data-action="dodge" title="Lancer un dé d'esquive (jet d'agilité unsafe + bonus d'esquive)">
-                                    <i class="fas fa-running"></i> Esquive
-                                </button>
-                                {{#if (or (eq actor.system.weapons.primary.type "shield") (eq actor.system.weapons.secondary.type "shield"))}}
-                                <button type="button" class="resistance-roll-btn block" data-action="block" title="Lancer un dé de blocage (jet de martialité unsafe + bonus de blocage + jet de qualité du bouclier + bonus du bouclier)">
-                                    <i class="fas fa-shield-alt"></i> Blocage
-                                </button>
-                                {{else}}
-                                <button type="button" class="resistance-roll-btn parade" data-action="parade" title="Lancer un dé de parade (jet de martialité unsafe + bonus de parade)">
-                                    <i class="fas fa-hand-paper"></i> Parade
-                                </button>
-                                {{/if}}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="armor-section">
-                        <div class="armor-container">
-                                     {{#each (times (getTotalArmor actor))}}
-                            <div class="shield-wrapper">
-                                <button type="button" class="shield-button active" data-shield-index="{{this}}"
-                                    data-active="true">
-                                    <i class="fas fa-shield-alt"></i>
-                                </button>
-                                <button type="button" class="shield-button broken" data-shield-index="{{this}}"
-                                    data-active="false">
-                                    <i class="fas fa-shield-alt" style="opacity: 0.3;"></i>
-                                </button>
-                            </div>
-                            {{/each}}
-                        </div>
-                    </div>
-
-                    <div class="health-section">
-                        <div class="hearts-container">
-                                     {{#each (times (getTotalConstitution actor))}}
-                            <div class="heart-wrapper">
-                                <button type="button" class="heart-button alive" data-heart-index="{{this}}"
-                                    data-alive="true">
-                                    <i class="fas fa-heart"></i>
-                                </button>
-                                <button type="button" class="heart-button dead" data-heart-index="{{this}}"
-                                    data-alive="false">
-                                    <i class="fas fa-heart-broken"></i>
-                                </button>
-                            </div>
-                            {{/each}}
-                        </div>
-                             </div>
-
-                                     <!-- Section des points de mana -->
-        <div class="mana-section">
-            <h4>Points de Mana</h4>
-            <div class="mana-container">
-                {{#each (times (getTotalMana actor))}}
-                <div class="mana-wrapper">
-                                                    <button type="button" class="mana-button {{#if (gte this (add (get system.mana.value 0) 1))}}active{{else}}depleted{{/if}}"
-                                    data-mana-index="{{this}}" data-active="{{#if (gte this (add (get system.mana.value 0) 1))}}true{{else}}false{{/if}}">
-                        <i class="fas fa-gem"></i>
-                    </button>
-                </div>
-                {{/each}}
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="additional-stats">
-                <!-- Espace pour les futurs éléments -->
-            </div>
+
+
+        <div class="additional-stats">
+            <!-- Espace pour les futurs éléments -->
+        </div>
         </div>
     </header>
 </form>
