@@ -197,6 +197,58 @@ img{
 /* Styles pour les bonus de protection */
 .protection-bonuses {
     background: rgba(255, 255, 255, 0.1);
+
+/* Masquer les breakdowns par défaut */
+.resistance-breakdown.hidden,
+.armor-breakdown.hidden {
+    display: none !important;
+}
+
+/* Styles pour les tooltips personnalisés */
+[data-tooltip] {
+    position: relative;
+    cursor: help;
+}
+
+[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.85em;
+    white-space: pre-line;
+    text-align: left;
+    min-width: 200px;
+    max-width: 300px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    line-height: 1.4;
+}
+
+[data-tooltip]:hover::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+}
+
+/* Amélioration de l'apparence des tooltips */
+[data-tooltip]:hover::after {
+    font-family: 'Courier New', monospace;
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    border: 1px solid #3498db;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
     border-radius: 8px;
     padding: 12px;
     margin: 10px 0;
