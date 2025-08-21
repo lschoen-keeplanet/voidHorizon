@@ -669,6 +669,11 @@ img{
     display: flex;
     gap: 1rem;
     justify-content: space-between;
+    flex-direction: column;
+}
+
+.stats-column {
+    display: flex;
 }
 
 .armor-section, .health-section {
