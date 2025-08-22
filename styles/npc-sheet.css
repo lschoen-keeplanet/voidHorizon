@@ -400,7 +400,8 @@
 
 /* Boutons de jet */
 .roll-attack-btn,
-.roll-skill-btn {
+.roll-skill-btn,
+.roll-damage-btn {
     background: linear-gradient(135deg, #27ae60, #2ecc71);
     color: white;
     border: none;
@@ -417,14 +418,25 @@
 }
 
 .roll-attack-btn:hover,
-.roll-skill-btn:hover {
+.roll-skill-btn:hover,
+.roll-damage-btn:hover {
     background: linear-gradient(135deg, #2ecc71, #27ae60);
     transform: scale(1.1);
 }
 
 .roll-attack-btn i,
-.roll-skill-btn i {
+.roll-skill-btn i,
+.roll-damage-btn i {
     font-size: 14px;
+}
+
+/* Bouton de dégâts avec style spécial */
+.roll-damage-btn {
+    background: linear-gradient(135deg, #e67e22, #d35400);
+}
+
+.roll-damage-btn:hover {
+    background: linear-gradient(135deg, #d35400, #e67e22);
 }
 
 /* Boutons de jet des caractéristiques */
@@ -460,6 +472,7 @@
 }
 
 .attack-dice,
+.attack-damage,
 .attack-description,
 .skill-description {
     display: flex;
@@ -467,6 +480,7 @@
 }
 
 .attack-dice label,
+.attack-damage label,
 .attack-description label,
 .skill-description label {
     color: #ecf0f1;
@@ -475,7 +489,8 @@
     font-size: 14px;
 }
 
-.dice-input {
+.dice-input,
+.damage-input {
     background: rgba(255, 255, 255, 0.9);
     border: 1px solid #7f8c8d;
     border-radius: 6px;
@@ -485,10 +500,29 @@
     font-family: 'Courier New', monospace;
 }
 
-.dice-input:focus {
+.dice-input:focus,
+.damage-input:focus {
     outline: none;
     border-color: #e74c3c;
     box-shadow: 0 0 8px rgba(231, 76, 60, 0.3);
+}
+
+/* Style spécial pour le champ de dégâts */
+.damage-input {
+    background: rgba(230, 126, 34, 0.1) !important;
+    border-color: #e67e22 !important;
+    color: #d35400 !important;
+    font-weight: bold;
+}
+
+.damage-input:focus {
+    border-color: #d35400 !important;
+    box-shadow: 0 0 8px rgba(230, 126, 34, 0.3) !important;
+}
+
+.damage-input::placeholder {
+    color: #e67e22;
+    opacity: 0.7;
 }
 
 .attack-description textarea,
@@ -613,6 +647,7 @@
 
 /* Styles pour les messages de chat des jets de dés */
 .voidhorizon-attack-roll,
+.voidhorizon-damage-roll,
 .voidhorizon-skill-use {
     background: #f8f9fa;
     border: 2px solid #6c757d;
@@ -670,6 +705,11 @@
 .roll-result.normal {
     background: linear-gradient(135deg, #17a2b8, #138496);
     border: 2px solid #17a2b8;
+}
+
+.roll-result.damage {
+    background: linear-gradient(135deg, #e67e22, #d35400);
+    border: 2px solid #e67e22;
 }
 
 .dice-result {

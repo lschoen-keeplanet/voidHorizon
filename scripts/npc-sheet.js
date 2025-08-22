@@ -78,8 +78,9 @@ class NpcSheet extends ActorSheet {
         // Gestion des attaques
         html.find('.add-attack-btn').click(this._onAddAttack.bind(this));
         html.find('.remove-attack-btn').click(this._onRemoveAttack.bind(this));
-        html.find('.attack-name-input, .dice-input, .attack-description textarea').change(this._onAttackChange.bind(this));
+        html.find('.attack-name-input, .dice-input, .damage-input, .attack-description textarea').change(this._onAttackChange.bind(this));
         html.find('.roll-attack-btn').click(this._onRollAttack.bind(this));
+        html.find('.roll-damage-btn').click(this._onRollDamage.bind(this));
         
         // Gestion des compétences
         html.find('.add-skill-btn').click(this._onAddSkill.bind(this));
@@ -225,6 +226,7 @@ class NpcSheet extends ActorSheet {
             const newAttack = {
                 name: "Nouvelle attaque",
                 dice: "1d20",
+                damage: "1d6",
                 description: "Description de l'attaque"
             };
             
@@ -379,6 +381,8 @@ class NpcSheet extends ActorSheet {
             return 'name';
         } else if (element.classList.contains('dice-input')) {
             return 'dice';
+        } else if (element.classList.contains('damage-input')) {
+            return 'damage';
         } else if (element.classList.contains('attack-description') || element.classList.contains('skill-description')) {
             return 'description';
         }
@@ -442,6 +446,51 @@ class NpcSheet extends ActorSheet {
     }
 
     /**
+     * Lance un jet de dégâts
+     * @param {Event} event - L'événement de clic
+     * @private
+     */
+    async _onRollDamage(event) {
+        event.preventDefault();
+        
+        const index = parseInt(event.currentTarget.dataset.index);
+        const attack = this.actor.system.attacks[index];
+        
+        if (!attack) {
+            console.error('Attaque non trouvée à l\'index:', index);
+            return;
+        }
+
+        if (!attack.damage) {
+            ui.notifications.warn('Cette attaque n\'a pas de dégâts définis.');
+            return;
+        }
+
+        try {
+            // Créer le jet de dégâts
+            const roll = new Roll(attack.damage);
+            await roll.evaluate({async: true});
+            
+            // Créer le message de chat
+            const chatData = {
+                user: game.user.id,
+                speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                content: await this._renderDamageRoll(attack, roll),
+                type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+                roll: roll,
+                sound: CONFIG.sounds.dice
+            };
+            
+            await ChatMessage.create(chatData);
+            console.log(`Jet de dégâts lancé: ${attack.name} - Dégâts: ${roll.total}`);
+            
+        } catch (error) {
+            console.error('Erreur lors du jet de dégâts:', error);
+            ui.notifications.error(`Erreur lors du jet de dégâts: ${error.message}`);
+        }
+    }
+
+    /**
      * Lance un jet de compétence
      * @param {Event} event - L'événement de clic
      * @private
@@ -496,6 +545,38 @@ class NpcSheet extends ActorSheet {
                 <div class="roll-result ${result}">
                     <div class="dice-result">${roll.total}</div>
                     <div class="result-text">${resultText}</div>
+                </div>
+                
+                <div class="roll-details">
+                    <div class="dice-formula">${roll.formula}</div>
+                    <div class="dice-breakdown">${roll.dice.map(d => d.results.map(r => r.result).join(', ')).join(' | ')}</div>
+                </div>
+                
+                ${attack.description ? `<div class="attack-description">${attack.description}</div>` : ''}
+            </div>
+        `;
+        
+        return template;
+    }
+
+    /**
+     * Rend le template HTML pour un jet de dégâts
+     * @param {Object} attack - L'attaque
+     * @param {Roll} roll - Le jet de dés
+     * @returns {string} Le HTML rendu
+     * @private
+     */
+    async _renderDamageRoll(attack, roll) {
+        const template = `
+            <div class="voidhorizon-damage-roll">
+                <div class="roll-header">
+                    <h3>${attack.name} - Dégâts</h3>
+                    <div class="actor-info">${this.actor.name}</div>
+                </div>
+                
+                <div class="roll-result damage">
+                    <div class="dice-result">${roll.total}</div>
+                    <div class="result-text">💥 DÉGÂTS</div>
                 </div>
                 
                 <div class="roll-details">

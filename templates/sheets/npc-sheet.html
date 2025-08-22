@@ -235,6 +235,9 @@
                                 <button type="button" class="roll-attack-btn" data-index="{{index}}" title="Lancer l'attaque">
                                     <i class="fas fa-dice-d20"></i>
                                 </button>
+                                <button type="button" class="roll-damage-btn" data-index="{{index}}" title="Lancer les dégâts">
+                                    <i class="fas fa-sword"></i>
+                                </button>
                                 <button type="button" class="remove-attack-btn" data-index="{{index}}" title="Supprimer cette attaque">
                                     <i class="fas fa-trash"></i>
                                 </button>
@@ -247,6 +250,14 @@
                                            value="{{attack.dice}}" 
                                            placeholder="ex: 1d20+5, 2d6+3, etc."
                                            class="dice-input"/>
+                                </div>
+                                <div class="attack-damage">
+                                    <label>Dégâts:</label>
+                                    <input type="text" 
+                                           name="system.attacks.{{index}}.damage" 
+                                           value="{{attack.damage}}" 
+                                           placeholder="ex: 1d6, 2d8+3, etc."
+                                           class="damage-input"/>
                                 </div>
                                 <div class="attack-description">
                                     <label>Description:</label>
