@@ -1,4 +1,39 @@
 class NpcSheet extends ActorSheet {
+    /**
+     * TODO LIST - Système Void Horizon V2
+     * =====================================
+     * 
+     * Fonctionnalités à implémenter :
+     * 
+     * 1. Système V2 pour bouclier et armure
+     *    - Boucliers de plusieurs types (petit, moyen, grand, pavois)
+     *    - Sélection de la nature d'une arme (contondante, perforante, tranchante)
+     *    - Calculs de protection et de résistance
+     * 
+     * 2. Focus comme arme
+     *    - Intégrer les focus magiques dans le système d'armes
+     *    - Gestion des sorts et capacités spéciales
+     *    - Calculs de dégâts magiques
+     * 
+     * 3. Calcul du mouvement par personnage
+     *    - Système de points de mouvement
+     *    - Modificateurs selon l'équipement et l'état
+     *    - Gestion des terrains difficiles
+     * 
+     * 4. Design V2
+     *    - Interface utilisateur modernisée
+     *    - Responsive design pour différentes tailles d'écran
+     *    - Thèmes visuels et personnalisation
+     * 
+     * 5. Vérification des calculs de parade/blocage
+     *    - Système de défense active
+     *    - Calculs de chance de parade
+     *    - Gestion des boucliers et armures
+     * 
+     * Priorité : Système de combat > Interface > Équilibrage
+     * =====================================================
+     */
+
     /** @override */
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
