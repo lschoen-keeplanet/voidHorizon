@@ -4,6 +4,46 @@ import {registerSettings} from "./module/settings.js";
 import "./scripts/heros-sheet.js";
 import "./scripts/npc-sheet.js";
 
+// Diagnostic avancé des hooks problématiques
+Hooks.on('getHeaderControlsApplicationV2', function(app, buttons) {
+    console.log('🚨 === DIAGNOSTIC HOOK getHeaderControlsApplicationV2 ===');
+    console.log('📱 Application:', app);
+    console.log('🔘 Boutons:', buttons);
+    
+    // Analyser tous les hooks enregistrés pour ce hook
+    if (Hooks.events.getHeaderControlsApplicationV2) {
+        console.log('📋 Tous les hooks getHeaderControlsApplicationV2 enregistrés:');
+        
+        Hooks.events.getHeaderControlsApplicationV2.forEach((hook, index) => {
+            console.log(`  🔍 Hook ${index}:`, hook);
+            
+            if (hook.fn) {
+                const fnStr = hook.fn.toString();
+                console.log(`  📝 Source (200 premiers caractères):`, fnStr.substring(0, 200) + '...');
+                
+                // Chercher des indices dans le code
+                if (fnStr.includes('main.js')) {
+                    console.log(`  🚨 ATTENTION: Contient 'main.js' - POTENTIELLEMENT PROBLÉMATIQUE`);
+                }
+                if (fnStr.includes('app.type')) {
+                    console.log(`  🚨 ATTENTION: Accède à 'app.type' - CAUSE DE L'ERREUR`);
+                }
+                if (fnStr.includes('Cannot read properties')) {
+                    console.log(`  🚨 ATTENTION: Contient le message d'erreur`);
+                }
+                if (fnStr.includes('voidHorizon')) {
+                    console.log(`  ✅ Contient 'voidHorizon' - Notre code`);
+                }
+            }
+        });
+    }
+    
+    console.log('🚨 === FIN DU DIAGNOSTIC ===');
+    
+    // Retourner les boutons sans modification
+    return buttons;
+});
+
 // Initialisation unifiée du système voidHorizon
 Hooks.once('init', async function() {
     console.log('🚀 Initialisation du système voidHorizon');
