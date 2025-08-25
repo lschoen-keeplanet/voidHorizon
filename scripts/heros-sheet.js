@@ -201,12 +201,12 @@ class HeroSheet extends foundry.appv1.sheets.ActorSheet {
                             "7d4": "Archimage"
                         },
                         agilite: {
-                            "2d4": "Challengé",
-                            "3d4": "Lourdeau",
-                            "4d4": "Bien",
-                            "5d4": "Rapide",
-                            "6d4": "Très rapide",
-                            "7d4": "Très très rapide"
+                            "2d4": "Gourd",
+                            "3d4": "Raide",
+                            "4d4": "Ordinaire",
+                            "5d4": "Adroit",
+                            "6d4": "Leste",
+                            "7d4": "Félin"
                         },
                         // Support pour les compétences avec les nouveaux niveaux
                         skill: {
