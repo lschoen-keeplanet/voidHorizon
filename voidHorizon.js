@@ -9,14 +9,22 @@ Hooks.on('getHeaderControlsApplicationV2', function(app, buttons) {
     console.log('🚨 Hook getHeaderControlsApplicationV2 intercepté !');
     console.log('📱 Application:', app);
     console.log('🔘 Boutons:', buttons);
-    console.log('📄 Stack trace:', new Error().stack);
     
-    // Vérifier si l'application a une propriété 'type'
+    // Gérer le cas spécifique de SettingsConfig
+    if (app && app.constructor && app.constructor.name === 'SettingsConfig') {
+        console.log('✅ SettingsConfig détecté - pas de propriété type nécessaire');
+        // Pour SettingsConfig, on peut ajouter des boutons personnalisés si nécessaire
+        // Mais ici on retourne juste les boutons existants
+        return buttons;
+    }
+    
+    // Pour les autres applications, vérifier la propriété type
     if (app && typeof app.type !== 'undefined') {
         console.log('✅ Propriété type disponible:', app.type);
+    } else if (app) {
+        console.log('⚠️ Application sans propriété type:', app.constructor?.name || 'Inconnue');
     } else {
-        console.log('❌ Propriété type manquante ou undefined');
-        console.log('🔍 Objet app complet:', app);
+        console.log('❌ Application undefined');
     }
     
     // Retourner les boutons sans modification pour éviter l'erreur
