@@ -214,6 +214,33 @@ img{
     display: none !important;
 }
 
+/* FORCER la visibilité des paramètres voidHorizon - JAMAIS cachés ! */
+.voidHorizon-settings,
+[data-voidHorizon],
+.voidHorizon-content,
+.voidHorizon-tab,
+[data-tab="voidHorizon"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: auto !important;
+    height: auto !important;
+    position: static !important;
+    z-index: 1000 !important;
+    overflow: visible !important;
+}
+
+/* S'assurer que les paramètres voidHorizon sont toujours visibles même avec la classe .hidden */
+.voidHorizon-settings.hidden,
+[data-voidHorizon].hidden,
+.voidHorizon-content.hidden,
+.voidHorizon-tab.hidden,
+[data-tab="voidHorizon"].hidden {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
 /* Styles pour les tooltips personnalisés */
 [data-tooltip] {
     position: relative;

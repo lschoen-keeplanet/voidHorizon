@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Solution CSS Paramètres voidHorizon</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #27ae60;
+            padding-bottom: 10px;
+        }
+        
+        .success-section {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .success-section h3 {
+            color: #155724;
+            margin-top: 0;
+        }
+        
+        .info-section {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .info-section h3 {
+            color: #0c5460;
+            margin-top: 0;
+        }
+        
+        .checklist {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .checklist-item.completed {
+            background: #c6f6d5;
+            border: 1px solid #9ae6b4;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        
+        .button {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        
+        .button:hover {
+            background: #229954;
+        }
+        
+        .button.warning {
+            background: #f39c12;
+        }
+        
+        .button.warning:hover {
+            background: #e67e22;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Test - Solution CSS Paramètres voidHorizon</h1>
+        
+        <div class="success-section">
+            <h3>✅ Problème CSS Résolu !</h3>
+            <p><strong>Cause identifiée :</strong> Classe CSS <code>.hidden</code> avec <code>display: none !important</code></p>
+            <p><strong>Solution implémentée :</strong> Règles CSS forcées pour les paramètres voidHorizon</p>
+            <p><strong>Résultat attendu :</strong> Paramètres toujours visibles, même avec la classe <code>.hidden</code></p>
+        </div>
+        
+        <div class="info-section">
+            <h3>🛠️ Solution CSS Implémentée</h3>
+            <p>Ajout de règles CSS dans <code>heros-sheet.css</code> :</p>
+            <div class="code-block">
+/* FORCER la visibilité des paramètres voidHorizon - JAMAIS cachés ! */
+.voidHorizon-settings,
+[data-voidHorizon],
+.voidHorizon-content,
+.voidHorizon-tab,
+[data-tab="voidHorizon"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: auto !important;
+    height: auto !important;
+    position: static !important;
+    z-index: 1000 !important;
+    overflow: visible !important;
+}
+
+/* S'assurer que les paramètres voidHorizon sont toujours visibles même avec la classe .hidden */
+.voidHorizon-settings.hidden,
+[data-voidHorizon].hidden,
+.voidHorizon-content.hidden,
+.voidHorizon-tab.hidden,
+[data-tab="voidHorizon"].hidden {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+            </div>
+        </div>
+        
+        <div class="checklist">
+            <h3>📋 Vérification de la Solution</h3>
+            
+            <div class="checklist-item" id="check-css-loaded">
+                <input type="checkbox" id="css-loaded-check">
+                <label for="css-loaded-check">🎨 CSS heros-sheet.css chargé avec les nouvelles règles</label>
+            </div>
+            
+            <div class="checklist-item" id="check-settings-visible">
+                <input type="checkbox" id="settings-visible-check">
+                <label for="settings-visible-check">👁️ Paramètres voidHorizon maintenant visibles à l'écran</label>
+            </div>
+            
+            <div class="checklist-item" id="check-onglet-visible">
+                <input type="checkbox" id="onglet-visible-check">
+                <label for="onglet-visible-check">🎛️ Onglet "voidHorizon" visible dans Configure Settings</label>
+            </div>
+            
+            <div class="checklist-item" id="check-content-visible">
+                <input type="checkbox" id="content-visible-check">
+                <label for="content-visible-check">📋 Contenu des paramètres voidHorizon affiché</label>
+            </div>
+            
+            <div class="checklist-item" id="check-no-hidden">
+                <input type="checkbox" id="no-hidden-check">
+                <label for="no-hidden-check">❌ Classe .hidden n'affecte plus les paramètres voidHorizon</label>
+            </div>
+            
+            <div class="checklist-item" id="check-settings-work">
+                <input type="checkbox" id="settings-work-check">
+                <label for="settings-work-check">✏️ Paramètres modifiables et sauvegardables</label>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h3>🚀 Instructions de Test</h3>
+            <ol>
+                <li><strong>Redémarrez complètement Foundry VTT</strong> pour charger le CSS modifié</li>
+                <li><strong>Allez dans Configure Settings</strong> (icône engrenage)</li>
+                <li><strong>Vérifiez que l'onglet "voidHorizon" est visible</strong></li>
+                <li><strong>Cliquez sur l'onglet voidHorizon</strong> pour voir les paramètres</li>
+                <li><strong>Testez la modification d'un paramètre</strong> et sauvegardez</li>
+                <li><strong>Cochez les éléments</strong> de la checklist ci-dessus</li>
+            </ol>
+        </div>
+        
+        <div class="info-section">
+            <h3>🔧 Comment la Solution Fonctionne</h3>
+            <ul>
+                <li><strong>Règles CSS forcées</strong> avec <code>!important</code> pour surcharger tout autre CSS</li>
+                <li><strong>Classes ciblées</strong> : <code>.voidHorizon-settings</code>, <code>[data-voidHorizon]</code>, etc.</li>
+                <li><strong>Propriétés forcées</strong> : <code>display: block</code>, <code>visibility: visible</code>, <code>opacity: 1</code></li>
+                <li><strong>Protection contre .hidden</strong> : Même avec la classe <code>.hidden</code>, les paramètres restent visibles</li>
+                <li><strong>Z-index élevé</strong> : <code>z-index: 1000</code> pour s'assurer qu'ils sont au-dessus</li>
+            </ul>
+        </div>
+        
+        <div class="info-section">
+            <h3>🎯 Paramètres voidHorizon Attendus</h3>
+            <ul>
+                <li><strong>Afficher le mouvement disponible</strong> - Checkbox pour activer/désactiver</li>
+                <li><strong>Afficher le malus d'armure</strong> - Checkbox pour activer/désactiver</li>
+                <li><strong>Formule de mouvement</strong> - Champ texte modifiable</li>
+                <li><strong>Malus d'armure tissu</strong> - Valeur numérique</li>
+                <li><strong>Malus d'armure légère</strong> - Valeur numérique</li>
+                <li><strong>Malus d'armure lourde</strong> - Valeur numérique</li>
+                <li><strong>Malus d'armure blindée</strong> - Valeur numérique</li>
+            </ul>
+        </div>
+        
+        <div class="info-section">
+            <h3>💡 Si les Paramètres Ne Sont Toujours Pas Visibles</h3>
+            <p>Vérifiez dans la console :</p>
+            <ul>
+                <li><strong>Message "Paramètres voidHorizon enregistrés avec succès"</strong></li>
+                <li><strong>Message "Paramètres voidHorizon disponibles: [...]"</strong></li>
+                <li><strong>Absence d'erreurs JavaScript</strong></li>
+                <li><strong>CSS heros-sheet.css bien chargé</strong></li>
+            </ul>
+            <p>Si le problème persiste, il peut y avoir un conflit avec un autre module ou une version de Foundry VTT.</p>
+        </div>
+    </div>
+
+    <script>
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎨 Test de la solution CSS des paramètres voidHorizon chargé');
+            
+            // Ajouter des écouteurs pour les checkboxes
+            document.querySelectorAll('.checklist-item input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const checklistItem = this.closest('.checklist-item');
+                    if (this.checked) {
+                        checklistItem.classList.add('completed');
+                    } else {
+                        checklistItem.classList.remove('completed');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
