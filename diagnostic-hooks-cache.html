@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostic - Hook getHeaderControlsApplicationV2</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 10px;
+        }
+        
+        .diagnostic-section {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .diagnostic-section h3 {
+            color: #c53030;
+            margin-top: 0;
+        }
+        
+        .solution-section {
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .solution-section h3 {
+            color: #22543d;
+            margin-top: 0;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        
+        .button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        
+        .button:hover {
+            background: #c0392b;
+        }
+        
+        .button.success {
+            background: #27ae60;
+        }
+        
+        .button.success:hover {
+            background: #229954;
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        
+        .status.error {
+            background: #fed7d7;
+            border: 1px solid #feb2b2;
+            color: #c53030;
+        }
+        
+        .status.success {
+            background: #c6f6d5;
+            border: 1px solid #9ae6b4;
+            color: #22543d;
+        }
+        
+        .status.info {
+            background: #bee3f8;
+            border: 1px solid #90cdf4;
+            color: #2a4365;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Diagnostic - Hook getHeaderControlsApplicationV2</h1>
+        
+        <div class="diagnostic-section">
+            <h3>🚨 Problème Persistant</h3>
+            <p><strong>Erreur :</strong> <code>getHeaderControlsApplicationV2: Cannot read properties of undefined (reading 'type')</code></p>
+            <p><strong>Cause :</strong> Hook caché qui n'a pas été identifié dans notre recherche précédente.</p>
+        </div>
+        
+        <div class="diagnostic-section">
+            <h3>🔍 Diagnostic Avancé</h3>
+            <p>Ce fichier va nous aider à identifier la source exacte du hook problématique.</p>
+            
+            <button class="button" onclick="scanAllHooks()">🔍 Scanner Tous les Hooks</button>
+            <button class="button success" onclick="checkFoundryHooks()">🎮 Vérifier Hooks Foundry</button>
+            <button class="button" onclick="clearResults()">🗑️ Effacer Résultats</button>
+        </div>
+        
+        <div class="solution-section">
+            <h3>🛠️ Solutions Possibles</h3>
+            <ol>
+                <li><strong>Hook caché</strong> dans un fichier non détecté</li>
+                <li><strong>Module externe</strong> qui interfère</li>
+                <li><strong>Version Foundry VTT</strong> incompatible</li>
+                <li><strong>Conflit de modules</strong> avec d'autres systèmes</li>
+            </ol>
+        </div>
+        
+        <div class="solution-section">
+            <h3>📋 Instructions de Diagnostic</h3>
+            <ol>
+                <li><strong>Ouvrez Foundry VTT</strong> avec le système voidHorizon</li>
+                <li><strong>Ouvrez la console</strong> (F12)</li>
+                <li><strong>Cliquez sur "Scanner Tous les Hooks"</strong></li>
+                <li><strong>Notez les résultats</strong> dans la console</li>
+                <li><strong>Vérifiez les erreurs</strong> qui apparaissent</li>
+            </ol>
+        </div>
+        
+        <div id="resultsContainer">
+            <div class="status info">
+                💡 Cliquez sur "Scanner Tous les Hooks" pour commencer le diagnostic
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Scanner tous les hooks disponibles
+        function scanAllHooks() {
+            const resultsContainer = document.getElementById('resultsContainer');
+            const status = document.createElement('div');
+            status.className = 'status info';
+            
+            if (typeof game !== 'undefined' && game.settings) {
+                status.innerHTML = `
+                    <strong>🔍 Diagnostic en cours...</strong><br>
+                    Vérifiez la console pour les résultats détaillés.
+                `;
+                
+                // Scanner les hooks Foundry VTT
+                console.log('🔍 === DIAGNOSTIC DES HOOKS ===');
+                console.log('🎮 Version Foundry VTT:', game.version);
+                console.log('🔧 Système actuel:', game.system.id);
+                console.log('📦 Modules actifs:', Array.from(game.modules.keys()));
+                
+                // Vérifier les hooks enregistrés
+                if (Hooks && Hooks.events) {
+                    console.log('📋 Hooks enregistrés:', Object.keys(Hooks.events));
+                    
+                    // Chercher spécifiquement le hook problématique
+                    if (Hooks.events.getHeaderControlsApplicationV2) {
+                        console.log('🚨 HOOK PROBLÉMATIQUE TROUVÉ !');
+                        console.log('📝 Détails:', Hooks.events.getHeaderControlsApplicationV2);
+                        
+                        // Analyser les fonctions enregistrées
+                        Hooks.events.getHeaderControlsApplicationV2.forEach((hook, index) => {
+                            console.log(`🔍 Hook ${index}:`, hook);
+                            if (hook.fn) {
+                                console.log(`📄 Source:`, hook.fn.toString().substring(0, 200) + '...');
+                            }
+                        });
+                    } else {
+                        console.log('✅ Hook getHeaderControlsApplicationV2 non trouvé dans Hooks.events');
+                    }
+                }
+                
+                // Vérifier les paramètres
+                console.log('⚙️ Paramètres système:', Object.keys(game.settings.settings));
+                console.log('🎛️ Paramètres voidHorizon:', Object.keys(game.settings.settings).filter(key => key.startsWith('voidHorizon')));
+                
+                // Vérifier les feuilles enregistrées
+                console.log('📄 Feuilles d\'acteurs:', Array.from(game.actors.entries()).map(([id, actor]) => actor.sheet.constructor.name));
+                console.log('📄 Feuilles d\'objets:', Array.from(game.items.entries()).map(([id, item]) => item.sheet.constructor.name));
+                
+                console.log('🔍 === FIN DU DIAGNOSTIC ===');
+                
+            } else {
+                status.className = 'status error';
+                status.innerHTML = `
+                    <strong>❌ Erreur</strong><br>
+                    Vous devez être dans Foundry VTT pour ce diagnostic.
+                `;
+            }
+            
+            resultsContainer.appendChild(status);
+        }
+        
+        // Vérifier les hooks Foundry VTT
+        function checkFoundryHooks() {
+            const resultsContainer = document.getElementById('resultsContainer');
+            const status = document.createElement('div');
+            
+            if (typeof game !== 'undefined') {
+                status.className = 'status success';
+                status.innerHTML = `
+                    <strong>✅ Foundry VTT Détecté</strong><br>
+                    <strong>Version:</strong> ${game.version}<br>
+                    <strong>Système:</strong> ${game.system.id}<br>
+                    <strong>Modules:</strong> ${Array.from(game.modules.keys()).length}<br>
+                    Vérifiez la console pour plus de détails.
+                `;
+                
+                // Vérifier les hooks spécifiques
+                console.log('🔍 === VÉRIFICATION DES HOOKS FOUNDRY ===');
+                
+                // Lister tous les hooks disponibles
+                const availableHooks = [
+                    'init', 'setup', 'ready', 'i18nInit',
+                    'renderChatMessage', 'getChatLogEntryContext',
+                    'renderChatLog', 'renderChatPopout',
+                    'getActorDirectoryEntryContext',
+                    'canvasInit', 'hotbarDrop',
+                    'getHeaderControlsApplicationV2' // Hook problématique
+                ];
+                
+                availableHooks.forEach(hookName => {
+                    if (Hooks.events[hookName]) {
+                        console.log(`✅ Hook ${hookName}: ${Hooks.events[hookName].length} fonctions enregistrées`);
+                        
+                        if (hookName === 'getHeaderControlsApplicationV2') {
+                            console.log('🚨 ANALYSE DU HOOK PROBLÉMATIQUE:');
+                            Hooks.events[hookName].forEach((hook, index) => {
+                                console.log(`  📄 Hook ${index}:`, hook);
+                                if (hook.fn) {
+                                    const fnStr = hook.fn.toString();
+                                    console.log(`  📝 Source (200 premiers caractères):`, fnStr.substring(0, 200) + '...');
+                                    
+                                    // Chercher des indices dans le code
+                                    if (fnStr.includes('type')) {
+                                        console.log(`  🔍 Contient 'type': OUI`);
+                                    }
+                                    if (fnStr.includes('voidHorizon')) {
+                                        console.log(`  🔍 Contient 'voidHorizon': OUI`);
+                                    }
+                                }
+                            });
+                        }
+                    } else {
+                        console.log(`❌ Hook ${hookName}: Non enregistré`);
+                    }
+                });
+                
+                console.log('🔍 === FIN DE LA VÉRIFICATION ===');
+                
+            } else {
+                status.className = 'status error';
+                status.innerHTML = `
+                    <strong>❌ Foundry VTT non détecté</strong><br>
+                    Vous devez être dans Foundry VTT pour ce test.
+                `;
+            }
+            
+            resultsContainer.appendChild(status);
+        }
+        
+        // Effacer les résultats
+        function clearResults() {
+            const resultsContainer = document.getElementById('resultsContainer');
+            const statuses = resultsContainer.querySelectorAll('.status:not(:first-child)');
+            statuses.forEach(status => status.remove());
+        }
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔍 Diagnostic des hooks voidHorizon chargé');
+            
+            // Vérifier si on est dans Foundry VTT
+            if (typeof game !== 'undefined') {
+                console.log('🎮 Foundry VTT détecté');
+                console.log('🔧 Système:', game.system?.id);
+            } else {
+                console.log('🌐 Test en mode navigateur (hors Foundry VTT)');
+            }
+        });
+    </script>
+</body>
+</html>
