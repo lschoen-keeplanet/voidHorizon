@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Diagnostic des Paramètres Foundry VTT</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 10px;
+        }
+        
+        .diagnostic-section {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .diagnostic-section h3 {
+            color: #c53030;
+            margin-top: 0;
+        }
+        
+        .solution-section {
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .solution-section h3 {
+            color: #22543d;
+            margin-top: 0;
+        }
+        
+        .warning-section {
+            background: #fffaf0;
+            border: 1px solid #fbd38d;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .warning-section h3 {
+            color: #c05621;
+            margin-top: 0;
+        }
+        
+        .step {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .step h4 {
+            color: #2d3748;
+            margin-top: 0;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        
+        .button:hover {
+            background: #c0392b;
+        }
+        
+        .button.success {
+            background: #27ae60;
+        }
+        
+        .button.success:hover {
+            background: #229954;
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        
+        .status.error {
+            background: #fed7d7;
+            border: 1px solid #feb2b2;
+            color: #c53030;
+        }
+        
+        .status.warning {
+            background: #fef5e7;
+            border: 1px solid #fbd38d;
+            color: #c05621;
+        }
+        
+        .status.success {
+            background: #c6f6d5;
+            border: 1px solid #9ae6b4;
+            color: #22543d;
+        }
+        
+        .checklist {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        
+        .checklist-item:hover {
+            background: #edf2f7;
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .checklist-item label {
+            flex: 1;
+            cursor: pointer;
+        }
+        
+        .checklist-item.completed {
+            background: #c6f6d5;
+            border: 1px solid #9ae6b4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚨 Diagnostic des Paramètres Foundry VTT</h1>
+        
+        <div class="diagnostic-section">
+            <h3>🔍 Problème Identifié</h3>
+            <p><strong>Toutes les fenêtres "Configure Settings" sont vides</strong> - Ce n'est pas un problème de notre système voidHorizon, mais un problème global de Foundry VTT.</p>
+            <p>Même les modules standards ne peuvent pas être configurés, ce qui indique un problème au niveau de l'installation ou de la configuration de Foundry VTT.</p>
+        </div>
+
+        <div class="warning-section">
+            <h3>⚠️ Attention</h3>
+            <p>Ce problème empêche la configuration de <strong>tous les systèmes et modules</strong>. Il doit être résolu avant de pouvoir utiliser les paramètres de voidHorizon.</p>
+        </div>
+
+        <h2>🔧 Solutions de Diagnostic</h2>
+        
+        <div class="step">
+            <h4>Étape 1 : Vérification de la Console</h4>
+            <p>Ouvrez la console du navigateur (F12) et regardez s'il y a des erreurs JavaScript :</p>
+            <div class="code-block">
+// Dans la console, cherchez des erreurs comme :
+// - "game.settings is not defined"
+// - "Cannot read property 'register' of undefined"
+// - Erreurs de permissions ou d'accès aux fichiers
+            </div>
+            <button class="button" onclick="checkConsole()">Vérifier la Console</button>
+        </div>
+        
+        <div class="step">
+            <h4>Étape 2 : Vérification des Permissions</h4>
+            <p>Vérifiez que Foundry VTT a accès aux dossiers nécessaires :</p>
+            <ul>
+                <li><strong>data/</strong> - Dossier principal de Foundry VTT</li>
+                <li><strong>worlds/[nom-du-monde]/</strong> - Dossier du monde actuel</li>
+                <li><strong>modules/</strong> - Dossier des modules installés</li>
+            </ul>
+        </div>
+        
+        <div class="step">
+            <h4>Étape 3 : Vérification de la Configuration du Monde</h4>
+            <p>Dans Foundry VTT, vérifiez les paramètres du monde :</p>
+            <div class="code-block">
+1. World Settings (⚙️)
+2. Vérifiez que "Enable Game Settings" est activé
+3. Vérifiez que "Enable Module Management" est activé
+4. Vérifiez que "Data Path" pointe vers un dossier accessible
+            </div>
+        </div>
+
+        <h2>🛠️ Solutions de Résolution</h2>
+        
+        <div class="solution-section">
+            <h3>Solution 1 : Vider le Cache du Navigateur</h3>
+            <div class="step">
+                <h4>Instructions :</h4>
+                <ol>
+                    <li>Appuyez sur <strong>Ctrl+Shift+Delete</strong></li>
+                    <li>Sélectionnez <strong>"Tout effacer"</strong></li>
+                    <li>Redémarrez <strong>Foundry VTT</strong></li>
+                    <li>Testez à nouveau les paramètres</li>
+                </ol>
+                <button class="button success" onclick="markStepComplete('cache')">Marquer comme Testé</button>
+            </div>
+        </div>
+        
+        <div class="solution-section">
+            <h3>Solution 2 : Vérifier les Permissions des Dossiers</h3>
+            <div class="step">
+                <h4>Vérifications à faire :</h4>
+                <ul>
+                    <li>Le dossier <strong>data/</strong> est-il accessible en lecture/écriture ?</li>
+                    <li>Le dossier <strong>worlds/[nom-du-monde]/</strong> est-il accessible ?</li>
+                    <li>Y a-t-il des restrictions de sécurité Windows ?</li>
+                </ul>
+                <button class="button success" onclick="markStepComplete('permissions')">Marquer comme Testé</button>
+            </div>
+        </div>
+        
+        <div class="solution-section">
+            <h3>Solution 3 : Réparer la Base de Données</h3>
+            <div class="step">
+                <h4>⚠️ ATTENTION : Sauvegardez d'abord !</h4>
+                <ol>
+                    <li><strong>Arrêtez Foundry VTT</strong></li>
+                    <li><strong>Sauvegardez le dossier data/</strong></li>
+                    <li>Supprimez le fichier <strong>data/worlds/[nom-du-monde]/data.db</strong></li>
+                    <li>Redémarrez Foundry VTT (il recréera la base)</li>
+                </ol>
+                <button class="button success" onclick="markStepComplete('database')">Marquer comme Testé</button>
+            </div>
+        </div>
+        
+        <div class="solution-section">
+            <h3>Solution 4 : Réinstaller Foundry VTT</h3>
+            <div class="step">
+                <h4>Dernière solution (si rien d'autre ne fonctionne) :</h4>
+                <ol>
+                    <li><strong>Sauvegardez TOUS vos mondes et modules</strong></li>
+                    <li>Désinstallez Foundry VTT</li>
+                    <li>Supprimez le dossier d'installation</li>
+                    <li>Réinstallez Foundry VTT</li>
+                    <li>Restaurez vos sauvegardes</li>
+                </ol>
+                <button class="button success" onclick="markStepComplete('reinstall')">Marquer comme Testé</button>
+            </div>
+        </div>
+
+        <h2>✅ Checklist de Diagnostic</h2>
+        
+        <div class="checklist">
+            <div class="checklist-item" id="check-console">
+                <input type="checkbox" id="console-check">
+                <label for="console-check">Console du navigateur vérifiée (F12)</label>
+            </div>
+            
+            <div class="checklist-item" id="check-permissions">
+                <input type="checkbox" id="permissions-check">
+                <label for="permissions-check">Permissions des dossiers vérifiées</label>
+            </div>
+            
+            <div class="checklist-item" id="check-world-settings">
+                <input type="checkbox" id="world-settings-check">
+                <label for="world-settings-check">Paramètres du monde vérifiés</label>
+            </div>
+            
+            <div class="checklist-item" id="check-cache">
+                <input type="checkbox" id="cache-check">
+                <label for="cache-check">Cache du navigateur vidé</label>
+            </div>
+            
+            <div class="checklist-item" id="check-database">
+                <input type="checkbox" id="database-check">
+                <label for="database-check">Base de données réparée (si nécessaire)</label>
+            </div>
+            
+            <div class="checklist-item" id="check-voidhorizon">
+                <input type="checkbox" id="voidhorizon-check">
+                <label for="voidhorizon-check">Paramètres voidHorizon testés</label>
+            </div>
+        </div>
+
+        <h2>📋 Informations de Diagnostic</h2>
+        
+        <div class="step">
+            <h4>Informations à Collecter</h4>
+            <p>Pour diagnostiquer le problème, collectez ces informations :</p>
+            <ul>
+                <li><strong>Version de Foundry VTT</strong> : Affichée dans "About"</li>
+                <li><strong>Système d'exploitation</strong> : Windows, Mac, Linux</li>
+                <li><strong>Navigateur utilisé</strong> : Chrome, Firefox, Edge</li>
+                <li><strong>Erreurs de console</strong> : Copiez les messages d'erreur</li>
+                <li><strong>Structure des dossiers</strong> : Vérifiez l'arborescence data/</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h4>Test de Fonctionnement</h4>
+            <p>Une fois le problème résolu, testez :</p>
+            <ol>
+                <li>Ouvrez <strong>Configure Settings</strong></li>
+                <li>Vérifiez que l'onglet <strong>Core</strong> affiche des paramètres</li>
+                <li>Vérifiez que l'onglet <strong>voidHorizon</strong> apparaît</li>
+                <li>Testez la modification d'un paramètre</li>
+                <li>Vérifiez que la sauvegarde fonctionne</li>
+            </ol>
+        </div>
+
+        <div id="statusContainer">
+            <div class="status warning">
+                ⚠️ Ce diagnostic doit être effectué AVANT de tester les paramètres voidHorizon
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour vérifier la console
+        function checkConsole() {
+            const statusContainer = document.getElementById('statusContainer');
+            const status = document.createElement('div');
+            status.className = 'status info';
+            status.innerHTML = `
+                <strong>Console vérifiée !</strong><br>
+                Si vous voyez des erreurs, notez-les pour le diagnostic.<br>
+                Erreurs communes : "game.settings is not defined", "Cannot read property 'register'"
+            `;
+            statusContainer.appendChild(status);
+            
+            // Marquer comme complété
+            document.getElementById('console-check').checked = true;
+            document.getElementById('check-console').classList.add('completed');
+        }
+        
+        // Fonction pour marquer une étape comme complétée
+        function markStepComplete(step) {
+            const checkbox = document.getElementById(step + '-check');
+            const checklistItem = document.getElementById('check-' + step);
+            
+            if (checkbox) {
+                checkbox.checked = true;
+                checklistItem.classList.add('completed');
+                
+                const statusContainer = document.getElementById('statusContainer');
+                const status = document.createElement('div');
+                status.className = 'status success';
+                status.textContent = `✅ Étape "${step}" marquée comme complétée !`;
+                statusContainer.appendChild(status);
+                
+                // Supprimer le message après 3 secondes
+                setTimeout(() => {
+                    status.remove();
+                }, 3000);
+            }
+        }
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔍 Diagnostic des paramètres Foundry VTT chargé');
+            
+            // Ajouter des écouteurs pour les checkboxes
+            document.querySelectorAll('.checklist-item input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const checklistItem = this.closest('.checklist-item');
+                    if (this.checked) {
+                        checklistItem.classList.add('completed');
+                    } else {
+                        checklistItem.classList.remove('completed');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

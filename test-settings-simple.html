@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Simple - Paramètres voidHorizon</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .test-section {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .test-section h3 {
+            color: #495057;
+            margin-top: 0;
+        }
+        
+        .button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        
+        .button:hover {
+            background: #2980b9;
+        }
+        
+        .button.success {
+            background: #27ae60;
+        }
+        
+        .button.danger {
+            background: #e74c3c;
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        
+        .status.error {
+            background: #fed7d7;
+            border: 1px solid #feb2b2;
+            color: #c53030;
+        }
+        
+        .status.success {
+            background: #c6f6d5;
+            border: 1px solid #9ae6b4;
+            color: #22543d;
+        }
+        
+        .status.info {
+            background: #bee3f8;
+            border: 1px solid #90cdf4;
+            color: #2a4365;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Simple - Paramètres voidHorizon</h1>
+        
+        <div class="test-section">
+            <h3>🔍 Diagnostic des Paramètres</h3>
+            <p>Ce test vérifie que les paramètres voidHorizon sont correctement enregistrés et accessibles.</p>
+            
+            <button class="button" onclick="testSettings()">Tester les Paramètres</button>
+            <button class="button success" onclick="testGameSettings()">Tester game.settings</button>
+            <button class="button danger" onclick="clearStatus()">Effacer les Résultats</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>📋 Instructions de Test</h3>
+            <ol>
+                <li><strong>Ouvrez Foundry VTT</strong> avec le système voidHorizon</li>
+                <li><strong>Ouvrez la console</strong> (F12) pour voir les messages</li>
+                <li><strong>Cliquez sur "Tester les Paramètres"</strong> ci-dessus</li>
+                <li><strong>Vérifiez la console</strong> pour les messages de succès/erreur</li>
+                <li><strong>Testez "Configure Settings"</strong> dans Foundry VTT</li>
+            </ol>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔧 Code de Test</h3>
+            <p>Voici le code qui teste les paramètres :</p>
+            <div class="code-block">
+// Test des paramètres voidHorizon
+function testSettings() {
+    if (typeof game !== 'undefined' && game.settings) {
+        console.log('✅ game.settings disponible');
+        
+        // Lister tous les paramètres
+        const allSettings = Object.keys(game.settings.settings);
+        console.log('📋 Tous les paramètres:', allSettings);
+        
+        // Lister les paramètres voidHorizon
+        const voidHorizonSettings = allSettings.filter(key => key.startsWith('voidHorizon'));
+        console.log('🎛️ Paramètres voidHorizon:', voidHorizonSettings);
+        
+        // Tester un paramètre spécifique
+        if (voidHorizonSettings.length > 0) {
+            const testKey = voidHorizonSettings[0];
+            const value = game.settings.get('voidHorizon', testKey.split('.')[1]);
+            console.log(`🔍 Valeur de ${testKey}:`, value);
+        }
+    } else {
+        console.error('❌ game.settings non disponible');
+    }
+}
+            </div>
+        </div>
+        
+        <div id="statusContainer">
+            <div class="status info">
+                💡 Cliquez sur "Tester les Paramètres" pour commencer le diagnostic
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test des paramètres voidHorizon
+        function testSettings() {
+            const statusContainer = document.getElementById('statusContainer');
+            
+            if (typeof game !== 'undefined' && game.settings) {
+                const status = document.createElement('div');
+                status.className = 'status success';
+                
+                // Lister tous les paramètres
+                const allSettings = Object.keys(game.settings.settings);
+                const voidHorizonSettings = allSettings.filter(key => key.startsWith('voidHorizon'));
+                
+                status.innerHTML = `
+                    <strong>✅ Test réussi !</strong><br>
+                    <strong>Paramètres totaux:</strong> ${allSettings.length}<br>
+                    <strong>Paramètres voidHorizon:</strong> ${voidHorizonSettings.length}<br>
+                    <strong>Liste voidHorizon:</strong> ${voidHorizonSettings.join(', ')}
+                `;
+                
+                statusContainer.appendChild(status);
+                
+                // Afficher dans la console aussi
+                console.log('✅ Test des paramètres réussi');
+                console.log('📋 Tous les paramètres:', allSettings);
+                console.log('🎛️ Paramètres voidHorizon:', voidHorizonSettings);
+                
+            } else {
+                const status = document.createElement('div');
+                status.className = 'status error';
+                status.innerHTML = `
+                    <strong>❌ Test échoué !</strong><br>
+                    game.settings n'est pas disponible.<br>
+                    Vérifiez que vous êtes dans Foundry VTT.
+                `;
+                statusContainer.appendChild(status);
+            }
+        }
+        
+        // Test de game.settings
+        function testGameSettings() {
+            const statusContainer = document.getElementById('statusContainer');
+            const status = document.createElement('div');
+            
+            if (typeof game !== 'undefined') {
+                status.className = 'status success';
+                status.innerHTML = `
+                    <strong>✅ game disponible !</strong><br>
+                    <strong>Type:</strong> ${typeof game}<br>
+                    <strong>Propriétés:</strong> ${Object.keys(game).join(', ')}
+                `;
+            } else {
+                status.className = 'status error';
+                status.innerHTML = `
+                    <strong>❌ game non disponible !</strong><br>
+                    Vous devez être dans Foundry VTT pour ce test.
+                `;
+            }
+            
+            statusContainer.appendChild(status);
+        }
+        
+        // Effacer les résultats
+        function clearStatus() {
+            const statusContainer = document.getElementById('statusContainer');
+            const statuses = statusContainer.querySelectorAll('.status:not(:first-child)');
+            statuses.forEach(status => status.remove());
+        }
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🧪 Test des paramètres voidHorizon chargé');
+            
+            // Vérifier si on est dans Foundry VTT
+            if (typeof game !== 'undefined') {
+                console.log('🎮 Foundry VTT détecté');
+                console.log('🔧 game.settings disponible:', !!game.settings);
+            } else {
+                console.log('🌐 Test en mode navigateur (hors Foundry VTT)');
+            }
+        });
+    </script>
+</body>
+</html>
