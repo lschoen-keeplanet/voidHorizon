@@ -1,0 +1,172 @@
+<form class="export-dialog">
+    <div class="export-header">
+        <h2><i class="fas fa-download"></i> Exporter {{actor.name}}</h2>
+        <p class="export-description">Choisissez le format d'export et les options pour votre personnage</p>
+    </div>
+
+    <div class="export-content">
+        <!-- Sélection du format -->
+        <div class="format-selection">
+            <h3>Format d'Export</h3>
+            <div class="format-options">
+                <label class="format-option">
+                    <input type="radio" name="format" value="pdf" checked>
+                    <div class="format-card">
+                        <i class="fas fa-file-pdf"></i>
+                        <span class="format-name">PDF</span>
+                        <span class="format-desc">Document imprimable</span>
+                    </div>
+                </label>
+                
+                <label class="format-option">
+                    <input type="radio" name="format" value="json">
+                    <div class="format-card">
+                        <i class="fas fa-file-code"></i>
+                        <span class="format-name">JSON</span>
+                        <span class="format-desc">Données brutes</span>
+                    </div>
+                </label>
+                
+                <label class="format-option">
+                    <input type="radio" name="format" value="html">
+                    <div class="format-card">
+                        <i class="fas fa-file-code"></i>
+                        <span class="format-name">HTML</span>
+                        <span class="format-desc">Page web</span>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <!-- Options d'export -->
+        <div class="export-options">
+            <h3>Options d'Export</h3>
+            
+            <div class="option-group">
+                <label class="option-checkbox">
+                    <input type="checkbox" name="includeImage" checked>
+                    <span class="option-text">Inclure l'image du personnage</span>
+                    <span class="option-indicator image"></span>
+                </label>
+                
+                <label class="option-checkbox">
+                    <input type="checkbox" name="includeItems" checked>
+                    <span class="option-text">Inclure l'équipement et les objets</span>
+                    <span class="option-indicator items"></span>
+                </label>
+                
+                <label class="option-checkbox">
+                    <input type="checkbox" name="includeTraits" checked>
+                    <span class="option-text">Inclure les traits et compétences</span>
+                    <span class="option-indicator traits"></span>
+                </label>
+                
+                <label class="option-checkbox">
+                    <input type="checkbox" name="includeBiography">
+                    <span class="option-text">Inclure la biographie</span>
+                    <span class="option-indicator biography"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Aperçu de l'export -->
+        <div class="export-preview">
+            <h3>Aperçu de l'Export</h3>
+            
+            <!-- Informations de base -->
+            <div class="preview-section">
+                <h4>Informations de Base</h4>
+                <div class="preview-grid">
+                    <div class="preview-item">
+                        <strong>Nom:</strong> <span class="preview-actor-name">{{actor.name}}</span>
+                    </div>
+                    <div class="preview-item">
+                        <strong>Type:</strong> <span class="preview-actor-type">{{#if (eq actor.type "heros")}}Héros{{else}}PNJ{{/if}}</span>
+                    </div>
+                    <div class="preview-item">
+                        <strong>Format:</strong> <span id="preview-format">PDF</span>
+                    </div>
+                    <div class="preview-item">
+                        <strong>Fichier:</strong> <span id="preview-filename">{{actor.name}}.pdf</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistiques -->
+            <div class="preview-section">
+                <h4>Statistiques</h4>
+                <div class="preview-stats-grid">
+                    <div class="preview-stat">
+                        <label>Agilité:</label>
+                        <span class="preview-agility">{{actor.system.stats.agility}}</span>
+                    </div>
+                    <div class="preview-stat">
+                        <label>Constitution:</label>
+                        <span class="preview-constitution">{{actor.system.stats.constitution}}</span>
+                    </div>
+                    <div class="preview-stat">
+                        <label>Intelligence:</label>
+                        <span class="preview-intelligence">{{actor.system.stats.intelligence}}</span>
+                    </div>
+                    <div class="preview-stat">
+                        <label>Perception:</label>
+                        <span class="preview-perception">{{actor.system.stats.perception}}</span>
+                    </div>
+                    <div class="preview-stat">
+                        <label>Force:</label>
+                        <span class="preview-strength">{{actor.system.stats.strength}}</span>
+                    </div>
+                    <div class="preview-stat">
+                        <label>Volonté:</label>
+                        <span class="preview-willpower">{{actor.system.stats.willpower}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Santé et Armure -->
+            <div class="preview-section">
+                <h4>Santé et Protection</h4>
+                <div class="preview-grid">
+                    <div class="preview-item">
+                        <strong>Santé:</strong> <span class="preview-health">{{actor.system.health.current}} / {{actor.system.health.max}}</span>
+                    </div>
+                    <div class="preview-item">
+                        <strong>Armure:</strong> <span class="preview-armor">{{actor.system.armor.value}} ({{#if (eq actor.system.armor.type "tissu")}}Tissu{{else if (eq actor.system.armor.type "legere")}}Légère{{else if (eq actor.system.armor.type "lourde")}}Lourde{{else if (eq actor.system.armor.type "blindee")}}Blindée{{else}}Tissu{{/if}})</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mouvement -->
+            <div class="preview-section">
+                <h4>Mouvement</h4>
+                <div class="preview-grid">
+                    <div class="preview-item">
+                        <strong>Mouvement disponible:</strong> <span class="preview-movement">{{actor.system.stats.agility}}m</span>
+                    </div>
+                    <div class="preview-item">
+                        <strong>Formule:</strong> <span class="preview-movement-formula">Calcul en cours...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Options sélectionnées -->
+            <div class="preview-section">
+                <h4>Options Sélectionnées</h4>
+                <div class="preview-options">
+                    <div class="preview-item">
+                        <strong>Éléments inclus:</strong> <span class="preview-options-summary">Image, Équipement, Traits</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="export-actions">
+        <button type="button" class="cancel-btn">
+            <i class="fas fa-times"></i> Annuler
+        </button>
+        <button type="submit" class="export-btn">
+            <i class="fas fa-download"></i> Exporter
+        </button>
+    </div>
+</form>

@@ -1,0 +1,44 @@
+{
+  "name": "voidHorizon Actor Export",
+  "title": "Export d'Acteurs voidHorizon",
+  "description": "Module d'export d'acteurs pour le système voidHorizon. Permet d'exporter les fiches de personnages en PDF, JSON et HTML.",
+  "version": "1.0.0",
+  "author": "voidHorizon Team",
+  "minimumCoreVersion": "11",
+  "compatibleCoreVersion": "11",
+  "systems": ["voidHorizon"],
+  "esmodules": [
+    "scripts/main.js"
+  ],
+  "scripts": [
+    "scripts/ExportDialog.js",
+    "scripts/providers/pdf-provider.js",
+    "scripts/providers/json-provider.js",
+    "scripts/providers/html-provider.js",
+    "scripts/utils/export-utils.js"
+  ],
+  "styles": [
+    "styles/export-styles.css"
+  ],
+  "templates": [
+    "templates/export-dialog.html"
+  ],
+  "languages": [
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "url": "",
+  "manifest": "",
+  "download": "",
+  "license": "MIT",
+  "readme": "README.md",
+  "changelog": "CHANGELOG.md"
+}

@@ -1,0 +1,436 @@
+/* Styles pour le module d'export voidHorizon */
+
+/* Bouton d'export sur les fiches */
+.export-actor-btn {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 10px;
+    box-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
+}
+
+.export-actor-btn:hover {
+    background: linear-gradient(135deg, #45a049, #3d8b40);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.4);
+}
+
+.export-actor-btn i {
+    font-size: 16px;
+}
+
+/* Boîte de dialogue d'export */
+.export-dialog {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.export-header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #800000;
+}
+
+.export-header h2 {
+    color: #800000;
+    margin: 0 0 10px 0;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.export-description {
+    color: #666;
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Sélection du format */
+.format-selection {
+    margin-bottom: 25px;
+}
+
+.format-selection h3 {
+    color: #800000;
+    margin: 0 0 15px 0;
+    font-size: 18px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+}
+
+.format-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.format-option {
+    cursor: pointer;
+}
+
+.format-option input[type="radio"] {
+    display: none;
+}
+
+.format-card {
+    background: #f8f9fa;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.2s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.format-option input[type="radio"]:checked + .format-card {
+    border-color: #800000;
+    background: linear-gradient(135deg, #fff5f5, #ffe6e6);
+    box-shadow: 0 4px 12px rgba(128, 0, 0, 0.2);
+}
+
+.format-card:hover {
+    border-color: #800000;
+    transform: translateY(-2px);
+}
+
+.format-card i {
+    font-size: 32px;
+    color: #800000;
+}
+
+.format-name {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+}
+
+.format-desc {
+    font-size: 12px;
+    color: #666;
+}
+
+/* Options d'export */
+.export-options {
+    margin-bottom: 25px;
+}
+
+.export-options h3 {
+    color: #800000;
+    margin: 0 0 15px 0;
+    font-size: 18px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+}
+
+.option-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.option-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    position: relative;
+}
+
+.option-checkbox:hover {
+    background-color: #f8f9fa;
+}
+
+.option-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #800000;
+}
+
+.option-text {
+    color: #333;
+    font-size: 14px;
+    flex: 1;
+}
+
+.option-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ddd;
+    transition: all 0.2s ease;
+}
+
+.option-indicator.active {
+    background: #4CAF50;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+}
+
+/* Aperçu de l'export */
+.export-preview {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.export-preview h3 {
+    color: #800000;
+    margin: 0 0 15px 0;
+    font-size: 16px;
+}
+
+.preview-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+.preview-section h4 {
+    color: #800000;
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 8px;
+}
+
+.preview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.preview-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.preview-item, .preview-stat {
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.preview-item strong, .preview-stat label {
+    color: #800000;
+    font-weight: bold;
+}
+
+.preview-stat {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.preview-stat label {
+    font-size: 12px;
+    color: #666;
+}
+
+.preview-stat span {
+    font-size: 16px;
+    font-weight: bold;
+    color: #800000;
+}
+
+/* Actions d'export */
+.export-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.cancel-btn, .export-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.cancel-btn {
+    background: #6c757d;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+}
+
+.export-btn {
+    background: linear-gradient(135deg, #800000, #600000);
+    color: white;
+}
+
+.export-btn:hover {
+    background: linear-gradient(135deg, #600000, #400000);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(128, 0, 0, 0.3);
+}
+
+.export-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .format-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .preview-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .preview-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .export-actions {
+        flex-direction: column;
+    }
+    
+    .cancel-btn, .export-btn {
+        width: 100%;
+    }
+}
+
+/* Animation de chargement */
+.export-loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #800000;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Notifications d'export */
+.export-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    border: 2px solid #4CAF50;
+    border-radius: 8px;
+    padding: 15px 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    max-width: 300px;
+    animation: slideIn 0.3s ease-out;
+}
+
+.export-notification.error {
+    border-color: #f44336;
+}
+
+.export-notification.success {
+    border-color: #4CAF50;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Indicateurs d'options */
+.option-indicator {
+    position: relative;
+}
+
+.option-indicator::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: inherit;
+    border: 2px solid white;
+    box-shadow: 0 0 4px rgba(0,0,0,0.2);
+}
+
+/* États des options */
+.option-checkbox input[type="checkbox"]:checked + .option-text + .option-indicator {
+    background: #4CAF50;
+}
+
+.option-checkbox input[type="checkbox"]:not(:checked) + .option-text + .option-indicator {
+    background: #ddd;
+}
+
+/* Aperçu des statistiques */
+.preview-stats-grid .preview-stat {
+    background: #f8f9fa;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+}
+
+.preview-stats-grid .preview-stat:hover {
+    background: #e9ecef;
+    border-color: #800000;
+}
+
+/* Mouvement spécial */
+.preview-movement {
+    color: #f39c12 !important;
+    font-size: 18px !important;
+}
+
+.preview-movement-formula {
+    color: #666 !important;
+    font-style: italic;
+    font-size: 12px !important;
+}

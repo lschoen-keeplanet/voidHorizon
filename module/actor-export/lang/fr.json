@@ -1,0 +1,65 @@
+{
+  "voidHorizonActorExport": {
+    "title": "Export d'Acteurs voidHorizon",
+    "description": "Module d'export d'acteurs pour le système voidHorizon",
+    "export": "Exporter",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "loading": "Chargement...",
+    "success": "Succès",
+    "error": "Erreur",
+    "warning": "Attention",
+    
+    "dialog": {
+      "title": "Exporter {actorName}",
+      "description": "Choisissez le format d'export et les options pour votre personnage",
+      "formatSelection": "Format d'Export",
+      "exportOptions": "Options d'Export",
+      "preview": "Aperçu",
+      "actions": "Actions"
+    },
+    
+    "formats": {
+      "pdf": {
+        "name": "PDF",
+        "description": "Document imprimable"
+      },
+      "json": {
+        "name": "JSON",
+        "description": "Données brutes"
+      },
+      "html": {
+        "name": "HTML",
+        "description": "Page web"
+      }
+    },
+    
+    "options": {
+      "includeImage": "Inclure l'image du personnage",
+      "includeItems": "Inclure l'équipement et les objets",
+      "includeTraits": "Inclure les traits et compétences",
+      "includeBiography": "Inclure la biographie"
+    },
+    
+    "preview": {
+      "name": "Nom",
+      "type": "Type",
+      "format": "Format",
+      "filename": "Fichier"
+    },
+    
+    "notifications": {
+      "exportStarted": "Export en cours...",
+      "exportSuccess": "Export réussi ! Fichier téléchargé.",
+      "exportError": "Erreur lors de l'export : {error}",
+      "moduleNotReady": "Module d'export non initialisé"
+    },
+    
+    "errors": {
+      "providerNotFound": "Provider {type} non trouvé",
+      "exportFailed": "L'export a échoué",
+      "invalidActor": "Acteur invalide pour l'export",
+      "unsupportedFormat": "Format non supporté : {format}"
+    }
+  }
+}
