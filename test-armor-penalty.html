@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Malus d'Armure - Mouvement</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #ecf0f1;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(44, 62, 80, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #3498db;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .test-section {
+            background: rgba(52, 73, 94, 0.6);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(52, 73, 94, 0.5);
+        }
+        
+        .test-section h2 {
+            color: #e74c3c;
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .test-card {
+            background: rgba(44, 62, 80, 0.8);
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid rgba(52, 73, 94, 0.5);
+        }
+        
+        .test-card h3 {
+            color: #f39c12;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .test-inputs {
+            margin-bottom: 15px;
+        }
+        
+        .test-inputs label {
+            display: block;
+            margin-bottom: 5px;
+            color: #bdc3c7;
+            font-weight: 500;
+        }
+        
+        .test-inputs select,
+        .test-inputs input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #34495e;
+            background: #2c3e50;
+            color: #ecf0f1;
+            margin-bottom: 10px;
+        }
+        
+        .test-result {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .test-result .movement-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 5px;
+        }
+        
+        .test-result .movement-formula {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9em;
+        }
+        
+        .armor-info {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid rgba(231, 76, 60, 0.5);
+            border-radius: 6px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        
+        .armor-info strong {
+            color: #e74c3c;
+        }
+        
+        .formula-breakdown {
+            background: rgba(52, 152, 219, 0.2);
+            border: 1px solid rgba(52, 152, 219, 0.5);
+            border-radius: 6px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 0.9em;
+            font-family: monospace;
+        }
+        
+        .formula-breakdown strong {
+            color: #3498db;
+        }
+        
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(44, 62, 80, 0.6);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .summary-table th,
+        .summary-table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid rgba(52, 73, 94, 0.5);
+        }
+        
+        .summary-table th {
+            background: #34495e;
+            color: #ecf0f1;
+            font-weight: bold;
+        }
+        
+        .summary-table tr:nth-child(even) {
+            background: rgba(52, 73, 94, 0.3);
+        }
+        
+        .summary-table tr:hover {
+            background: rgba(52, 152, 219, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ Test du Malus d'Armure sur le Mouvement</h1>
+        
+        <div class="test-section">
+            <h2>📊 Calcul du Mouvement avec Malus d'Armure</h2>
+            <p>Cette page de test simule le calcul du mouvement disponible en fonction du degré d'agilité et du type d'armure portée.</p>
+            
+            <div class="test-grid">
+                <div class="test-card">
+                    <h3>🎭 Personnage 1</h3>
+                    <div class="test-inputs">
+                        <label>Degré d'Agilité:</label>
+                        <select id="agility1">
+                            <option value="1">1 - Challengé (2d4)</option>
+                            <option value="2">2 - Lourdeau (3d4)</option>
+                            <option value="3" selected>3 - Bien (4d4)</option>
+                            <option value="4">4 - Rapide (5d4)</option>
+                            <option value="5">5 - Très rapide (6d4)</option>
+                            <option value="6">6 - Très très rapide (7d4)</option>
+                        </select>
+                        
+                        <label>Type d'Armure:</label>
+                        <select id="armor1">
+                            <option value="tissu">Tissu (Malus: 0m)</option>
+                            <option value="legere">Légère (Malus: 1.5m)</option>
+                            <option value="lourde">Lourde (Malus: 3.0m)</option>
+                            <option value="blindee">Blindée (Malus: 4.5m)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="test-result">
+                        <div class="movement-value" id="result1">6.0m</div>
+                        <div class="movement-formula">Mouvement disponible</div>
+                    </div>
+                    
+                    <div class="armor-info">
+                        <strong>Type d'armure:</strong> <span id="armorType1">Tissu</span><br>
+                        <strong>Malus appliqué:</strong> <span id="armorPenalty1">0.0m</span>
+                    </div>
+                    
+                    <div class="formula-breakdown">
+                        <strong>Calcul:</strong><br>
+                        <span id="formula1">3 × 1.5 + 1.5 - 0.0 = 6.0m</span>
+                    </div>
+                </div>
+                
+                <div class="test-card">
+                    <h3>🎭 Personnage 2</h3>
+                    <div class="test-inputs">
+                        <label>Degré d'Agilité:</label>
+                        <select id="agility2">
+                            <option value="1">1 - Challengé (2d4)</option>
+                            <option value="2">2 - Lourdeau (3d4)</option>
+                            <option value="3">3 - Bien (4d4)</option>
+                            <option value="4">4 - Rapide (5d4)</option>
+                            <option value="5" selected>5 - Très rapide (6d4)</option>
+                            <option value="6">6 - Très très rapide (7d4)</option>
+                        </select>
+                        
+                        <label>Type d'Armure:</label>
+                        <select id="armor2">
+                            <option value="tissu">Tissu (Malus: 0m)</option>
+                            <option value="legere">Légère (Malus: 1.5m)</option>
+                            <option value="lourde" selected>Lourde (Malus: 3.0m)</option>
+                            <option value="blindee">Blindée (Malus: 4.5m)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="test-result">
+                        <div class="movement-value" id="result2">6.0m</div>
+                        <div class="movement-formula">Mouvement disponible</div>
+                    </div>
+                    
+                    <div class="armor-info">
+                        <strong>Type d'armure:</strong> <span id="armorType2">Lourde</span><br>
+                        <strong>Malus appliqué:</strong> <span id="armorPenalty2">3.0m</span>
+                    </div>
+                    
+                    <div class="formula-breakdown">
+                        <strong>Calcul:</strong><br>
+                        <span id="formula2">5 × 1.5 + 1.5 - 3.0 = 6.0m</span>
+                    </div>
+                </div>
+                
+                <div class="test-card">
+                    <h3>🎭 Personnage 3</h3>
+                    <div class="test-inputs">
+                        <label>Degré d'Agilité:</label>
+                        <select id="agility3">
+                            <option value="1">1 - Challengé (2d4)</option>
+                            <option value="2">2 - Lourdeau (3d4)</option>
+                            <option value="3">3 - Bien (4d4)</option>
+                            <option value="4">4 - Rapide (5d4)</option>
+                            <option value="5">5 - Très rapide (6d4)</option>
+                            <option value="6" selected>6 - Très très rapide (7d4)</option>
+                        </select>
+                        
+                        <label>Type d'Armure:</label>
+                        <select id="armor3">
+                            <option value="tissu">Tissu (Malus: 0m)</option>
+                            <option value="legere">Légère (Malus: 1.5m)</option>
+                            <option value="lourde">Lourde (Malus: 3.0m)</option>
+                            <option value="blindee" selected>Blindée (Malus: 4.5m)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="test-result">
+                        <div class="movement-value" id="result3">6.0m</div>
+                        <div class="movement-formula">Mouvement disponible</div>
+                    </div>
+                    
+                    <div class="armor-info">
+                        <strong>Type d'armure:</strong> <span id="armorType3">Blindée</span><br>
+                        <strong>Malus appliqué:</strong> <span id="armorPenalty3">4.5m</span>
+                    </div>
+                    
+                    <div class="formula-breakdown">
+                        <strong>Calcul:</strong><br>
+                        <span id="formula3">6 × 1.5 + 1.5 - 4.5 = 6.0m</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>📋 Résumé des Malus d'Armure</h2>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>Type d'Armure</th>
+                        <th>Malus de Mouvement</th>
+                        <th>Impact sur le Mouvement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tissu</strong></td>
+                        <td>0m</td>
+                        <td>Aucun impact</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Légère</strong></td>
+                        <td>-1.5m</td>
+                        <td>Réduction modérée</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lourde</strong></td>
+                        <td>-3.0m</td>
+                        <td>Réduction importante</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Blindée</strong></td>
+                        <td>-4.5m</td>
+                        <td>Réduction majeure</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="test-section">
+            <h2>🔧 Formule Complète</h2>
+            <p><strong>Mouvement Final = (Degré d'Agilité × 1.5) + 1.5 - Malus d'Armure</strong></p>
+            <p>Où :</p>
+            <ul>
+                <li><strong>Degré d'Agilité</strong> : Valeur de 1 à 6 selon la caractéristique</li>
+                <li><strong>1.5</strong> : Bonus de base pour tous les personnages</li>
+                <li><strong>Malus d'Armure</strong> : Pénalité selon le type d'armure portée</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour calculer le mouvement avec malus d'armure
+        function calculateMovement(agilityDegree, armorType) {
+            const baseMovement = (agilityDegree * 1.5) + 1.5;
+            
+            const armorPenaltyMap = {
+                "tissu": 0,
+                "legere": 1.5,
+                "lourde": 3.0,
+                "blindee": 4.5
+            };
+            
+            const armorPenalty = armorPenaltyMap[armorType] || 0;
+            const finalMovement = Math.max(0, baseMovement - armorPenalty);
+            
+            return {
+                baseMovement: baseMovement,
+                armorPenalty: armorPenalty,
+                finalMovement: finalMovement
+            };
+        }
+        
+        // Fonction pour mettre à jour l'affichage
+        function updateDisplay(characterId) {
+            const agilitySelect = document.getElementById(`agility${characterId}`);
+            const armorSelect = document.getElementById(`armor${characterId}`);
+            
+            const agilityDegree = parseInt(agilitySelect.value);
+            const armorType = armorSelect.value;
+            
+            const result = calculateMovement(agilityDegree, armorType);
+            
+            // Mettre à jour le résultat
+            document.getElementById(`result${characterId}`).textContent = `${result.finalMovement.toFixed(1)}m`;
+            
+            // Mettre à jour les informations d'armure
+            const armorTypeNames = {
+                "tissu": "Tissu",
+                "legere": "Légère",
+                "lourde": "Lourde",
+                "blindee": "Blindée"
+            };
+            
+            document.getElementById(`armorType${characterId}`).textContent = armorTypeNames[armorType];
+            document.getElementById(`armorPenalty${characterId}`).textContent = `${result.armorPenalty.toFixed(1)}m`;
+            
+            // Mettre à jour la formule
+            document.getElementById(`formula${characterId}`).textContent = 
+                `${agilityDegree} × 1.5 + 1.5 - ${result.armorPenalty.toFixed(1)} = ${result.finalMovement.toFixed(1)}m`;
+        }
+        
+        // Ajouter les écouteurs d'événements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser l'affichage pour tous les personnages
+            updateDisplay(1);
+            updateDisplay(2);
+            updateDisplay(3);
+            
+            // Ajouter les écouteurs pour les changements
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById(`agility${i}`).addEventListener('change', () => updateDisplay(i));
+                document.getElementById(`armor${i}`).addEventListener('change', () => updateDisplay(i));
+            }
+        });
+    </script>
+</body>
+</html>

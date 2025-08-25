@@ -4637,7 +4637,7 @@ Hooks.once("init", function() {
         });
 
         // Helper pour calculer le mouvement disponible
-        Handlebars.registerHelper('getMovementAvailable', function(agiliteValue) {
+        Handlebars.registerHelper('getMovementAvailable', function(agiliteValue, actor) {
             // Mapper les valeurs de dés aux degrés d'agilité
             const agiliteDegreeMap = {
                 "2d4": 1,   // Challengé
@@ -4649,9 +4649,22 @@ Hooks.once("init", function() {
             };
             
             const degree = agiliteDegreeMap[agiliteValue] || 1;
-            const movement = (degree * 1.5) + 3;
+            let movement = (degree * 1.5) + 1.5;
             
-            return movement.toFixed(1);
+            // Appliquer le malus d'armure si l'acteur est fourni
+            if (actor && actor.system && actor.system.armor) {
+                const armorType = actor.system.armor.type || "tissu";
+                const armorPenaltyMap = {
+                    "tissu": 0,      // Malus = 0m
+                    "legere": 1.5,   // Malus = 1.5m
+                    "lourde": 3,     // Malus = 3m
+                    "blindee": 4.5   // Malus = 4.5m
+                };
+                const armorPenalty = armorPenaltyMap[armorType] || 0;
+                movement -= armorPenalty;
+            }
+            
+            return Math.max(0, movement).toFixed(1); // Éviter les valeurs négatives
         });
 
     foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);

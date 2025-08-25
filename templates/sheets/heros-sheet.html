@@ -196,12 +196,12 @@
                                         <div class="movement-label">
                                             <i class="fas fa-running"></i> Mouvement disponible
                                         </div>
-                                        <div class="movement-value">
-                                            {{getMovementAvailable system.agilite.value}}
-                                        </div>
-                                        <div class="movement-formula">
-                                            <small>Formule: Degré d'agilité × 1.5 + 3</small>
-                                        </div>
+                                                        <div class="movement-value">
+                    {{getMovementAvailable system.agilite.value actor}}
+                </div>
+                                                        <div class="movement-formula">
+                    <small>Formule: Degré d'agilité × 1.5 + 1.5 - Malus d'armure</small>
+                </div>
                                     </div>
 
                                 </div>

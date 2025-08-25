@@ -97,6 +97,50 @@
             background: rgba(52, 152, 219, 0.2);
         }
         
+        .armor-penalty-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(44, 62, 80, 0.4);
+            border-radius: 10px;
+            border: 1px solid rgba(52, 73, 94, 0.3);
+        }
+        
+        .armor-penalty-section h3 {
+            color: #e74c3c;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .armor-penalty-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: rgba(44, 62, 80, 0.6);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .armor-penalty-table th,
+        .armor-penalty-table td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid rgba(52, 73, 94, 0.5);
+        }
+        
+        .armor-penalty-table th {
+            background: #c0392b;
+            color: #ecf0f1;
+            font-weight: bold;
+        }
+        
+        .armor-penalty-table tr:nth-child(even) {
+            background: rgba(52, 73, 94, 0.3);
+        }
+        
+        .armor-penalty-table tr:hover {
+            background: rgba(231, 76, 60, 0.2);
+        }
+        
         .demo-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -374,9 +418,9 @@
             <h2>📋 Vue d'ensemble</h2>
             <p>Cette implémentation ajoute l'affichage du mouvement disponible sur les fiches de personnages et de NPCs dans Void Horizon, en utilisant la formule :</p>
             
-            <div class="formula">
+                                     <div class="formula">
                 <h3>Formule du Mouvement</h3>
-                <div class="formula-text">Mouvement = Degré d'Agilité × 1.5 + 3</div>
+                <div class="formula-text">Mouvement = Degré d'Agilité × 1.5 + 1.5 - Malus d'Armure</div>
             </div>
             
             <p>Le mouvement est automatiquement calculé et affiché en fonction du degré d'agilité du personnage, avec une mise à jour en temps réel lors des changements de caractéristiques.</p>
@@ -395,50 +439,87 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>2d4</td>
-                        <td>Challengé</td>
-                        <td>1 × 1.5 + 3</td>
-                        <td><strong>4.5</strong></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>3d4</td>
-                        <td>Lourdeau</td>
-                        <td>2 × 1.5 + 3</td>
-                        <td><strong>6.0</strong></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>4d4</td>
-                        <td>Bien</td>
-                        <td>3 × 1.5 + 3</td>
-                        <td><strong>7.5</strong></td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>5d4</td>
-                        <td>Rapide</td>
-                        <td>4 × 1.5 + 3</td>
-                        <td><strong>9.0</strong></td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>6d4</td>
-                        <td>Très rapide</td>
-                        <td>5 × 1.5 + 3</td>
-                        <td><strong>10.5</strong></td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td>7d4</td>
-                        <td>Très très rapide</td>
-                        <td>6 × 1.5 + 3</td>
-                        <td><strong>12.0</strong></td>
-                    </tr>
+                                         <tr>
+                         <td>1</td>
+                         <td>2d4</td>
+                         <td>Challengé</td>
+                         <td>1 × 1.5 + 1.5</td>
+                         <td><strong>3.0</strong></td>
+                     </tr>
+                     <tr>
+                         <td>2</td>
+                         <td>3d4</td>
+                         <td>Lourdeau</td>
+                         <td>2 × 1.5 + 1.5</td>
+                         <td><strong>4.5</strong></td>
+                     </tr>
+                     <tr>
+                         <td>3</td>
+                         <td>4d4</td>
+                         <td>Bien</td>
+                         <td>3 × 1.5 + 1.5</td>
+                         <td><strong>6.0</strong></td>
+                     </tr>
+                     <tr>
+                         <td>4</td>
+                         <td>5d4</td>
+                         <td>Rapide</td>
+                         <td>4 × 1.5 + 1.5</td>
+                         <td><strong>7.5</strong></td>
+                     </tr>
+                     <tr>
+                         <td>5</td>
+                         <td>6d4</td>
+                         <td>Très rapide</td>
+                         <td>5 × 1.5 + 1.5</td>
+                         <td><strong>9.0</strong></td>
+                     </tr>
+                     <tr>
+                         <td>6</td>
+                         <td>7d4</td>
+                         <td>Très très rapide</td>
+                         <td>6 × 1.5 + 1.5</td>
+                         <td><strong>10.5</strong></td>
+                     </tr>
                 </tbody>
             </table>
+            
+            <div class="armor-penalty-section">
+                <h3>🛡️ Malus d'Armure sur le Mouvement</h3>
+                <p>Le mouvement est également affecté par le type d'armure portée par le personnage :</p>
+                <table class="armor-penalty-table">
+                    <thead>
+                        <tr>
+                            <th>Type d'Armure</th>
+                            <th>Malus de Mouvement</th>
+                            <th>Exemple de Mouvement Final</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Tissu</strong></td>
+                            <td>0m</td>
+                            <td>6.0m (aucun malus)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Légère</strong></td>
+                            <td>-1.5m</td>
+                            <td>4.5m (6.0 - 1.5)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lourde</strong></td>
+                            <td>-3.0m</td>
+                            <td>3.0m (6.0 - 3.0)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Blindée</strong></td>
+                            <td>-4.5m</td>
+                            <td>1.5m (6.0 - 4.5)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><em>Note : L'exemple utilise un personnage avec 3 degrés d'agilité (4d4 - Bien) qui a un mouvement de base de 6.0m.</em></p>
+            </div>
         </div>
         
         <div class="demo-section">
@@ -484,7 +565,7 @@
                         </div>
                         <div class="movement-value">7.5</div>
                         <div class="movement-formula">
-                            <small>Formule: Degré d'agilité × 1.5 + 3</small>
+                            <small>Formule: Degré d'agilité × 1.5 + 1.5 - Malus d'armure</small>
                         </div>
                     </div>
                 </div>
@@ -518,7 +599,7 @@
                     </div>
                     <div class="movement-value-npc">7.5</div>
                     <div class="movement-formula-npc">
-                        <small>Formule: Degré d'agilité × 1.5 + 3</small>
+                        <small>Formule: Degré d'agilité × 1.5 + 1.5 - Malus d'armure</small>
                     </div>
                 </div>
             </div>
@@ -529,14 +610,29 @@
             
             <h3>1. Helper Handlebars</h3>
             <p>Ajout d'un helper <code>getMovementAvailable</code> dans <code>scripts/heros-sheet.js</code> :</p>
-            <pre><code>Handlebars.registerHelper('getMovementAvailable', function(agiliteValue) {
+            <pre><code>Handlebars.registerHelper('getMovementAvailable', function(agiliteValue, actor) {
     const agiliteDegreeMap = {
         "2d4": 1, "3d4": 2, "4d4": 3, 
         "5d4": 4, "6d4": 5, "7d4": 6
     };
+    
     const degree = agiliteDegreeMap[agiliteValue] || 1;
-    const movement = (degree * 1.5) + 3;
-    return movement.toFixed(1);
+    let movement = (degree * 1.5) + 1.5;
+    
+    // Appliquer le malus d'armure si l'acteur est fourni
+    if (actor && actor.system && actor.system.armor) {
+        const armorType = actor.system.armor.type || "tissu";
+        const armorPenaltyMap = {
+            "tissu": 0,      // Malus = 0m
+            "legere": 1.5,   // Malus = 1.5m
+            "lourde": 3,     // Malus = 3m
+            "blindee": 4.5   // Malus = 4.5m
+        };
+        const armorPenalty = armorPenaltyMap[armorType] || 0;
+        movement -= armorPenalty;
+    }
+    
+    return Math.max(0, movement).toFixed(1);
 });</code></pre>
             
             <h3>2. Template HTML - Fiche Héros</h3>
@@ -546,10 +642,10 @@
         &lt;i class="fas fa-running"&gt;&lt;/i&gt; Mouvement disponible
     &lt;/div&gt;
     &lt;div class="movement-value"&gt;
-        {{getMovementAvailable system.agilite.value}}
+        {{getMovementAvailable system.agilite.value actor}}
     &lt;/div&gt;
     &lt;div class="movement-formula"&gt;
-        &lt;small&gt;Formule: Degré d'agilité × 1.5 + 3&lt;/small&gt;
+        &lt;small&gt;Formule: Degré d'agilité × 1.5 + 1.5 - Malus d'armure&lt;/small&gt;
     &lt;/div&gt;
 &lt;/div&gt;</code></pre>
             
@@ -571,10 +667,10 @@
         &lt;i class="fas fa-running"&gt;&lt;/i&gt; Mouvement disponible
     &lt;/div&gt;
     &lt;div class="movement-value-npc"&gt;
-        {{getMovementAvailable actor.system.agilite.value}}
+        {{getMovementAvailable actor.system.agilite.value actor}}
     &lt;/div&gt;
     &lt;div class="movement-formula-npc"&gt;
-        &lt;small&gt;Formule: Degré d'agilité × 1.5 + 3&lt;/small&gt;
+        &lt;small&gt;Formule: Degré d'agilité × 1.5 + 1.5 - Malus d'armure&lt;/small&gt;
     &lt;/div&gt;
 &lt;/div&gt;</code></pre>
             
@@ -587,6 +683,7 @@
             <ul>
                 <li><strong>Calcul automatique</strong> : Le mouvement est calculé automatiquement selon la formule</li>
                 <li><strong>Mise à jour en temps réel</strong> : L'affichage se met à jour lors des changements d'agilité</li>
+                <li><strong>Malus d'armure</strong> : Prise en compte automatique des pénalités de mouvement selon le type d'armure</li>
                 <li><strong>Design cohérent</strong> : Intégration visuelle harmonieuse avec le reste de l'interface</li>
                 <li><strong>Responsive</strong> : Adaptation aux différentes tailles d'écran</li>
                 <li><strong>Support des deux types de fiches</strong> : Héros et NPCs</li>

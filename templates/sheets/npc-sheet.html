@@ -235,10 +235,10 @@
                                 <i class="fas fa-running"></i> Mouvement disponible
                             </div>
                             <div class="movement-value-npc">
-                                {{getMovementAvailable actor.system.agilite.value}}
+                                {{getMovementAvailable actor.system.agilite.value actor}}
                             </div>
                             <div class="movement-formula-npc">
-                                <small>Formule: Degré d'agilité × 1.5 + 3</small>
+                                <small>Formule: Degré d'agilité × 1.5 + 1.5 - Malus d'armure</small>
                             </div>
                         </div>
                     </div>
