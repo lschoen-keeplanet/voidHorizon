@@ -1,5 +1,6 @@
 import VHItemSheet from "./module/sheets/VHItemSheet.js";
 import {voidHorizon} from "./module/config.js";
+import {registerSettings} from "./module/settings.js";
 import "./scripts/heros-sheet.js";
 import "./scripts/npc-sheet.js";
 
@@ -8,11 +9,13 @@ Hooks.once("init", function () {
 
     CONFIG.voidHorizon = voidHorizon;
 
+    // Enregistrer les paramètres de configuration
+    registerSettings();
+
     Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("voidHorizon", VHItemSheet, {makeDefault: true});
 
-console.log($("body"))
-
+    console.log($("body"));
 })
 
 // Initialisation du système

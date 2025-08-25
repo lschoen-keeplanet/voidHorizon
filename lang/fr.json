@@ -11,6 +11,76 @@
             "state2" : "Apeuré",
             "state3" : "Confiant",
             "state4" : "Etat de grâce"
+        },
+
+        "settings": {
+            "showMovementDisplay": {
+                "name": "Afficher le mouvement disponible",
+                "hint": "Afficher ou masquer l'affichage du mouvement disponible sur les fiches de personnage"
+            },
+            "showArmorPenalty": {
+                "name": "Afficher le malus d'armure",
+                "hint": "Afficher ou masquer les informations sur le malus de mouvement causé par l'armure"
+            },
+            "movementFormula": {
+                "name": "Formule de mouvement",
+                "hint": "Choisir la formule utilisée pour calculer le mouvement",
+                "choices": {
+                    "default": "Par défaut (Agilité × 1.5 + 1.5)",
+                    "custom": "Personnalisée"
+                }
+            },
+            "agilityMultiplier": {
+                "name": "Multiplicateur d'agilité",
+                "hint": "Multiplicateur appliqué au degré d'agilité dans le calcul du mouvement"
+            },
+            "movementBase": {
+                "name": "Mouvement de base",
+                "hint": "Valeur de base ajoutée au mouvement calculé"
+            },
+            "armorPenaltyEnabled": {
+                "name": "Activer le malus d'armure",
+                "hint": "Activer ou désactiver le système de malus de mouvement causé par l'armure"
+            },
+            "armorPenaltyMultiplier": {
+                "name": "Multiplicateur du malus d'armure",
+                "hint": "Multiplicateur appliqué au malus de mouvement causé par l'armure"
+            },
+            "showTooltips": {
+                "name": "Afficher les infobulles",
+                "hint": "Afficher ou masquer les infobulles détaillées sur les statistiques"
+            },
+            "showDiceRanges": {
+                "name": "Afficher les plages de dés",
+                "hint": "Afficher ou masquer les plages de dés (Safe/Unsafe) sur les caractéristiques"
+            },
+            "showBonusBreakdown": {
+                "name": "Afficher le détail des bonus",
+                "hint": "Afficher ou masquer le détail des sources de bonus (traits, équipement, etc.)"
+            },
+            "debugMode": {
+                "name": "Mode debug",
+                "hint": "Activer le mode debug pour afficher des informations supplémentaires dans la console"
+            },
+            "logLevel": {
+                "name": "Niveau de log",
+                "hint": "Niveau de détail des messages de log affichés dans la console",
+                "choices": {
+                    "none": "Aucun",
+                    "error": "Erreurs uniquement",
+                    "warn": "Avertissements et erreurs",
+                    "info": "Informations, avertissements et erreurs",
+                    "debug": "Tout (mode debug complet)"
+                }
+            },
+            "autoSave": {
+                "name": "Sauvegarde automatique",
+                "hint": "Activer ou désactiver la sauvegarde automatique des données"
+            },
+            "autoSaveInterval": {
+                "name": "Intervalle de sauvegarde",
+                "hint": "Intervalle en secondes entre les sauvegardes automatiques"
+            }
         }
                 
     }

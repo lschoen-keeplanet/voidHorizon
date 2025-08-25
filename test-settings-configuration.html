@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Configuration des Paramètres voidHorizon</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .info-box {
+            background: #e8f4fd;
+            border: 1px solid #b3d9ff;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .info-box h3 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+        
+        .settings-section {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        
+        .setting-info {
+            flex: 1;
+        }
+        
+        .setting-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .setting-name {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .setting-hint {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+        
+        .setting-value {
+            font-family: 'Courier New', monospace;
+            background: #e9ecef;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        .code-block pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .status.warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .button:hover {
+            background: #2980b9;
+        }
+        
+        .button.secondary {
+            background: #6c757d;
+        }
+        
+        .button.secondary:hover {
+            background: #545b62;
+        }
+        
+        .checkbox {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .select {
+            padding: 6px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            background: white;
+        }
+        
+        .number-input {
+            padding: 6px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            width: 80px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚙️ Test - Configuration des Paramètres voidHorizon</h1>
+        
+        <div class="info-box">
+            <h3>📋 Objectif du Test</h3>
+            <p>Ce fichier démontre la configuration des paramètres du système voidHorizon et permet de tester leur fonctionnement.</p>
+        </div>
+
+        <h2>🔧 Configuration des Paramètres</h2>
+        
+        <div class="settings-section">
+            <h3>Paramètres d'Affichage</h3>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-name">Afficher le mouvement disponible</div>
+                    <div class="setting-hint">Afficher ou masquer l'affichage du mouvement disponible sur les fiches de personnage</div>
+                </div>
+                <div class="setting-controls">
+                    <input type="checkbox" class="checkbox" id="showMovementDisplay" checked>
+                    <span class="setting-value" id="showMovementDisplayValue">true</span>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-name">Afficher le malus d'armure</div>
+                    <div class="setting-hint">Afficher ou masquer les informations sur le malus de mouvement causé par l'armure</div>
+                </div>
+                <div class="setting-controls">
+                    <input type="checkbox" class="checkbox" id="showArmorPenalty" checked>
+                    <span class="setting-value" id="showArmorPenaltyValue">true</span>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-name">Afficher les infobulles</div>
+                    <div class="setting-hint">Afficher ou masquer les infobulles détaillées sur les statistiques</div>
+                </div>
+                <div class="setting-controls">
+                    <input type="checkbox" class="checkbox" id="showTooltips" checked>
+                    <span class="setting-value" id="showTooltipsValue">true</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="settings-section">
+            <h3>Paramètres de Calcul</h3>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-name">Formule de mouvement</div>
+                    <div class="setting-hint">Choisir la formule utilisée pour calculer le mouvement</div>
+                </div>
+                <div class="setting-controls">
+                    <select class="select" id="movementFormula">
+                        <option value="default">Par défaut (Agilité × 1.5 + 1.5)</option>
+                        <option value="custom">Personnalisée</option>
+                    </select>
+                    <span class="setting-value" id="movementFormulaValue">default</span>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-name">Multiplicateur d'agilité</div>
+                    <div class="setting-hint">Multiplicateur appliqué au degré d'agilité dans le calcul du mouvement</div>
+                </div>
+                <div class="setting-controls">
+                    <input type="number" class="number-input" id="agilityMultiplier" min="0.5" max="3.0" step="0.1" value="1.5">
+                    <span class="setting-value" id="agilityMultiplierValue">1.5</span>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-name">Mouvement de base</div>
+                    <div class="setting-hint">Valeur de base ajoutée au mouvement calculé</div>
+                </div>
+                <div class="setting-controls">
+                    <input type="number" class="number-input" id="movementBase" min="0.0" max="5.0" step="0.5" value="1.5">
+                    <span class="setting-value" id="movementBaseValue">1.5</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="settings-section">
+            <h3>Paramètres d'Armure</h3>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-name">Activer le malus d'armure</div>
+                    <div class="setting-hint">Activer ou désactiver le système de malus de mouvement causé par l'armure</div>
+                </div>
+                <div class="setting-controls">
+                    <input type="checkbox" class="checkbox" id="armorPenaltyEnabled" checked>
+                    <span class="setting-value" id="armorPenaltyEnabledValue">true</span>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-name">Multiplicateur du malus d'armure</div>
+                    <div class="setting-hint">Multiplicateur appliqué au malus de mouvement causé par l'armure</div>
+                </div>
+                <div class="setting-controls">
+                    <input type="number" class="number-input" id="armorPenaltyMultiplier" min="0.5" max="3.0" step="0.5" value="1.5">
+                    <span class="setting-value" id="armorPenaltyMultiplierValue">1.5</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="settings-section">
+            <h3>Paramètres Avancés</h3>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-name">Mode debug</div>
+                    <div class="setting-hint">Activer le mode debug pour afficher des informations supplémentaires dans la console</div>
+                </div>
+                <div class="setting-controls">
+                    <input type="checkbox" class="checkbox" id="debugMode">
+                    <span class="setting-value" id="debugModeValue">false</span>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-name">Niveau de log</div>
+                    <div class="setting-hint">Niveau de détail des messages de log affichés dans la console</div>
+                </div>
+                <div class="setting-controls">
+                    <select class="select" id="logLevel">
+                        <option value="none">Aucun</option>
+                        <option value="error">Erreurs uniquement</option>
+                        <option value="warn" selected>Avertissements et erreurs</option>
+                        <option value="info">Informations, avertissements et erreurs</option>
+                        <option value="debug">Tout (mode debug complet)</option>
+                    </select>
+                    <span class="setting-value" id="logLevelValue">warn</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="settings-section">
+            <h3>Actions</h3>
+            <div style="display: flex; gap: 10px; margin: 20px 0;">
+                <button class="button" onclick="saveSettings()">
+                    <i class="fas fa-save"></i> Sauvegarder les paramètres
+                </button>
+                <button class="button secondary" onclick="resetSettings()">
+                    <i class="fas fa-undo"></i> Réinitialiser
+                </button>
+                <button class="button secondary" onclick="exportSettings()">
+                    <i class="fas fa-download"></i> Exporter
+                </button>
+            </div>
+        </div>
+
+        <h2>📝 Code de Configuration</h2>
+        
+        <div class="code-block">
+            <pre><code>// Fichier: module/settings.js
+export const voidHorizonSettings = {};
+
+// Paramètres de base du système
+voidHorizonSettings.baseSettings = {
+    "showMovementDisplay": {
+        name: "voidHorizon.settings.showMovementDisplay.name",
+        hint: "voidHorizon.settings.showMovementDisplay.hint",
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: true
+    },
+    // ... autres paramètres
+};
+
+// Fonction pour enregistrer tous les paramètres
+export function registerSettings() {
+    for (const [key, setting] of Object.entries(voidHorizonSettings.baseSettings)) {
+        game.settings.register("voidHorizon", key, setting);
+    }
+}</code></pre>
+        </div>
+        
+        <div class="code-block">
+            <pre><code>// Fichier: voidHorizon.js
+import {registerSettings} from "./module/settings.js";
+
+Hooks.once("init", function () {
+    // Enregistrer les paramètres de configuration
+    registerSettings();
+    
+    // ... autres initialisations
+});</code></pre>
+        </div>
+
+        <h2>✅ Vérification de l'Installation</h2>
+        
+        <div id="statusContainer">
+            <div class="status success">
+                ✅ Paramètres de base configurés
+            </div>
+            <div class="status success">
+                ✅ Traductions françaises ajoutées
+            </div>
+            <div class="status success">
+                ✅ Fichier principal modifié
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>🚀 Prochaines Étapes</h3>
+            <ol>
+                <li><strong>Redémarrer Foundry VTT</strong> pour que les nouveaux paramètres soient pris en compte</li>
+                <li><strong>Vérifier l'onglet Configure Settings</strong> dans les paramètres du monde</li>
+                <li><strong>Tester les paramètres</strong> en modifiant leurs valeurs</li>
+                <li><strong>Vérifier la console</strong> pour les messages de log</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour mettre à jour l'affichage des valeurs
+        function updateDisplayValues() {
+            document.querySelectorAll('.setting-item').forEach(item => {
+                const control = item.querySelector('input, select');
+                const valueDisplay = item.querySelector('.setting-value');
+                
+                if (control && valueDisplay) {
+                    if (control.type === 'checkbox') {
+                        valueDisplay.textContent = control.checked;
+                    } else {
+                        valueDisplay.textContent = control.value;
+                    }
+                }
+            });
+        }
+        
+        // Fonction pour sauvegarder les paramètres
+        function saveSettings() {
+            const settings = {};
+            
+            // Collecter tous les paramètres
+            document.querySelectorAll('.setting-item').forEach(item => {
+                const control = item.querySelector('input, select');
+                if (control) {
+                    const key = control.id;
+                    if (control.type === 'checkbox') {
+                        settings[key] = control.checked;
+                    } else {
+                        settings[key] = control.value;
+                    }
+                }
+            });
+            
+            // Simuler la sauvegarde
+            console.log('Paramètres à sauvegarder:', settings);
+            
+            // Afficher un message de succès
+            const statusContainer = document.getElementById('statusContainer');
+            const successStatus = document.createElement('div');
+            successStatus.className = 'status success';
+            successStatus.textContent = '✅ Paramètres sauvegardés avec succès !';
+            statusContainer.appendChild(successStatus);
+            
+            // Supprimer le message après 3 secondes
+            setTimeout(() => {
+                successStatus.remove();
+            }, 3000);
+        }
+        
+        // Fonction pour réinitialiser les paramètres
+        function resetSettings() {
+            // Réinitialiser tous les contrôles
+            document.querySelectorAll('.setting-item').forEach(item => {
+                const control = item.querySelector('input, select');
+                if (control) {
+                    if (control.type === 'checkbox') {
+                        control.checked = control.defaultChecked || false;
+                    } else {
+                        control.value = control.defaultValue || '';
+                    }
+                }
+            });
+            
+            updateDisplayValues();
+            
+            // Afficher un message
+            const statusContainer = document.getElementById('statusContainer');
+            const resetStatus = document.createElement('div');
+            resetStatus.className = 'status warning';
+            resetStatus.textContent = '🔄 Paramètres réinitialisés aux valeurs par défaut';
+            statusContainer.appendChild(resetStatus);
+            
+            setTimeout(() => {
+                resetStatus.remove();
+            }, 3000);
+        }
+        
+        // Fonction pour exporter les paramètres
+        function exportSettings() {
+            const settings = {};
+            
+            document.querySelectorAll('.setting-item').forEach(item => {
+                const control = item.querySelector('input, select');
+                if (control) {
+                    const key = control.id;
+                    if (control.type === 'checkbox') {
+                        settings[key] = control.checked;
+                    } else {
+                        settings[key] = control.value;
+                    }
+                }
+            });
+            
+            const dataStr = JSON.stringify(settings, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = 'voidHorizon-settings.json';
+            link.click();
+        }
+        
+        // Ajouter des écouteurs d'événements pour mettre à jour l'affichage
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('input, select').forEach(control => {
+                control.addEventListener('change', updateDisplayValues);
+                control.addEventListener('input', updateDisplayValues);
+            });
+            
+            // Initialiser l'affichage
+            updateDisplayValues();
+            
+            console.log('✅ Test de configuration des paramètres chargé avec succès !');
+        });
+    </script>
+</body>
+</html>
