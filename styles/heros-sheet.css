@@ -1132,7 +1132,6 @@ textarea:focus {
 .main {
     position: relative;
     display: flex;
-    flex-direction: row;
     gap: 2rem;
     flex: 1;
 }
