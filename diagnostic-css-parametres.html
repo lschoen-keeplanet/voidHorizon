@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostic CSS - Paramètres Invisibles voidHorizon</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 10px;
+        }
+        
+        .critical-section {
+            background: #fed7d7;
+            border: 2px solid #f56565;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .critical-section h3 {
+            color: #c53030;
+            margin-top: 0;
+        }
+        
+        .diagnostic-section {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .diagnostic-section h3 {
+            color: #c53030;
+            margin-top: 0;
+        }
+        
+        .solution-section {
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .solution-section h3 {
+            color: #22543d;
+            margin-top: 0;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        
+        .button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        
+        .button:hover {
+            background: #c0392b;
+        }
+        
+        .button.success {
+            background: #27ae60;
+        }
+        
+        .button.success:hover {
+            background: #229954;
+        }
+        
+        .button.warning {
+            background: #f39c12;
+        }
+        
+        .button.warning:hover {
+            background: #e67e22;
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        
+        .status.error {
+            background: #fed7d7;
+            border: 1px solid #feb2b2;
+            color: #c53030;
+        }
+        
+        .status.success {
+            background: #c6f6d5;
+            border: 1px solid #9ae6b4;
+            color: #22543d;
+        }
+        
+        .status.info {
+            background: #bee3f8;
+            border: 1px solid #90cdf4;
+            color: #2a4365;
+        }
+        
+        .status.warning {
+            background: #fef5e7;
+            border: 1px solid #fbd38d;
+            color: #c05621;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Diagnostic CSS - Paramètres Invisibles voidHorizon</h1>
+        
+        <div class="critical-section">
+            <h3>🚨 PROBLÈME CSS IDENTIFIÉ</h3>
+            <p><strong>Symptôme :</strong> HTML visible dans la console mais invisible à l'écran</p>
+            <p><strong>Cause :</strong> Problème de CSS/affichage, pas de JavaScript</p>
+            <p><strong>Type :</strong> Paramètres cachés par CSS ou positionnement</p>
+        </div>
+        
+        <div class="diagnostic-section">
+            <h3>🔍 Diagnostic CSS Complet</h3>
+            <p>Les paramètres sont là mais cachés. Identifions pourquoi :</p>
+            
+            <button class="button" onclick="scanCSSProperties()">🔍 Scanner Propriétés CSS</button>
+            <button class="button warning" onclick="findHiddenElements()">🚨 Chercher Éléments Cachés</button>
+            <button class="button success" onclick="forceVisibility()">✨ Forcer Visibilité</button>
+            <button class="button" onclick="clearResults()">🗑️ Effacer Résultats</button>
+        </div>
+        
+        <div class="solution-section">
+            <h3>🛠️ Solutions CSS Possibles</h3>
+            <ol>
+                <li><strong>Propriétés de visibilité</strong> : <code>visibility: hidden</code>, <code>display: none</code></li>
+                <li><strong>Opacité</strong> : <code>opacity: 0</code></li>
+                <li><strong>Positionnement</strong> : <code>position: absolute</code> hors écran</li>
+                <li><strong>Dimensions</strong> : <code>width: 0</code>, <code>height: 0</code></li>
+                <li><strong>Z-index</strong> : <code>z-index: -1</code> ou très bas</li>
+                <li><strong>Overflow</strong> : <code>overflow: hidden</code></li>
+                <li><strong>Classe CSS</strong> : Classe qui cache le contenu</li>
+            </ol>
+        </div>
+        
+        <div class="solution-section">
+            <h3>📋 Instructions de Diagnostic</h3>
+            <ol>
+                <li><strong>Ouvrez Foundry VTT</strong> avec le système voidHorizon</li>
+                <li><strong>Allez dans Configure Settings</strong> (icône engrenage)</li>
+                <li><strong>Cliquez sur "Scanner Propriétés CSS"</strong></li>
+                <li><strong>Notez TOUS les résultats</strong> dans la console</li>
+                <li><strong>Cliquez sur "Chercher Éléments Cachés"</strong></li>
+                <li><strong>Testez "Forcer Visibilité"</strong> pour voir si ça aide</li>
+            </ol>
+        </div>
+        
+        <div id="resultsContainer">
+            <div class="status info">
+                💡 Cliquez sur "Scanner Propriétés CSS" pour identifier le problème d'affichage
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Scanner les propriétés CSS des paramètres
+        function scanCSSProperties() {
+            const resultsContainer = document.getElementById('resultsContainer');
+            const status = document.createElement('div');
+            status.className = 'status info';
+            
+            if (typeof game !== 'undefined') {
+                status.innerHTML = `
+                    <strong>🔍 Scan CSS en cours...</strong><br>
+                    Vérifiez la console pour l'analyse détaillée.
+                `;
+                
+                console.log('🔍 === DIAGNOSTIC CSS COMPLET ===');
+                
+                // Chercher l'onglet voidHorizon
+                const voidHorizonTab = document.querySelector('[data-tab="voidHorizon"], .voidHorizon-tab, [data-category="voidHorizon"]');
+                if (voidHorizonTab) {
+                    console.log('🎛️ Onglet voidHorizon trouvé:', voidHorizonTab);
+                    analyzeElementCSS(voidHorizonTab, 'Onglet voidHorizon');
+                } else {
+                    console.log('❌ Onglet voidHorizon non trouvé - cherchons autrement');
+                    searchForVoidHorizonElements();
+                }
+                
+                // Chercher le contenu des paramètres
+                const settingsContent = document.querySelector('.voidHorizon-settings, [data-voidHorizon], .voidHorizon-content');
+                if (settingsContent) {
+                    console.log('📋 Contenu des paramètres trouvé:', settingsContent);
+                    analyzeElementCSS(settingsContent, 'Contenu des paramètres');
+                } else {
+                    console.log('❌ Contenu des paramètres non trouvé - cherchons autrement');
+                    searchForSettingsContent();
+                }
+                
+                console.log('🔍 === FIN DU DIAGNOSTIC CSS ===');
+                
+            } else {
+                status.className = 'status error';
+                status.innerHTML = `
+                    <strong>❌ Erreur</strong><br>
+                    Vous devez être dans Foundry VTT pour ce diagnostic.
+                `;
+            }
+            
+            resultsContainer.appendChild(status);
+        }
+        
+        // Analyser les propriétés CSS d'un élément
+        function analyzeElementCSS(element, name) {
+            console.log(`\n🔍 === ANALYSE CSS DE ${name} ===`);
+            console.log('📱 Élément:', element);
+            console.log('🏷️ Classes:', element.className);
+            console.log('🆔 ID:', element.id);
+            console.log('📄 Tag:', element.tagName);
+            
+            const styles = window.getComputedStyle(element);
+            console.log('\n🎨 PROPRIÉTÉS CSS CRITIQUES:');
+            
+            // Propriétés de visibilité
+            console.log('👁️ Visibilité:', styles.visibility);
+            console.log('📺 Display:', styles.display);
+            console.log('🎭 Opacité:', styles.opacity);
+            
+            // Positionnement
+            console.log('📍 Position:', styles.position);
+            console.log('⬆️ Top:', styles.top);
+            console.log('⬅️ Left:', styles.left);
+            console.log('⬇️ Bottom:', styles.bottom);
+            console.log('➡️ Right:', styles.right);
+            console.log('📐 Z-index:', styles.zIndex);
+            
+            // Dimensions
+            console.log('📏 Largeur:', styles.width);
+            console.log('📐 Hauteur:', styles.height);
+            console.log('📦 Overflow:', styles.overflow);
+            console.log('📦 Overflow-x:', styles.overflowX);
+            console.log('📦 Overflow-y:', styles.overflowY);
+            
+            // Couleurs et bordures
+            console.log('🎨 Couleur de fond:', styles.backgroundColor);
+            console.log('🖌️ Couleur du texte:', styles.color);
+            console.log('🔲 Bordure:', styles.border);
+            
+            // Vérifier si l'élément est dans le DOM visible
+            const rect = element.getBoundingClientRect();
+            console.log('\n📐 POSITION DANS L\'ÉCRAN:');
+            console.log('📱 Rectangle:', rect);
+            console.log('👁️ Visible:', rect.width > 0 && rect.height > 0);
+            console.log('📍 Dans l\'écran:', rect.top >= 0 && rect.left >= 0);
+            
+            // Vérifier les parents
+            console.log('\n👨‍👩‍👧‍👦 PARENTS:');
+            let parent = element.parentElement;
+            let level = 1;
+            while (parent && level <= 5) {
+                const parentStyles = window.getComputedStyle(parent);
+                console.log(`  ${level}. ${parent.tagName}.${parent.className}:`);
+                console.log(`     👁️ Visibilité: ${parentStyles.visibility}, Display: ${parentStyles.display}`);
+                console.log(`     📏 Dimensions: ${parentStyles.width} x ${parentStyles.height}`);
+                console.log(`     📍 Position: ${parentStyles.position}`);
+                parent = parent.parentElement;
+                level++;
+            }
+        }
+        
+        // Chercher les éléments voidHorizon autrement
+        function searchForVoidHorizonElements() {
+            console.log('\n🔍 === RECHERCHE ALTERNATIVE ===');
+            
+            // Chercher par texte
+            const allElements = document.querySelectorAll('*');
+            const voidHorizonElements = [];
+            
+            allElements.forEach(el => {
+                if (el.textContent && el.textContent.includes('voidHorizon')) {
+                    voidHorizonElements.push(el);
+                }
+            });
+            
+            console.log('🎯 Éléments contenant "voidHorizon":', voidHorizonElements);
+            
+            // Chercher par attributs
+            const dataElements = document.querySelectorAll('[data-*]');
+            const voidHorizonDataElements = [];
+            
+            dataElements.forEach(el => {
+                const attrs = el.attributes;
+                for (let attr of attrs) {
+                    if (attr.value && attr.value.includes('voidHorizon')) {
+                        voidHorizonDataElements.push(el);
+                        break;
+                    }
+                }
+            });
+            
+            console.log('🎯 Éléments avec attributs voidHorizon:', voidHorizonDataElements);
+        }
+        
+        // Chercher le contenu des paramètres
+        function searchForSettingsContent() {
+            console.log('\n🔍 === RECHERCHE CONTENU PARAMÈTRES ===');
+            
+            // Chercher dans les onglets
+            const tabs = document.querySelectorAll('.tab, [role="tab"], .settings-tab');
+            console.log('📑 Onglets trouvés:', tabs);
+            
+            // Chercher dans le contenu
+            const content = document.querySelectorAll('.tab-content, .settings-content, [role="tabpanel"]');
+            console.log('📋 Contenu trouvé:', content);
+            
+            // Chercher les formulaires
+            const forms = document.querySelectorAll('form, .form, .settings-form');
+            console.log('📝 Formulaires trouvés:', forms);
+        }
+        
+        // Chercher les éléments cachés
+        function findHiddenElements() {
+            const resultsContainer = document.getElementById('resultsContainer');
+            const status = document.createElement('div');
+            status.className = 'status warning';
+            
+            if (typeof game !== 'undefined') {
+                status.innerHTML = `
+                    <strong>🚨 Recherche d'éléments cachés...</strong><br>
+                    Vérifiez la console pour l'analyse.
+                `;
+                
+                console.log('🚨 === RECHERCHE D\'ÉLÉMENTS CACHÉS ===');
+                
+                // Chercher tous les éléments avec des propriétés cachées
+                const allElements = document.querySelectorAll('*');
+                const hiddenElements = [];
+                
+                allElements.forEach(el => {
+                    const styles = window.getComputedStyle(el);
+                    
+                    if (styles.visibility === 'hidden' || 
+                        styles.display === 'none' || 
+                        styles.opacity === '0' ||
+                        styles.width === '0px' ||
+                        styles.height === '0px') {
+                        
+                        // Vérifier si c'est lié à voidHorizon
+                        if (el.textContent && el.textContent.includes('voidHorizon')) {
+                            hiddenElements.push({
+                                element: el,
+                                reason: `CSS: visibility=${styles.visibility}, display=${styles.display}, opacity=${styles.opacity}, width=${styles.width}, height=${styles.height}`
+                            });
+                        }
+                    }
+                });
+                
+                console.log('🚨 Éléments voidHorizon cachés:', hiddenElements);
+                
+                // Analyser chaque élément caché
+                hiddenElements.forEach((item, index) => {
+                    console.log(`\n🚨 Élément caché ${index + 1}:`, item.element);
+                    console.log('📝 Raison:', item.reason);
+                    analyzeElementCSS(item.element, `Élément caché ${index + 1}`);
+                });
+                
+                console.log('🚨 === FIN DE LA RECHERCHE ===');
+                
+            } else {
+                status.className = 'status error';
+                status.innerHTML = `
+                    <strong>❌ Foundry VTT non détecté</strong><br>
+                    Vous devez être dans Foundry VTT pour ce test.
+                `;
+            }
+            
+            resultsContainer.appendChild(status);
+        }
+        
+        // Forcer la visibilité
+        function forceVisibility() {
+            const resultsContainer = document.getElementById('resultsContainer');
+            const status = document.createElement('div');
+            status.className = 'status success';
+            
+            if (typeof game !== 'undefined') {
+                status.innerHTML = `
+                    <strong>✨ Tentative de forçage de visibilité...</strong><br>
+                    Vérifiez la console et l'écran.
+                `;
+                
+                console.log('✨ === FORÇAGE DE VISIBILITÉ ===');
+                
+                // Chercher et forcer la visibilité des éléments voidHorizon
+                const allElements = document.querySelectorAll('*');
+                let modifiedElements = 0;
+                
+                allElements.forEach(el => {
+                    if (el.textContent && el.textContent.includes('voidHorizon')) {
+                        console.log('🎯 Élément voidHorizon trouvé:', el);
+                        
+                        // Forcer la visibilité
+                        el.style.visibility = 'visible';
+                        el.style.display = 'block';
+                        el.style.opacity = '1';
+                        el.style.width = 'auto';
+                        el.style.height = 'auto';
+                        el.style.position = 'static';
+                        el.style.zIndex = '1000';
+                        
+                        console.log('✨ Visibilité forcée pour:', el);
+                        modifiedElements++;
+                    }
+                });
+                
+                console.log(`✨ ${modifiedElements} éléments modifiés`);
+                console.log('✨ === FIN DU FORÇAGE ===');
+                
+            } else {
+                status.className = 'status error';
+                status.innerHTML = `
+                    <strong>❌ Foundry VTT non détecté</strong><br>
+                    Vous devez être dans Foundry VTT pour ce test.
+                `;
+            }
+            
+            resultsContainer.appendChild(status);
+        }
+        
+        // Effacer les résultats
+        function clearResults() {
+            const resultsContainer = document.getElementById('resultsContainer');
+            const statuses = resultsContainer.querySelectorAll('.status:not(:first-child)');
+            statuses.forEach(status => status.remove());
+        }
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎨 Diagnostic CSS des paramètres invisibles voidHorizon chargé');
+            
+            // Vérifier si on est dans Foundry VTT
+            if (typeof game !== 'undefined') {
+                console.log('🎮 Foundry VTT détecté');
+                console.log('🔧 Système:', game.system?.id);
+            } else {
+                console.log('🌐 Test en mode navigateur (hors Foundry VTT)');
+            }
+        });
+    </script>
+</body>
+</html>

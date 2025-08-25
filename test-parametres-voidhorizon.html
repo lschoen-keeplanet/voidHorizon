@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Paramètres voidHorizon</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #27ae60;
+            padding-bottom: 10px;
+        }
+        
+        .success-section {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .success-section h3 {
+            color: #155724;
+            margin-top: 0;
+        }
+        
+        .info-section {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .info-section h3 {
+            color: #0c5460;
+            margin-top: 0;
+        }
+        
+        .warning-section {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .warning-section h3 {
+            color: #856404;
+            margin-top: 0;
+        }
+        
+        .checklist {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .checklist-item.completed {
+            background: #c6f6d5;
+            border: 1px solid #9ae6b4;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        
+        .button {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        
+        .button:hover {
+            background: #229954;
+        }
+        
+        .button.warning {
+            background: #f39c12;
+        }
+        
+        .button.warning:hover {
+            background: #e67e22;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎛️ Test - Paramètres voidHorizon</h1>
+        
+        <div class="success-section">
+            <h3>✅ Problème Principal Résolu !</h3>
+            <p><strong>Erreur JavaScript :</strong> Éliminée grâce au nettoyage sélectif des hooks</p>
+            <p><strong>Configure Settings :</strong> Fonctionne sans erreur</p>
+        </div>
+        
+        <div class="warning-section">
+            <h3>⚠️ Nouveau Problème Identifié</h3>
+            <p><strong>Paramètres voidHorizon :</strong> Ne s'affichent pas dans Configure Settings</p>
+            <p><strong>Cause probable :</strong> Nettoyage trop agressif des hooks</p>
+        </div>
+        
+        <div class="info-section">
+            <h3>🛠️ Solution Implémentée</h3>
+            <p>Nettoyage <strong>sélectif</strong> qui ne supprime que les hooks problématiques :</p>
+            <div class="code-block">
+// Supprimer seulement les hooks problématiques, pas tous
+if (fnStr.includes('actorExport.ID') || 
+    fnStr.includes('Handlebars.registerHelper') ||
+    fnStr.includes('main.js')) {
+    
+    Hooks.off('getHeaderControlsApplicationV2', hook.fn);
+    console.log('🗑️ Hook problématique supprimé:', hook);
+} else {
+    console.log('✅ Hook sain conservé:', hook);
+}
+            </div>
+        </div>
+        
+        <div class="checklist">
+            <h3>📋 Vérification des Paramètres</h3>
+            
+            <div class="checklist-item" id="check-console-clean">
+                <input type="checkbox" id="console-clean-check">
+                <label for="console-clean-check">🧹 Console propre sans erreur getHeaderControlsApplicationV2</label>
+            </div>
+            
+            <div class="checklist-item" id="check-settings-open">
+                <input type="checkbox" id="settings-open-check">
+                <label for="settings-open-check">⚙️ Configure Settings s'ouvre sans erreur</label>
+            </div>
+            
+            <div class="checklist-item" id="check-voidhorizon-tab">
+                <input type="checkbox" id="voidhorizon-tab-check">
+                <label for="voidhorizon-tab-check">🎛️ Onglet "voidHorizon" visible dans les paramètres</label>
+            </div>
+            
+            <div class="checklist-item" id="check-settings-content">
+                <input type="checkbox" id="settings-content-check">
+                <label for="settings-content-check">📋 Contenu des paramètres voidHorizon affiché</label>
+            </div>
+            
+            <div class="checklist-item" id="check-settings-modify">
+                <input type="checkbox" id="settings-modify-check">
+                <label for="settings-modify-check">✏️ Paramètres modifiables et sauvegardables</label>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h3>🔍 Diagnostic Console Attendu</h3>
+            <div class="code-block">
+🧹 Nettoyage des hooks problématiques...
+🗑️ Hook problématique supprimé: [hook avec actorExport.ID]
+✅ Hook sain conservé: [hook Foundry VTT]
+✅ Nettoyage sélectif terminé
+🚀 Initialisation du système voidHorizon
+✅ Configuration système chargée
+✅ Paramètres voidHorizon enregistrés avec succès
+🎯 JS custom operationnel
+🎮 Système voidHorizon prêt et opérationnel
+🔧 Paramètres Foundry VTT disponibles: [liste des paramètres]
+🎛️ Paramètres voidHorizon disponibles: [voidHorizon.*]
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h3>🚀 Instructions de Test</h3>
+            <ol>
+                <li><strong>Redémarrez complètement Foundry VTT</strong> pour charger le nettoyage sélectif</li>
+                <li><strong>Ouvrez la console</strong> (F12) et vérifiez les messages de nettoyage</li>
+                <li><strong>Allez dans Configure Settings</strong> (icône engrenage)</li>
+                <li><strong>Vérifiez que l'onglet "voidHorizon" est visible</strong></li>
+                <li><strong>Cliquez sur l'onglet voidHorizon</strong> pour voir les paramètres</li>
+                <li><strong>Testez la modification d'un paramètre</strong> et sauvegardez</li>
+                <li><strong>Cochez les éléments</strong> de la checklist ci-dessus</li>
+            </ol>
+        </div>
+        
+        <div class="info-section">
+            <h3>🎯 Paramètres voidHorizon Attendus</h3>
+            <ul>
+                <li><strong>Afficher le mouvement disponible</strong> - Checkbox pour activer/désactiver</li>
+                <li><strong>Afficher le malus d'armure</strong> - Checkbox pour activer/désactiver</li>
+                <li><strong>Formule de mouvement</strong> - Champ texte modifiable</li>
+                <li><strong>Malus d'armure tissu</strong> - Valeur numérique</li>
+                <li><strong>Malus d'armure légère</strong> - Valeur numérique</li>
+                <li><strong>Malus d'armure lourde</strong> - Valeur numérique</li>
+                <li><strong>Malus d'armure blindée</strong> - Valeur numérique</li>
+            </ul>
+        </div>
+        
+        <div class="info-section">
+            <h3>🔧 Si les Paramètres N'Apparaissent Toujours Pas</h3>
+            <p>Vérifiez dans la console :</p>
+            <ul>
+                <li><strong>Message "Paramètres voidHorizon enregistrés avec succès"</strong></li>
+                <li><strong>Message "Paramètres voidHorizon disponibles: [...]"</strong></li>
+                <li><strong>Absence d'erreurs JavaScript</strong></li>
+            </ul>
+            <p>Si le problème persiste, il peut y avoir un conflit avec un autre module ou une version de Foundry VTT.</p>
+        </div>
+    </div>
+
+    <script>
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎛️ Test des paramètres voidHorizon chargé');
+            
+            // Ajouter des écouteurs pour les checkboxes
+            document.querySelectorAll('.checklist-item input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const checklistItem = this.closest('.checklist-item');
+                    if (this.checked) {
+                        checklistItem.classList.add('completed');
+                    } else {
+                        checklistItem.classList.remove('completed');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -8,14 +8,27 @@ import "./scripts/npc-sheet.js";
 Hooks.once('init', function() {
     console.log('🧹 Nettoyage des hooks problématiques...');
     
-    // Supprimer tous les hooks getHeaderControlsApplicationV2 existants
+    // Supprimer seulement les hooks problématiques, pas tous
     if (Hooks.events.getHeaderControlsApplicationV2) {
         const hooksToRemove = [...Hooks.events.getHeaderControlsApplicationV2];
         hooksToRemove.forEach(hook => {
-            Hooks.off('getHeaderControlsApplicationV2', hook.fn);
-            console.log('🗑️ Hook supprimé:', hook);
+            // Vérifier si c'est un hook problématique avant de le supprimer
+            if (hook.fn) {
+                const fnStr = hook.fn.toString();
+                
+                // Supprimer seulement les hooks qui contiennent des références problématiques
+                if (fnStr.includes('actorExport.ID') || 
+                    fnStr.includes('Handlebars.registerHelper') ||
+                    fnStr.includes('main.js')) {
+                    
+                    Hooks.off('getHeaderControlsApplicationV2', hook.fn);
+                    console.log('🗑️ Hook problématique supprimé:', hook);
+                } else {
+                    console.log('✅ Hook sain conservé:', hook);
+                }
+            }
         });
-        console.log('✅ Tous les hooks problématiques supprimés');
+        console.log('✅ Nettoyage sélectif terminé');
     }
 });
 
