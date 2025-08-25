@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Sans Hook getHeaderControlsApplicationV2</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 10px;
+        }
+        
+        .test-section {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .test-section h3 {
+            color: #c53030;
+            margin-top: 0;
+        }
+        
+        .success-section {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .success-section h3 {
+            color: #155724;
+            margin-top: 0;
+        }
+        
+        .info-section {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .info-section h3 {
+            color: #0c5460;
+            margin-top: 0;
+        }
+        
+        .checklist {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .checklist-item.completed {
+            background: #c6f6d5;
+            border: 1px solid #9ae6b4;
+        }
+        
+        .button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        
+        .button:hover {
+            background: #c0392b;
+        }
+        
+        .button.success {
+            background: #27ae60;
+        }
+        
+        .button.success:hover {
+            background: #229954;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test - Sans Hook getHeaderControlsApplicationV2</h1>
+        
+        <div class="test-section">
+            <h3>🔍 Test en Cours</h3>
+            <p><strong>Action :</strong> Suppression complète de notre hook <code>getHeaderControlsApplicationV2</code></p>
+            <p><strong>Objectif :</strong> Vérifier si l'erreur persiste sans notre intervention</p>
+        </div>
+        
+        <div class="info-section">
+            <h3>📋 Instructions de Test</h3>
+            <ol>
+                <li><strong>Redémarrez complètement Foundry VTT</strong></li>
+                <li><strong>Ouvrez la console</strong> (F12)</li>
+                <li><strong>Allez dans Configure Settings</strong> (icône engrenage)</li>
+                <li><strong>Vérifiez si l'erreur apparaît</strong></li>
+                <li><strong>Notez le résultat</strong> dans la checklist ci-dessous</li>
+            </ol>
+        </div>
+        
+        <div class="checklist">
+            <h3>📋 Résultats du Test</h3>
+            
+            <div class="checklist-item" id="check-error">
+                <input type="checkbox" id="error-check">
+                <label for="error-check">❌ Erreur <code>getHeaderControlsApplicationV2</code> toujours présente</label>
+            </div>
+            
+            <div class="checklist-item" id="check-no-error">
+                <input type="checkbox" id="no-error-check">
+                <label for="no-error-check">✅ Erreur <code>getHeaderControlsApplicationV2</code> disparue</label>
+            </div>
+            
+            <div class="checklist-item" id="check-settings">
+                <input type="checkbox" id="settings-check">
+                <label for="settings-check">✅ Onglet Configure Settings fonctionne</label>
+            </div>
+            
+            <div class="checklist-item" id="check-voidhorizon">
+                <input type="checkbox" id="voidhorizon-check">
+                <label for="settings-check">✅ Onglet voidHorizon visible dans les paramètres</label>
+            </div>
+            
+            <div class="checklist-item" id="check-console">
+                <input type="checkbox" id="console-check">
+                <label for="console-check">✅ Console propre sans erreurs JavaScript</label>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h3>💡 Scénarios Possibles</h3>
+            
+            <div class="test-section">
+                <h4>🚨 Scénario 1 : Erreur Persiste</h4>
+                <p>Si l'erreur persiste, cela signifie que le problème vient d'<strong>ailleurs</strong> :</p>
+                <ul>
+                    <li>Module externe qui interfère</li>
+                    <li>Fichier système corrompu</li>
+                    <li>Conflit avec d'autres systèmes</li>
+                </ul>
+            </div>
+            
+            <div class="success-section">
+                <h4>✅ Scénario 2 : Erreur Disparue</h4>
+                <p>Si l'erreur disparaît, cela signifie que notre hook causait le problème :</p>
+                <ul>
+                    <li>Notre hook était mal configuré</li>
+                    <li>Conflit avec d'autres hooks</li>
+                    <li>Problème de timing d'exécution</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h3>🔧 Actions Suivantes</h3>
+            <ul>
+                <li><strong>Si erreur persiste :</strong> Diagnostic avancé des modules externes</li>
+                <li><strong>Si erreur disparue :</strong> Réimplémentation propre du hook</li>
+                <li><strong>Dans tous les cas :</strong> Vérification de la stabilité du système</li>
+            </ul>
+        </div>
+        
+        <div class="info-section">
+            <h3>⚠️ Points d'Attention</h3>
+            <ul>
+                <li><strong>Redémarrage complet</strong> nécessaire pour tester</li>
+                <li><strong>Console ouverte</strong> pour observer les erreurs</li>
+                <li><strong>Test des paramètres</strong> pour vérifier la fonctionnalité</li>
+                <li><strong>Note des résultats</strong> pour analyse</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🧪 Test sans hook getHeaderControlsApplicationV2 chargé');
+            
+            // Ajouter des écouteurs pour les checkboxes
+            document.querySelectorAll('.checklist-item input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const checklistItem = this.closest('.checklist-item');
+                    if (this.checked) {
+                        checklistItem.classList.add('completed');
+                    } else {
+                        checklistItem.classList.remove('completed');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
