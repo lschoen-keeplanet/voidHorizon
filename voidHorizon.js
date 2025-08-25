@@ -4,6 +4,21 @@ import {registerSettings} from "./module/settings.js";
 import "./scripts/heros-sheet.js";
 import "./scripts/npc-sheet.js";
 
+// Nettoyer les hooks problématiques existants
+Hooks.once('init', function() {
+    console.log('🧹 Nettoyage des hooks problématiques...');
+    
+    // Supprimer tous les hooks getHeaderControlsApplicationV2 existants
+    if (Hooks.events.getHeaderControlsApplicationV2) {
+        const hooksToRemove = [...Hooks.events.getHeaderControlsApplicationV2];
+        hooksToRemove.forEach(hook => {
+            Hooks.off('getHeaderControlsApplicationV2', hook.fn);
+            console.log('🗑️ Hook supprimé:', hook);
+        });
+        console.log('✅ Tous les hooks problématiques supprimés');
+    }
+});
+
 // Diagnostic avancé des hooks problématiques
 Hooks.on('getHeaderControlsApplicationV2', function(app, buttons) {
     console.log('🚨 === DIAGNOSTIC HOOK getHeaderControlsApplicationV2 ===');
