@@ -4569,6 +4569,91 @@ Hooks.once("init", function() {
             }
         });
 
+        // Helper pour calculer la résistance du personnage
+        Handlebars.registerHelper('getTotalResistance', function(actor) {
+            // Nouvelle formule : Résistance = Constitution * 2 + degré d'agilité - malus d'agilité + degré de martialité - malus de martialité + type d'armure
+            
+            // Calculer la constitution totale
+            const baseConstitution = parseInt(actor.system.constitution?.value) || 0;
+            const constitutionTraitBonus = parseInt(actor.system.traitBonuses?.constitution) || 0;
+            const totalConstitution = baseConstitution + constitutionTraitBonus;
+            
+            // Calculer le degré d'agilité (convertir la valeur de dés en nombre)
+            const agiliteValue = actor.system.agilite?.value || "2d4";
+            const agiliteDegreeMap = {
+                "2d4": 1,   // Challengé
+                "3d4": 2,   // Lourdeau
+                "4d4": 3,   // Bien
+                "5d4": 4,   // Rapide
+                "6d4": 5,   // Très rapide
+                "7d4": 6    // Très très rapide
+            };
+            const agiliteDegree = agiliteDegreeMap[agiliteValue] || 1;
+            
+            // Calculer le degré de martialité (convertir la valeur de dés en nombre)
+            const martialiteValue = actor.system.martialite?.value || "2d4";
+            const martialiteDegreeMap = {
+                "2d4": 1,   // Incompétent
+                "3d4": 2,   // Combatif
+                "4d4": 3,   // Soldat
+                "5d4": 4,   // Expérimenté
+                "6d4": 5,   // Vétéran
+                "7d4": 6    // Légende
+            };
+            const martialiteDegree = martialiteDegreeMap[martialiteValue] || 1;
+            
+            // Calculer le malus d'agilité dû au type d'armure
+            const armorType = actor.system.armor?.type || "tissu";
+            const agilityPenaltyMap = {
+                "tissu": 0,
+                "legere": 4,
+                "lourde": 8,
+                "blindee": 16
+            };
+            const agilityPenalty = agilityPenaltyMap[armorType] || 0;
+            
+            // Calculer le malus de martialité dû au type d'armure
+            const martialityPenaltyMap = {
+                "tissu": 0,
+                "legere": 2,
+                "lourde": 4,
+                "blindee": 8
+            };
+            const martialityPenalty = martialityPenaltyMap[armorType] || 0;
+            
+            // Calculer le bonus d'armure du type d'armure
+            const armorTypeBonusMap = {
+                "tissu": 0,
+                "legere": 2,
+                "lourde": 4,
+                "blindee": 8
+            };
+            const armorTypeBonus = armorTypeBonusMap[armorType] || 0;
+            
+            // Calculer la résistance totale
+            const totalResistance = (totalConstitution * 2) + agiliteDegree - agilityPenalty + martialiteDegree - martialityPenalty + armorTypeBonus;
+            
+            return totalResistance;
+        });
+
+        // Helper pour calculer le mouvement disponible
+        Handlebars.registerHelper('getMovementAvailable', function(agiliteValue) {
+            // Mapper les valeurs de dés aux degrés d'agilité
+            const agiliteDegreeMap = {
+                "2d4": 1,   // Challengé
+                "3d4": 2,   // Lourdeau
+                "4d4": 3,   // Bien
+                "5d4": 4,   // Rapide
+                "6d4": 5,   // Très rapide
+                "7d4": 6    // Très très rapide
+            };
+            
+            const degree = agiliteDegreeMap[agiliteValue] || 1;
+            const movement = (degree * 1.5) + 3;
+            
+            return movement.toFixed(1);
+        });
+
     foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
     foundry.documents.collections.Actors.registerSheet("voidHorizon", HeroSheet, {
         types: ["heros"],

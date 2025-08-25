@@ -204,6 +204,43 @@
                                 </button>
                             </div>
                         </div>
+                        
+                        <div class="characteristic-item">
+                            <label>Agilité</label>
+                            <div class="characteristic-controls">
+                                <select name="system.agilite.value" class="characteristic-input" data-characteristic="agilite">
+                                    <option value="2d4" {{#if (eq actor.system.agilite.value "2d4")}}selected{{/if}}>2d4 - Challengé</option>
+                                    <option value="3d4" {{#if (eq actor.system.agilite.value "3d4")}}selected{{/if}}>3d4 - Lourdeau</option>
+                                    <option value="4d4" {{#if (eq actor.system.agilite.value "4d4")}}selected{{/if}}>4d4 - Bien</option>
+                                    <option value="5d4" {{#if (eq actor.system.agilite.value "5d4")}}selected{{/if}}>5d4 - Rapide</option>
+                                    <option value="6d4" {{#if (eq actor.system.agilite.value "6d4")}}selected{{/if}}>6d4 - Très rapide</option>
+                                    <option value="7d4" {{#if (eq actor.system.agilite.value "7d4")}}selected{{/if}}>7d4 - Très très rapide</option>
+                                </select>
+                                <input type="number" 
+                                       name="system.agilite.bonus" 
+                                       value="{{actor.system.agilite.bonus}}" 
+                                       placeholder="+0" 
+                                       class="bonus-input"
+                                       data-characteristic="agilite"
+                                       data-bonus-type="bonus"/>
+                                <button type="button" class="roll-characteristic-btn" data-characteristic="agilite" title="Lancer Agilité">
+                                    <i class="fas fa-dice-d20"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Affichage du mouvement disponible pour les NPCs -->
+                        <div class="movement-display-npc">
+                            <div class="movement-label-npc">
+                                <i class="fas fa-running"></i> Mouvement disponible
+                            </div>
+                            <div class="movement-value-npc">
+                                {{getMovementAvailable actor.system.agilite.value}}
+                            </div>
+                            <div class="movement-formula-npc">
+                                <small>Formule: Degré d'agilité × 1.5 + 3</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

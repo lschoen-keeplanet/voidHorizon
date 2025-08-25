@@ -793,3 +793,54 @@
     25% { transform: translateX(-5px); }
     75% { transform: translateX(5px); }
 }
+
+/* Affichage du mouvement disponible pour les NPCs */
+.movement-display-npc {
+    margin-top: 15px;
+    padding: 10px;
+    background: linear-gradient(135deg, #34495e, #2c3e50);
+    border-radius: 8px;
+    border: 1px solid #34495e;
+    text-align: center;
+    grid-column: 1 / -1; /* Prend toute la largeur de la grille */
+}
+
+.movement-label-npc {
+    color: #ecf0f1;
+    font-weight: 600;
+    font-size: 0.95em;
+    margin-bottom: 6px;
+}
+
+.movement-label-npc i {
+    margin-right: 6px;
+    color: #3498db;
+}
+
+.movement-value-npc {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #f39c12;
+    margin-bottom: 4px;
+}
+
+.movement-formula-npc {
+    color: #bdc3c7;
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+/* Responsive pour le mouvement des NPCs */
+@media (max-width: 768px) {
+    .movement-display-npc {
+        padding: 8px;
+    }
+    
+    .movement-value-npc {
+        font-size: 1.3em;
+    }
+    
+    .movement-formula-npc {
+        font-size: 0.75em;
+    }
+}

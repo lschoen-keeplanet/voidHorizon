@@ -148,8 +148,8 @@
                                         </select>
                                                         <div class="read-mode">{{#if (eq system.agilite.value "2d4")}}Gourd{{else if
                     (eq system.agilite.value "3d4")}}Raide{{else if (eq system.agilite.value
-                    "4d4")}}Ordinaire{{else if (eq system.agilite.value "5d4")}}Adroit{{else if (eq
-                    system.agilite.value "6d4")}}Leste{{else if (eq system.agilite.value
+                    "4d4")}}Ordinaire{{else if (eq system.agilite.value "5d4")}}Adroit{{else if
+                    (eq system.agilite.value "6d4")}}Leste{{else if (eq system.agilite.value
                     "7d4")}}Félin{{else}}{{system.agilite.value}}{{/if}}</div>
                                     </div>
 
@@ -189,6 +189,19 @@
                                             "5d4")}}1-24{{else if (eq system.agilite.value "6d4")}}1-28{{else if (eq
                                             system.agilite.value "7d4")}}1-32{{else}}?-?{{/if}}
                                         </span>
+                                    </div>
+
+                                    <!-- Affichage du mouvement disponible -->
+                                    <div class="movement-display">
+                                        <div class="movement-label">
+                                            <i class="fas fa-running"></i> Mouvement disponible
+                                        </div>
+                                        <div class="movement-value">
+                                            {{getMovementAvailable system.agilite.value}}
+                                        </div>
+                                        <div class="movement-formula">
+                                            <small>Formule: Degré d'agilité × 1.5 + 3</small>
+                                        </div>
                                     </div>
 
                                 </div>

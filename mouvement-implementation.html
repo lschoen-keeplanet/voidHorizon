@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implémentation du Mouvement Disponible - Void Horizon</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #ecf0f1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #f39c12;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .section {
+            background: rgba(44, 62, 80, 0.8);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(52, 73, 94, 0.5);
+        }
+        
+        .section h2 {
+            color: #3498db;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .formula {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            border: 1px solid #34495e;
+            text-align: center;
+        }
+        
+        .formula h3 {
+            color: #f39c12;
+            margin: 0 0 10px 0;
+        }
+        
+        .formula-text {
+            font-size: 1.2em;
+            color: #ecf0f1;
+            font-weight: bold;
+        }
+        
+        .movement-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(44, 62, 80, 0.6);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .movement-table th,
+        .movement-table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid rgba(52, 73, 94, 0.5);
+        }
+        
+        .movement-table th {
+            background: #34495e;
+            color: #ecf0f1;
+            font-weight: bold;
+        }
+        
+        .movement-table tr:nth-child(even) {
+            background: rgba(52, 73, 94, 0.3);
+        }
+        
+        .movement-table tr:hover {
+            background: rgba(52, 152, 219, 0.2);
+        }
+        
+        .demo-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .demo-card {
+            background: rgba(44, 62, 80, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(52, 73, 94, 0.5);
+        }
+        
+        .demo-card h3 {
+            color: #3498db;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .movement-display {
+            margin-top: 10px;
+            padding: 8px;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            border-radius: 6px;
+            border: 1px solid #34495e;
+            text-align: center;
+        }
+        
+        .movement-label {
+            color: #ecf0f1;
+            font-weight: 600;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        
+        .movement-label i {
+            margin-right: 5px;
+            color: #3498db;
+        }
+        
+        .movement-value {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #f39c12;
+            margin-bottom: 3px;
+        }
+        
+        .movement-formula {
+            color: #bdc3c7;
+            font-size: 0.75em;
+            font-style: italic;
+        }
+        
+        .movement-display-npc {
+            margin-top: 15px;
+            padding: 10px;
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            border-radius: 8px;
+            border: 1px solid #34495e;
+            text-align: center;
+        }
+        
+        .movement-label-npc {
+            color: #ecf0f1;
+            font-weight: 600;
+            font-size: 0.95em;
+            margin-bottom: 6px;
+        }
+        
+        .movement-label-npc i {
+            margin-right: 6px;
+            color: #3498db;
+        }
+        
+        .movement-value-npc {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #f39c12;
+            margin-bottom: 4px;
+        }
+        
+        .movement-formula-npc {
+            color: #bdc3c7;
+            font-size: 0.8em;
+            font-style: italic;
+        }
+        
+        .stat-block {
+            background: rgba(44, 62, 80, 0.6);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(52, 73, 94, 0.5);
+        }
+        
+        .stat-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .stat-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            background: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+        
+        .stat-header label {
+            font-weight: bold;
+            color: #ecf0f1;
+            font-size: 1.1em;
+        }
+        
+        .stat-controls {
+            margin-bottom: 15px;
+        }
+        
+        .stat-controls select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #34495e;
+            background: #2c3e50;
+            color: #ecf0f1;
+            margin-bottom: 10px;
+        }
+        
+        .read-mode {
+            background: rgba(52, 73, 94, 0.5);
+            padding: 8px;
+            border-radius: 4px;
+            color: #ecf0f1;
+            font-weight: 500;
+        }
+        
+        .roll-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .roll-dice-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .roll-dice-btn.safe {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .roll-dice-btn.unsafe {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .roll-dice-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dice-ranges {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: #bdc3c7;
+        }
+        
+        .range-info {
+            background: rgba(52, 73, 94, 0.5);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        
+        .bonus-display {
+            background: rgba(52, 152, 219, 0.3);
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: #3498db;
+            font-weight: bold;
+        }
+        
+        .characteristic-item {
+            background: rgba(44, 62, 80, 0.6);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(52, 73, 94, 0.5);
+        }
+        
+        .characteristic-item label {
+            display: block;
+            font-weight: bold;
+            color: #ecf0f1;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .characteristic-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .characteristic-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #34495e;
+            background: #2c3e50;
+            color: #ecf0f1;
+        }
+        
+        .bonus-input {
+            width: 80px;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #34495e;
+            background: #2c3e50;
+            color: #ecf0f1;
+            text-align: center;
+        }
+        
+        .roll-characteristic-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background: #3498db;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .roll-characteristic-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .demo-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .characteristic-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .characteristic-input {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏃‍♂️ Implémentation du Mouvement Disponible</h1>
+        
+        <div class="section">
+            <h2>📋 Vue d'ensemble</h2>
+            <p>Cette implémentation ajoute l'affichage du mouvement disponible sur les fiches de personnages et de NPCs dans Void Horizon, en utilisant la formule :</p>
+            
+            <div class="formula">
+                <h3>Formule du Mouvement</h3>
+                <div class="formula-text">Mouvement = Degré d'Agilité × 1.5 + 3</div>
+            </div>
+            
+            <p>Le mouvement est automatiquement calculé et affiché en fonction du degré d'agilité du personnage, avec une mise à jour en temps réel lors des changements de caractéristiques.</p>
+        </div>
+        
+        <div class="section">
+            <h2>🎯 Calculs par Degré d'Agilité</h2>
+            <table class="movement-table">
+                <thead>
+                    <tr>
+                        <th>Degré</th>
+                        <th>Valeur de Dés</th>
+                        <th>Label</th>
+                        <th>Calcul</th>
+                        <th>Mouvement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>2d4</td>
+                        <td>Challengé</td>
+                        <td>1 × 1.5 + 3</td>
+                        <td><strong>4.5</strong></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>3d4</td>
+                        <td>Lourdeau</td>
+                        <td>2 × 1.5 + 3</td>
+                        <td><strong>6.0</strong></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>4d4</td>
+                        <td>Bien</td>
+                        <td>3 × 1.5 + 3</td>
+                        <td><strong>7.5</strong></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>5d4</td>
+                        <td>Rapide</td>
+                        <td>4 × 1.5 + 3</td>
+                        <td><strong>9.0</strong></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>6d4</td>
+                        <td>Très rapide</td>
+                        <td>5 × 1.5 + 3</td>
+                        <td><strong>10.5</strong></td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>7d4</td>
+                        <td>Très très rapide</td>
+                        <td>6 × 1.5 + 3</td>
+                        <td><strong>12.0</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="demo-section">
+            <div class="demo-card">
+                <h3>🎭 Fiche de Héros</h3>
+                
+                <div class="stat-block">
+                    <div class="stat-header">
+                        <div class="stat-icon">⚡</div>
+                        <label>Agilité</label>
+                    </div>
+                    <div class="stat-controls">
+                        <select>
+                            <option value="2d4">Challengé</option>
+                            <option value="3d4">Lourdeau</option>
+                            <option value="4d4" selected>Bien</option>
+                            <option value="5d4">Rapide</option>
+                            <option value="6d4">Très rapide</option>
+                            <option value="7d4">Très très rapide</option>
+                        </select>
+                        <div class="read-mode">Ordinaire</div>
+                    </div>
+                    
+                    <div class="roll-buttons">
+                        <button class="roll-dice-btn safe">
+                            <i class="fas fa-shield-alt"></i> Safe
+                        </button>
+                        <button class="roll-dice-btn unsafe">
+                            <i class="fas fa-skull-crossbones"></i> Unsafe
+                        </button>
+                    </div>
+                    
+                    <div class="dice-ranges">
+                        <span class="range-info">4-16</span>
+                        <span class="bonus-display">+0</span>
+                        <span class="range-info">1-20</span>
+                    </div>
+                    
+                    <!-- Affichage du mouvement disponible -->
+                    <div class="movement-display">
+                        <div class="movement-label">
+                            <i class="fas fa-running"></i> Mouvement disponible
+                        </div>
+                        <div class="movement-value">7.5</div>
+                        <div class="movement-formula">
+                            <small>Formule: Degré d'agilité × 1.5 + 3</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-card">
+                <h3>👹 Fiche de NPC</h3>
+                
+                <div class="characteristic-item">
+                    <label>Agilité</label>
+                    <div class="characteristic-controls">
+                        <select class="characteristic-input">
+                            <option value="2d4">2d4 - Challengé</option>
+                            <option value="3d4">3d4 - Lourdeau</option>
+                            <option value="4d4" selected>4d4 - Bien</option>
+                            <option value="5d4">5d4 - Rapide</option>
+                            <option value="6d4">6d4 - Très rapide</option>
+                            <option value="7d4">7d4 - Très très rapide</option>
+                        </select>
+                        <input type="number" class="bonus-input" placeholder="+0" value="0">
+                        <button class="roll-characteristic-btn">
+                            <i class="fas fa-dice-d20"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Affichage du mouvement disponible pour les NPCs -->
+                <div class="movement-display-npc">
+                    <div class="movement-label-npc">
+                        <i class="fas fa-running"></i> Mouvement disponible
+                    </div>
+                    <div class="movement-value-npc">7.5</div>
+                    <div class="movement-formula-npc">
+                        <small>Formule: Degré d'agilité × 1.5 + 3</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🔧 Implémentation Technique</h2>
+            
+            <h3>1. Helper Handlebars</h3>
+            <p>Ajout d'un helper <code>getMovementAvailable</code> dans <code>scripts/heros-sheet.js</code> :</p>
+            <pre><code>Handlebars.registerHelper('getMovementAvailable', function(agiliteValue) {
+    const agiliteDegreeMap = {
+        "2d4": 1, "3d4": 2, "4d4": 3, 
+        "5d4": 4, "6d4": 5, "7d4": 6
+    };
+    const degree = agiliteDegreeMap[agiliteValue] || 1;
+    const movement = (degree * 1.5) + 3;
+    return movement.toFixed(1);
+});</code></pre>
+            
+            <h3>2. Template HTML - Fiche Héros</h3>
+            <p>Ajout de l'affichage du mouvement dans <code>templates/sheets/heros-sheet.html</code> :</p>
+            <pre><code>&lt;div class="movement-display"&gt;
+    &lt;div class="movement-label"&gt;
+        &lt;i class="fas fa-running"&gt;&lt;/i&gt; Mouvement disponible
+    &lt;/div&gt;
+    &lt;div class="movement-value"&gt;
+        {{getMovementAvailable system.agilite.value}}
+    &lt;/div&gt;
+    &lt;div class="movement-formula"&gt;
+        &lt;small&gt;Formule: Degré d'agilité × 1.5 + 3&lt;/small&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            
+            <h3>3. Template HTML - Fiche NPC</h3>
+            <p>Ajout de la caractéristique Agilité et de l'affichage du mouvement dans <code>templates/sheets/npc-sheet.html</code> :</p>
+            <pre><code>&lt;div class="characteristic-item"&gt;
+    &lt;label&gt;Agilité&lt;/label&gt;
+    &lt;div class="characteristic-controls"&gt;
+        &lt;select name="system.agilite.value"&gt;
+            &lt;option value="2d4"&gt;2d4 - Challengé&lt;/option&gt;
+            &lt;!-- ... autres options ... --&gt;
+        &lt;/select&gt;
+        &lt;!-- ... autres contrôles ... --&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="movement-display-npc"&gt;
+    &lt;div class="movement-label-npc"&gt;
+        &lt;i class="fas fa-running"&gt;&lt;/i&gt; Mouvement disponible
+    &lt;/div&gt;
+    &lt;div class="movement-value-npc"&gt;
+        {{getMovementAvailable actor.system.agilite.value}}
+    &lt;/div&gt;
+    &lt;div class="movement-formula-npc"&gt;
+        &lt;small&gt;Formule: Degré d'agilité × 1.5 + 3&lt;/small&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            
+            <h3>4. Styles CSS</h3>
+            <p>Ajout des styles dans <code>styles/heros-sheet.css</code> et <code>styles/npc-sheet.css</code> pour un affichage cohérent et responsive.</p>
+        </div>
+        
+        <div class="section">
+            <h2>✅ Fonctionnalités</h2>
+            <ul>
+                <li><strong>Calcul automatique</strong> : Le mouvement est calculé automatiquement selon la formule</li>
+                <li><strong>Mise à jour en temps réel</strong> : L'affichage se met à jour lors des changements d'agilité</li>
+                <li><strong>Design cohérent</strong> : Intégration visuelle harmonieuse avec le reste de l'interface</li>
+                <li><strong>Responsive</strong> : Adaptation aux différentes tailles d'écran</li>
+                <li><strong>Support des deux types de fiches</strong> : Héros et NPCs</li>
+                <li><strong>Formule visible</strong> : Affichage de la formule pour la transparence</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>🎨 Personnalisation</h2>
+            <p>Les styles peuvent être facilement personnalisés en modifiant les variables CSS dans les fichiers de style :</p>
+            <ul>
+                <li>Couleurs du thème</li>
+                <li>Tailles et espacements</li>
+                <li>Effets visuels (gradients, ombres, etc.)</li>
+                <li>Responsive design</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
