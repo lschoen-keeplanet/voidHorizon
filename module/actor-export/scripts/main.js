@@ -75,24 +75,54 @@ class VoidHorizonActorExport {
     addExportButtonToSheets() {
         console.log('🔘 Ajout du bouton d\'export aux fiches...');
         
-        // Hook pour ajouter le bouton aux fiches existantes
+        // Hook générique pour toutes les fiches d'acteurs
         Hooks.on('renderActorSheet', (app, html, data) => {
+            console.log('🎭 Hook renderActorSheet déclenché pour:', app.constructor.name);
             this.addExportButtonToSheet(app, html, data);
         });
         
-        // Hook pour les nouvelles fiches
-        Hooks.on('renderActorSheet5e', (app, html, data) => {
-            this.addExportButtonToSheet(app, html, data);
-        });
-        
-        // Hook spécifique pour voidHorizon
+        // Hook pour les fiches voidHorizon spécifiques
         Hooks.on('renderHeroSheet', (app, html, data) => {
+            console.log('🦸 Hook renderHeroSheet déclenché');
             this.addExportButtonToSheet(app, html, data);
         });
         
         Hooks.on('renderNpcSheet', (app, html, data) => {
+            console.log('👹 Hook renderNpcSheet déclenché');
             this.addExportButtonToSheet(app, html, data);
         });
+        
+        // Hook pour capturer toutes les fiches voidHorizon
+        Hooks.on('renderSheet', (app, html, data) => {
+            if (app.actor && this.canExportActor(app.actor)) {
+                console.log('📋 Hook renderSheet générique pour voidHorizon:', app.constructor.name);
+                this.addExportButtonToSheet(app, html, data);
+            }
+        });
+        
+        // Hook pour les fiches existantes déjà ouvertes
+        Hooks.once('ready', () => {
+            console.log('🎯 Hook ready - ajout du bouton aux fiches déjà ouvertes');
+            this.addExportButtonToExistingSheets();
+        });
+    }
+
+    /**
+     * Ajoute le bouton d'export aux fiches déjà ouvertes
+     */
+    addExportButtonToExistingSheets() {
+        try {
+            // Parcourir toutes les applications ouvertes
+            for (const [id, app] of Object.entries(ui.windows)) {
+                if (app.actor && this.canExportActor(app.actor)) {
+                    console.log(`🔘 Ajout du bouton à la fiche existante: ${app.actor.name}`);
+                    // Forcer le re-render pour déclencher les hooks
+                    app.render(true);
+                }
+            }
+        } catch (error) {
+            console.error('❌ Erreur lors de l\'ajout aux fiches existantes:', error);
+        }
     }
 
     /**
@@ -102,24 +132,42 @@ class VoidHorizonActorExport {
         try {
             const actor = app.actor;
             if (!actor || !this.canExportActor(actor)) {
+                console.log('❌ Acteur non exportable:', actor?.name || 'undefined');
                 return;
             }
             
-            // Chercher la zone des boutons d'action
-            let buttonContainer = html.find('.sheet-header .header-expanded .header-details-fade');
-            
-            // Si pas trouvé, essayer d'autres sélecteurs
-            if (buttonContainer.length === 0) {
-                buttonContainer = html.find('.sheet-header .header-details');
-            }
-            
-            if (buttonContainer.length === 0) {
-                buttonContainer = html.find('.sheet-header');
-            }
+            console.log(`🔍 Recherche de zone d'insertion pour ${actor.name} (${app.constructor.name})`);
             
             // Vérifier si le bouton existe déjà
             if (html.find('.export-actor-btn').length > 0) {
+                console.log('✅ Bouton d\'export déjà présent');
                 return;
+            }
+            
+            // Chercher la zone des boutons d'action - plusieurs stratégies
+            let buttonContainer = null;
+            const selectors = [
+                '.sheet-header .header-expanded .header-details-fade',
+                '.sheet-header .header-details',
+                '.sheet-header .header-actions',
+                '.sheet-header .header-buttons',
+                '.sheet-header .character-header',
+                '.sheet-header',
+                '.character-header',
+                '.header-section'
+            ];
+            
+            for (const selector of selectors) {
+                buttonContainer = html.find(selector);
+                if (buttonContainer.length > 0) {
+                    console.log(`✅ Zone trouvée avec le sélecteur: ${selector}`);
+                    break;
+                }
+            }
+            
+            if (!buttonContainer || buttonContainer.length === 0) {
+                console.log('⚠️ Aucune zone d\'insertion trouvée, fallback sur .sheet-header');
+                buttonContainer = html.find('.sheet-header');
             }
             
             // Créer le bouton d'export
@@ -131,20 +179,23 @@ class VoidHorizonActorExport {
             `);
             
             // Ajouter le bouton au conteneur
-            if (buttonContainer.length > 0) {
+            if (buttonContainer && buttonContainer.length > 0) {
                 buttonContainer.append(exportButton);
+                console.log(`✅ Bouton d'export ajouté à ${actor.name} dans ${buttonContainer[0].className || 'zone inconnue'}`);
             } else {
                 // Fallback : ajouter à la fin du header
                 html.find('.sheet-header').append(exportButton);
+                console.log(`⚠️ Fallback: bouton ajouté à .sheet-header pour ${actor.name}`);
             }
             
             // Ajouter l'événement de clic
             exportButton.on('click', (event) => {
                 event.preventDefault();
+                console.log(`🖱️ Clic sur bouton d'export pour ${actor.name}`);
                 this.openExportDialog(actor);
             });
             
-            console.log(`✅ Bouton d'export ajouté à la fiche de ${actor.name}`);
+            console.log(`✅ Bouton d'export configuré pour ${actor.name}`);
             
         } catch (error) {
             console.error('❌ Erreur lors de l\'ajout du bouton d\'export:', error);
