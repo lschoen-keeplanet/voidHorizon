@@ -17,24 +17,44 @@ Hooks.once('init', async function() {
         registerSettings();
         console.log('✅ Paramètres voidHorizon enregistrés avec succès');
         
-        // Enregistrer les feuilles d'objets personnalisées
-        if (window.registerItemSheet) {
-            window.registerItemSheet();
-        } else {
-            // Fallback si la fonction n'est pas encore disponible
+        // Attendre que les fonctions d'enregistrement soient disponibles
+        let attempts = 0;
+        const maxAttempts = 10;
+        
+        while (attempts < maxAttempts) {
+            if (window.registerHeroSheet && window.registerNpcSheet && window.registerItemSheet) {
+                console.log('✅ Toutes les fonctions d\'enregistrement sont disponibles');
+                break;
+            }
+            
+            console.log(`⏳ Attente des fonctions d'enregistrement... (tentative ${attempts + 1}/${maxAttempts})`);
+            await new Promise(resolve => setTimeout(resolve, 100));
+            attempts++;
+        }
+        
+        if (attempts >= maxAttempts) {
+            console.warn('⚠️ Fonctions d\'enregistrement non disponibles, utilisation du fallback');
+            
+            // Fallback : enregistrement direct
             Items.unregisterSheet("core", ItemSheet);
             Items.registerSheet("voidHorizon", VHItemSheet, {makeDefault: true});
+            console.log('✅ Feuilles d\'objets voidHorizon enregistrées (fallback)');
+        } else {
+            // Enregistrer les feuilles d'objets personnalisées
+            if (window.registerItemSheet) {
+                window.registerItemSheet();
+            }
+            console.log('✅ Feuilles d\'objets voidHorizon enregistrées');
+            
+            // Enregistrer les feuilles d'acteurs personnalisées
+            if (window.registerHeroSheet) {
+                window.registerHeroSheet();
+            }
+            if (window.registerNpcSheet) {
+                window.registerNpcSheet();
+            }
+            console.log('✅ Feuilles d\'acteurs voidHorizon enregistrées');
         }
-        console.log('✅ Feuilles d\'objets voidHorizon enregistrées');
-        
-        // Enregistrer les feuilles d'acteurs personnalisées
-        if (window.registerHeroSheet) {
-            window.registerHeroSheet();
-        }
-        if (window.registerNpcSheet) {
-            window.registerNpcSheet();
-        }
-        console.log('✅ Feuilles d\'acteurs voidHorizon enregistrées');
         
         console.log('🎯 JS custom operationnel');
         
