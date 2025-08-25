@@ -662,27 +662,27 @@
                                                     <select name="system.armor.type" class="edit-mode"
                                                         data-no-save="true">
                                                         <option value="tissu" {{#if (eq actor.system.armor.type "tissu"
-                                                            )}}selected{{/if}}>Tissu (+0 armure, +0 agilité)</option>
+                                                            )}}selected{{/if}}>Tissu (+0 armure, +0 agilité, -0m mouvement)</option>
                                                         <option value="legere" {{#if (eq
                                                             actor.system.armor.type "legere" )}}selected{{/if}}>Légère
-                                                            (+1 armure, -4 agilité)</option>
+                                                            (+1 armure, -4 agilité, -1.5m mouvement)</option>
                                                         <option value="lourde" {{#if (eq
                                                             actor.system.armor.type "lourde" )}}selected{{/if}}>Lourde
-                                                            (+2 armure, -8 agilité)</option>
+                                                            (+2 armure, -8 agilité, -3.0m mouvement)</option>
                                                         <option value="blindee" {{#if (eq
                                                             actor.system.armor.type "blindee" )}}selected{{/if}}>Blindée
-                                                            (+4 armure, -16 agilité)</option>
+                                                            (+4 armure, -16 agilité, -4.5m mouvement)</option>
                                                     </select>
                                                     <div class="read-mode">
                                                         {{#if (eq actor.system.armor.type "tissu")}}Tissu (+0 armure, +0
-                                                        agilité)
+                                                        agilité, -0m mouvement)
                                                         {{else if (eq actor.system.armor.type "legere")}}Légère (+1
-                                                        armure, -4 agilité)
+                                                        armure, -4 agilité, -1.5m mouvement)
                                                         {{else if (eq actor.system.armor.type "lourde")}}Lourde (+2
-                                                        armure, -8 agilité)
+                                                        armure, -8 agilité, -3.0m mouvement)
                                                         {{else if (eq actor.system.armor.type "blindee")}}Blindée (+4
-                                                        armure, -16 agilité)
-                                                        {{else}}Tissu (+0 armure, +0 agilité){{/if}}
+                                                        armure, -16 agilité, -4.5m mouvement)
+                                                        {{else}}Tissu (+0 armure, +0 agilité, -0m mouvement){{/if}}
                                                     </div>
                                                 </div>
 
