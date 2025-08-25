@@ -4,31 +4,43 @@ import {registerSettings} from "./module/settings.js";
 import "./scripts/heros-sheet.js";
 import "./scripts/npc-sheet.js";
 
-// Initialisation du système
+// Initialisation unifiée du système voidHorizon
 Hooks.once('init', async function() {
     console.log('🚀 Initialisation du système voidHorizon');
     
-    // Configuration du système
-    CONFIG.voidHorizon = voidHorizon;
-    
-    // Enregistrer les paramètres de configuration
     try {
+        // Configuration du système
+        CONFIG.voidHorizon = voidHorizon;
+        console.log('✅ Configuration système chargée');
+        
+        // Enregistrer les paramètres de configuration
         registerSettings();
         console.log('✅ Paramètres voidHorizon enregistrés avec succès');
-    } catch (error) {
-        console.error('❌ Erreur lors de l\'enregistrement des paramètres:', error);
-    }
-    
-    // Enregistrer les feuilles d'objets personnalisées
-    try {
-        Items.unregisterSheet("core", ItemSheet);
-        Items.registerSheet("voidHorizon", VHItemSheet, {makeDefault: true});
+        
+        // Enregistrer les feuilles d'objets personnalisées
+        if (window.registerItemSheet) {
+            window.registerItemSheet();
+        } else {
+            // Fallback si la fonction n'est pas encore disponible
+            Items.unregisterSheet("core", ItemSheet);
+            Items.registerSheet("voidHorizon", VHItemSheet, {makeDefault: true});
+        }
         console.log('✅ Feuilles d\'objets voidHorizon enregistrées');
+        
+        // Enregistrer les feuilles d'acteurs personnalisées
+        if (window.registerHeroSheet) {
+            window.registerHeroSheet();
+        }
+        if (window.registerNpcSheet) {
+            window.registerNpcSheet();
+        }
+        console.log('✅ Feuilles d\'acteurs voidHorizon enregistrées');
+        
+        console.log('🎯 JS custom operationnel');
+        
     } catch (error) {
-        console.error('❌ Erreur lors de l\'enregistrement des feuilles:', error);
+        console.error('❌ Erreur lors de l\'initialisation:', error);
     }
-    
-    console.log('🎯 JS custom operationnel');
 });
 
 // Quand le jeu est prêt

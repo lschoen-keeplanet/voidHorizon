@@ -23,12 +23,17 @@ class VHItemSheet extends foundry.appv1.sheets.ItemSheet {
     }
 }
 
-// Enregistrer la classe de la fiche
-Hooks.once("init", function() {
+// Fonction d'enregistrement de la fiche Item
+function registerItemSheet() {
     console.log("Enregistrement de la fiche Item");
     foundry.documents.collections.Items.unregisterSheet("core", foundry.appv1.sheets.ItemSheet);
     foundry.documents.collections.Items.registerSheet("voidHorizon", VHItemSheet, {
         types: ["outil", "A"],
         makeDefault: true
     });
-}); 
+    
+    console.log("✅ Fiche Item enregistrée avec succès");
+}
+
+// Exporter la fonction pour l'utiliser dans voidHorizon.js
+window.registerItemSheet = registerItemSheet;

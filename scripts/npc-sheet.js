@@ -704,8 +704,8 @@ class NpcSheet extends ActorSheet {
     }
 }
 
-// Enregistrer la classe de la fiche
-Hooks.once("init", function() {
+// Fonction d'enregistrement de la fiche NPC
+function registerNpcSheet() {
     console.log("Enregistrement de la fiche NPC");
     
     // Enregistrer la classe de la fiche
@@ -714,6 +714,11 @@ Hooks.once("init", function() {
         types: ["npc"],
         makeDefault: true
     });
-});
+    
+    console.log("✅ Fiche NPC enregistrée avec succès");
+}
+
+// Exporter la fonction pour l'utiliser dans voidHorizon.js
+window.registerNpcSheet = registerNpcSheet;
 
 
